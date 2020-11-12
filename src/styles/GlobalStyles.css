@@ -1,0 +1,50 @@
+.full{
+    width: 100%;
+    height: 100%;
+  }
+.Inter400 {
+    font-family: 'Inter';
+    font-weight: normal;
+    font-style: normal;
+    letter-spacing: -0.3px;
+    font-size: 24px;
+    line-height: 24px;
+    color: #182739;
+}
+.Inter500 {
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 14px;
+    color: #182739;
+}
+.Inter600 {
+    font-family: 'Inter';
+    font-weight: 600;
+    font-size: 14px;
+    color:white;
+}
+
+.table {
+    background-color: rgb(255, 255, 255);
+    height: 500px;
+}
+
+.modalMax {
+    min-width: 0px;
+    width: 740px;
+    max-width: 740px;
+    min-height: 604px;
+    margin-top: 70px;
+}
+
+ .formGray {
+    font-family: 'Inter';
+    font-weight: 500;
+    font-style: inherit;
+    letter-spacing: -0.9px;
+    font-size: 14px;
+    line-height: 14px;
+    color:#6e7a93;
+}
+ 
