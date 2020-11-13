@@ -3,6 +3,9 @@ import  'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/GlobalStyles.css';
 import { Row, Col, Button  } from 'react-bootstrap';
 import MultipleModals from '../components/MultipleModals';
+// import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 
 function Contacts() {
     return (

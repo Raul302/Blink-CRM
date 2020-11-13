@@ -48,3 +48,12 @@
     color:#6e7a93;
 }
  
+
+.login {
+    box-shadow: 5px 10px 50px #6e7a93;
+    border: #F9FAFB 1px solid;
+    opacity: 50;
+    background-color:  #F7F7F7;
+    max-height: 500px;
+    height: 500px;
+}

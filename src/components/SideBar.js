@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
-import * as IoIcons from 'react-icons/io';
-import { Link } from 'react-router-dom';
 
 export const SideBar =[
     {
         title:'Dashboard',
-        path:'/',
+        path:'/dashboard',
         icon: <AiIcons.AiFillDashboard />,
         cName: 'nav-text'
     },
