@@ -41,8 +41,9 @@ function MultipleModals() {
 
 
     return (
-        <>
-            <Button className="mr-3 Inter600" variant="primary" onClick={showModal1}>Crear contacto</Button>
+        <>  
+            <Button style={{marginRight:'10px'}} className=" mr-2 ml-3 Inter600 float-right" variant="primary" onClick={showModal1}>Crear contacto</Button>
+            <Button style={{color:'#182739', backgroundColor:'#FFFFFF', boxShadow:'rgb(209, 221, 235) 0px 0px 0px 1px inset' }} className="float-right Inter600" variant="light">Import</Button>
 
             {/* FirstModal */}
             <Modal  
@@ -59,53 +60,53 @@ function MultipleModals() {
                             <Row>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Nombre</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su nombre" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su nombre" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Apellido Paterno</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su primer apellido" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su primer apellido" />
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Apellido Materno</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su segundo apellido" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su segundo apellido" />
                                 </Col>
                             </Row>
                              <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Colegio</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su email" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su email" />
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Grado</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su telefono" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su telefono" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Email</Form.Label>
-                                    <Form.Control  className="formGray" type="email" placeholder="Ingrese su email" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="email" placeholder="Ingrese su email" />
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Telefono</Form.Label>
-                                    <Form.Control  className="formGray" type="tel" placeholder="Ingrese su telefono" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="tel" placeholder="Ingrese su telefono" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Estado</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su email" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su email" />
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Ciudad</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su telefono" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su telefono" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Fecha de nacimiento</Form.Label>
-                                    <Form.Control  className="formGray" type="date" placeholder="Ingrese su email" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="date" placeholder="Ingrese su email" />
                                 </Col>
                                
                             </Row>
@@ -139,63 +140,63 @@ function MultipleModals() {
                             <Row>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Nombre</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su nombre" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su nombre" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Apellido Paterno</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su primer apellido" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su primer apellido" />
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Apellido Materno</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su segundo apellido" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su segundo apellido" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Email</Form.Label>
-                                    <Form.Control  className="formGray" type="email" placeholder="Ingrese su email" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="email" placeholder="Ingrese su email" />
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Telefono</Form.Label>
-                                    <Form.Control  className="formGray" type="tel" placeholder="Ingrese su telefono" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="tel" placeholder="Ingrese su telefono" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Fecha de nacimiento</Form.Label>
-                                    <Form.Control  className="formGray" type="date" placeholder="Ingrese su fecha" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="date" placeholder="Ingrese su fecha" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Estado</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su Estado" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su Estado" />
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Ciudad</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su Ciudad" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su Ciudad" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Calle</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su Calle" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su Calle" />
                                 </Col>
                                 <Col className="col-3">
                                     <Form.Label className="formGray">No.</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su Numero" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su Numero" />
                                 </Col>
                                 <Col className="col-3">
                                     <Form.Label className="formGray">Codigo postal</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su Codigo" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su Codigo" />
                                 </Col>
                             </Row>
                              <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Estado Civil</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su Estado civil" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su Estado civil" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
@@ -209,73 +210,73 @@ function MultipleModals() {
                                      <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Nombre</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su nombre" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su nombre" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Apellido Paterno</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su primer apellido" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su primer apellido" />
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Apellido Materno</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su segundo apellido" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su segundo apellido" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Email</Form.Label>
-                                    <Form.Control  className="formGray" type="email" placeholder="Ingrese su email" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="email" placeholder="Ingrese su email" />
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Telefono</Form.Label>
-                                    <Form.Control  className="formGray" type="tel" placeholder="Ingrese su telefono" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="tel" placeholder="Ingrese su telefono" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Estado</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su email" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su email" />
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Ciudad</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su telefono" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su telefono" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Fecha de nacimiento</Form.Label>
-                                    <Form.Control  className="formGray" type="date" placeholder="Ingrese su email" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="date" placeholder="Ingrese su email" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Estado</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su Estado" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su Estado" />
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Ciudad</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su Ciudad" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su Ciudad" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Calle</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su Calle" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su Calle" />
                                 </Col>
                                 <Col className="col-3">
                                     <Form.Label className="formGray">No.</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su Numero" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su Numero" />
                                 </Col>
                                 <Col className="col-3">
                                     <Form.Label className="formGray">Codigo postal</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su Codigo" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su Codigo" />
                                 </Col>
                             </Row>
                              <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Estado Civil</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su Estado civil" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su Estado civil" />
                                 </Col>
                             </Row>
                                 </div>
@@ -311,73 +312,73 @@ function MultipleModals() {
                             <Row>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Nombre</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su nombre" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su nombre" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Apellido Paterno</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su primer apellido" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su primer apellido" />
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Apellido Materno</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su segundo apellido" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su segundo apellido" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Email</Form.Label>
-                                    <Form.Control  className="formGray" type="email" placeholder="Ingrese su email" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="email" placeholder="Ingrese su email" />
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Telefono</Form.Label>
-                                    <Form.Control  className="formGray" type="tel" placeholder="Ingrese su telefono" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="tel" placeholder="Ingrese su telefono" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Estado</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su email" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su email" />
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Ciudad</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su telefono" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su telefono" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Fecha de nacimiento</Form.Label>
-                                    <Form.Control  className="formGray" type="date" placeholder="Ingrese su email" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="date" placeholder="Ingrese su email" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Estado</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su Estado" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su Estado" />
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Ciudad</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su Ciudad" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su Ciudad" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Calle</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su Calle" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su Calle" />
                                 </Col>
                                 <Col className="col-3">
                                     <Form.Label className="formGray">No.</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su Numero" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su Numero" />
                                 </Col>
                                 <Col className="col-3">
                                     <Form.Label className="formGray">Codigo postal</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su Codigo" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su Codigo" />
                                 </Col>
                             </Row>
                              <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Estado Civil</Form.Label>
-                                    <Form.Control  className="formGray" type="text" placeholder="Ingrese su Estado civil" />
+                                    <Form.Control autocomplete="off"  className="formGray" type="text" placeholder="Ingrese su Estado civil" />
                                 </Col>
                             </Row>
                         </div>

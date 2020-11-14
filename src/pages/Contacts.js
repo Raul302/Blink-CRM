@@ -1,36 +1,58 @@
-import React from 'react'
+import React,{ useState } from 'react'
 import  'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/GlobalStyles.css';
 import { Row, Col, Button  } from 'react-bootstrap';
 import MultipleModals from '../components/MultipleModals';
-// import { AgGridReact } from 'ag-grid-react';
+import { AgGridColumn, AgGridReact } from 'ag-grid-react';
+
 import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 
 function Contacts() {
+
+    const [gridApi, setGridApi] = useState(null);
+    const [gridColumnApi, setGridColumnApi] = useState(null);
+
+    const [rowData, setRowData] = useState([
+        {Nombre: "Toyota", Colegio: "Celica", Grado: 35000, Email: 'email@email.com'},
+        {Nombre: "Ford", Colegio: "Mondeo", Grado: 32000, Email: 'email@email2.com'},
+        {Nombre: "Porsche", Colegio: "Boxter", Grado: 72000, Email: 'email3@email3.com'}
+    ]);
+
+
     return (
         <>
-        <div className="mr-5 mt-3 container">
-            <Row>
-            <h1 className="ml-0 Inter400">Contactos</h1>
-            <Col></Col>
-            <Col></Col>
-            <Col></Col>
-            <Col></Col>
-            <Col></Col>
-            <Col></Col>
-            <Col></Col>
-            <Col></Col>
-            <Col></Col>
-            <Col></Col>
-            <Col></Col>
-            <Col></Col>
-            <Col></Col>
-            <Col><Button style={{color:'#182739', backgroundColor:'#FFFFFF', boxShadow:'rgb(209, 221, 235) 0px 0px 0px 1px inset' }} className="Inter600" variant="light">Import</Button></Col>
-            <Col md="auto"><MultipleModals /></Col>
-            </Row>
-            <div className="table mr-5 mt-4 row">
-                Tabla nueva
+        
+        <div style={{marginLeft:'200px',width:'1500px',position:'fixed'}} className="mt-3 container">
+        <div class="row">
+            <div class="col-1 col-sm-4 col-md-4 col-lg-8">
+            <h1 className="Inter400">Contactos</h1>
+            </div>
+            <div class="col-2 col-sm-8 col-md-8 col-lg-4">
+            <MultipleModals />
+            </div>
+        </div>
+
+
+            
+            {/* <Row>
+            <div class="col-1 col-md-8">
+            <h1 className="Inter400">Contactos</h1>
+            </div>
+            <div class="col-2 col-md-4"><MultipleModals /></div>
+            </Row> */}
+            <div stlye={{ border:'1px solid'}} className="table mr-5 row">
+            Boton Search
+
+            <div className="ag-theme-alpine" style={ { height: 450, width: 1500 } }>
+            <AgGridReact
+                rowData={rowData}>
+                <AgGridColumn field="Nombre"></AgGridColumn>
+                <AgGridColumn field="Colegio"></AgGridColumn>
+                <AgGridColumn field="Grado"></AgGridColumn>
+                <AgGridColumn field="Email"></AgGridColumn>
+            </AgGridReact>
+        </div>
             </div>
         </div>
         </>

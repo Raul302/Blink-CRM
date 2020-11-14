@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^12.2.2",
     "ag-grid-community": "^24.1.0",
     "ag-grid-react": "^24.1.1",
+    "antd": "^4.8.2",
     "bootstrap": "^4.5.3",
     "react": "^17.0.1",
     "react-alert": "^7.0.2",

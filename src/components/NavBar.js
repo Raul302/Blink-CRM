@@ -1,8 +1,5 @@
 import React, { useState, useContext } from 'react';
 import * as FaIcons from 'react-icons/fa';
-import * as AiIcons from 'react-icons/ai';
-import * as RiIcons from 'react-icons/ri';
-import * as GrIcons from 'react-icons/gr';
 import { Link , useHistory} from 'react-router-dom';
 import { SideBar } from "./SideBar";
 import '../styles/NavBar.css';
@@ -28,26 +25,22 @@ function NavBar() {
     return (
         <>
 
-            {/* navbar */}
+         
             <IconContext.Provider className="nav-text" value={{ color: '#1a83ff' }}>
-                <Navbar bg="light" expand="lg">
+                {/* <Navbar bg="white" expand="lg">
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
-                            <Nav.Link style={{ marginLeft:'130px'}} > 
-                            <FaIcons.FaBars  onClick={showSidebar} /></Nav.Link>
+                            <Nav.Link> 
+                            <FaIcons.FaBars  style={{ position:'fixed', marginBottom:'70px' ,marginLeft:'130px'}}  onClick={showSidebar} /></Nav.Link>
                         </Nav>
                         <Form inline>
                             <NavDropdown style={{ marginRight:'80px'}} title={name} id="basic-nav-dropdown">
                                 <NavDropdown.Item onClick={ handleLogout }>Salir</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
                             </NavDropdown>
-                                                    </Form>
+                        </Form>
                     </Navbar.Collapse>
-                </Navbar>
+                </Navbar> */}
 
                 {/* <IconContext.Provider className="nav-text" value={{ color: '#1a83ff' }}>
                     <div className='navbar'>
@@ -86,6 +79,20 @@ function NavBar() {
                             })}
                         </ul>
                     </nav>
+                       {/* navbar */}
+                       <Navbar collapseOnSelect expand="lg" bg="white" variant="dark">
+  <Navbar.Brand onClick={showSidebar} ><FaIcons.FaBars/></Navbar.Brand>
+  <Navbar.Collapse id="responsive-navbar-nav">
+    <Nav className="mr-auto">
+    </Nav>
+    <Nav>
+      <Nav.Link style={{color:'#182739'}}>{name}</Nav.Link>
+      <Nav.Link style={{color:'#182739'}} onClick={ handleLogout }>
+        Cerrar sesion
+      </Nav.Link>
+    </Nav>
+  </Navbar.Collapse>
+</Navbar>
                 </IconContext.Provider>
         </>
     );

@@ -35,7 +35,6 @@ function Login({ history }) {
 
     return (
         <body className="TBody">
-       
             <Container className="mt-5">
                 <Row className="justify-content-md-center mt-5">
                     <Col className="login" xs={6} md={4}>
@@ -47,6 +46,7 @@ function Login({ history }) {
                                 <Form.Group controlId="formGroupEmail">
                                     <Form.Label className="justify-content-md-center">Email</Form.Label>
                                     <Form.Control
+                                    autocomplete="off"
                                         ref={register({
                                             required: true,
                                             validate: (input) => isEmail(input), // returns true if valid
@@ -57,7 +57,9 @@ function Login({ history }) {
                                 </Form.Group>
                                 <Form.Group controlId="formGroupPassword">
                                     <Form.Label>Contraseña</Form.Label>
-                                    <Form.Control ref={register({
+                                    <Form.Control 
+                                    autocomplete="off"
+                                    ref={register({
                                         required: true,
                                         minLength: 6,
                                     })}

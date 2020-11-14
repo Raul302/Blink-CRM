@@ -26,8 +26,13 @@
 }
 
 .table {
+    margin-top: 50px;
     background-color: rgb(255, 255, 255);
-    height: 500px;
+    height: 100px;
+    border-top:#E5E5E5 1px solid;
+    border-left:#E5E5E5 1px solid;
+    border-right: #E5E5E5 1px solid;
+
 }
 
 .modalMax {
@@ -56,4 +61,4 @@
     background-color:  #F7F7F7;
     max-height: 500px;
     height: 500px;
-}
+} 
