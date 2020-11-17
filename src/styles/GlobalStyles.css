@@ -18,11 +18,24 @@
     line-height: 14px;
     color: #182739;
 }
+.Inter500B {
+    font-family: 'Inter';
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 14px;
+    color: #A4B8FF;
+}
 .Inter600 {
     font-family: 'Inter';
     font-weight: 600;
     font-size: 14px;
     color:white;
+}
+.Inter600B {
+    font-family: 'Inter';
+    font-weight: bold;
+    font-size: 14px;
+    color:#182739;
 }
 
 .table {
@@ -62,3 +75,89 @@
     max-height: 500px;
     height: 500px;
 } 
+.minh-100 {
+    height: 100vh;
+  }
+
+.errores {
+        color: red;
+        margin-top: 8px;
+        font-family: Inter;
+        font-size: 12px;
+        font-weight: 500;
+        font-style: normal;
+        font-stretch: normal;
+        letter-spacing: normal;
+        color: rgb(185, 84, 97);
+}
+
+/* Estilos personales */
+
+.divAliR {
+    box-sizing: border-box;
+    margin: 0px;
+    min-width: 0px;
+    -webkit-box-align: center;
+    align-items: center;
+    min-height: 36px;
+    display: flex;
+}
+.grbPtxt{
+    font-family: Inter;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: -0.3px;
+    color: rgb(24, 39, 57);
+    font-size: 24px;
+}
+.equwpM {
+    box-sizing: border-box;
+    margin: 0px 0px 0px auto;
+    min-width: 0px;
+    display: flex;
+}
+
+a:link, a:visited, a:hover, a:active {
+    color: inherit;
+}
+a:link {
+    text-decoration: none;
+}
+.gLSGzc {
+    margin-right: 12px;
+}
+.bpdvte {
+    height: 36px;
+    font-size: 14px;
+    border-radius: 3px;
+    font-weight: 600;
+    position: relative;
+    cursor: pointer;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    color: rgb(24, 39, 57);
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgb(209, 221, 235) 0px 0px 0px 1px inset;
+    padding: 0.5rem 1rem;
+    outline: none;
+    transition: fill 0.3s ease-in-out 0s;
+    fill: rgb(24, 39, 57);
+}
+.jsJOEF {
+    height: 36px;
+    font-size: 14px;
+    border-radius: 3px;
+    display: inline-block;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    position: relative;
+    outline: none;
+    transition: background-color 0.3s ease-in-out 0s;
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    background-color: rgb(68, 121, 255);
+}

@@ -24,14 +24,11 @@ function Contacts() {
         <>
         
         <div style={{marginLeft:'200px',width:'1500px',position:'fixed'}} className="mt-3 container">
-        <div class="row">
-            <div class="col-1 col-sm-4 col-md-4 col-lg-8">
+       
             <h1 className="Inter400">Contactos</h1>
-            </div>
-            <div class="col-2 col-sm-8 col-md-8 col-lg-4">
+            
+            
             <MultipleModals />
-            </div>
-        </div>
 
 
             
