@@ -92,8 +92,7 @@
 }
 
 /* Estilos personales */
-
-.divAliR {
+.kPEtSm {
     box-sizing: border-box;
     margin: 0px;
     min-width: 0px;
@@ -102,7 +101,14 @@
     min-height: 36px;
     display: flex;
 }
-.grbPtxt{
+
+.jMUEgk {
+    box-sizing: border-box;
+    margin: 0px 0px 20px;
+    min-width: 0px;
+}
+
+.grbPED {
     font-family: Inter;
     font-weight: normal;
     font-style: normal;
@@ -121,12 +127,15 @@
 a:link, a:visited, a:hover, a:active {
     color: inherit;
 }
+constructed stylesheet
 a:link {
     text-decoration: none;
 }
+constructed stylesheet
 .gLSGzc {
     margin-right: 12px;
 }
+constructed stylesheet
 .bpdvte {
     height: 36px;
     font-size: 14px;
@@ -160,4 +169,28 @@ a:link {
     cursor: pointer;
     color: rgb(255, 255, 255);
     background-color: rgb(68, 121, 255);
+}
+constructed stylesheet
+input, textarea, button, select {
+    appearance: none;
+    background: none;
+    border-color: currentcolor;
+    border-style: none;
+    border-width: medium;
+    border-radius: 0px;
+    margin: 0px;
+    padding: 0px;
+    color: inherit;
+    font: inherit;
+    vertical-align: baseline;
+}
+.cvjtHi {
+    box-sizing: border-box;
+    margin: 0px;
+    min-width: 0px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
 }
