@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/GlobalStyles.css';
 import * as GrIcons from 'react-icons/gr';
 import { Row, Col, Button, Modal, Form, FormControl, FormLabel } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
+import axios from 'axios';
+
 
 
 function MultipleModals() {
@@ -15,10 +17,65 @@ function MultipleModals() {
     const [modal3, setModal3] = useState(false);
     const [modal4, setModal4] = useState(false);
     const [extra, setExtra] = useState(false);
+    const [validField, setvalidField] = useState(true);
+    const [validFieldTwo, setvalidFieldTwo] = useState(true);
+    const [validFieldThree, setvalidFieldThree] = useState(true);
+    const [validFieldFour, setvalidFieldFour] = useState(true);
+    const [cities, setCities] = useState([]);
+    const [states, setStates] = useState([]);
+    const [auth, setAth] = useState([]);
 
+    useEffect(() => {
+        console.log('states');
+        consultStates();
+        setExtra(false);
+
+        console.log('states', states);
+        console.log('cities', cities);
+    }, []);
+
+    function changeCities(e) {
+        console.log('Cambio', e.target.value)
+        let val = e.target.value;
+        axios.get('https://www.universal-tutorial.com/api/cities/' + val, {
+            headers: {
+                Authorization: 'Bearer ' + auth,
+                Accept: "application/json"
+            }
+        }).then(function (response) {
+            setCities(response.data);
+        });
+    }
+    // Api to states
+    async function consultStates() {
+        //    info : L6HkSxDySdCLf8NsKYB64pLX5rE4XJVQvG0ROvYXBwYXZ7e0kRlU7gwVgo49xcFX6FI
+        let x = null;
+        await axios.get('https://www.universal-tutorial.com/api/getaccesstoken', {
+            headers: {
+                "Accept": "application/json",
+                "user-email": "18090130@gmail.com",
+                "api-token": "L6HkSxDySdCLf8NsKYB64pLX5rE4XJVQvG0ROvYXBwYXZ7e0kRlU7gwVgo49xcFX6FI"
+            }
+        }).then(function (response) {
+           x = response.data.auth_token;
+            console.log('Auth',auth);
+        });
+        axios.get('https://www.universal-tutorial.com/api/states/Mexico', {
+            headers: {
+                Authorization: 'Bearer ' + x,
+                Accept: "application/json"
+            }
+        }).then(function (response) {
+            setStates(response.data);
+            setAth(x);
+
+
+        });
+
+    }
     // Register to save data
-    const { register: student, handleSubmit, errors,formState  } = useForm({mode:'onChange'});
-    const { register: reference, handleSubmit: handleSubmitReference, errors: errorsReference , formState: formStateReference  } = useForm({mode:'onChange'});
+    const { register: student, handleSubmit, errors, formState } = useForm({ mode: 'onChange' });
+    const { register: reference, handleSubmit: handleSubmitReference, errors: errorsReference, formState: formStateReference } = useForm({ mode: 'onChange' });
     const styles = {
         container: {
             width: "80%",
@@ -28,23 +85,46 @@ function MultipleModals() {
             width: "100%",
         },
     };
-    const [addrtype, setAddrtype] = useState(["","Papa", "Mama", "Hermano/Hermana","Otro"])
+    const [addrtype, setAddrtype] = useState(["", "Papa", "Mama", "Hermano/Hermana", "Otro"])
     const Add = addrtype.map(Add => Add
     )
     // function showReference (e){
     //     console.log('e',e.target.value);
     //     console.log('extra',extra);
     // }
-    const showReference = (e) =>{
-        if((addrtype[e.target.value]) == "Otro"){
+    const showReference = (e) => {
+        if ((addrtype[e.target.value]) == "Otro") {
             setExtra(true);
         } else {
             setExtra(false);
         }
-    } 
+        if (e.target.value) {
+            setvalidFieldThree(false);
+        } else {
+            setvalidFieldThree(true);
+        }
+    }
 
+    function handlevalidPhone(e) {
+        console.log('e', e.target.value);
+        let regex = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
+        if (!regex.test(e.target.value)) {
+            setvalidFieldTwo(true);
+        } else {
+            setvalidFieldTwo(false);
+
+        }
+
+    }
+    function valid() {
+        return validField;
+    }
+    function validTwo() {
+        return validFieldTwo;
+    }
     // function to view modals
     const showModal1 = function close() {
+        setvalidField(true);
         setModal2(false);
         setModal3(false);
         setModal4(false);
@@ -55,8 +135,11 @@ function MultipleModals() {
         setModal2(true);
     };
     const showModal3 = function close() {
+        setvalidFieldThree(true);
+        setExtra(false);
         setModal1(false);
         setModal2(false);
+        setModal4(false);
         setModal3(true);
     };
     const showModal4 = function close() {
@@ -66,6 +149,8 @@ function MultipleModals() {
         setModal4(true);
     };
     const handleClose = function close() {
+        setvalidField(true);
+        setExtra(false);
         setModal1(false);
         setModal2(false);
         setModal3(false);
@@ -74,7 +159,37 @@ function MultipleModals() {
     const handleExtra = function ekis() {
         setExtra(state => !state);
     }
-
+    function handlevalidTwo(e) {
+        if (e.target.value) {
+            setvalidFieldTwo(false);
+        } else {
+            setvalidFieldTwo(true);
+        }
+        console.log(e.target.value);
+    }
+    function handleValid(e) {
+        if (e.target.value) {
+            setvalidField(false);
+        } else {
+            setvalidField(true);
+        }
+        console.log(e.target.value);
+    }
+    // function handlevalidThree(e) {
+    //     if (e.target.value) {
+    //         setvalidFieldThree(false);
+    //     } else {
+    //         setvalidFieldThree(true);
+    //     }
+    // }
+    function handlevalidFour(e) {
+        if (e.target.value) {
+            setvalidFieldFour(false);
+        } else {
+            setvalidFieldFour(true);
+        }
+        console.log(e.target.value);
+    }
     function onSubmit(data) {
         console.log('Data', data); // { username: 'test', email: 'test', password: 'test' }
     }
@@ -100,20 +215,8 @@ function MultipleModals() {
                         <div className="container-fluid">
                             <Row>
                                 <Col className="col-6">
-                                    <Form.Label className="formGray">Programa</Form.Label>
-                                    <Form.Control name="program" ref={student({
-                                        required: true,
-                                        minLenth: 6,
-                                        maxLength: 50
-                                    })}
-                                        autoComplete="off" className="formGray" type="text" placeholder="Ingrese el programa"
-                                        style={{ ...styles.input, borderColor: errors.program && "red" }}
-                                    />
-                                    <p className='errores'>{errors.program && "Programa requerido"}</p>
-                                </Col>
-                                <Col className="col-6">
                                     <Form.Label className="formGray">Nombre</Form.Label>
-                                    <Form.Control name="name" ref={student({
+                                    <Form.Control onChange={e => handleValid(e)} name="name" ref={student({
                                         required: true,
                                         minLenth: 6,
                                         maxLength: 50
@@ -127,16 +230,20 @@ function MultipleModals() {
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Apellido Paterno</Form.Label>
-                                    <Form.Control name="father_lastname" ref={student}
+                                    <Form.Control onChange={e => handlevalidTwo(e)} name="father_lastname" ref={student({
+                                        required: true,
+                                        minLenth: 6,
+                                        maxLength: 50
+                                    })}
                                         autoComplete="off" className="formGray" type="text" placeholder="Ingrese su primer apellido" />
-                                          <p className='errores'
+                                    <p className='errores'
                                     >{errors.father_lastname && "Apellido requerido"}</p>
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Apellido Materno</Form.Label>
                                     <Form.Control autoComplete="off" name="mother_lastname" ref={student}
                                         className="formGray" type="text" placeholder="Ingrese su segundo apellido" />
-                                           <p className='errores'
+                                    <p className='errores'
                                     >{errors.mother_lastname && "Apellido requerido"}</p>
                                 </Col>
                             </Row>
@@ -145,96 +252,112 @@ function MultipleModals() {
                                     <Form.Label className="formGray">Fecha de nacimiento</Form.Label>
                                     <Form.Control autoComplete="off" name="date" ref={student}
                                         className="formGray" type="date" placeholder="Ingrese su Fecha" />
-                                          <p className='errores'>{errors.date && "Fecha requerida"}</p>
+                                    <p className='errores'>{errors.date && "Fecha requerida"}</p>
                                 </Col>
 
                             </Row>
                             <Row className="mt-3">
-                            <Col className="col-3">
+                                <Col className="col-3">
                                     <Form.Label className="formGray">Grado</Form.Label>
                                     <Form.Control autoComplete="off" name="grade" ref={student} as="select" size="sm" custom>
-                                    <option>Grado 1</option>
-                                    <option>Grado 2</option>
-                                    <option>Grado 3</option>
-                                    <option>Grado 4</option>
-                                    <option>Grado 5</option>
-                                    <option>Grado 6</option>
-                                    <option>Grado 7</option>
-                                    <option>Grado 8</option>
-                                    <option>Grado 9</option>
-                                    <option>Grado 10</option>
-                                    <option>Grado 11</option>
-                                    <option>Grado 12</option>
+                                        <option>Grado 1</option>
+                                        <option>Grado 2</option>
+                                        <option>Grado 3</option>
+                                        <option>Grado 4</option>
+                                        <option>Grado 5</option>
+                                        <option>Grado 6</option>
+                                        <option>Grado 7</option>
+                                        <option>Grado 8</option>
+                                        <option>Grado 9</option>
+                                        <option>Grado 10</option>
+                                        <option>Grado 11</option>
+                                        <option>Grado 12</option>
                                     </Form.Control>
                                 </Col>
                                 <Col className="col-3">
-                                <Form.Label className="formGray">Ciclo escolar</Form.Label>
+                                    <Form.Label className="formGray">Ciclo escolar</Form.Label>
                                     <Form.Control autoComplete="off" name="cicly" ref={student} as="select" size="sm" custom>
-                                    <option>2015 - 2016</option>
-                                    <option>2016 - 2017</option>
-                                    <option>2017 - 2018</option>
-                                    <option>2018 - 2019</option>
-                                    <option>2019 - 2020</option>
-                                    <option>2020 - 2021</option>
-                                    <option>2021 - 2022</option>
-                                    <option>2022 - 2023</option>
-                                    <option>2023 - 2024</option>
-                                    <option>2024 - 2025</option>
-                                    <option>2025 - 2026</option>
-                                    <option>2026 - 2027</option>
-                                    <option>2027 - 2028</option>
-                                    <option>2028 - 2029</option>
-                                    <option>2029 - 2030</option>
-                                    <option>2030 - 2031</option>
+                                        <option>2015 - 2016</option>
+                                        <option>2016 - 2017</option>
+                                        <option>2017 - 2018</option>
+                                        <option>2018 - 2019</option>
+                                        <option>2019 - 2020</option>
+                                        <option>2020 - 2021</option>
+                                        <option>2021 - 2022</option>
+                                        <option>2022 - 2023</option>
+                                        <option>2023 - 2024</option>
+                                        <option>2024 - 2025</option>
+                                        <option>2025 - 2026</option>
+                                        <option>2026 - 2027</option>
+                                        <option>2027 - 2028</option>
+                                        <option>2028 - 2029</option>
+                                        <option>2029 - 2030</option>
+                                        <option>2030 - 2031</option>
                                     </Form.Control>
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Colegio</Form.Label>
                                     <Form.Control autoComplete="off" name="school" ref={student}
                                         className="formGray" type="text" placeholder="Ingrese su Colegio" />
-                                <p className='errores'>{errors.school && "Colegio requerido"}</p>
+                                    <p className='errores'>{errors.school && "Colegio requerido"}</p>
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Email</Form.Label>
-                                    <Form.Control autoComplete="off" name="email" ref={student}
+                                    <Form.Control autoComplete="off" name="email"
+                                        ref={student({
+                                            validate: (input) => isEmail(input), // returns true if valid
+                                        })}
                                         className="formGray" type="email" placeholder="Ingrese su email" />
-                                          <p className='errores'>{errors.email && "Email requerido ó invalido"}</p>
+                                    <p className='errores'>{errors.email && "Formato invalido"}</p>
 
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Telefono</Form.Label>
-                                    <Form.Control autoComplete="off" name="phone" ref={student}
+                                    <Form.Control onChange={e => handlevalidPhone(e)} autoComplete="off" name="phone" ref={student({
+                                        pattern: /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/,
+                                        maxLength: 10
+                                    })}
                                         className="formGray" type="tel" placeholder="Ingrese su telefono" />
-                                          <p className='errores'>{errors.phone && "Telefono requerido"}</p>
+                                    <p className='errores'>{errors.phone && "Formato invalido,solo 10 digitos"}</p>
                                 </Col>
                             </Row>
                             <Row className="mt-3">
-                            <Col className="col-6">
-                                    <Form.Label className="formGray">Ciudad</Form.Label>
-                                    <Form.Control autoComplete="off" name="city" ref={student}
-                                        className="formGray" type="text" placeholder="Ingrese su Ciudad" />
-                                          <p className='errores'>{errors.city && "Ciudad requerida"}</p>
-
-                                </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Estado</Form.Label>
-                                    <Form.Control autoComplete="off" name="state" ref={student}
-                                        className="formGray" type="text" placeholder="Ingrese su Estado" />
-                                          <p className='errores'>{errors.state && "Estado requerido"}</p>
+                                    <Form.Control onChange={e => changeCities(e)} autoComplete="off" name="state" ref={student} as="select" size="sm" custom>
+                                        {states.map(state => (
+                                            <option key={state.state_name} value={state.state_name}>
+                                                {state.state_name}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
+                                    <p className='errores'>{errors.state && "Estado requerido"}</p>
                                 </Col>
-                               
+                                <Col className="col-6">
+                                    <Form.Label className="formGray">Ciudad</Form.Label>
+                                    <Form.Control autoComplete="off" name="city" ref={student} as="select" size="sm" custom>
+                                        {cities.map(state => (
+                                            <option key={state.city_name} value={state.city_name}>
+                                                {state.city_name}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
+                                    <p className='errores'>{errors.state && "Estado requerido"}</p>
+                                </Col>
+
                             </Row>
-                            
+
                         </div>
                         <Row>
 
                             <Col>
-                                <Button className="float-right mb-3 mr-2" type="submit" 
-                                onClick={showModal2}
-                                
-                                variant="primary">Guardar</Button>
+                                <Button
+                                    disabled={valid() || validTwo()}
+                                    className="float-right mb-3 mr-2" type="submit"
+                                    onClick={showModal2}
+                                    variant="primary">Guardar</Button>
                                 <Button onClick={handleClose} style={{ color: '#4479ff', fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="light" >
                                     Cancel
                 </Button>
@@ -248,7 +371,7 @@ function MultipleModals() {
 
             {/* Second Modal */}
             <Modal
-            style={{height:'604px',maxHeight:'604px'}}
+                style={{ height: '604px', maxHeight: '604px' }}
                 show={modal2}
                 dialogClassName="modalMax"
                 onHide={handleClose}
@@ -257,41 +380,41 @@ function MultipleModals() {
                     <Modal.Title style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}>Agregar contacto</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
-                <div class="row mt-5"></div>
-                <div class="row mt-5"></div>
-                <div class="row mt-5"></div>
-                <div class="container">
-      <div class="row">
-        <div class="mx-auto">
-         <h1 class="Inter600B">Contacto Guardado!</h1>
-     </div>
- </div>
- <div class="row">
- <div class="mx-auto">
- <span class="Inter500" > ¿Te gustaria agregar otro contacto?</span>
-</div>
-</div>
-</div>
-<div class="row mt-2">
-<div class="mx-auto">
-<button class="btn btn-primary Inter600" onClick={showModal3}>Agregar una Referencia</button>
+                    <div className="row mt-5"></div>
+                    <div className="row mt-5"></div>
+                    <div className="row mt-5"></div>
+                    <div className="container">
+                        <div className="row">
+                            <div className="mx-auto">
+                                <h1 className="Inter600B">Contacto Guardado!</h1>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="mx-auto">
+                                <span className="Inter500" > ¿Qué mas te gustaría hacer?</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row mt-2">
+                        <div className="mx-auto">
+                            <button className="btn btn-primary Inter600" onClick={showModal3}>Agregar una referencia</button>
 
-</div>
-</div>
-<div class="row mt-2">
-<div class="mx-auto">
-<button style={{width:'181.13px'}} onClick={showModal1}class="btn btn-primary Inter600">Agregar un contacto</button>
+                        </div>
+                    </div>
+                    <div className="row mt-2">
+                        <div className="mx-auto">
+                            <button style={{ width: '181.13px' }} onClick={showModal1} className="btn btn-primary Inter600">Agregar un contacto</button>
 
-</div>
-</div>
-<div class="row mt-2">
-<div class="mx-auto">
-<a class="Inter500B" onClick={handleClose}>Listo!</a>
-</div>
-</div>
- <div class="row mb-5"></div>
- <div class="row mb-5"></div>
- <div class="row mb-5"></div>
+                        </div>
+                    </div>
+                    <div className="row mt-2">
+                        <div className="mx-auto">
+                            <a className="Inter500B" onClick={handleClose}>Listo!</a>
+                        </div>
+                    </div>
+                    <div className="row mb-5"></div>
+                    <div className="row mb-5"></div>
+                    <div className="row mb-5"></div>
                 </Modal.Body>
             </Modal>
 
@@ -309,36 +432,31 @@ function MultipleModals() {
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
                     <form>
                         <div className="container-fluid">
-                        <Row>
+                            <Row>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Tipo de referencia</Form.Label>
                                     < select
-      onChange={e => showReference(e)}
-      className="browser-default custom-select" >
-      {
-        Add.map((address, key) => <option value={key}>{address}</option>)
-      }
-    </select >
-                                    {/* <Form.Control autoComplete="off"       onChange={e => showReference(e)} value={extra} name="cicly" ref={student} as="select" size="sm" custom>
-                                    <option value="papa">Papa</option>
-                                    <option value="mama">Mama</option>
-                                    <option value="hermano">Hermano/hermana</option>
-                                    <option value="otro">Otro</option>
-                                    </Form.Control>                 */}
-                                    </Col>
-                            {extra &&
-                            <Col className="col-6">
-                            <Form.Label className="formGray">Referencia</Form.Label>
-                                    <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese la referencia" />
-                            </Col>
+                                        onChange={e => showReference(e)}
+                                        className="browser-default custom-select" >
+                                        {
+                                            Add.map((address, key) => <option value={key}>{address}</option>)
+                                        }
+                                    </select >
 
-                            }
-                                                        </Row>
+                                </Col>
+                                {extra &&
+                                    <Col className="col-6">
+                                        <Form.Label className="formGray">Referencia</Form.Label>
+                                        <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese la referencia" />
+                                    </Col>
+
+                                }
+                            </Row>
 
                             <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Nombre</Form.Label>
-                                    <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su nombre" />
+                                    <Form.Control onChange={e => handlevalidFour(e)} autoComplete="off" className="formGray" type="text" placeholder="Ingrese su nombre" />
                                 </Col>
                             </Row>
                             <Row className="mt-3">
@@ -362,18 +480,21 @@ function MultipleModals() {
                                 </Col>
                             </Row>
                         </div>
+                        <Row className="mt-3">
+
+                            <Col>
+                                <Button 
+                                disabled={validFieldThree || validFieldFour}
+                                className="float-right mb-3 mr-2" onClick={showModal4} variant="primary">Guardar</Button>
+                                <Button onClick={handleClose} style={{ color: '#4479ff', fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="light" >
+                                    Cancel
+</Button>
+
+                            </Col>
+                        </Row>
                     </form>
                 </Modal.Body>
-                <Row>
 
-                    <Col>
-                        <Button className="float-right mb-3 mr-2" onClick={showModal4} variant="primary">Guardar</Button>
-                        <Button onClick={handleClose} style={{ color: '#4479ff', fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="light" >
-                            Cancel
-                 </Button>
-
-                    </Col>
-                </Row>
             </Modal>
 
 
@@ -388,43 +509,43 @@ function MultipleModals() {
                     <Modal.Title style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}>Agregar Referencia</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
-                <div class="row mt-5"></div>
-                <div class="row mt-5"></div>
-                <div class="row mt-5"></div>
-                <div class="container">
-      <div class="row">
-        <div class="mx-auto">
-         <h1 class="Inter600B">Referencia Guardada!</h1>
-     </div>
- </div>
- <div class="row">
- <div class="mx-auto">
- <span class="Inter500" > ¿Te gustaria agregar otra referencia?</span>
-</div>
-</div>
-</div>
-<div class="row mt-2">
-<div class="mx-auto">
-<button class="btn btn-primary Inter600" onClick={showModal3}>Agregar una Referencia</button>
+                    <div className="row mt-5"></div>
+                    <div className="row mt-5"></div>
+                    <div className="row mt-5"></div>
+                    <div className="container">
+                        <div className="row">
+                            <div className="mx-auto">
+                                <h1 className="Inter600B">Referencia Guardada!</h1>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="mx-auto">
+                                <span className="Inter500" > ¿Te gustaria agregar otra referencia?</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row mt-2">
+                        <div className="mx-auto">
+                            <button className="btn btn-primary Inter600" onClick={showModal3}>Agregar una referencia</button>
 
-</div>
-</div>
-<div class="row mt-2">
-<div class="mx-auto">
-<button style={{width:'181.13px'}} onClick={showModal1}class="btn btn-primary Inter600">Agregar un contacto</button>
+                        </div>
+                    </div>
+                    <div className="row mt-2">
+                        <div className="mx-auto">
+                            <button style={{ width: '181.13px' }} onClick={showModal1} className="btn btn-primary Inter600">Agregar un contacto</button>
 
-</div>
-</div>
-<div class="row mt-2">
-<div class="mx-auto">
-<a class="Inter500B" onClick={handleClose}>Listo!</a>
-</div>
-</div>
- <div class="row mb-5"></div>
- <div class="row mb-5"></div>
- <div class="row mb-5"></div>
+                        </div>
+                    </div>
+                    <div className="row mt-2">
+                        <div className="mx-auto">
+                            <a className="Inter500B" onClick={handleClose}>Terminar</a>
+                        </div>
+                    </div>
+                    <div className="row mb-5"></div>
+                    <div className="row mb-5"></div>
+                    <div className="row mb-5"></div>
                 </Modal.Body>
-            
+
             </Modal>
         </>
     )
@@ -582,4 +703,3 @@ function MultipleModals() {
 export default MultipleModals
 
 
- 

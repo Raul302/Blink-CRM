@@ -170,7 +170,7 @@ constructed stylesheet
     color: rgb(255, 255, 255);
     background-color: rgb(68, 121, 255);
 }
-constructed stylesheet
+/* constructed stylesheet */
 input, textarea, button, select {
     appearance: none;
     background: none;
