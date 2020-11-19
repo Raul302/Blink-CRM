@@ -1,55 +1,55 @@
 import React,{ useState } from 'react'
 import  'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/GlobalStyles.css';
-import { Row, Col, Button  } from 'react-bootstrap';
+import { Row, Col, Button, FormControl,Form  } from 'react-bootstrap';
 import MultipleModals from '../components/MultipleModals';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
+import *  as RIcons from "react-icons/ri";
+import { BrowserRouter as Router, Switch, 
+    Route, Link } from 'react-router-dom';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 
+const goRouter = function (param){
+    console.log('Hola este es el param',param);
+}
 function Contacts() {
-
-    const [gridApi, setGridApi] = useState(null);
-    const [gridColumnApi, setGridColumnApi] = useState(null);
-
     const [rowData, setRowData] = useState([
-        {Nombre: "Toyota", Colegio: "Celica", Grado: 35000, Email: 'email@email.com'},
-        {Nombre: "Ford", Colegio: "Mondeo", Grado: 32000, Email: 'email@email2.com'},
-        {Nombre: "Porsche", Colegio: "Boxter", Grado: 72000, Email: 'email3@email3.com'}
+        {Nombre: "Luis Antonio", Colegio: "Celica", Grado: 35000, Email: 'email@email.com'},
+        {Nombre: "Juan Dominguez", Colegio: "Mondeo", Grado: 32000, Email: 'email@email2.com'},
+        {Nombre: "Alberto Lopez", Colegio: "Boxter", Grado: 72000, Email: 'email3@email3.com'}
     ]);
-
 
     return (
         <>
-        
-        <div style={{marginLeft:'200px',width:'1500px',position:'fixed'}} className="mt-3 container">
-       
+        <div className="mt-3 container cwml">
             <h1 className="Inter400">Contactos</h1>
-            
-            
             <MultipleModals />
-
-
-            
-            {/* <Row>
-            <div class="col-1 col-md-8">
-            <h1 className="Inter400">Contactos</h1>
-            </div>
-            <div class="col-2 col-md-4"><MultipleModals /></div>
-            </Row> */}
-            <div stlye={{ border:'1px solid'}} className="table mr-5 row">
-            Boton Search
-
-            <div className="ag-theme-alpine" style={ { height: 450, width: 1500 } }>
-            <AgGridReact
-                rowData={rowData}>
-                <AgGridColumn field="Nombre"></AgGridColumn>
-                <AgGridColumn field="Colegio"></AgGridColumn>
-                <AgGridColumn field="Grado"></AgGridColumn>
-                <AgGridColumn field="Email"></AgGridColumn>
-            </AgGridReact>
-        </div>
+            <div class="row">
+            <Form.Control className="mt-1"  autoComplete="off" name="search" placeholder="Search..."></Form.Control>
+            <div className="ag-theme-alpine twml " style={{width:'100%',height: '300px'}}>
+            <table class="table">
+            <thead style={{backgroundColor:'#F8F8F8'}} >
+                <tr>
+                <th >Nombre</th>
+                <th >Colegio</th>
+                <th >Grado</th>
+                <th >Grado</th>
+                </tr>
+            </thead>
+            <tbody>
+            {rowData.map(row => (
+                <tr>
+                    <td><RIcons.RiUser3Fill size={32}/>
+                    <Link to={"contacts/"+ (row.Nombre) + "/tabOne"} > {row.Nombre} </Link></td>
+                    <td>{row.Colegio}</td>
+                    <td>{row.Grado}</td>
+                    <td>{row.Email}</td>
+                </tr>
+                ))}
+            </tbody>
+            </table>        </div>  
             </div>
         </div>
         </>

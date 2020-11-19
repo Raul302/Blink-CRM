@@ -40,8 +40,10 @@
 
 .table {
     margin-top: 50px;
+    margin-bottom: 0px;
     background-color: rgb(255, 255, 255);
-    height: 100px;
+    height: 40px;
+    width:100%;
     border-top:#E5E5E5 1px solid;
     border-left:#E5E5E5 1px solid;
     border-right: #E5E5E5 1px solid;
@@ -184,6 +186,96 @@ input, textarea, button, select {
     font: inherit;
     vertical-align: baseline;
 }
+
+@media screen and (min-width: 480px) {
+    .twml{
+        margin-top:-50px;
+        width: 58%;
+    }
+}
+@media screen and (min-width: 500px) {
+    .twml{
+        width: 60%;
+    }
+}
+@media screen and (min-width: 600px) {
+    .twml{
+        width: 65%;
+    }
+}
+@media screen and (min-width: 700px) {
+    .twml{
+        width: 70%;
+    }
+}
+@media screen and (min-width: 750px) {
+    .twml{
+        width: 70%;
+    }
+}
+@media screen and (min-width: 800px) {
+    .twml{
+        width: 80%;
+    }
+}
+@media screen and (min-width: 900px) {
+    .twml{
+        width: 82%;
+    }
+}
+@media screen and (min-width: 1000px) {
+    .twml{
+        width: 85%;
+    }
+}
+
+
+.cwml {
+    margin-left:190px;
+    padding: 0 20px;
+}
+
+@media screen and (min-width: 480px) {
+    .cwml{
+        width: 58%;
+    }
+}
+@media screen and (min-width: 500px) {
+    .cwml{
+        width: 60%;
+    }
+}
+@media screen and (min-width: 600px) {
+    .cwml{
+        width: 65%;
+    }
+}
+@media screen and (min-width: 700px) {
+    .cwml{
+        width: 70%;
+    }
+}
+@media screen and (min-width: 750px) {
+    .cwml{
+        width: 70%;
+    }
+}
+@media screen and (min-width: 800px) {
+    .cwml{
+        width: 80%;
+    }
+}
+@media screen and (min-width: 900px) {
+    .cwml{
+        width: 82%;
+    }
+}
+@media screen and (min-width: 1000px) {
+    .cwml{
+        width: 85%;
+    }
+}
+
 .cvjtHi {
     box-sizing: border-box;
     margin: 0px;
@@ -193,4 +285,47 @@ input, textarea, button, select {
     align-items: center;
     -webkit-box-pack: center;
     justify-content: center;
+}
+
+.gOZeoI {
+    box-sizing: border-box;
+    margin: 10px 0px;
+    min-width: 0px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px -1px 0px 0px inset;
+}
+.iGbtBl.active {
+    color: rgb(68, 121, 255);
+    border-bottom: 2px solid rgb(68, 121, 255);
+}
+
+a:link, a:visited, a:hover, a:active {
+    color: inherit;
+}
+constructed stylesheet
+a:link {
+    text-decoration: none;
+}
+constructed stylesheet
+.iGbtBl {
+    font-weight: 600;
+    padding: 16px 0px;
+    margin: 0px 15px;
+    display: inline-block;
+    transition: color 0.3s ease-in-out 0s;
+}
+
+a:link, a:visited, a:hover, a:active {
+    color: inherit;
+}
+constructed stylesheet
+a:link {
+    text-decoration: none;
+}
+constructed stylesheet
+.iGbtBl {
+    font-weight: 600;
+    padding: 16px 0px;
+    margin: 0px 15px;
+    display: inline-block;
+    transition: color 0.3s ease-in-out 0s;
 }
