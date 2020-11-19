@@ -95,8 +95,14 @@ function MultipleModals() {
 
     }
     // Register to save data
-    const { register: student, handleSubmit, errors, formState } = useForm({ mode: 'onChange' });
-    const { register: reference, handleSubmit: handleSubmitReference, errors: errorsReference, formState: formStateReference } = useForm({ mode: 'onChange' });
+    const { register: student, handleSubmit, errors, formState,reset: reset } = useForm({
+        // defaultValues:{
+        //     email: 'example@email.com'
+        // }, 
+        mode: 'onChange' }
+        );
+    const { register: reference, handleSubmit: handleSubmitReference, errors: errorsReference, formState: formStateReference, reset:resetReference
+     } = useForm({ mode: 'onChange' });
     const styles = {
         container: {
             width: "80%",
@@ -113,11 +119,20 @@ function MultipleModals() {
     //     console.log('e',e.target.value);
     //     console.log('extra',extra);
     // }
+    const showOtherReference = (e) => {
+        if (e.target.value) {
+            setvalidFieldFour(false);
+        } else {
+            setvalidFieldFour(true);
+        }
+    }
     const showReference = (e) => {
         if ((addrtype[e.target.value]) == "Otro") {
             setExtra(true);
+            setvalidFieldFour(true);
         } else {
             setExtra(false);
+            setvalidFieldFour(false);
         }
         if (e.target.value) {
             setvalidFieldThree(false);
@@ -126,6 +141,10 @@ function MultipleModals() {
         }
     }
 
+    function handleValidEmail(e){
+        let regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+    }
     function handlevalidPhone(e) {
         console.log('e', e.target.value);
         let regex = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
@@ -170,6 +189,8 @@ function MultipleModals() {
         setModal4(true);
     };
     const handleClose = function close() {
+        reset();
+        resetReference();
         setvalidField(true);
         setExtra(false);
         setModal1(false);
@@ -204,6 +225,7 @@ function MultipleModals() {
         }
     }
     function handlevalidSix(e){
+        console.log('Holas',e.target.value);
         if(e.target.value) {
             setvalidFieldSix(false);
         } else {
@@ -220,6 +242,16 @@ function MultipleModals() {
     }
     function onSubmit(data) {
         console.log('Data', data); // { username: 'test', email: 'test', password: 'test' }
+        console.log('Data', modal1); // { username: 'test', email: 'test', password: 'test' }
+        console.log('Data', modal3); // { username: 'test', email: 'test', password: 'test' }
+        if(modal1 === true){
+            showModal2();
+        }
+        if(modal3 === true){
+            showModal4();
+        }
+        reset();
+        resetReference()
     }
 
 
@@ -268,9 +300,11 @@ function MultipleModals() {
                                             </option>
                                         ))}
                                     </Form.Control>
-                                    <p className='errores'>{errors.name && "Nombre requerido"}</p>
+                                    <p className='errores'>{errors.year && "Año requerido"}</p>
                                 </Col>
-                                <Col className="col-4">
+                            </Row>
+                            <Row className="mt-1">
+                            <Col className="col-6">
                                     <Form.Label className="formGray">Nombre</Form.Label>
                                     <Form.Control onChange={e => handleValid(e)} name="name" ref={student({
                                         required: true,
@@ -283,7 +317,7 @@ function MultipleModals() {
                                     <p className='errores'>{errors.name && "Nombre requerido"}</p>
                                 </Col>
                             </Row>
-                            <Row className="mt-3">
+                            <Row className="mt-1">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Apellido Paterno</Form.Label>
                                     <Form.Control onChange={e => handlevalidTwo(e)} name="father_lastname" ref={student({
@@ -303,7 +337,7 @@ function MultipleModals() {
                                     >{errors.mother_lastname && "Apellido requerido"}</p>
                                 </Col>
                             </Row>
-                            <Row className="mt-3">
+                            <Row className="mt-1">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Fecha de nacimiento</Form.Label>
                                     <Form.Control autoComplete="off" name="date" ref={student}
@@ -312,11 +346,12 @@ function MultipleModals() {
                                 </Col>
 
                             </Row>
-                            <Row className="mt-3">
+                            <Row className="mt-1">
                                 <Col className="col-3">
                                     <Form.Label className="formGray">Grado</Form.Label>
                                     <Form.Control autoComplete="off" name="grade" ref={student} as="select" size="sm" custom>
-                                        <option>Grado 1</option>
+                                    <option disabled value="" selected></option>
+                                        <option value="Grado 1">Grado 1</option>
                                         <option>Grado 2</option>
                                         <option>Grado 3</option>
                                         <option>Grado 4</option>
@@ -333,7 +368,8 @@ function MultipleModals() {
                                 <Col className="col-3">
                                     <Form.Label className="formGray">Ciclo escolar</Form.Label>
                                     <Form.Control autoComplete="off" name="cicly" ref={student} as="select" size="sm" custom>
-                                        <option>2015 - 2016</option>
+                                    <option disabled value="" selected></option>
+                                        <option value="2015-2016">2015 - 2016</option>
                                         <option>2016 - 2017</option>
                                         <option>2017 - 2018</option>
                                         <option>2018 - 2019</option>
@@ -358,12 +394,13 @@ function MultipleModals() {
                                     <p className='errores'>{errors.school && "Colegio requerido"}</p>
                                 </Col>
                             </Row>
-                            <Row className="mt-3">
+                            <Row className="mt-1">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Email</Form.Label>
-                                    <Form.Control autoComplete="off" name="email"
+                                    <Form.Control  autoComplete="off" name="email"
                                         ref={student({
-                                            validate: (input) => isEmail(input), // returns true if valid
+                                            required:false,
+                                            pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
                                         })}
                                         className="formGray" type="email" placeholder="Ingrese su email" />
                                     <p className='errores'>{errors.email && "Formato invalido"}</p>
@@ -379,7 +416,7 @@ function MultipleModals() {
                                     <p className='errores'>{errors.phone && "Formato invalido,solo 10 digitos"}</p>
                                 </Col>
                             </Row>
-                            <Row className="mt-3">
+                            <Row className="mt-1">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Estado</Form.Label>
                                     <Form.Control onChange={e => changeCities(e)} autoComplete="off" name="state" ref={student} as="select" size="sm" custom>
@@ -395,6 +432,7 @@ function MultipleModals() {
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Ciudad</Form.Label>
                                     <Form.Control autoComplete="off" name="city" ref={student} as="select" size="sm" custom>
+                                    <option disabled value="" selected></option>
                                         {cities.map(state => (
                                             <option key={state.city_name} value={state.city_name}>
                                                 {state.city_name}
@@ -413,7 +451,7 @@ function MultipleModals() {
                                 <Button
                                     disabled={valid() || validTwo() || validFieldFive || validFieldSix}
                                     className="float-right mb-3 mr-2" type="submit"
-                                    onClick={showModal2}
+                                    onSubmit={handleSubmit(onSubmit)}
                                     variant="primary">Guardar</Button>
                                 <Button onClick={handleClose} style={{ color: '#4479ff', fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="light" >
                                     Cancel
@@ -487,12 +525,16 @@ function MultipleModals() {
                     <Modal.Title style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}>Agregar referencia</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
-                    <form>
+                <form onSubmit={handleSubmitReference(onSubmit)}>
                         <div className="container-fluid">
                             <Row>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Tipo de referencia</Form.Label>
                                     < select
+                                    ref={reference({
+                                        required: true
+                                    })} 
+                                    name="typeReference"
                                         onChange={e => showReference(e)}
                                         className="browser-default custom-select" >
                                         {
@@ -505,19 +547,22 @@ function MultipleModals() {
                                 {extra &&
                                     <Col className="col-6">
                                         <Form.Label className="formGray">Referencia</Form.Label>
-                                        <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese la referencia" />
+                                        <Form.Control autoComplete="off"  onChange={e => showOtherReference(e)} ref={reference({
+                                    })} 
+                                    name="otherRef"
+                                     className="formGray" type="text" placeholder="Ingrese la referencia" />
                                     </Col>
 
                                 }
                             </Row>
 
-                            <Row className="mt-3">
+                            <Row className="mt-1">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Nombre</Form.Label>
                                     <Form.Control onChange={e => handlevalidFour(e)} autoComplete="off" className="formGray" type="text" placeholder="Ingrese su nombre" />
                                 </Col>
                             </Row>
-                            <Row className="mt-3">
+                            <Row className="mt-1">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Apellido Paterno</Form.Label>
                                     <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su primer apellido" />
@@ -527,7 +572,7 @@ function MultipleModals() {
                                     <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su segundo apellido" />
                                 </Col>
                             </Row>
-                            <Row className="mt-3">
+                            <Row className="mt-1">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Email</Form.Label>
                                     <Form.Control autoComplete="off" className="formGray" type="email" placeholder="Ingrese su email" />
@@ -538,12 +583,12 @@ function MultipleModals() {
                                 </Col>
                             </Row>
                         </div>
-                        <Row className="mt-3">
+                        <Row className="mt-1">
 
                             <Col>
                                 <Button 
                                 disabled={validFieldThree || validFieldFour}
-                                className="float-right mb-3 mr-2" onClick={showModal4} variant="primary">Guardar</Button>
+                                className="float-right mb-3 mr-2" type="submit" variant="primary">Guardar</Button>
                                 <Button onClick={handleClose} style={{ color: '#4479ff', fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="light" >
                                     Cancel
 </Button>
@@ -616,7 +661,7 @@ function MultipleModals() {
                                     <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su nombre" />
                                 </Col>
                             </Row>
-                            <Row className="mt-3">
+                            <Row className="mt-1">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Apellido Paterno</Form.Label>
                                     <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su primer apellido" />
@@ -626,7 +671,7 @@ function MultipleModals() {
                                     <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su segundo apellido" />
                                 </Col>
                             </Row>
-                            <Row className="mt-3">
+                            <Row className="mt-1">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Email</Form.Label>
                                     <Form.Control autoComplete="off" className="formGray" type="email" placeholder="Ingrese su email" />
@@ -636,13 +681,13 @@ function MultipleModals() {
                                     <Form.Control autoComplete="off" className="formGray" type="tel" placeholder="Ingrese su telefono" />
                                 </Col>
                             </Row>
-                            <Row className="mt-3">
+                            <Row className="mt-1">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Fecha de nacimiento</Form.Label>
                                     <Form.Control autoComplete="off" className="formGray" type="date" placeholder="Ingrese su fecha" />
                                 </Col>
                             </Row>
-                            <Row className="mt-3">
+                            <Row className="mt-1">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Estado</Form.Label>
                                     <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su Estado" />
@@ -652,7 +697,7 @@ function MultipleModals() {
                                     <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su Ciudad" />
                                 </Col>
                             </Row>
-                            <Row className="mt-3">
+                            <Row className="mt-1">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Calle</Form.Label>
                                     <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su Calle" />
@@ -666,13 +711,13 @@ function MultipleModals() {
                                     <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su Codigo" />
                                 </Col>
                             </Row>
-                            <Row className="mt-3">
+                            <Row className="mt-1">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Estado Civil</Form.Label>
                                     <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su Estado civil" />
                                 </Col>
                             </Row>
-                            <Row className="mt-3">
+                            <Row className="mt-1">
                                 <Col className="col-6">
                                     <a onClick={handleExtra}>
                                         <GrIcons.GrAdd /> Agregar mama
@@ -680,13 +725,13 @@ function MultipleModals() {
                                 </Col>
                                 {extra && (
                                     <div className="container-fluid">
-                                        <Row className="mt-3">
+                                        <Row className="mt-1">
                                             <Col className="col-6">
                                                 <Form.Label className="formGray">Nombre</Form.Label>
                                                 <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su nombre" />
                                             </Col>
                                         </Row>
-                                        <Row className="mt-3">
+                                        <Row className="mt-1">
                                             <Col className="col-6">
                                                 <Form.Label className="formGray">Apellido Paterno</Form.Label>
                                                 <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su primer apellido" />
@@ -696,7 +741,7 @@ function MultipleModals() {
                                                 <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su segundo apellido" />
                                             </Col>
                                         </Row>
-                                        <Row className="mt-3">
+                                        <Row className="mt-1">
                                             <Col className="col-6">
                                                 <Form.Label className="formGray">Email</Form.Label>
                                                 <Form.Control autoComplete="off" className="formGray" type="email" placeholder="Ingrese su email" />
@@ -706,7 +751,7 @@ function MultipleModals() {
                                                 <Form.Control autoComplete="off" className="formGray" type="tel" placeholder="Ingrese su telefono" />
                                             </Col>
                                         </Row>
-                                        <Row className="mt-3">
+                                        <Row className="mt-1">
                                             <Col className="col-6">
                                                 <Form.Label className="formGray">Estado</Form.Label>
                                                 <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su email" />
@@ -716,13 +761,13 @@ function MultipleModals() {
                                                 <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su telefono" />
                                             </Col>
                                         </Row>
-                                        <Row className="mt-3">
+                                        <Row className="mt-1">
                                             <Col className="col-6">
                                                 <Form.Label className="formGray">Fecha de nacimiento</Form.Label>
                                                 <Form.Control autoComplete="off" className="formGray" type="date" placeholder="Ingrese su email" />
                                             </Col>
                                         </Row>
-                                        <Row className="mt-3">
+                                        <Row className="mt-1">
                                             <Col className="col-6">
                                                 <Form.Label className="formGray">Estado</Form.Label>
                                                 <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su Estado" />
@@ -732,7 +777,7 @@ function MultipleModals() {
                                                 <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su Ciudad" />
                                             </Col>
                                         </Row>
-                                        <Row className="mt-3">
+                                        <Row className="mt-1">
                                             <Col className="col-6">
                                                 <Form.Label className="formGray">Calle</Form.Label>
                                                 <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su Calle" />
@@ -746,7 +791,7 @@ function MultipleModals() {
                                                 <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su Codigo" />
                                             </Col>
                                         </Row>
-                                        <Row className="mt-3">
+                                        <Row className="mt-1">
                                             <Col className="col-6">
                                                 <Form.Label className="formGray">Estado Civil</Form.Label>
                                                 <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su Estado civil" />
