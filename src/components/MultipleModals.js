@@ -21,12 +21,33 @@ function MultipleModals() {
     const [validFieldTwo, setvalidFieldTwo] = useState(true);
     const [validFieldThree, setvalidFieldThree] = useState(true);
     const [validFieldFour, setvalidFieldFour] = useState(true);
+    const [validFieldFive, setvalidFieldFive] = useState(true);
+    const [validFieldSix, setvalidFieldSix] = useState(true);
     const [cities, setCities] = useState([]);
     const [states, setStates] = useState([]);
     const [auth, setAth] = useState([]);
-
+    const [program, setProgram] = useState(["Boarding Schools",
+    "Año Escolar",
+    "Summer Camps",
+    "Cursos de Idiomas",
+    "Carreras & Maestrias",
+    "Au Pair"]);
+    const years = [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026,
+        2027,
+        2028,
+        2029,
+        2030
+    ];
     useEffect(() => {
-        console.log('states');
+        console.log('states',years);
         consultStates();
         setExtra(false);
 
@@ -85,7 +106,7 @@ function MultipleModals() {
             width: "100%",
         },
     };
-    const [addrtype, setAddrtype] = useState(["", "Papa", "Mama", "Hermano/Hermana", "Otro"])
+    const [addrtype, setAddrtype] = useState(["Papa", "Mama", "Hermano/Hermana", "Otro"])
     const Add = addrtype.map(Add => Add
     )
     // function showReference (e){
@@ -108,12 +129,12 @@ function MultipleModals() {
     function handlevalidPhone(e) {
         console.log('e', e.target.value);
         let regex = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
-        if (!regex.test(e.target.value)) {
-            setvalidFieldTwo(true);
-        } else {
-            setvalidFieldTwo(false);
+        // if (!regex.test(e.target.value)) {
+        //     setvalidFieldTwo(true);
+        // } else {
+        //     setvalidFieldTwo(false);
 
-        }
+        // }
 
     }
     function valid() {
@@ -175,13 +196,20 @@ function MultipleModals() {
         }
         console.log(e.target.value);
     }
-    // function handlevalidThree(e) {
-    //     if (e.target.value) {
-    //         setvalidFieldThree(false);
-    //     } else {
-    //         setvalidFieldThree(true);
-    //     }
-    // }
+    function handlevalidFive(e){
+        if(e.target.value) {
+            setvalidFieldFive(false);
+        } else {
+            setvalidFieldFive(true);
+        }
+    }
+    function handlevalidSix(e){
+        if(e.target.value) {
+            setvalidFieldSix(false);
+        } else {
+            setvalidFieldSix(true);
+        }
+    }
     function handlevalidFour(e) {
         if (e.target.value) {
             setvalidFieldFour(false);
@@ -214,7 +242,35 @@ function MultipleModals() {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="container-fluid">
                             <Row>
-                                <Col className="col-6">
+                            <Col className="col-4">
+                                    <Form.Label className="formGray">Programa</Form.Label>
+                                    <Form.Control onChange={e => handlevalidFive(e)} autoComplete="off" name="program" ref={student({
+                                        required: true
+                                    })} as="select" size="sm" custom>
+                                    <option disabled value="" selected></option>
+                                        {program.map(pro => (
+                                            <option key={pro} value={pro}>
+                                                {pro}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
+                                    <p className='errores'>{errors.name && "Programa requerido"}</p>
+                                </Col>
+                                <Col className="col-2">
+                                    <Form.Label className="formGray">Año</Form.Label>
+                                    <Form.Control onChange={e => handlevalidSix(e)} autoComplete="off" name="year" ref={student({
+                                        required: true
+                                    })} as="select" size="sm" custom>
+                                    <option disabled value="" selected></option>
+                                        {years.map(y => (
+                                            <option key={y} value={y}>
+                                                {y}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
+                                    <p className='errores'>{errors.name && "Nombre requerido"}</p>
+                                </Col>
+                                <Col className="col-4">
                                     <Form.Label className="formGray">Nombre</Form.Label>
                                     <Form.Control onChange={e => handleValid(e)} name="name" ref={student({
                                         required: true,
@@ -327,6 +383,7 @@ function MultipleModals() {
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Estado</Form.Label>
                                     <Form.Control onChange={e => changeCities(e)} autoComplete="off" name="state" ref={student} as="select" size="sm" custom>
+                                        <option disabled value="" selected></option>
                                         {states.map(state => (
                                             <option key={state.state_name} value={state.state_name}>
                                                 {state.state_name}
@@ -354,7 +411,7 @@ function MultipleModals() {
 
                             <Col>
                                 <Button
-                                    disabled={valid() || validTwo()}
+                                    disabled={valid() || validTwo() || validFieldFive || validFieldSix}
                                     className="float-right mb-3 mr-2" type="submit"
                                     onClick={showModal2}
                                     variant="primary">Guardar</Button>
@@ -441,6 +498,7 @@ function MultipleModals() {
                                         {
                                             Add.map((address, key) => <option value={key}>{address}</option>)
                                         }
+                                    <option disabled value= "" selected ></option>
                                     </select >
 
                                 </Col>
