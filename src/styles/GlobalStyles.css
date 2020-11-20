@@ -132,6 +132,10 @@
     min-width: 0px;
     display: flex;
 }
+#tableBio:hover {
+    cursor: pointer;
+
+}
 
 a:link, a:visited, a:hover, a:active {
     color: inherit;
