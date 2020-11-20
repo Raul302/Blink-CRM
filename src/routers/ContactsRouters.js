@@ -19,9 +19,9 @@ function ContactsRouters() {
         <div>
         <ContactsView />
         <Switch>
-        <Route exact path="/contacts/:id/tabOne" component={TabOne} />
-        <Route exact path="/contacts/:id/tabTwo" component={TabTwo} />
-        <Route exact path="/contacts/:id/tabThree" component={TabThree} />
+        <Route exact path="/contacts/:id/bio" component={TabOne} />
+        <Route exact path="/contacts/:id/profile" component={TabTwo} />
+        <Route exact path="/contacts/:id/references" component={TabThree} />
                     <Redirect to="/login" />
                 </Switch>      
          </div>

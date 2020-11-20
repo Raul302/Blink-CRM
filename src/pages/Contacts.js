@@ -42,7 +42,7 @@ function Contacts() {
             {rowData.map(row => (
                 <tr>
                     <td><RIcons.RiUser3Fill size={32}/>
-                    <Link to={"contacts/"+ (row.Nombre) + "/tabOne"} > {row.Nombre} </Link></td>
+                    <Link to={"contacts/"+ (row.Nombre) + "/bio"} > {row.Nombre} </Link></td>
                     <td>{row.Colegio}</td>
                     <td>{row.Grado}</td>
                     <td>{row.Email}</td>

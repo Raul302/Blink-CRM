@@ -297,6 +297,16 @@ input, textarea, button, select {
     color: rgb(68, 121, 255);
     border-bottom: 2px solid rgb(68, 121, 255);
 }
+.iGbtBl:first-child {
+    margin-left: 0px;
+}
+.iGbtBl {
+    font-weight: 600;
+    padding: 16px 0px;
+    margin: 0px 15px;
+    display: inline-block;
+    transition: color 0.3s ease-in-out 0s;
+}
 
 a:link, a:visited, a:hover, a:active {
     color: inherit;
