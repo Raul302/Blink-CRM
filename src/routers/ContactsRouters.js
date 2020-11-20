@@ -7,7 +7,7 @@ import Users from '../pages/Users';
 import Report from '../pages/Report';
 import Contacts from '../pages/Contacts';
 import ContactsView from '../pages/ContactsView';
-import TabOne from '../components/TabOne';
+import Bio from '../components/Bio';
 import TabTwo from '../components/TabTwo';
 import TabThree from '../components/TabThree';
 
@@ -19,7 +19,7 @@ function ContactsRouters() {
         <div>
         <ContactsView />
         <Switch>
-        <Route exact path="/contacts/:id/bio" component={TabOne} />
+        <Route exact path="/contacts/:id/bio" component={Bio} />
         <Route exact path="/contacts/:id/profile" component={TabTwo} />
         <Route exact path="/contacts/:id/references" component={TabThree} />
                     <Redirect to="/login" />
