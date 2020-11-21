@@ -7,7 +7,7 @@ import *  as RIcons from "react-icons/ri";
 import * as CGIcons from "react-icons/cg";
 import * as MDIcons from "react-icons/md";
 
-import { Row, Col, Button, Modal, Form, FormControl, FormLabel } from 'react-bootstrap';
+import { Row, Col, Button, Modal, Form,InputGroup, FormControl, FormLabel } from 'react-bootstrap';
 import chroma from 'chroma-js';
 import Select from 'react-select';
 
@@ -38,7 +38,7 @@ function Bio() {
     };
     const showModalLog = function showModalLog(subject) {
         setModalLog(true);
-        setSubject(subject);
+        setSubject(subject + ' a ' + id);
     }
     const handleClose = function close() {
         setModal(false);
@@ -173,11 +173,19 @@ function Bio() {
                                 <Form.Control  autoComplete="off" name="date" 
                                         className="formGray" type="time" placeholder="Ingrese su Fecha" />
                                 </Col>
+                                -
                                 <Col className="col-3">
                                 <Form.Control  autoComplete="off" name="date" 
                                         className="formGray" type="time" placeholder="Ingrese su Fecha" />
                                 </Col>
-
+                            </Row>
+                            <Row className="mt-3">
+                            <InputGroup className="mb-2">
+        <InputGroup.Prepend>
+          <InputGroup.Text className="Inter600B" style={{backgroundColor:'#FFFFFF',borderRight:'0'}}>Motivo:</InputGroup.Text>
+        </InputGroup.Prepend>
+        <FormControl style={{backgroundColor:'#FFFFFF',borderLeft:'0'}} value={subject} id="inlineFormInputGroup" placeholder="" />
+      </InputGroup>
                             </Row>
                             </div>
                         </form>
