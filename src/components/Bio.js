@@ -7,7 +7,7 @@ import *  as RIcons from "react-icons/ri";
 import * as CGIcons from "react-icons/cg";
 import * as MDIcons from "react-icons/md";
 
-import { Row, Col, Button, Modal, Form,InputGroup, FormControl, FormLabel } from 'react-bootstrap';
+import { Row, Col, Button, Modal, Form, InputGroup, FormControl, FormLabel } from 'react-bootstrap';
 import chroma from 'chroma-js';
 import Select from 'react-select';
 
@@ -165,28 +165,44 @@ function Bio() {
                                     </Col>
                                 </Row>
                                 <Row className="mt-3">
-                                <Col className="col-6">
-                                    <Form.Control style={{height:'100px',width:'180px'}} autoComplete="off" name="date" 
-                                        className="formGray" type="date" placeholder="Ingrese su Fecha" />
-                                </Col>
-                                <Col style={{marginLeft:'-150px'}} className="col-3">
-                                <Form.Control  autoComplete="off" name="date" 
-                                        className="formGray" type="time" placeholder="Ingrese su Fecha" />
-                                </Col>
+                                    <Col className="col-6">
+                                        <Form.Control style={{ height: '100px', width: '180px' }} autoComplete="off" name="date"
+                                            className="formGray" type="date" placeholder="Ingrese su Fecha" />
+                                    </Col>
+                                    <Col style={{ marginLeft: '-150px' }} className="col-3">
+                                        <Form.Control autoComplete="off" name="date"
+                                            className="formGray" type="time" placeholder="Ingrese su Fecha" />
+                                    </Col>
                                 -
                                 <Col className="col-3">
-                                <Form.Control  autoComplete="off" name="date" 
-                                        className="formGray" type="time" placeholder="Ingrese su Fecha" />
-                                </Col>
-                            </Row>
-                            <Row className="mt-3">
-                            <InputGroup className="mb-2">
-        <InputGroup.Prepend>
-          <InputGroup.Text className="Inter600B" style={{backgroundColor:'#FFFFFF',borderRight:'0'}}>Motivo:</InputGroup.Text>
-        </InputGroup.Prepend>
-        <FormControl style={{backgroundColor:'#FFFFFF',borderLeft:'0'}} value={subject} id="inlineFormInputGroup" placeholder="" />
-      </InputGroup>
-                            </Row>
+                                        <Form.Control autoComplete="off" name="date"
+                                            className="formGray" type="time" placeholder="Ingrese su Fecha" />
+                                    </Col>
+                                </Row>
+                                <Row className="mt-3">
+                                    <InputGroup className="">
+                                        <InputGroup.Prepend>
+                                            <InputGroup.Text className="Inter600B" style={{ backgroundColor: '#FFFFFF', borderRight: '0' }}>Motivo:</InputGroup.Text>
+                                        </InputGroup.Prepend>
+                                        <FormControl style={{ backgroundColor: '#FFFFFF',borderBottom:'0', borderLeft: '0' }} value={subject} id="inlineFormInputGroup" placeholder="" />
+                                    </InputGroup>
+                                    <InputGroup className="ml-3" style={{ borderTop:'0',width:'100%',marginTop:'0px'}}>
+                                        <Form.Control as="textarea" placeholder="Escriba su mensaje..." rows={8} />
+                                    </InputGroup>
+                                </Row>
+                                <Row>
+
+<Col  className="mt-3 ">
+    <Button
+    style={{marginRight:'-15px'}}
+        className="float-right" type="submit"
+        variant="primary">Guardar</Button>
+    <Button onClick={handleClose} style={{ color: '#4479ff', fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="light" >
+        Cancelar
+</Button>
+
+</Col>
+</Row>
                             </div>
                         </form>
                     </Modal.Body>
