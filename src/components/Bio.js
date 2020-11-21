@@ -164,13 +164,18 @@ function Bio() {
                                         />
                                     </Col>
                                 </Row>
-                                <Row className="mt-1">
+                                <Row className="mt-3">
                                 <Col className="col-6">
                                     <Form.Control style={{height:'100px',width:'180px'}} autoComplete="off" name="date" 
                                         className="formGray" type="date" placeholder="Ingrese su Fecha" />
                                 </Col>
-                                <Col className="col-6">
-                                    
+                                <Col style={{marginLeft:'-150px'}} className="col-3">
+                                <Form.Control  autoComplete="off" name="date" 
+                                        className="formGray" type="time" placeholder="Ingrese su Fecha" />
+                                </Col>
+                                <Col className="col-3">
+                                <Form.Control  autoComplete="off" name="date" 
+                                        className="formGray" type="time" placeholder="Ingrese su Fecha" />
                                 </Col>
 
                             </Row>
