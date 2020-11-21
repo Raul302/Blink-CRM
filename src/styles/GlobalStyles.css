@@ -134,6 +134,10 @@
 }
 #tableBio:hover {
     cursor: pointer;
+}
+span:hover {
+    cursor: pointer;
+    color:#9DB9FF;
 
 }
 
