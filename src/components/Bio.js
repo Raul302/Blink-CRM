@@ -6,6 +6,9 @@ import *  as HIcons from "react-icons/hi";
 import *  as RIcons from "react-icons/ri";
 import * as CGIcons from "react-icons/cg";
 import * as MDIcons from "react-icons/md";
+import * as BIIcons from "react-icons/bi";
+import * as AIIcons from "react-icons/ai";
+
 
 import { Row, Col, Button, Modal, Form, InputGroup, FormControl, FormLabel } from 'react-bootstrap';
 import chroma from 'chroma-js';
@@ -124,18 +127,30 @@ function Bio() {
                 >
                     <Modal.Body style={{ background: '#F4F5F6', border: '1px' }}>
                         <form >
-                            <div className="container-fluid">
+                            <div class="container" >
                                 <Row>
                                     <div style={{ fontSize: '18px' }} class="col Inter600B">
                                         {param.Nombre}
                                     </div>
                                 </Row>
-                                <Row class="mt-3">
-                                    <div class="col Inter600B">
-                                        <RIcons.RiCalendarEventFill style={{ color: 'gray' }} size={12} /> {param.Colegio}
+                                <Row class="row mt-3">
+                                    <div class="col-3 Inter500">
+                                        <BIIcons.BiCalendarEvent  size={16} /> 21 Nov,2020
+                                    </div>
+                                     <div  style={{marginLeft:'-50px'}} class="col Inter500">
+                                     <AIIcons.AiOutlineClockCircle  size={16} /> 5 Minutos
                                     </div>
                                 </Row>
-                            </div>
+                                <Row className="mt-3">
+                                    <div style={{ fontSize: '14px' }} class="col Inter600B">
+                                        Atendido por :
+                                    </div>
+                                </Row>
+                                <Row className="mt-2">
+                                <span class=" sc-fAjcbJ hkWfcR styles__User-sc-103gogw-2 gBkpnV">U</span> 
+                                <span style={{marginLeft:'5px'}} class="mt-2 Inter500">Usuario </span>
+                                </Row>
+                            </div>J
                         </form>
                     </Modal.Body>
                 </Modal>

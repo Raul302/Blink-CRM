@@ -10,7 +10,6 @@ import axios from 'axios';
 
 
 function MultipleModals() {
-
     // states
     const [modal1, setModal1] = useState(false);
     const [modal2, setModal2] = useState(false);
@@ -47,12 +46,12 @@ function MultipleModals() {
         2030
     ];
     useEffect(() => {
-        console.log('states',years);
+        // console.log('states',years);
         consultStates();
         setExtra(false);
 
-        console.log('states', states);
-        console.log('cities', cities);
+        // console.log('states', states);
+        // console.log('cities', cities);
     }, []);
 
     function changeCities(e) {
@@ -79,7 +78,7 @@ function MultipleModals() {
             }
         }).then(function (response) {
            x = response.data.auth_token;
-            console.log('Auth',auth);
+            // console.log('Auth',auth);
         });
         axios.get('https://www.universal-tutorial.com/api/states/Mexico', {
             headers: {
@@ -146,7 +145,7 @@ function MultipleModals() {
 
     }
     function handlevalidPhone(e) {
-        console.log('e', e.target.value);
+        // console.log('e', e.target.value);
         let regex = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
         // if (!regex.test(e.target.value)) {
         //     setvalidFieldTwo(true);
@@ -207,7 +206,7 @@ function MultipleModals() {
         } else {
             setvalidFieldTwo(true);
         }
-        console.log(e.target.value);
+        // console.log(e.target.value);
     }
     function handleValid(e) {
         if (e.target.value) {
@@ -215,7 +214,7 @@ function MultipleModals() {
         } else {
             setvalidField(true);
         }
-        console.log(e.target.value);
+        // console.log(e.target.value);
     }
     function handlevalidFive(e){
         if(e.target.value) {
@@ -225,7 +224,7 @@ function MultipleModals() {
         }
     }
     function handlevalidSix(e){
-        console.log('Holas',e.target.value);
+        // console.log('Holas',e.target.value);
         if(e.target.value) {
             setvalidFieldSix(false);
         } else {
@@ -238,13 +237,17 @@ function MultipleModals() {
         } else {
             setvalidFieldFour(true);
         }
-        console.log(e.target.value);
+        // console.log(e.target.value);
     }
-    function onSubmit(data) {
-        console.log('Data', data); // { username: 'test', email: 'test', password: 'test' }
-        console.log('Data', modal1); // { username: 'test', email: 'test', password: 'test' }
-        console.log('Data', modal3); // { username: 'test', email: 'test', password: 'test' }
+    async function onSubmit(data) {
+        // console.log('Data', data); // { username: 'test', email: 'test', password: 'test' }
+        // console.log('Data', modal1); // { username: 'test', email: 'test', password: 'test' }
+        // console.log('Data', modal3); // { username: 'test', email: 'test', password: 'test' }
         if(modal1 === true){
+           await axios.post('http://api.boardingschools.mx/api/contacts',data)
+              .then(function (response) {
+                console.log(response);
+              })
             showModal2();
         }
         if(modal3 === true){
@@ -340,7 +343,7 @@ function MultipleModals() {
                             <Row className="mt-1">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Fecha de nacimiento</Form.Label>
-                                    <Form.Control autoComplete="off" name="date" ref={student}
+                                    <Form.Control autoComplete="off" name="birthday" ref={student}
                                         className="formGray" type="date" placeholder="Ingrese su Fecha" />
                                     <p className='errores'>{errors.date && "Fecha requerida"}</p>
                                 </Col>
@@ -389,7 +392,7 @@ function MultipleModals() {
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Colegio</Form.Label>
-                                    <Form.Control autoComplete="off" name="school" ref={student}
+                                    <Form.Control autoComplete="off" name="schoool" ref={student}
                                         className="formGray" type="text" placeholder="Ingrese su Colegio" />
                                     <p className='errores'>{errors.school && "Colegio requerido"}</p>
                                 </Col>

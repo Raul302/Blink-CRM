@@ -1,4 +1,4 @@
-import React,{ useState } from 'react'
+import React,{ useState,useEffect } from 'react'
 import  'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/GlobalStyles.css';
 import { Row, Col, Button, FormControl,Form  } from 'react-bootstrap';
@@ -7,6 +7,7 @@ import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import *  as RIcons from "react-icons/ri";
 import { BrowserRouter as Router, Switch, 
     Route, Link } from 'react-router-dom';
+import axios from 'axios';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
@@ -15,12 +16,21 @@ const goRouter = function (param){
     console.log('Hola este es el param',param);
 }
 function Contacts() {
-    const [rowData, setRowData] = useState([
-        {Nombre: "Luis Antonio", Colegio: "Celica", Grado: 35000, Email: 'email@email.com'},
-        {Nombre: "Juan Dominguez", Colegio: "Mondeo", Grado: 32000, Email: 'email@email2.com'},
-        {Nombre: "Alberto Lopez", Colegio: "Boxter", Grado: 72000, Email: 'email3@email3.com'}
-    ]);
+    const [rowData, setRowData] = useState([]);
 
+    useEffect(() => {
+        consultRow();
+    }, []);
+
+    async function consultRow(){
+        await axios.get('http://api.boardingschools.mx/api/contacts', {
+            headers: {
+                "Accept": "application/json"
+            }
+        }).then(function (response) {
+            setRowData(response.data);
+        });
+    }
     return (
         <>
         <div className="mt-3 container cwml">
@@ -33,19 +43,19 @@ function Contacts() {
             <thead style={{backgroundColor:'#F8F8F8'}} >
                 <tr>
                 <th >Nombre</th>
-                <th >Colegio</th>
-                <th >Grado</th>
-                <th >Grado</th>
+                <th >Apellido</th>
+                <th >Escuela</th>
+                <th >Email</th>
                 </tr>
             </thead>
             <tbody>
             {rowData.map(row => (
                 <tr>
                     <td><RIcons.RiUser3Fill size={32}/>
-                    <Link to={"contacts/"+ (row.Nombre) + "/bio"} > {row.Nombre} </Link></td>
-                    <td>{row.Colegio}</td>
-                    <td>{row.Grado}</td>
-                    <td>{row.Email}</td>
+                    <Link to={"contacts/"+ (row.name) + "/bio"} > {row.name} </Link></td>
+                    <td>{row.father_lastname}</td>
+                    <td>{row.schoool}</td>
+                    <td>{row.email}</td>
                 </tr>
                 ))}
             </tbody>
