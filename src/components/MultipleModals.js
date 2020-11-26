@@ -25,6 +25,7 @@ function MultipleModals() {
     const [cities, setCities] = useState([]);
     const [states, setStates] = useState([]);
     const [auth, setAth] = useState([]);
+    const [idContact,setIDContact] = useState(null);
     const [program, setProgram] = useState(["Boarding Schools",
     "Año Escolar",
     "Summer Camps",
@@ -244,10 +245,12 @@ function MultipleModals() {
            await axios.post('http://api.boardingschools.mx/api/contacts',data)
               .then(function (response) {
                 console.log(response);
+                setIDContact(response.data.id);
               });
             showModal2();
         }
         if(modal3 === true){
+            data.idContact = idContact;
             await axios.post('http://api.boardingschools.mx/api/references',data)
             .then(function (response) {
               console.log(response);

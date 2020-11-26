@@ -1,17 +1,18 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/GlobalStyles.css';
 import *  as FAIcons from "react-icons/fa";
 import axios from 'axios';
-import AddEdit from '../components/userComponents/AddEdit';
-import TableUsers from '../components/userComponents/TableUsers';
+const AddEdit = React.lazy(() => import('../components/userComponents/AddEdit'));
+const TableUsers = React.lazy(() => import('../components/userComponents/TableUsers'));
+
 
 
 function Users() {
     const [init] = useState(JSON.parse(localStorage.getItem('user')) || { logged: false });
     const [modalEdit,setModalEdit] = useState(false);
     const [object,setObject] = useState({});
-    const [rowData, setRowData] = useState([]);
+    const [rowData, setRowData] = useState();
     const [modal, setModal] = useState(false);
 
     useEffect(() => {
@@ -27,9 +28,12 @@ function Users() {
          };
          let data = { type: init.type };
         await axios.post('http://api.boardingschools.mx/api/users',data,{
-            headers: headers
         }).then(function (response) {
-            setRowData(response.data);
+            let array = [];
+             Object.keys(response.data).map(item => {
+                 array.push(response.data[item]);
+             });
+             setRowData(array);
         });
     }
 
@@ -48,12 +52,12 @@ function Users() {
     return (
         <> 
             <div className="mt-3 container cwml">
-           <Suspense fallback={<div>Loading...</div>}>
             <h1 className="Inter400">Usuarios</h1>
             <div class="col d-flex justify-content-end">
                 <button class="btn btn-primary" onClick={showModal}><FAIcons.FaUserPlus />  Usuario</button>
             </div>
             {/* Tabla */}
+            <Suspense fallback={<div>Loading...</div>}>
                 <TableUsers handleupdateTable= {consultRow} clickHandler={showModalEdit} rowData={rowData}/>
                 <AddEdit  handleupdateTable= {consultRow} handlerClose= {handleClose} userToEdit={object} editUser={modalEdit} newUser={modal} />
             </Suspense>

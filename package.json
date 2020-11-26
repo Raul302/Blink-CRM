@@ -17,6 +17,8 @@
     "react-alert": "^7.0.2",
     "react-alert-template-basic": "^1.0.0",
     "react-bootstrap": "^1.4.0",
+    "react-bootstrap-sweetalert": "^5.2.0",
+    "react-confirm-alert": "^2.6.2",
     "react-dom": "^17.0.1",
     "react-dom-factories": "^1.0.2",
     "react-hook-form": "^6.11.0",
@@ -25,6 +27,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
     "react-select": "^3.1.0",
+    "sweetalert": "^2.1.2",
     "validator": "^13.1.17",
     "web-vitals": "^0.2.4"
   },

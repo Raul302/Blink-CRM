@@ -198,7 +198,7 @@ function AddEdit(props) {
                                     <Form.Control autoComplete="off" name="email"
                                         ref={register({
                                             required: false,
-                                            pattern: /^[\w-]+@([\w-]+)+[\w-]{2,4}$/
+                                            pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
                                         })}
                                         className="formGray" type="email" placeholder="Ingrese su email" />
                                     <p className='errores'>{errors.email && "Formato invalido"}</p>
@@ -243,11 +243,22 @@ function AddEdit(props) {
                                 <Col className="col-4">
                                     <Form.Label className="formGray">Tipo usuario</Form.Label>
                                     <Form.Control  onChange={(e) => changeType(e)} autoComplete="off" value={typeE} name="type"  as="select" size="sm" custom>
-                                        <option disabled value="" selected></option>
-                                        <option value="administrador">Administrador</option>
-                                        <option value="Supervisor">Supervisor</option>
-                                        <option value="Colaborador">Colaborador</option>
-                                        <option value="Representante">Representante</option>
+                                    {init.type === 'Administrador' ? 
+                                        <>
+                                       <option disabled value="" selected></option>
+                                       <option value="Administrador">Administrador</option>
+                                       <option value="Supervisor">Supervisor</option>
+                                       <option value="Colaborador">Colaborador</option>
+                                       <option value="Representante">Representante</option>
+                                       </>
+                                    :
+                                    <>
+                                    <option disabled value="" selected></option>
+                                    <option value="Supervisor">Supervisor</option>
+                                    <option value="Colaborador">Colaborador</option>
+                                    <option value="Representante">Representante</option>
+                                    </>
+                                    }
                                     </Form.Control>
                                 </Col>
                             </Row>
