@@ -1,5 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import * as FaIcons from 'react-icons/fa';
+import * as AiIcons from 'react-icons/ai';
 import { Link , useHistory} from 'react-router-dom';
 import { SideBar } from "./SideBar";
 import '../styles/NavBar.css';
@@ -10,6 +11,11 @@ import { AuthContext } from '../auth/AuthContext';
 import { types } from '../types/types';
 
 function NavBar() {
+    const [init,setInit] = useState(JSON.parse(localStorage.getItem('user')) || { logged: false });
+    useEffect(() => {
+        // setInit(JSON.parse(localStorage.getItem('user')) || { logged: false });
+          console.log('init',init)
+    }, [])
     const [sidebar, setSidebar] = useState(true);
     const { user: { name }, dispatch } = useContext(AuthContext)
     const showSidebar = () => setSidebar(!sidebar);
@@ -67,26 +73,31 @@ function NavBar() {
                         <ul className='nav-menu-items'>
                             <li className='navbar-toggle'>
                             </li>
-                            {SideBar.map((item, index) => {
-                                return (
-                                    <li key={index} className={item.cName}>
-                                        <Link to={item.path}>
-                                            {item.icon}
-                                            <span>{item.title}</span>
+                            <li className="nav-text">
+                            <Link to='/contacts'>
+                            <AiIcons.AiFillContacts />
+                                            <span>Contacts</span>
                                         </Link>
-                                    </li>
-                                )
-                            })}
+                            </li>
+                            { init.type == 'Supervisor' || init.type == 'Administrador' ?
+                            <li className="nav-text">
+                            <Link to='/users'>
+                            <FaIcons.FaUser />
+                                            <span>Users</span>
+                                        </Link>
+                        </li>
+                        : ''
+                        }
                         </ul>
                     </nav>
                        {/* navbar */}
                        <Navbar collapseOnSelect expand="lg" bg="white" variant="dark">
-  <Navbar.Brand onClick={showSidebar} ><FaIcons.FaBars/></Navbar.Brand>
+  {/* <Navbar.Brand onClick={showSidebar} ><FaIcons.FaBars/></Navbar.Brand> */}
   <Navbar.Collapse id="responsive-navbar-nav">
     <Nav className="mr-auto">
     </Nav>
     <Nav>
-      <Nav.Link style={{color:'#182739'}}>{name}</Nav.Link>
+      <Nav.Link style={{color:'#182739'}}>{init.username}</Nav.Link>
       <Nav.Link style={{color:'#182739'}} onClick={ handleLogout }>
         Cerrar sesion
       </Nav.Link>

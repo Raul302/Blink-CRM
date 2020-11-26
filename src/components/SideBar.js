@@ -21,10 +21,10 @@ export const SideBar =[
         icon: <AiIcons.AiFillContacts />,
         cName: 'nav-text'
     },
-    // {
-    //     title:'Users',
-    //     path:'/users',
-    //     icon: <FaIcons.FaUser />,
-    //     cName: 'nav-text'
-    // },
+     {
+         title:'Users',
+         path:'/users',
+         icon: <FaIcons.FaUser />,
+         cName: 'nav-text'
+     },
 ]

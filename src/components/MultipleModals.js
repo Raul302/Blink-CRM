@@ -240,17 +240,18 @@ function MultipleModals() {
         // console.log(e.target.value);
     }
     async function onSubmit(data) {
-        // console.log('Data', data); // { username: 'test', email: 'test', password: 'test' }
-        // console.log('Data', modal1); // { username: 'test', email: 'test', password: 'test' }
-        // console.log('Data', modal3); // { username: 'test', email: 'test', password: 'test' }
         if(modal1 === true){
            await axios.post('http://api.boardingschools.mx/api/contacts',data)
               .then(function (response) {
                 console.log(response);
-              })
+              });
             showModal2();
         }
         if(modal3 === true){
+            await axios.post('http://api.boardingschools.mx/api/references',data)
+            .then(function (response) {
+              console.log(response);
+            })
             showModal4();
         }
         reset();
@@ -537,7 +538,7 @@ function MultipleModals() {
                                     ref={reference({
                                         required: true
                                     })} 
-                                    name="typeReference"
+                                    name="type_ref"
                                         onChange={e => showReference(e)}
                                         className="browser-default custom-select" >
                                         {
@@ -552,7 +553,7 @@ function MultipleModals() {
                                         <Form.Label className="formGray">Referencia</Form.Label>
                                         <Form.Control autoComplete="off"  onChange={e => showOtherReference(e)} ref={reference({
                                     })} 
-                                    name="otherRef"
+                                    name="name_ref"
                                      className="formGray" type="text" placeholder="Ingrese la referencia" />
                                     </Col>
 
@@ -562,27 +563,27 @@ function MultipleModals() {
                             <Row className="mt-1">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Nombre</Form.Label>
-                                    <Form.Control onChange={e => handlevalidFour(e)} autoComplete="off" className="formGray" type="text" placeholder="Ingrese su nombre" />
+                                    <Form.Control  ref={reference({})} name="name" onChange={e => handlevalidFour(e)} autoComplete="off" className="formGray" type="text" placeholder="Ingrese su nombre" />
                                 </Col>
                             </Row>
                             <Row className="mt-1">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Apellido Paterno</Form.Label>
-                                    <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su primer apellido" />
+                                    <Form.Control autoComplete="off" ref={reference({})} name="father_lastname" className="formGray" type="text" placeholder="Ingrese su primer apellido" />
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Apellido Materno</Form.Label>
-                                    <Form.Control autoComplete="off" className="formGray" type="text" placeholder="Ingrese su segundo apellido" />
+                                    <Form.Control autoComplete="off" ref={reference({})} name="mother_lastname" className="formGray" type="text" placeholder="Ingrese su segundo apellido" />
                                 </Col>
                             </Row>
                             <Row className="mt-1">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Email</Form.Label>
-                                    <Form.Control autoComplete="off" className="formGray" type="email" placeholder="Ingrese su email" />
+                                    <Form.Control autoComplete="off" ref={reference({})} name="email" className="formGray" type="email" placeholder="Ingrese su email" />
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Telefono</Form.Label>
-                                    <Form.Control autoComplete="off" className="formGray" type="tel" placeholder="Ingrese su telefono" />
+                                    <Form.Control autoComplete="off" ref={reference({})} name="phone" className="formGray" type="tel" placeholder="Ingrese su telefono" />
                                 </Col>
                             </Row>
                         </div>

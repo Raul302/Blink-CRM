@@ -7,6 +7,7 @@ import { Row, Col, Button, Container, Form, Alert } from 'react-bootstrap';
 import { useAlert } from 'react-alert'
 import { AuthContext } from '../auth/AuthContext';
 import { types } from '../types/types';
+import axios from 'axios';
 
 function Login({ history }) {
     const { dispatch }= useContext(AuthContext)
@@ -14,22 +15,39 @@ function Login({ history }) {
 
     const { register, handleSubmit, errors } = useForm();
 
-    function onSubmit(data) {
-        if(data.email === 'user@blink.com' && data.password === '12345678'){
-            // history.push('/');
-            // history.replace('/');
+    async function onSubmit(data) {
+        await axios.post('http://api.boardingschools.mx/api/login',data)
+        .then(function (response) {
+          if(response.status == 200){
             dispatch({
-                type: types.login,
-                payload: { 
-                    name: 'User'
-                }
-            });
-            history.replace('/dashboard');
+                         type: types.login,
+                         payload: { 
+                             name: 'User',
+                             username: response.data.data.name,
+                             type: response.data.data.type,
+                             id: response.data.data.id,
+                         }
+                     });
+                     history.replace('/dashboard');
+          } 
+        }).catch(error =>{
+            alert.show('Credenciales invalidas');
+        });
+        // if(data.email === 'user@blink.com' && data.password === '12345678'){
+        //     // history.push('/');
+        //     // history.replace('/');
+        //     dispatch({
+        //         type: types.login,
+        //         payload: { 
+        //             name: 'User'
+        //         }
+        //     });
+        //     history.replace('/dashboard');
 
-        } else {
-            alert.show('Credenciales invalidas!')
+        // } else {
+        //     alert.show('Credenciales invalidas!')
 
-        }
+        // }
        
     }
 
