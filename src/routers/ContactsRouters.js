@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import NavBar from '../components/NavBar';
 import {
     BrowserRouter as Router, Switch, Redirect,
-    Route
+    Route,useLocation
 } from 'react-router-dom';
 import Dashboard from '../pages/Dashboard';
 import Users from '../pages/Users';
@@ -20,13 +20,13 @@ import axios from 'axios';
 
 function ContactsRouters() {
     let { id } = useParams();
+    const { pathname } = useLocation();
     const [loading, setLoading] = useState(true);
     const [contact, setContact] = useState(null);
-
+    const [references,setReferences] = useState(null);
     useEffect(() => {
         consultContact(id);
     }, [])
-
     async function consultContact() {
         setLoading(true);
         await axios.get('http://api.boardingschools.mx/api/contacts/' + id, {
@@ -61,7 +61,14 @@ function ContactsRouters() {
                             />
                         )}
                         />
-                        <Route exact path="/contacts/:id/references" component={References} />
+                        <Route exact path="/contacts/:id/references"
+                        render={(props) => (
+                                <References {...props}
+                                updateRoute={update}
+                                contact={contact}
+                                />
+                        )}
+                    />
                         <Redirect to="/login" />
                     </Switch>
                 </>
