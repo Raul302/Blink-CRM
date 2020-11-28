@@ -1,13 +1,13 @@
 import React from 'react'
 
-function TabTwo() {
+function References() {
     return (
         <>
              <div className="mt-3 container cwml">
-                Tab Two
+                Tab Three
             </div>
         </>
     )
 }
 
-export default TabTwo
+export default References

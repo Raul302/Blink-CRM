@@ -1,17 +1,17 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { useParams,} from "react-router";
 import { BrowserRouter as Router, Switch, 
     Route, Link, useLocation  } from 'react-router-dom';
 
 
-export default function ContactsView() {
+export default function ContactsView(props) {
     let { id } = useParams();
     const { pathname } = useLocation();
-
+    const [fullName,setFullName] = useState(`${props.contact.name} ${props.contact.father_lastname}`);
     return (
         <>
          <div className="mt-3 container cwml">
-            <h1 className="Inter400">{id}</h1>
+            <h1 className="Inter400">{fullName}</h1>
             <div class=" mt-3sc-bdVaJa styles__Nav-sc-19n49a3-0 gOZeoI">
                 
                <Link className={[ '/contacts/'+id +'/bio'].includes(pathname) ? 

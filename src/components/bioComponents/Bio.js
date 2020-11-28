@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { useParams } from "react-router";
+import React, { useState,useEffect } from 'react'
 import *  as FIcons from "react-icons/fi";
 import *  as FAIcons from "react-icons/fa";
 import *  as HIcons from "react-icons/hi";
@@ -8,23 +7,76 @@ import * as CGIcons from "react-icons/cg";
 import * as MDIcons from "react-icons/md";
 import * as BIIcons from "react-icons/bi";
 import * as AIIcons from "react-icons/ai";
-
-
 import { Row, Col, Button, Modal, Form, InputGroup, FormControl, FormLabel } from 'react-bootstrap';
-import chroma from 'chroma-js';
 import Select from 'react-select';
-
+import chroma from 'chroma-js';
 import {
     BrowserRouter as Router, Switch,
     Route, Link
 } from 'react-router-dom';
 
 
-function Bio() {
-    let { id } = useParams();
+function Bio(props) {
+    let id = 1;
+    const [contact,setContact] = useState(props.contact)
+    useEffect(() => {
+        console.log('PROPS',props);
+    }, [props])
+  
+
+const colourStyles = {
+  control: styles => ({ ...styles, backgroundColor: 'white' }),
+  option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+    const color = chroma(data.color);
+    return {
+      ...styles,
+      backgroundColor: isDisabled
+        ? null
+        : isSelected
+        ? data.color
+        : isFocused
+        ? color.alpha(0.1).css()
+        : null,
+      color: isDisabled
+        ? '#ccc'
+        : isSelected
+        ? chroma.contrast(color, 'white') > 2
+          ? 'white'
+          : 'black'
+        : data.color,
+      cursor: isDisabled ? 'not-allowed' : 'default',
+
+      ':active': {
+        ...styles[':active'],
+        backgroundColor: !isDisabled && (isSelected ? data.color : color.alpha(0.3).css()),
+      },
+    };
+  },
+  multiValue: (styles, { data }) => {
+    const color = chroma(data.color);
+    return {
+      ...styles,
+      backgroundColor: color.alpha(0.1).css(),
+    };
+  },
+  multiValueLabel: (styles, { data }) => ({
+    ...styles,
+    color: data.color,
+  }),
+  multiValueRemove: (styles, { data }) => ({
+    ...styles,
+    color: data.color,
+    ':hover': {
+      backgroundColor: data.color,
+      color: 'white',
+    },
+  }),
+};
     const options = [
         { value: 'Usuario', label: 'Usuario', color: '#00B8D9' },
         { value: 'Referencia', label: 'Referencia', color: '#5243AA' },
+        { value: 'Other', label: 'Other', color: '#5243AA' },
+        { value: 'Ofelia', label: 'Ofelia', color: '#5243AA' },
     ];
     const [modal, setModal] = useState(false);
     const [modalLog, setModalLog] = useState(false);
@@ -60,6 +112,8 @@ function Bio() {
         { value: 'silver', label: 'Silver', color: '#666666' },
     ];
 
+    function changevalue(e){
+    }
 
     return (
         <>
@@ -133,14 +187,6 @@ function Bio() {
                                         {param.Nombre}
                                     </div>
                                 </Row>
-                                <Row class="row mt-3">
-                                    <div class="col-3 Inter500">
-                                        <BIIcons.BiCalendarEvent  size={16} /> 21 Nov,2020
-                                    </div>
-                                     <div  style={{marginLeft:'-50px'}} class="col Inter500">
-                                     <AIIcons.AiOutlineClockCircle  size={16} /> 5 Minutos
-                                    </div>
-                                </Row>
                                 <Row className="mt-3">
                                     <div style={{ fontSize: '14px' }} class="col Inter600B">
                                         Atendido por :
@@ -172,26 +218,18 @@ function Bio() {
                                         <MDIcons.MdGroup />
                                     </Col>
                                     <Col style={{ marginLeft: '-30px' }} className="col">
-                                        <Select
-                                            closeMenuOnSelect={false}
-                                            isMulti
-                                            options={options}
-                                        />
+                                    <Select closeMenuOnSelect={false}
+    defaultValue={[colourOptions[0], colourOptions[1]]}
+    isMulti
+    options={colourOptions}
+    styles={colourStyles}
+  />
                                     </Col>
                                 </Row>
                                 <Row className="mt-3">
                                     <Col className="col-6">
                                         <Form.Control style={{ height: '100px', width: '180px' }} autoComplete="off" name="date"
                                             className="formGray" type="date" placeholder="Ingrese su Fecha" />
-                                    </Col>
-                                    <Col style={{ marginLeft: '-150px' }} className="col-3">
-                                        <Form.Control autoComplete="off" name="date"
-                                            className="formGray" type="time" placeholder="Ingrese su Fecha" />
-                                    </Col>
-                                -
-                                <Col className="col-3">
-                                        <Form.Control autoComplete="off" name="date"
-                                            className="formGray" type="time" placeholder="Ingrese su Fecha" />
                                     </Col>
                                 </Row>
                                 <Row className="mt-3">

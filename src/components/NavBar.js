@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
+import * as GrIcons from 'react-icons/gr';
 import { Link , useHistory} from 'react-router-dom';
 import { SideBar } from "./SideBar";
 import '../styles/NavBar.css';
@@ -92,6 +93,7 @@ function NavBar() {
                     </nav>
                        {/* navbar */}
                        <Navbar collapseOnSelect expand="lg" bg="white" variant="dark">
+                           <GrIcons.GrReactjs />
   {/* <Navbar.Brand onClick={showSidebar} ><FaIcons.FaBars/></Navbar.Brand> */}
   <Navbar.Collapse id="responsive-navbar-nav">
     <Nav className="mr-auto">
