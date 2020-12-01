@@ -51,7 +51,7 @@ function Users() {
     }    
     return (
         <> 
-            <div className="mt-3 container cwml">
+            <div className="mt-3 container cwml animate__animated animate__fadeIn">
             <h1 className="Inter400">Usuarios</h1>
             <div class="col d-flex justify-content-end">
                 <button class="btn btn-primary" onClick={showModal}><FAIcons.FaUserPlus />  Usuario</button>

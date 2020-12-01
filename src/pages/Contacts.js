@@ -33,7 +33,7 @@ function Contacts() {
     }
     return (
         <>
-        <div className="mt-3 container cwml">
+        <div className="mt-3 container cwml animate__animated animate__fadeIn">
             <h1 className="Inter400">Contactos</h1>
             <MultipleModals />
             <div class="row">
