@@ -4,15 +4,25 @@ import { Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { useAlert } from 'react-alert'
+import { StreetData } from '../profileComponents/StreetData';
 
 
 
 function PersonalData(props) {
     useEffect(() => {
+        // console.log('props',props.contact.contacts_direction);
+        console.log('propsxxx',props.contact);
         setFilterValues(props.contact);
         consultStates();
     }, [props]);
+    const [directions,setDirections] = useState(props.contact.contacts_direction);
+    const [phones,setPhones] = useState(props.contact.contacts_phones);
+    const [emails,setEmails] = useState(props.contact.contacts_emails);
+    const [inputList, setInputList] = useState([{ street: "", number: "", cp: "" }]);
+    const [inputPhone, setInputPhone] = useState([{phone:"" }]);
+    const [inputEmail, setInputEmail] = useState([{ email:"" }]);
     const [editInfo, setEditInfo] = useState(false);
+    const [editAcademicProfile, setAcademicProfile] = useState(false);
     const [editDetails, setEditDetails] = useState(false);
     const [birthday, setBirthday] = useState();
     const [city, setCity] = useState();
@@ -22,23 +32,105 @@ function PersonalData(props) {
     const [name, setName] = useState();
     const [phone, setPhone] = useState();
     const [schoool, setSchoool] = useState();
+    const [grade, setGrade] = useState();
+    const [cicly, setCicly] = useState();
     const [state, setState] = useState();
     const [cities, setCities] = useState([]);
     const [states, setStates] = useState([]);
-    const alert = useAlert()
+    const [program, setProgram] = useState(["Boarding Schools",
+        "Año Escolar",
+        "Summer Camps",
+        "Cursos de Idiomas",
+        "Carreras & Maestrias",
+        "Au Pair"]);
+    const years = [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026,
+        2027,
+        2028,
+        2029,
+        2030
+    ];
+    const alert = useAlert();
 
+    const handleInputChangeEmail = (e, index) => {
+        console.log(inputEmail);
+        const { name, value } = e.target;
+        const list = [...inputEmail];
+        list[index][name] = value;
+        setInputEmail(list);
+    };
 
-    function changeCiti(e){
+    // handle click event of the Remove button
+    const handleRemoveClickEmail = index => {
+        const list = [...inputEmail];
+        list.splice(index, 1);
+        setInputEmail(list);
+    };
+
+    // handle click event of the Add button
+    const handleAddClickEmail = () => {
+        setInputEmail([...inputEmail, { email:"" }]);
+    };
+
+    // ----------------------------------------------------------    
+    const handleInputChangePhone = (e, index) => {
+        console.log(inputPhone);
+        const { name, value } = e.target;
+        const list = [...inputPhone];
+        list[index][name] = value;
+        setInputPhone(list);
+    };
+
+    // handle click event of the Remove button
+    const handleRemoveClickPhone = index => {
+        const list = [...inputPhone];
+        list.splice(index, 1);
+        setInputPhone(list);
+    };
+
+    // handle click event of the Add button
+    const handleAddClickPhone = () => {
+        setInputPhone([...inputPhone, { phone:"" }]);
+    };
+    // ---------------------------------------------------------
+    // handle input change
+    const handleInputChange = (e, index) => {
+        console.log(inputList);
+        const { name, value } = e.target;
+        const list = [...inputList];
+        list[index][name] = value;
+        setInputList(list);
+    };
+
+    // handle click event of the Remove button
+    const handleRemoveClick = index => {
+        const list = [...inputList];
+        list.splice(index, 1);
+        setInputList(list);
+    };
+
+    // handle click event of the Add button
+    const handleAddClick = () => {
+        setInputList([...inputList, {  street: "", number: "", cp: "" }]);
+    };
+    function changeCiti(e) {
         setCity(e.target.value);
     }
     function changeCities(e) {
         let val = e.target.value;
-        if(val === undefined){
+        if (val === undefined) {
             val = props.contact.state;
         } else {
             val = e.target.value;
         }
-        if(e.target){
+        if (e.target) {
             setState(e.target.value);
         }
         axios.get('https://www.universal-tutorial.com/api/cities/' + val, {
@@ -78,9 +170,30 @@ function PersonalData(props) {
         setPhone(props.phone);
         setSchoool(props.schoool);
         setState(props.state);
+        setGrade(props.grade);
+        setCicly(props.cicly);
+        if(directions.length > 0){
+            console.log('directions',directions);
+            setInputList(directions);
+        }
+        if(phones){
+            setInputPhone(phones);
+        }
+        if(emails){
+            setInputEmail(emails);
+        }
     }
     const { handleSubmit } = useForm({});
 
+    function changeGrade(e) {
+        setGrade(e.target.value);
+    }
+    function changeCicly(e) {
+        setCicly(e.target.value);
+    }
+    function changeSchool(e) {
+        setSchoool(e.target.value);
+    }
     function changeName(e) {
         setName(e.target.value);
     }
@@ -90,29 +203,31 @@ function PersonalData(props) {
     function changeMName(e) {
         setMname(e.target.value);
     }
-    function changeEmail(e){
+    function changeEmail(e) {
         setEmail(e.target.value)
     }
-    function changePhone(e){
+    function changePhone(e) {
         setPhone(e.target.value)
     }
     async function onSubmit(data) {
         let datax = {
-            id: props.contact.id, 
-            father_lastname:fName,
-            name:name,
-            email:email,
-            mother_lastname:mName,
-            birthday:birthday,
-            city:city,
-            phone:phone,
-            schoool:schoool,
-            state:state,
-
-            };
-            await axios.post('http://api.boardingschools.mx/api/contact/update',datax)
+            id: props.contact.id,
+            father_lastname: fName,
+            name: name,
+            email: inputEmail,
+            mother_lastname: mName,
+            birthday: birthday,
+            city: city,
+            phone: inputPhone,
+            schoool: schoool,
+            state: state,
+            cicly: cicly,
+            grade: grade,
+            direction : inputList
+        };
+        await axios.post('http://api.boardingschools.mx/api/contact/update', datax)
             .then(function (response) {
-                if(response.status === 200){
+                if (response.status === 200) {
                     alert.show('Datos actualizados correctamente', {
                         timeout: 2000, // custom timeout just for this one alert
                         type: 'success'
@@ -121,12 +236,12 @@ function PersonalData(props) {
                     alert.show('Ocurrio un error por favor intentar mas tarde');
                 }
             });
-            if(editInfo){
-                edit();
-            } else {
-                editCDetails();
-            }
-            props.handleUpdate();
+        if (editInfo) {
+            edit();
+        } else {
+            editCDetails();
+        }
+        props.handleUpdate();
     }
     function changeBirtday(e) {
         setBirthday(e.target.value);
@@ -136,6 +251,9 @@ function PersonalData(props) {
     }
     function editCDetails() {
         setEditDetails(!editDetails);
+    }
+    function editAcademicP() {
+        setAcademicProfile(!editAcademicProfile);
     }
     return (
         <>
@@ -263,6 +381,137 @@ function PersonalData(props) {
                 </div>
             }
 
+            {!editAcademicProfile ?
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-11">
+                                <h5 style={{ fontWeight: '600' }} class="Inter card-title">Perfil academico</h5>
+                            </div>
+                            <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
+                                <a>
+                                    <FIIcons.FiEdit onClick={(e) => editAcademicP()} size={18} style={{ color: '#386CEF' }} />
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row mt-2 ">
+                            <div class="col-3">
+                                <h6 class="Inter card-subtitle mb-2 text-muted">Grado</h6>
+                            </div>
+                            <div class="col">
+                                <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                    class="Inter card-subtitle mb-2 ">
+                                    {props.contact.grade}
+                                </h6>
+                            </div>
+                        </div>
+                        <div class="row mt-3 ">
+                            <div class="col-3">
+                                <h6 class="Inter card-subtitle mb-2 text-muted">Ciclo escolar</h6>
+                            </div>
+                            <div class="col">
+                                <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                    class="Inter card-subtitle mb-2 ">
+                                    {props.contact.cicly}
+                                </h6>
+                            </div>
+                        </div>
+                        <div class="row mt-3 ">
+                            <div class="col-3">
+                                <h6 class="Inter card-subtitle mb-2 text-muted">Colegio</h6>
+                            </div>
+                            <div class="col">
+                                <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                    class="Inter card-subtitle mb-2 ">
+                                    {props.contact.schoool}
+                                </h6>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                :
+                <div class="card">
+                    <div class="card-body">
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            <div class="row">
+                                <div class="col-11">
+                                    <h5 style={{ fontWeight: '600' }} class="Inter card-title">Perfil academico</h5>
+                                </div>
+                                <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
+                                    <button onClick={(e) => editAcademicP()} type="button" class="Inter btn btn-outline-dark">Cancelar</button>
+                                    <button onSubmit={handleSubmit(onSubmit)}
+                                        type="submit" class="Inter ml-1 btn btn-success">Guardar</button>
+                                </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                <div class="col-3">
+                                    <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Grado</Form.Label>
+                                </div>
+                                <div class="col">
+                                    <Form.Control
+                                        onChange={(e) => changeGrade(e)} value={grade}
+                                        autoComplete="off" name="grade" as="select" size="sm" custom>
+                                        <option disabled value="" selected></option>
+                                        <option value="Grado 1">Grado 1</option>
+                                        <option>Grado 2</option>
+                                        <option>Grado 3</option>
+                                        <option>Grado 4</option>
+                                        <option>Grado 5</option>
+                                        <option>Grado 6</option>
+                                        <option>Grado 7</option>
+                                        <option>Grado 8</option>
+                                        <option>Grado 9</option>
+                                        <option>Grado 10</option>
+                                        <option>Grado 11</option>
+                                        <option>Grado 12</option>
+                                    </Form.Control>
+                                </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                <div class="col-3">
+                                    <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciclo escolar</Form.Label>
+                                </div>
+                                <div class="col">
+                                    <Form.Control
+                                        onChange={(e) => changeCicly(e)} value={cicly}
+                                        autoComplete="off" name="cicly" as="select" size="sm" custom>
+                                        <option disabled value="" selected></option>
+                                        <option value="2015-2016">2015 - 2016</option>
+                                        <option>2016 - 2017</option>
+                                        <option>2017 - 2018</option>
+                                        <option>2018 - 2019</option>
+                                        <option>2019 - 2020</option>
+                                        <option>2020 - 2021</option>
+                                        <option>2021 - 2022</option>
+                                        <option>2022 - 2023</option>
+                                        <option>2023 - 2024</option>
+                                        <option>2024 - 2025</option>
+                                        <option>2025 - 2026</option>
+                                        <option>2026 - 2027</option>
+                                        <option>2027 - 2028</option>
+                                        <option>2028 - 2029</option>
+                                        <option>2029 - 2030</option>
+                                        <option>2030 - 2031</option>
+                                    </Form.Control>
+                                </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                <div class="col-3">
+                                    <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Colegio</Form.Label>
+                                </div>
+                                <div class="col">
+                                    <Form.Control autoComplete="off"
+                                        onChange={(e) => changeSchool(e)} value={schoool}
+                                        name="mother_lastname"
+                                        className="formGray" type="text" placeholder="Ingrese su email" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+
             {!editDetails ?
                 <div class="mt-3 card">
                     <div class="card-body">
@@ -276,120 +525,214 @@ function PersonalData(props) {
                                 </a>
                             </div>
                         </div>
-                        <div class="row mt-2 ">
-                            <div class="col-3">
-                                <h6 class="Inter card-subtitle mb-2 text-muted">Email</h6>
-                            </div>
-                            <div class="col">
-                                <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                    class="Inter card-subtitle mb-2 ">
-                                    {props.contact.email}
-                                </h6>
-                            </div>
-                        </div>
-                        <div class="row mt-3 ">
-                            <div class="col-3">
-                                <h6 class="Inter card-subtitle mb-2 text-muted">Telefono</h6>
-                            </div>
-                            <div class="col">
-                                <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                    class="Inter card-subtitle mb-2 ">
-                                    {props.contact.phone}
-                                </h6>
-                            </div>
-                        </div>
-                        <div class="row mt-3 ">
-                            <div class="col-3">
-                                <h6 class="Inter card-subtitle mb-2 text-muted">Estado</h6>
-                            </div>
-                            <div class="col">
-                                <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                    class="Inter card-subtitle mb-2 ">
-                                    {props.contact.state}
-                                </h6>
-                            </div>
-                        </div>
-                        <div class="row mt-3 ">
-                            <div class="col-3">
-                                <h6 class="Inter card-subtitle mb-2 text-muted">Ciudad</h6>
-                            </div>
-                            <div class="col">
-                                <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                    class="Inter card-subtitle mb-2 ">
-                                    {props.contact.city}
-                                </h6>
-                            </div>
-                        </div>
+                        {inputEmail.map((x, i) => {
+                                return (
+                                    <div class="row mt-2 ">
+                                    <div class="col-3">
+                                        <h6 class="Inter card-subtitle mb-2 text-muted">Email {i+1}</h6>
+                                    </div>
+                                    <div class="col">
+                                        <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                            class="Inter card-subtitle mb-2 ">
+                                            {x.email}
+                                        </h6>
+                                    </div>
+                                </div>
+                                );
+                            })}
+                        {inputPhone.map((x, i) => {
+                                return (
+                                    <div class="row mt-3 ">
+                                    <div class="col-3">
+                                        <h6 class="Inter card-subtitle mb-2 text-muted">Telefono {i+1}</h6>
+                                    </div>
+                                    <div class="col">
+                                        <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                            class="Inter card-subtitle mb-2 ">
+                                            {x.phone}
+                                        </h6>
+                                    </div>
+                                </div>
+                                );
+                            })}
+                        {inputList.map((x, i) => {
+                                return (
+                                    <div class="row mt-3 ">
+                                    <div class="col-3">
+                                        <h6 class="Inter card-subtitle mb-2 text-muted">Direccion {i+1}</h6>
+                                    </div>
+                                    <div class="col">
+                                        <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                            class="Inter card-subtitle mb-2 ">
+                                            {props.contact.state},{props.contact.city},{x.street},{x.number},{x.cp}
+                                        </h6>
+                                    </div>
+                                </div>
+                                );
+                            })}
+                        
                     </div>
                 </div>
                 :
                 <div class="mt-3 card">
                     <div class="card-body">
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div class="row">
-                            <div class="col">
-                                <h5 style={{ fontWeight: '600' }} class="Inter card-title">Detalles de contacto</h5>
-                            </div>
-                            <div  class="col-1 d-flex justify-content-end">
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            <div class="row">
+                                <div class="col">
+                                    <h5 style={{ fontWeight: '600' }} class="Inter card-title">Detalles de contacto</h5>
+                                </div>
+                                <div class="col-1 d-flex justify-content-end">
                                     <button onClick={(e) => editCDetails()} type="button" class="Inter btn btn-outline-dark">Cancelar</button>
                                     <button onSubmit={handleSubmit(onSubmit)}
                                         type="submit" class="Inter ml-1 btn btn-success">Guardar</button>
                                 </div>
-                        </div>
-                        <div class="row mt-3 ">
-                            <div class="col-3">
-                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Email</Form.Label>
                             </div>
-                            <div class="col">
-                                <Form.Control autoComplete="off"
-                                    onChange={(e) => changeEmail(e)} value={email}
-                                    name="email"
-                                    className="formGray" type="email" placeholder="Ingrese su email" />
+                             {inputEmail.map((x, i) => {
+                                return (
+                                    <div className="box">
+                                        Email {i + 1}
+                                        <div class="row mt-3 ">
+                                            <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Email</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChangeEmail(e, i)}
+                                                    value={x.email}
+                                                    name="email"
+                                                    className="formGray" type="text" placeholder="Ingrese su Email" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4 ">
+                                                {inputEmail.length !== 1 &&
+                                                    <button onClick={() => handleRemoveClickEmail(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
+                                                }
+                                                {inputEmail.length - 1 === i && <button onClick={handleAddClickEmail}
+                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm">ADD</button>
+
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                            {inputPhone.map((x, i) => {
+                                return (
+                                    <div className="box mt-1">
+                                        Telefono {i + 1}
+                                        <div class="row mt-3 ">
+                                            <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Telefono</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChangePhone(e, i)}
+                                                    value={x.phone}
+                                                    name="phone"
+                                                    className="formGray" type="text" placeholder="Ingrese su numero" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4 ">
+                                                {inputPhone.length !== 1 &&
+                                                    <button onClick={() => handleRemoveClickPhone(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
+                                                }
+                                                {inputPhone.length - 1 === i && <button onClick={handleAddClickPhone}
+                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm">ADD</button>
+
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                            <div class="row mt-3 ">
+                                <div class="col-3">
+                                    <Form.Label className="formGray">Estado</Form.Label>
+                                </div>
+                                <div class="col">
+                                    <Form.Control onChange={e => changeCities(e)} autoComplete="off" name="state" value={state} as="select" size="sm" custom>
+                                        <option disabled value="" selected></option>
+                                        {states.map(state => (
+                                            <option key={state.state_name} value={state.state_name}>
+                                                {state.state_name}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mt-3 ">
-                            <div class="col-3">
-                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Telefono</Form.Label>
+                            <div class="row mt-3 ">
+                                <div class="col-3">
+                                    <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciudad</Form.Label>
+                                </div>
+                                <div class="col">
+                                    <Form.Control
+                                        onChange={e => changeCiti(e)}
+                                        autoComplete="off" name="city" value={city} as="select" size="sm" custom>
+                                        <option key={"1"} defaultValue={city}  ></option>
+                                        {cities.map(city => (
+                                            <option key={city.city_name} value={city.city_name}>
+                                                {city.city_name}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
+                                </div>
                             </div>
-                            <div class="col">
-                                <Form.Control autoComplete="off"
-                                    onChange={(e) => changePhone(e)} value={phone}
-                                    name="phone"
-                                    className="formGray" type="text" placeholder="Ingrese su Telefono" />
-                            </div>
-                        </div>
-                        <div class="row mt-3 ">
-                            <div class="col-3">
-                                <Form.Label className="formGray">Estado</Form.Label>
-                            </div>
-                            <div class="col">
-                                <Form.Control onChange={e => changeCities(e)} autoComplete="off" name="state" value={state} as="select" size="sm" custom>
-                                    <option disabled value="" selected></option>
-                                    {states.map(state => (
-                                        <option key={state.state_name} value={state.state_name}>
-                                            {state.state_name}
-                                        </option>
-                                    ))}
-                                </Form.Control>
-                            </div>
-                        </div>
-                        <div class="row mt-3 ">
-                            <div class="col-3">
-                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciudad</Form.Label>
-                            </div>
-                            <div class="col">
-                                <Form.Control
-                                    onChange={e => changeCiti(e)}
-                                    autoComplete="off" name="city" value={city} as="select" size="sm" custom>
-                                    <option key={"1"} defaultValue={city}  ></option>
-                                    {cities.map(city => (
-                                        <option key={city.city_name} value={city.city_name}>
-                                            {city.city_name}
-                                        </option>
-                                    ))}
-                                </Form.Control>
-                            </div>
-                        </div>
+                            {inputList.map((x, i) => {
+                                return (
+                                    <div className="box">
+                                        Direccion {i + 1}
+                                        <div class="row mt-3 ">
+                                            <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Calle</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChange(e, i)}
+                                                    value={x.street}
+                                                    name="street"
+                                                    className="formGray" type="text" placeholder="Ingrese su Calle" />
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3 ">
+                                            <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Numero</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChange(e, i)}
+                                                    value={x.number}
+                                                    name="number"
+                                                    className="formGray" type="text" placeholder="Ingrese su Numero" />
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3 ">
+                                            <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Codigo postal</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChange(e, i)}
+                                                    value={x.cp}
+                                                    name="cp"
+                                                    className="formGray" type="text" placeholder="Ingrese su Codigo postal" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4 ">
+                                                {inputList.length !== 1 &&
+                                                    <button onClick={() => handleRemoveClick(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
+                                                }
+                                                {inputList.length - 1 === i && <button onClick={handleAddClick}
+                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm">ADD</button>
+
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
                         </form>
                     </div>
                 </div>

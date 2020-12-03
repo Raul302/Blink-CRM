@@ -43,19 +43,19 @@ function Contacts() {
             <thead style={{backgroundColor:'#F8F8F8'}} >
                 <tr>
                 <th >Nombre</th>
-                <th >Apellido</th>
-                <th >Escuela</th>
-                <th >Email</th>
+                <th >Origen</th>
+                <th >Programa</th>
+                <th >Referencia</th>
                 </tr>
             </thead>
             <tbody>
             {rowData.map(row => (
                 <tr>
                     <td><RIcons.RiUser3Fill size={32}/>
-                    <Link to={"contacts/"+ (row.id) + "/bio"} > {row.name} </Link></td>
-                    <td>{row.father_lastname}</td>
-                    <td>{row.schoool}</td>
-                    <td>{row.email}</td>
+                    <Link to={"contacts/"+ (row.id) + "/bio"} > {row.name} {row.father_lastname} {row.mother_lastname} </Link></td>
+                    <td>{row.city},{row.state}</td>
+                    <td>{row.id_program}</td>
+                    <td>{row.rname} {row.rfname}</td>
                 </tr>
                 ))}
             </tbody>

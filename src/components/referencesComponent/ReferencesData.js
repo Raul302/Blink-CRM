@@ -13,6 +13,12 @@ import { useAlert } from 'react-alert'
 // otro = 3
 
 function ReferencesData(props) {
+     const [directions,setDirections] = useState(props.reference.reference_address);
+    const [phones,setPhones] = useState(props.reference.reference_phones);
+    const [emails,setEmails] = useState(props.reference.reference_emails);
+    const [inputList, setInputList] = useState([{ street: "", number: "", cp: "" }]);
+    const [inputPhone, setInputPhone] = useState([{phone:"" }]);
+    const [inputEmail, setInputEmail] = useState([{ email:"" }]);
     const alert = useAlert()
     const { handleSubmit } = useForm({});
     const [type_ref,setTypeRef] =useState();
@@ -43,10 +49,80 @@ function ReferencesData(props) {
     setPhoneR(reference.phone);
     setNameRefO(reference.name_ref);
     setFalseTypeR(reference.type_ref)
+    if(directions.length > 0){
+        setInputList(directions);
+    }
+    if(phones){
+        setInputPhone(phones);
+    }
+    if(emails){
+        setInputEmail(emails);
+    }
     }
     function changeNameRef(e){
         setNameRefO(e.target.value);
     }
+    const handleInputChangeEmail = (e, index) => {
+        console.log(inputEmail);
+        const { name, value } = e.target;
+        const list = [...inputEmail];
+        list[index][name] = value;
+        setInputEmail(list);
+    };
+
+    // handle click event of the Remove button
+    const handleRemoveClickEmail = index => {
+        const list = [...inputEmail];
+        list.splice(index, 1);
+        setInputEmail(list);
+    };
+
+    // handle click event of the Add button
+    const handleAddClickEmail = () => {
+        setInputEmail([...inputEmail, { email:"" }]);
+    };
+
+    // ----------------------------------------------------------    
+    const handleInputChangePhone = (e, index) => {
+        console.log(inputPhone);
+        const { name, value } = e.target;
+        const list = [...inputPhone];
+        list[index][name] = value;
+        setInputPhone(list);
+    };
+
+    // handle click event of the Remove button
+    const handleRemoveClickPhone = index => {
+        const list = [...inputPhone];
+        list.splice(index, 1);
+        setInputPhone(list);
+    };
+
+    // handle click event of the Add button
+    const handleAddClickPhone = () => {
+        setInputPhone([...inputPhone, { phone:"" }]);
+    };
+    // ---------------------------------------------------------
+    // handle input change
+    const handleInputChange = (e, index) => {
+        console.log(inputList);
+        const { name, value } = e.target;
+        const list = [...inputList];
+        list[index][name] = value;
+        setInputList(list);
+    };
+
+    // handle click event of the Remove button
+    const handleRemoveClick = index => {
+        const list = [...inputList];
+        list.splice(index, 1);
+        setInputList(list);
+    };
+
+    // handle click event of the Add button
+    const handleAddClick = () => {
+        setInputList([...inputList, {  street: "", number: "", cp: "" }]);
+    };
     function typeRef(reference){
         switch (reference.type_ref) {
             case "0":
@@ -107,7 +183,10 @@ function ReferencesData(props) {
             name_ref:nameRef,
             father_lastname:fName,
             mother_lastname:mName,
-            phone:phoneR
+            phone:phoneR,
+            direction : inputList,
+            email: inputEmail,
+            phone: inputPhone
         }
         await axios.post('http://api.boardingschools.mx/api/reference/update',datax)
         .then(function (response) {
@@ -188,35 +267,57 @@ function ReferencesData(props) {
                             </div>
                         </div>
 
-                        <div class="row mt-2 ">
-                            <div class="col-3">
-                                <h6 class="Inter card-subtitle mb-2 text-muted">Email</h6>
-                            </div>
-                            <div class="col">
-                                <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                    class="Inter card-subtitle mb-2 ">
-                                     {props.reference.email} 
-                                </h6>
-                            </div>
-                        </div>
-
-                        <div class="row mt-2 ">
-                            <div class="col-3">
-                                <h6 class="Inter card-subtitle mb-2 text-muted">Telefono</h6>
-                            </div>
-                            <div class="col">
-                                <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                    class="Inter card-subtitle mb-2 ">
-                                     {props.reference.phone} 
-                                </h6>
-                            </div>
-                        </div>
+                        {inputEmail.map((x, i) => {
+                                return (
+                                    <div class="row mt-2 ">
+                                    <div class="col-3">
+                                        <h6 class="Inter card-subtitle mb-2 text-muted">Email {i+1}</h6>
+                                    </div>
+                                    <div class="col">
+                                        <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                            class="Inter card-subtitle mb-2 ">
+                                            {x.email}
+                                        </h6>
+                                    </div>
+                                </div>
+                                );
+                            })}
+                        {inputPhone.map((x, i) => {
+                                return (
+                                    <div class="row mt-3 ">
+                                    <div class="col-3">
+                                        <h6 class="Inter card-subtitle mb-2 text-muted">Telefono {i+1}</h6>
+                                    </div>
+                                    <div class="col">
+                                        <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                            class="Inter card-subtitle mb-2 ">
+                                            {x.phone}
+                                        </h6>
+                                    </div>
+                                </div>
+                                );
+                            })}
+                        {inputList.map((x, i) => {
+                                return (
+                                    <div class="row mt-3 ">
+                                    <div class="col-3">
+                                        <h6 class="Inter card-subtitle mb-2 text-muted">Direccion {i+1}</h6>
+                                    </div>
+                                    <div class="col">
+                                        <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                            class="Inter card-subtitle mb-2 ">
+                                            {props.reference.state},{props.reference.city},{x.street},{x.number},{x.cp}
+                                        </h6>
+                                    </div>
+                                </div>
+                                );
+                            })}
 
                        
                     </div>
                 </div>
         : 
-        <div class="card">
+        <div class="card mt-2">
         <div class="card-body">
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div class="row">
@@ -297,28 +398,120 @@ function ReferencesData(props) {
                     </div>
                 </div>
 
-                <div class="row mt-3 ">
-                    <div class="col-3">
-                        <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Email</Form.Label>
-                    </div>
-                    <div class="col">
-                        <Form.Control autoComplete="off"
-                            onChange={(e) => changeEmail(e)} value={emailR}
-                            name="mother_lastname"
-                            className="formGray" type="text" placeholder="Ingrese su email" />
-                    </div>
-                </div>
-                <div class="row mt-3 ">
-                    <div class="col-3">
-                        <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Telefono</Form.Label>
-                    </div>
-                    <div class="col">
-                        <Form.Control autoComplete="off"
-                             onChange={(e) => changePhone(e)} value={phoneR}
-                            name="mother_lastname"
-                            className="formGray" type="text" placeholder="Ingrese su email" />
-                    </div>
-                </div>
+                {inputEmail.map((x, i) => {
+                                return (
+                                    <div className="box">
+                                        Email {i + 1}
+                                        <div class="row mt-3 ">
+                                            <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Email</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChangeEmail(e, i)}
+                                                    value={x.email}
+                                                    name="email"
+                                                    className="formGray" type="text" placeholder="Ingrese su Email" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4 ">
+                                                {inputEmail.length !== 1 &&
+                                                    <button onClick={() => handleRemoveClickEmail(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
+                                                }
+                                                {inputEmail.length - 1 === i && <button onClick={handleAddClickEmail}
+                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm">ADD</button>
+
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                            {inputPhone.map((x, i) => {
+                                return (
+                                    <div className="box mt-1">
+                                        Telefono {i + 1}
+                                        <div class="row mt-3 ">
+                                            <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Telefono</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChangePhone(e, i)}
+                                                    value={x.phone}
+                                                    name="phone"
+                                                    className="formGray" type="text" placeholder="Ingrese su numero" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4 ">
+                                                {inputPhone.length !== 1 &&
+                                                    <button onClick={() => handleRemoveClickPhone(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
+                                                }
+                                                {inputPhone.length - 1 === i && <button onClick={handleAddClickPhone}
+                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm">ADD</button>
+
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                             {inputList.map((x, i) => {
+                                return (
+                                    <div className="box">
+                                        Direccion {i + 1}
+                                        <div class="row mt-3 ">
+                                            <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Calle</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChange(e, i)}
+                                                    value={x.street}
+                                                    name="street"
+                                                    className="formGray" type="text" placeholder="Ingrese su Calle" />
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3 ">
+                                            <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Numero</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChange(e, i)}
+                                                    value={x.number}
+                                                    name="number"
+                                                    className="formGray" type="text" placeholder="Ingrese su Numero" />
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3 ">
+                                            <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Codigo postal</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChange(e, i)}
+                                                    value={x.cp}
+                                                    name="cp"
+                                                    className="formGray" type="text" placeholder="Ingrese su Codigo postal" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4 ">
+                                                {inputList.length !== 1 &&
+                                                    <button onClick={() => handleRemoveClick(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
+                                                }
+                                                {inputList.length - 1 === i && <button onClick={handleAddClick}
+                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm">ADD</button>
+
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
             </form>
         </div>
     </div>       

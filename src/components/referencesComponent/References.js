@@ -35,6 +35,7 @@ function References(props) {
     return (
         <>
             <div className="mt-3 container cwml">
+            <WithouReferences handlerUpdate={update} id={props.contact.id} />
             { loading === true ?
             <div class="spinner-border text-primary" role="status">
             <span class="sr-only">Loading...</span>
@@ -45,7 +46,8 @@ function References(props) {
                  <ReferencesData handlerUpdate={update} id={ref.id} reference={ref} />
              )
                 :
-                <WithouReferences handlerUpdate={update} id={props.contact.id} />
+                ''
+                // <WithouReferences handlerUpdate={update} id={props.contact.id} />
                 )]
             }
             </div>

@@ -34,7 +34,7 @@ function ContactsRouters() {
                 "Accept": "application/json"
             }
         }).then(function (response) {
-            setContact(response.data)
+            setContact(response.data[0])
             setLoading(false);
         });
     }
@@ -52,7 +52,14 @@ function ContactsRouters() {
                 <>
                     <ContactsView contact={contact } />
                     <Switch>
-                        <Route exact path="/contacts/:id/bio" component={Bio}/>
+                    <Route exact path="/contacts/:id/bio"
+                        render={(props) => (
+                            <Bio {...props}
+                            updateRoute={update}
+                            contact={contact}
+                            />
+                        )}
+                        />
                         <Route exact path="/contacts/:id/profile"
                         render={(props) => (
                             <Profile {...props}

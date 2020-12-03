@@ -242,6 +242,7 @@ function MultipleModals() {
     }
     async function onSubmit(data) {
         if(modal1 === true){
+            console.log('data',data);
            await axios.post('http://api.boardingschools.mx/api/contacts',data)
               .then(function (response) {
                 console.log(response);

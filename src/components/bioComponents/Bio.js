@@ -7,6 +7,7 @@ import * as CGIcons from "react-icons/cg";
 import * as MDIcons from "react-icons/md";
 import * as BIIcons from "react-icons/bi";
 import * as AIIcons from "react-icons/ai";
+import { useForm } from "react-hook-form";
 import { Row, Col, Button, Modal, Form, InputGroup, FormControl, FormLabel } from 'react-bootstrap';
 import Select from 'react-select';
 import chroma from 'chroma-js';
@@ -14,16 +15,24 @@ import {
     BrowserRouter as Router, Switch,
     Route, Link
 } from 'react-router-dom';
-
+import { useAlert } from 'react-alert';
+import AsyncSelect from 'react-select/async';
 
 function Bio(props) {
+    const [init,setInit] = useState(JSON.parse(localStorage.getItem('user')) || { logged: false });
+    const alert = useAlert()
+    const { handleSubmit } = useForm({});
     let id = 1;
     const [contact,setContact] = useState(props.contact)
     useEffect(() => {
-        console.log('PROPS',props);
+        console.log('PROPS',props.contact.name);
+        console.log('INIT',init);
     }, [props])
   
-
+    function onSubmit(data){
+        alert.show('Ocurrio un error inesperado en la Base de datos');
+        handleClose();
+    }
 const colourStyles = {
   control: styles => ({ ...styles, backgroundColor: 'white' }),
   option: (styles, { data, isDisabled, isFocused, isSelected }) => {
@@ -72,12 +81,7 @@ const colourStyles = {
     },
   }),
 };
-    const options = [
-        { value: 'Usuario', label: 'Usuario', color: '#00B8D9' },
-        { value: 'Referencia', label: 'Referencia', color: '#5243AA' },
-        { value: 'Other', label: 'Other', color: '#5243AA' },
-        { value: 'Ofelia', label: 'Ofelia', color: '#5243AA' },
-    ];
+  
     const [modal, setModal] = useState(false);
     const [modalLog, setModalLog] = useState(false);
     const [param, setParam] = useState("");
@@ -100,16 +104,9 @@ const colourStyles = {
         setModalLog(false);
     }
     const colourOptions = [
-        { value: 'ocean', label: 'Ocean', color: '#00B8D9', isFixed: true },
-        { value: 'blue', label: 'Blue', color: '#0052CC', isDisabled: true },
-        { value: 'purple', label: 'Purple', color: '#5243AA' },
-        { value: 'red', label: 'Red', color: '#FF5630', isFixed: true },
-        { value: 'orange', label: 'Orange', color: '#FF8B00' },
-        { value: 'yellow', label: 'Yellow', color: '#FFC400' },
-        { value: 'green', label: 'Green', color: '#36B37E' },
-        { value: 'forest', label: 'Forest', color: '#00875A' },
-        { value: 'slate', label: 'Slate', color: '#253858' },
-        { value: 'silver', label: 'Silver', color: '#666666' },
+        { value: init.name, label: init.name, color: '#00B8D9', isFixed: true },
+        { value: 'Raul', lalbel: 'raul', color: '#0052CC',  },
+      
     ];
 
     function changevalue(e){
@@ -138,38 +135,7 @@ const colourStyles = {
                     </div>
                 </div>
 
-                <div className="ag-theme-alpine  mt-3" style={{ width: '100%', height: '300px' }}>
-                    <table class="table">
-                        <thead style={{ width: '100%', backgroundColor: '#F8F8F8' }} >
-                            <tr>
-                                <th >Tipo</th>
-                                <th >Fecha</th>
-                                <th >Programa</th>
-                                <th >Raiting</th>
-                                <th >Participantes</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {rowData.map(row => (
-                                <tr id="tableBio" onClick={() => showModal(row)}>
-                                    <td class="Inter500BT"><HIcons.HiOutlineMail style={{ color: '#4479FF' }} size={32} />
-                    &nbsp; &nbsp;{row.Nombre} </td>
-                                    <td class="Inter500BT"><RIcons.RiCalendarEventFill style={{ color: 'gray' }} size={12} />&nbsp; &nbsp; {row.Colegio}</td>
-                                    <td class="Inter500BT">
-                                        <FAIcons.FaClock style={{ color: '#CCCCCC' }} size={12} />
-                        &nbsp; {row.Grado}</td>
-                                    <td></td>
-                                    <td>
-
-                                        {/* <span class=" sc-fAjcbJ hkWfcR styles__User-sc-103gogw-2 gBkpnV">U</span>
-                                        <CGIcons.CgFileDocument size={16} class="ml-5" style={{ color: '#C4CEE5' }} /> */}
-
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+              
 
 
                 {/* FirstModal */}
@@ -180,7 +146,7 @@ const colourStyles = {
 
                 >
                     <Modal.Body style={{ background: '#F4F5F6', border: '1px' }}>
-                        <form >
+                    <form onSubmit={handleSubmit(onSubmit)}>
                             <div class="container" >
                                 <Row>
                                     <div style={{ fontSize: '18px' }} class="col Inter600B">
@@ -208,7 +174,7 @@ const colourStyles = {
 
                 >
                     <Modal.Body style={{ background: '#F4F5F6', border: '1px' }}>
-                        <form >
+                    <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="container-fluid">
                                 <Row>
                                     <Col className="col-2">
@@ -218,13 +184,13 @@ const colourStyles = {
                                         <MDIcons.MdGroup />
                                     </Col>
                                     <Col style={{ marginLeft: '-30px' }} className="col">
-                                    <Select closeMenuOnSelect={false}
-    defaultValue={[colourOptions[0], colourOptions[1]]}
-    isMulti
-    options={colourOptions}
-    styles={colourStyles}
-  />
+                                    <AsyncSelect cacheOptions 
+                                        isMulti
+                                        defaultValue={[colourOptions[0], colourOptions[1]]}
+                                         
+                                    />
                                     </Col>
+
                                 </Row>
                                 <Row className="mt-3">
                                     <Col className="col-6">
@@ -248,6 +214,7 @@ const colourStyles = {
 <Col  className="mt-3 ">
     <Button
     style={{marginRight:'-15px'}}
+    onSubmit={handleSubmit(onSubmit)}
         className="float-right" type="submit"
         variant="primary">Guardar</Button>
     <Button onClick={handleClose} style={{ color: '#4479ff', fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="light" >

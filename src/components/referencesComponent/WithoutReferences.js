@@ -95,21 +95,9 @@ function handlevalidFour(e) {
 
     return (
         <>
-            <div class="card" style={{ width: '100%' }}>
-                <div class="card-body">
-                    <h5 class="text-center card-title">SIN REFERENCIAS</h5>
-                    <p class="text-center card-text">¿Desea ligar alguna ?</p>
-                    <div class="row">
-                        <div class="d-flex-justify-content-center col-12">
-                        {/* showModal3 */}
-                        <center >
-                        <button onClick={(e) => showModal3()} class="btn btn-primary">Si,crear</button>
-                        </center>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+        <div class="d-flex justify-content-end">
+        <button onClick={(e) => showModal3()} class="btn btn-primary">Agre.Ref</button>
+        </div>
             {/* MODAL */}
 
             
