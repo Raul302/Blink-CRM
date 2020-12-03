@@ -176,10 +176,10 @@ function PersonalData(props) {
             console.log('directions',directions);
             setInputList(directions);
         }
-        if(phones){
+        if(phones.length > 0){
             setInputPhone(phones);
         }
-        if(emails){
+        if(emails.length > 0){
             setInputEmail(emails);
         }
     }
