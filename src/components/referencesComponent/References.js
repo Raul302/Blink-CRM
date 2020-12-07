@@ -11,7 +11,9 @@ function References(props) {
     const [type_ref,setTypeRef] =useState();
     const [references,setReferences] = useState();
     const [loading,setLoading] = useState(true);
+    const[token,setToken] = useState();
     useEffect(() => {
+        getToken();
         consultReferences();
         // typeRef(props.reference);
     }, [props])
@@ -31,6 +33,19 @@ function References(props) {
     function update(){
         props.updateRoute();
     }
+    async function getToken(){
+        //    info : L6HkSxDySdCLf8NsKYB64pLX5rE4XJVQvG0ROvYXBwYXZ7e0kRlU7gwVgo49xcFX6FI
+        await axios.get('https://www.universal-tutorial.com/api/getaccesstoken', {
+            headers: {
+                "Accept": "application/json",
+                "user-email": "18090130@gmail.com",
+                "api-token": "L6HkSxDySdCLf8NsKYB64pLX5rE4XJVQvG0ROvYXBwYXZ7e0kRlU7gwVgo49xcFX6FI"
+            }
+        }).then(function (response) {
+            setToken(response.data.auth_token);
+            // console.log('Auth',auth);
+        });
+    }
     
     return (
         <>
@@ -43,7 +58,7 @@ function References(props) {
             :
             [ ( references.length > 0 ? 
              references.map((ref,index) => 
-                 <ReferencesData handlerUpdate={update} id={ref.id} reference={ref} />
+                 <ReferencesData handlerUpdate={update} token={token} id={ref.id} reference={ref} />
              )
                 :
                 ''

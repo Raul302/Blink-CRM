@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as FIIcons from "react-icons/fi";
+import * as AIIcons from "react-icons/ai";
 import { Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
@@ -12,15 +13,16 @@ function PersonalData(props) {
     useEffect(() => {
         // console.log('props',props.contact.contacts_direction);
         console.log('propsxxx',props.contact);
+        console.log('INPUTLIST',inputList);
         setFilterValues(props.contact);
         consultStates();
     }, [props]);
     const [directions,setDirections] = useState(props.contact.contacts_direction);
     const [phones,setPhones] = useState(props.contact.contacts_phones);
     const [emails,setEmails] = useState(props.contact.contacts_emails);
-    const [inputList, setInputList] = useState([{ street: "", number: "", cp: "" }]);
-    const [inputPhone, setInputPhone] = useState([{phone:"" }]);
-    const [inputEmail, setInputEmail] = useState([{ email:"" }]);
+    const [inputList, setInputList] = useState([{ street: "", number: "", cp: "",city:"",state:"",typeAddress:"" }]);
+    const [inputPhone, setInputPhone] = useState([{phone:"",typePhone:"" }]);
+    const [inputEmail, setInputEmail] = useState([{ email:"",typeEmail:"" }]);
     const [editInfo, setEditInfo] = useState(false);
     const [editAcademicProfile, setAcademicProfile] = useState(false);
     const [editDetails, setEditDetails] = useState(false);
@@ -66,6 +68,13 @@ function PersonalData(props) {
         list[index][name] = value;
         setInputEmail(list);
     };
+    const handleInputTypeEmail = (e, index) => {
+        console.log(inputEmail);
+        const { name, value } = e.target;
+        const list = [...inputEmail];
+        list[index][name] = value;
+        setInputEmail(list);
+    }
 
     // handle click event of the Remove button
     const handleRemoveClickEmail = index => {
@@ -102,6 +111,7 @@ function PersonalData(props) {
     // ---------------------------------------------------------
     // handle input change
     const handleInputChange = (e, index) => {
+        console.log('CAMBIOOO',e.target);
         console.log(inputList);
         const { name, value } = e.target;
         const list = [...inputList];
@@ -123,7 +133,7 @@ function PersonalData(props) {
     function changeCiti(e) {
         setCity(e.target.value);
     }
-    function changeCities(e) {
+    async function changeCities(e,i=0) {
         let val = e.target.value;
         if (val === undefined) {
             val = props.contact.state;
@@ -131,9 +141,10 @@ function PersonalData(props) {
             val = e.target.value;
         }
         if (e.target) {
+            // handleInputChange(e,i);            
             setState(e.target.value);
         }
-        axios.get('https://www.universal-tutorial.com/api/cities/' + val, {
+       await axios.get('https://www.universal-tutorial.com/api/cities/' + val, {
             headers: {
                 Authorization: 'Bearer ' + props.token,
                 Accept: "application/json"
@@ -217,10 +228,10 @@ function PersonalData(props) {
             email: inputEmail,
             mother_lastname: mName,
             birthday: birthday,
-            city: city,
+            // city: city,
             phone: inputPhone,
             schoool: schoool,
-            state: state,
+            // state: state,
             cicly: cicly,
             grade: grade,
             direction : inputList
@@ -529,7 +540,7 @@ function PersonalData(props) {
                                 return (
                                     <div class="row mt-2 ">
                                     <div class="col-3">
-                                        <h6 class="Inter card-subtitle mb-2 text-muted">Email {i+1}</h6>
+                                        <h6 class="Inter card-subtitle mb-2 text-muted">Email {x.typeEmail}</h6>
                                     </div>
                                     <div class="col">
                                         <h6 style={{ color: '#243243', fontWeight: '600' }}
@@ -544,7 +555,7 @@ function PersonalData(props) {
                                 return (
                                     <div class="row mt-3 ">
                                     <div class="col-3">
-                                        <h6 class="Inter card-subtitle mb-2 text-muted">Telefono {i+1}</h6>
+                                        <h6 class="Inter card-subtitle mb-2 text-muted">Telefono {x.typePhone}</h6>
                                     </div>
                                     <div class="col">
                                         <h6 style={{ color: '#243243', fontWeight: '600' }}
@@ -559,19 +570,20 @@ function PersonalData(props) {
                                 return (
                                     <div class="row mt-3 ">
                                     <div class="col-3">
-                                        <h6 class="Inter card-subtitle mb-2 text-muted">Direccion {i+1}</h6>
+                                        <h6 class="Inter card-subtitle mb-2 text-muted">Direccion {x.typeAddress}</h6>
                                     </div>
                                     <div class="col">
                                         <h6 style={{ color: '#243243', fontWeight: '600' }}
                                             class="Inter card-subtitle mb-2 ">
-                                            {props.contact.state},{props.contact.city},{x.street},{x.number},{x.cp}
+                                            {x.street} {x.number}, {x.cp}
+                                            <p>{x.city} {x.state}, {x.city} </p>
                                         </h6>
                                     </div>
                                 </div>
                                 );
                             })}
                         
-                    </div>
+                    </div> 
                 </div>
                 :
                 <div class="mt-3 card">
@@ -590,7 +602,18 @@ function PersonalData(props) {
                              {inputEmail.map((x, i) => {
                                 return (
                                     <div className="box">
-                                        Email {i + 1}
+                                        <div class="row mt-3 ">
+                                            <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Tipo</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChangeEmail(e, i)}
+                                                    value={x.typeEmail}
+                                                    name="typeEmail"
+                                                    className="formGray" type="text" placeholder="Ejemplo : Personal,Trabajo,Estudiantil" />
+                                            </div>
+                                            </div>
                                         <div class="row mt-3 ">
                                             <div class="col-3">
                                                 <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Email</Form.Label>
@@ -609,7 +632,7 @@ function PersonalData(props) {
                                                     <button onClick={() => handleRemoveClickEmail(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
                                                 }
                                                 {inputEmail.length - 1 === i && <button onClick={handleAddClickEmail}
-                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm">ADD</button>
+                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm"><AIIcons.AiOutlinePlus/></button>
 
                                                 }
                                             </div>
@@ -620,7 +643,19 @@ function PersonalData(props) {
                             {inputPhone.map((x, i) => {
                                 return (
                                     <div className="box mt-1">
-                                        Telefono {i + 1}
+                                        
+                                        <div class="row mt-3">
+                                        <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Tipo</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChangePhone(e, i)}
+                                                    value={x.typePhone}
+                                                    name="typePhone"
+                                                    className="formGray" type="text" placeholder="Ejemplo : Movil,Personal,Trabajo" />
+                                            </div>
+                                            </div>
                                         <div class="row mt-3 ">
                                             <div class="col-3">
                                                 <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Telefono</Form.Label>
@@ -647,12 +682,30 @@ function PersonalData(props) {
                                     </div>
                                 );
                             })}
-                            <div class="row mt-3 ">
+                           
+                            {inputList.map((x, i) => {
+                                return (
+                                    <div className="box">
+                                        <div class="row mt-3">
+                                        <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Tipo</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChange(e, i)}
+                                                    value={x.typeAddress}
+                                                    name="typeAddress"
+                                                    className="formGray" type="text" placeholder="Ejemplo : Trabajo,Casa,Negocio" />
+                                            </div>
+                                            </div>
+                                         <div class="row mt-3 ">
                                 <div class="col-3">
                                     <Form.Label className="formGray">Estado</Form.Label>
                                 </div>
                                 <div class="col">
-                                    <Form.Control onChange={e => changeCities(e)} autoComplete="off" name="state" value={state} as="select" size="sm" custom>
+                                    <Form.Control onChange={e => changeCities(e,i)} autoComplete="off" 
+                                    name="state" 
+                                    value={x.state} as="select" size="sm" custom>
                                         <option disabled value="" selected></option>
                                         {states.map(state => (
                                             <option key={state.state_name} value={state.state_name}>
@@ -668,9 +721,10 @@ function PersonalData(props) {
                                 </div>
                                 <div class="col">
                                     <Form.Control
-                                        onChange={e => changeCiti(e)}
-                                        autoComplete="off" name="city" value={city} as="select" size="sm" custom>
-                                        <option key={"1"} defaultValue={city}  ></option>
+                                        onChange={e => handleInputChange(e, i)}
+                                        autoComplete="off" name="city" 
+                                        value={x.city} as="select" size="sm" custom>
+                                        <option key={x.city} defaultValue={x.city}></option>
                                         {cities.map(city => (
                                             <option key={city.city_name} value={city.city_name}>
                                                 {city.city_name}
@@ -679,10 +733,6 @@ function PersonalData(props) {
                                     </Form.Control>
                                 </div>
                             </div>
-                            {inputList.map((x, i) => {
-                                return (
-                                    <div className="box">
-                                        Direccion {i + 1}
                                         <div class="row mt-3 ">
                                             <div class="col-3">
                                                 <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Calle</Form.Label>

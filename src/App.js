@@ -3,7 +3,9 @@ import AppRouter  from './routers/AppRouter';
 import { AuthContext } from './auth/AuthContext'; 
 import {authReducer } from './auth/authReducer';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert'
-import AlertTemplate from 'react-alert-template-basic'
+import AlertTemplate from 'react-alert-template-basic';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 
 const init = () => {
   return JSON.parse(localStorage.getItem('user')) || { logged: false };
@@ -28,11 +30,13 @@ function App() {
   } , [user]);
   return (
     <AuthContext.Provider value={{ user, dispatch }}>
+          <Provider store={store} >
         <AlertProvider template={AlertTemplate} {...options}>
       <AppRouter />
       </AlertProvider>
+      </Provider>
     </AuthContext.Provider>
   );
 }
 
-export default App;
+export default App; 

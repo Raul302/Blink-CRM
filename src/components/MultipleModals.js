@@ -9,7 +9,7 @@ import axios from 'axios';
 
 
 
-function MultipleModals() {
+function MultipleModals(props) {
     // states
     const [modal1, setModal1] = useState(false);
     const [modal2, setModal2] = useState(false);
@@ -260,6 +260,7 @@ function MultipleModals() {
         }
         reset();
         resetReference()
+        props.consult();
     }
 
 

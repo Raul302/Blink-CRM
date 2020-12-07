@@ -8,6 +8,7 @@ import *  as RIcons from "react-icons/ri";
 import { BrowserRouter as Router, Switch, 
     Route, Link } from 'react-router-dom';
 import axios from 'axios';
+import TableContacts from '../components/contactComponents/TableContacts';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
@@ -17,54 +18,46 @@ const goRouter = function (param){
 }
 function Contacts() {
     const [rowData, setRowData] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         consultRow();
     }, []);
 
     async function consultRow(){
+        setLoading(true);
+        console.log('Consulte');
         await axios.get('http://api.boardingschools.mx/api/contacts', {
             headers: {
                 "Accept": "application/json"
             }
         }).then(function (response) {
             setRowData(response.data);
+            setLoading(false);
+        }).catch(error =>{
+            setLoading(false);
         });
     }
     return (
         <>
         <div className="mt-3 container cwml animate__animated animate__fadeIn">
-            <h1 className="Inter400">Contactos</h1>
-            <MultipleModals />
+            <div class=" row mt-5">
+                <div class="col-9 container">
+                <h1 className="Inter400">Contactos</h1>
+                </div>
+                <div class="col-3">
+            <MultipleModals consult={consultRow}/>
+                </div>
+            </div>
             <div class="row">
-            <Form.Control className="mt-1"  autoComplete="off" name="search" placeholder="Search..."></Form.Control>
-            <div className="ag-theme-alpine twml " style={{width:'100%',height: '300px'}}>
-            <table class="table">
-            <thead style={{backgroundColor:'#F8F8F8'}} >
-                <tr>
-                <th >Nombre</th>
-                <th >Origen</th>
-                <th >Programa</th>
-                <th >Referencia</th>
-                </tr>
-            </thead>
-            <tbody>
-            {rowData.map(row => (
-                <tr>
-                    <td><RIcons.RiUser3Fill size={32}/>
-                    <Link to={"contacts/"+ (row.id) + "/bio"} > {row.name} {row.father_lastname} {row.mother_lastname} </Link></td>
-                    <td>{row.city},{row.state}</td>
-                    <td>{row.id_program}</td>
-                    <td>{row.rname} {row.rfname}</td>
-                </tr>
-                ))}
-            </tbody>
-            </table>        
-            </div>  
+                {loading == false ?
+                <TableContacts rowData={rowData} />
+                :
+                <h4>Cargando...</h4>
+                }
             </div>
         </div>
-        </>
-        
+        </> 
     )
 }
 

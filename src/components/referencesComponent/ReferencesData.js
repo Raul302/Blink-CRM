@@ -13,12 +13,12 @@ import { useAlert } from 'react-alert'
 // otro = 3
 
 function ReferencesData(props) {
-     const [directions,setDirections] = useState(props.reference.reference_address);
+    const [directions,setDirections] = useState(props.reference.reference_address);
     const [phones,setPhones] = useState(props.reference.reference_phones);
     const [emails,setEmails] = useState(props.reference.reference_emails);
-    const [inputList, setInputList] = useState([{ street: "", number: "", cp: "" }]);
-    const [inputPhone, setInputPhone] = useState([{phone:"" }]);
-    const [inputEmail, setInputEmail] = useState([{ email:"" }]);
+    const [inputList, setInputList] = useState([{ street: "", number: "", cp: "",city:"",state:"",typeAddress:"" }]);
+    const [inputPhone, setInputPhone] = useState([{phone:"",typePhone:"" }]);
+    const [inputEmail, setInputEmail] = useState([{ email:"",typeEmail:"" }]);
     const alert = useAlert()
     const { handleSubmit } = useForm({});
     const [type_ref,setTypeRef] =useState();
@@ -31,6 +31,9 @@ function ReferencesData(props) {
     const [emailR,setEmailR] = useState();
     const [phoneR,setPhoneR] = useState();
     const [nameRef,setNameRefO] = useState();
+    const [state, setState] = useState();
+    const [cities, setCities] = useState([]);
+    const [states, setStates] = useState([]);
     const [addrtype, setAddrtype] = useState(["Papa", "Mama", "Hermano/Hermana", "Otro"])
     const Add = addrtype.map(Add => Add
     )
@@ -38,8 +41,55 @@ function ReferencesData(props) {
     useEffect(() => {
       console.log('Props',props);
       typeRef(props.reference);
+      consultStates();
       setFilterValues(props.reference);
     }, [props])
+
+    
+    async function changeCities(e,i=0) {
+        let val = e.target.value;
+        if (val === undefined) {
+            val = props.reference.state;
+        } else {
+            val = e.target.value;
+        }
+        if (e.target) {
+            if(e.target.value != undefined){
+                console.log('EPA',e);
+                const list = [...inputList];
+                // list[i][name] = value;
+                console.log('LIST',list[i]);
+                 handleInputChange(e,i);            
+                setState(e.target.value);
+            }
+        }
+       await axios.get('https://www.universal-tutorial.com/api/cities/' + val, {
+            headers: {
+                Authorization: 'Bearer ' +  props.token,
+                Accept: "application/json"
+            }
+        }).then(function (response) {
+            setCities(response.data);
+        });
+    }
+    // Api to states
+    async function consultStates() {
+        await axios.get('https://www.universal-tutorial.com/api/states/Mexico', {
+            headers: {
+                Authorization: 'Bearer ' +  props.token,
+                Accept: "application/json"
+            }
+        }).then(function (response) {
+            setStates(response.data);
+            let obj = {
+                target: {
+                    value: state
+                }
+            };
+            changeCities(obj);
+        });
+
+    }
 
     function setFilterValues(reference){
     setNameR(reference.name);
@@ -51,6 +101,7 @@ function ReferencesData(props) {
     setFalseTypeR(reference.type_ref)
     if(directions.length > 0){
         setInputList(directions);
+      
     }
     if(phones.length > 0){
         setInputPhone(phones);
@@ -271,7 +322,7 @@ function ReferencesData(props) {
                                 return (
                                     <div class="row mt-2 ">
                                     <div class="col-3">
-                                        <h6 class="Inter card-subtitle mb-2 text-muted">Email {i+1}</h6>
+                                        <h6 class="Inter card-subtitle mb-2 text-muted">Email {x.typeEmail}</h6>
                                     </div>
                                     <div class="col">
                                         <h6 style={{ color: '#243243', fontWeight: '600' }}
@@ -286,7 +337,7 @@ function ReferencesData(props) {
                                 return (
                                     <div class="row mt-3 ">
                                     <div class="col-3">
-                                        <h6 class="Inter card-subtitle mb-2 text-muted">Telefono {i+1}</h6>
+                                        <h6 class="Inter card-subtitle mb-2 text-muted">Telefono {x.typePhone}</h6>
                                     </div>
                                     <div class="col">
                                         <h6 style={{ color: '#243243', fontWeight: '600' }}
@@ -301,12 +352,13 @@ function ReferencesData(props) {
                                 return (
                                     <div class="row mt-3 ">
                                     <div class="col-3">
-                                        <h6 class="Inter card-subtitle mb-2 text-muted">Direccion {i+1}</h6>
+                                        <h6 class="Inter card-subtitle mb-2 text-muted">Direccion {x.typeAddress}</h6>
                                     </div>
                                     <div class="col">
                                         <h6 style={{ color: '#243243', fontWeight: '600' }}
                                             class="Inter card-subtitle mb-2 ">
-                                            {props.reference.state},{props.reference.city},{x.street},{x.number},{x.cp}
+                                              {x.street} {x.number}, {x.cp}
+                                            <p>{x.city} {x.state}, {x.city} </p>
                                         </h6>
                                     </div>
                                 </div>
@@ -401,7 +453,18 @@ function ReferencesData(props) {
                 {inputEmail.map((x, i) => {
                                 return (
                                     <div className="box">
-                                        Email {i + 1}
+                                         <div class="row mt-3 ">
+                                            <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Tipo</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChangeEmail(e, i)}
+                                                    value={x.typeEmail}
+                                                    name="typeEmail"
+                                                    className="formGray" type="text" placeholder="Ejemplo : Personal,Trabajo,Estudiantil" />
+                                            </div>
+                                            </div>
                                         <div class="row mt-3 ">
                                             <div class="col-3">
                                                 <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Email</Form.Label>
@@ -431,7 +494,19 @@ function ReferencesData(props) {
                             {inputPhone.map((x, i) => {
                                 return (
                                     <div className="box mt-1">
-                                        Telefono {i + 1}
+                                        <div class="row mt-3">
+                                        <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Tipo</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChangePhone(e, i)}
+                                                    value={x.typePhone}
+                                                    name="typePhone"
+                                                    className="formGray" type="text" placeholder="Ejemplo : Movil,Personal,Trabajo" />
+                                            </div>
+                                            </div>
+                                            
                                         <div class="row mt-3 ">
                                             <div class="col-3">
                                                 <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Telefono</Form.Label>
@@ -461,7 +536,53 @@ function ReferencesData(props) {
                              {inputList.map((x, i) => {
                                 return (
                                     <div className="box">
-                                        Direccion {i + 1}
+                                       <div class="row mt-3">
+                                        <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Tipo</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChange(e, i)}
+                                                    value={x.typeAddress}
+                                                    name="typeAddress"
+                                                    className="formGray" type="text" placeholder="Ejemplo : Trabajo,Casa,Negocio" />
+                                            </div>
+                                            </div>
+                                         <div class="row mt-3 ">
+                                <div class="col-3">
+                                    <Form.Label className="formGray">Estado</Form.Label>
+                                </div>
+                                <div class="col">
+                                    <Form.Control onChange={e => changeCities(e,i)} autoComplete="off" 
+                                    name="state" 
+                                    value={x.state} as="select" size="sm" custom>
+                                        <option disabled value="" selected></option>
+                                        {states.map(state => (
+                                            <option key={state.state_name} value={state.state_name}>
+                                                {state.state_name}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
+                                </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                <div class="col-3">
+                                    <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciudad</Form.Label>
+                                </div>
+                                <div class="col">
+                                    <Form.Control
+                                        onChange={e => handleInputChange(e, i)}
+                                        autoComplete="off" name="city" 
+                                        value={x.city} as="select" size="sm" custom>
+                                        <option key={x.city} defaultValue={x.city}></option>
+                                        {cities.map(city => (
+                                            <option key={city.city_name} value={city.city_name}>
+                                                {city.city_name}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
+                                </div>
+                            </div>
                                         <div class="row mt-3 ">
                                             <div class="col-3">
                                                 <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Calle</Form.Label>
