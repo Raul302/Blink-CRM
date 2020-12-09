@@ -18,7 +18,8 @@ function Login({ history }) {
     const { loading } = useSelector(state => state.ui);
     const {token} = useSelector(state => state.auth);
     const { register, handleSubmit, errors } = useForm();
-
+    // last page record
+    const lastPath = localStorage.getItem('lastPath') || '/dashboard';
     // if(token){
     //     history.replace('/dashboard');
     // }

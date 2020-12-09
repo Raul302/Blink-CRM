@@ -1,14 +1,12 @@
 // import logo from './logo.svg';
 import '../App.css';
-import { BrowserRouter as Router, Switch, 
-Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import DashboardRoutes from './DashboardRoutes';
 import ContactsRouters from './ContactsRouters';
 import Login from '../pages/Login';
-import React, { useContext,useState,useEffect } from 'react';
+import React, { useState,useEffect } from 'react';
 import PrivateRouter from './PrivateRouter';
-import { AuthContext } from '../auth/AuthContext';
-import Contacts from '../pages/Contacts';
+import PublicRouter from './PublicRouter';
 
 function AppRouter() {
     const [user,setUser] = useState(JSON.parse(localStorage.getItem('user')));
@@ -19,7 +17,11 @@ function AppRouter() {
         <Router>
             <div>
                 <Switch>
-                    <Route exact path="/login"  component={Login} />
+                    <PublicRouter 
+                    exact path="/login"  
+                    component={Login}
+                    isAuthenticated= { user.token ? true : false }
+                    />
                     <PrivateRouter
                     
                     path="/contacts/:id" 
