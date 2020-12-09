@@ -18,16 +18,16 @@ function NavBar() {
           console.log('init',init)
     }, [])
     const [sidebar, setSidebar] = useState(true);
-    const { user: { name }, dispatch } = useContext(AuthContext)
+    // const { user: { name }, dispatch } = useContext(AuthContext)
     const showSidebar = () => setSidebar(!sidebar);
 
     const history = useHistory();
 
     const handleLogout = () => {
-        dispatch({
-            type: types.logout
-        });
-        history.replace('/login');
+        // dispatch({
+        //     type: types.logout
+        // });
+        // history.replace('/login');
     }
     return (
         <>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as FIIcons from "react-icons/fi";
+import * as FAIcons from "react-icons/fa";
 import { Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { useForm } from "react-hook-form";
@@ -267,6 +268,11 @@ function ReferencesData(props) {
                                     <FIIcons.FiEdit 
                                     onClick={(e) => editing()}
                                      size={18} style={{ color: '#386CEF' }} /> 
+                                </a>
+                                <a class="ml-1">
+                                    <FAIcons.FaTrashAlt
+                                     onClick={(e) => editing()}
+                                     size={18} style={{ color: '#FF0101' }} />
                                 </a>
                             </div>
                         </div>
