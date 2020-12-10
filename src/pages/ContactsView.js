@@ -24,6 +24,18 @@ export default function ContactsView(props) {
              <Link  className={[ '/contacts/'+id +'/references'].includes(pathname) ? 
                'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active Inter600' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl Inter600'} 
                to={"/contacts/"+id+"/references"}>Referencias</Link>
+
+                <Link  className={[ '/contacts/'+id +'/docs'].includes(pathname) ? 
+               'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active Inter600' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl Inter600'} 
+               to={"/contacts/"+id+"/docs"}>Doc</Link>
+
+                <Link  className={[ '/contacts/'+id +'/pendings'].includes(pathname) ? 
+               'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active Inter600' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl Inter600'} 
+               to={"/contacts/"+id+"/pendings"}>Pendientes</Link>
+
+                <Link  className={[ '/contacts/'+id +'/prospect'].includes(pathname) ? 
+               'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active Inter600' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl Inter600'} 
+               to={"/contacts/"+id+"/prospect"}>Prospecciones</Link>
         </div>
         </div>
         </>

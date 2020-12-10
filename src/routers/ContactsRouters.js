@@ -14,6 +14,7 @@ import Profile from '../components/profileComponents/Profile';
 import References from '../components/referencesComponent/References';
 import { Spinner } from 'react-bootstrap';
 import { useParams } from "react-router";
+import Docs from '../components/docsComponents/Docs';
 import axios from 'axios';
 
 
@@ -71,6 +72,14 @@ function ContactsRouters() {
                         <Route exact path="/contacts/:id/references"
                         render={(props) => (
                                 <References {...props}
+                                updateRoute={update}
+                                contact={contact}
+                                />
+                        )}
+                    />
+                      <Route exact path="/contacts/:id/docs"
+                        render={(props) => (
+                                <Docs {...props}
                                 updateRoute={update}
                                 contact={contact}
                                 />

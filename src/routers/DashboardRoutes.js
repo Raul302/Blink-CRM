@@ -6,6 +6,7 @@ import Dashboard from '../pages/Dashboard';
 import Users from '../pages/Users';
 import Report from '../pages/Report';
 import Contacts from '../pages/Contacts';
+import Colleges from '../pages/Colleges';
 
 function DashboardRoutes() {
     return (
@@ -17,6 +18,7 @@ function DashboardRoutes() {
                     <Route exact path="/users" component={Users} />
                     <Route exact path="/contacts" component={Contacts} />
                     <Route exact path="/reports" component={Report} />
+                    <Route exact path="/colleges" component={Colleges} />
                     <Redirect to="/login" />
                 </Switch>      
                   </div>

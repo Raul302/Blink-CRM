@@ -27,4 +27,10 @@ export const SideBar =[
          icon: <FaIcons.FaUser />,
          cName: 'nav-text'
      },
+     {
+        title:'Colleges',
+        path:'/colleges',
+        icon: <FaIcons.FaUser />,
+        cName: 'nav-text'
+    },
 ]

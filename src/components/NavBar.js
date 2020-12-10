@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import * as GrIcons from 'react-icons/gr';
+import * as IOIcons from "react-icons/io";
 import { Link , useHistory} from 'react-router-dom';
 import { SideBar } from "./SideBar";
 import '../styles/NavBar.css';
@@ -10,6 +11,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Row, Col, Button, Navbar, NavDropdown, Nav, Form, FormControl } from 'react-bootstrap';
 import { AuthContext } from '../auth/AuthContext';
 import { types } from '../types/types';
+import { useDispatch } from 'react-redux';
+import { startLogout } from '../actions/auth';
 
 function NavBar() {
     const [init,setInit] = useState(JSON.parse(localStorage.getItem('user')) || { logged: false });
@@ -20,14 +23,12 @@ function NavBar() {
     const [sidebar, setSidebar] = useState(true);
     // const { user: { name }, dispatch } = useContext(AuthContext)
     const showSidebar = () => setSidebar(!sidebar);
-
+    const dispatch = useDispatch();
     const history = useHistory();
 
-    const handleLogout = () => {
-        // dispatch({
-        //     type: types.logout
-        // });
-        // history.replace('/login');
+    const handleLogout =  () => {
+        dispatch( startLogout() );
+        history.replace('/auth/login');
     }
     return (
         <>
@@ -77,18 +78,24 @@ function NavBar() {
                             <li className="nav-text">
                             <Link to='/contacts'>
                             <AiIcons.AiFillContacts />
-                                            <span>Contacts</span>
+                                            <span>Contactos</span>
                                         </Link>
                             </li>
-                            { init.type == 'Supervisor' || init.type == 'Administrador' ?
+                            { (init.type == 'Supervisor' || init.type == 'Administrador') ?
                             <li className="nav-text">
                             <Link to='/users'>
                             <FaIcons.FaUser />
-                                            <span>Users</span>
+                                            <span>Usuarios</span>
                                         </Link>
                         </li>
                         : ''
                         }
+                         <li className="nav-text">
+                            <Link to='/colleges'>
+                            <IOIcons.IoIosSchool />
+                                            <span>Colegios</span>
+                                        </Link>
+                        </li>
                         </ul>
                     </nav>
                        {/* navbar */}
@@ -101,7 +108,7 @@ function NavBar() {
     <Nav>
       <Nav.Link style={{color:'#182739'}}>{init.username}</Nav.Link>
       <Nav.Link style={{color:'#182739'}} onClick={ handleLogout }>
-        Cerrar sesion
+        Salir
       </Nav.Link>
     </Nav>
   </Navbar.Collapse>
