@@ -245,7 +245,6 @@ function MultipleModals(props) {
             console.log('data',data);
            await axios.post('http://api.boardingschools.mx/api/contacts',data)
               .then(function (response) {
-                console.log(response);
                 setIDContact(response.data.id);
               });
             showModal2();
@@ -254,7 +253,6 @@ function MultipleModals(props) {
             data.idContact = idContact;
             await axios.post('http://api.boardingschools.mx/api/references',data)
             .then(function (response) {
-              console.log(response);
             })
             showModal4();
         }

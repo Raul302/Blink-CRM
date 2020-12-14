@@ -18,7 +18,6 @@ function NavBar() {
     const [init,setInit] = useState(JSON.parse(localStorage.getItem('user')) || { logged: false });
     useEffect(() => {
         // setInit(JSON.parse(localStorage.getItem('user')) || { logged: false });
-          console.log('init',init)
     }, [])
     const [sidebar, setSidebar] = useState(true);
     // const { user: { name }, dispatch } = useContext(AuthContext)

@@ -9,4 +9,10 @@ export const types = {
     uiStartLoading: '[UI] Start Loading',
     uiFinishLoading: '[UI] Finish Loading',
     
+    collegesAddNew: '[College] New College',
+    collegesActive: '[College] Set Active College',
+    collegesLoad:   '[College] Load Colleges',
+    collegesUpdated: '[College] Updated College',
+    collegeDelete: '[College] Delete College',
+    collegeCleaning: '[College] College cleaning',
 }

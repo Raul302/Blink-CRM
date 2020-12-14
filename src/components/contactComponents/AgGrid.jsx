@@ -52,7 +52,6 @@ function GridExample(props) {
     });
     
     const ChildMessageRenderer = props => {
-        console.log('PROPS',props);
         const invokeParentMethod = () => {
             props.context.methodFromParent(`Row: ${props.node.rowIndex}, Col: ${props.colDef.field}`)
         };

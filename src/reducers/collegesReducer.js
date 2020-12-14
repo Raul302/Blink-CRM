@@ -12,17 +12,35 @@
 //     total international grades:
 //     total day students:
 //     total students in school
+//     location
 //     Sports
 //     Arts
 //     Special clinics
-//     Location
+
+import { types } from "../types/types";
+
+
 // }
 const initialState = {
-    colleges :[]
+    colleges :[],
+    active: null,
 }
 export const collegesReducer = ( state = initialState,action ) => {
     switch (action.type) {
-            
+            case types.collegesActive:
+                return {
+                    ...state,
+                    active: {
+                        ...action.payload
+                    }
+                }
+            case types.collegesLoad:
+                localStorage.setItem( 'collegeActive', JSON.stringify(action.payload));
+
+                return {
+                    ...state,
+                    colleges: [...action.payload]
+                }
         default:
             return state;
     }
