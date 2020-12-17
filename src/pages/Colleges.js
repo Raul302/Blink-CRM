@@ -9,7 +9,9 @@ function Colleges() {
             <div class="col d-flex justify-content-end">
             <AddOrEditCollege />
             </div>
-        <TableColleges />
+            <div class="row">
+            <TableColleges />
+            </div>
             </div>
         </>
     )

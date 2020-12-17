@@ -87,7 +87,7 @@ console.log(active);
                     <div class="card-body">
                         <div class="row">
                             <div class="col-11">
-                                <h5 style={{ fontWeight: '600' }} class="Inter card-title">Informacion</h5>
+                                <h5 style={{ fontWeight: '600' }} class="Inter card-title">Facts & Figures</h5>
                             </div>
                             <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
                                 {/* <a>
@@ -158,7 +158,7 @@ console.log(active);
                     <div class="card-body">
                         <div class="row">
                             <div class="col-11">
-                                <h5 style={{ fontWeight: '600' }} class="Inter card-title">Informacion</h5>
+                                <h5 style={{ fontWeight: '600' }} class="Inter card-title">Direccion</h5>
                             </div>
                             <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
                                 {/* <a>

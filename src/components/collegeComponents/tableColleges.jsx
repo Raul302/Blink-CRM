@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loadColleges } from '../../helpers/loadColleges'; 
 import { useHistory } from 'react-router-dom';
 import {activeCollege} from '../../actions/colleges';
+import Skeleton from 'react-loading-skeleton';
 
 function TableColleges() {
     const {colleges} = useSelector( state => state.colleges);
+    const { loading } = useSelector(state => state.ui);
     const history = useHistory();
     const dispatch = useDispatch();
     function handleGoto(obj){
@@ -14,7 +16,12 @@ function TableColleges() {
          history.replace("colleges/"+ 13 + "/detail");
     }
     return (
-        <>
+        <> {loading ?
+            <div class="row mt-2">
+                <Skeleton width="60rem"  height={30} count={10} />
+            </div>
+
+        :
             <div className="ag-theme-alpine twml mt-3" style={{ width: '100%', height: '300px' }}>
                     <table class="table">
                         <thead style={{ backgroundColor: '#F8F8F8' }} >
@@ -42,6 +49,7 @@ function TableColleges() {
                         </tbody>
                     </table>      
                     </div> 
+        }
         </>
     )
 }

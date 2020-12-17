@@ -10,6 +10,7 @@ export const newCollege = (data) =>{
     await axios.post('http://api.boardingschools.mx/api/colleges/save',data)
         .then(function (response) {
             dispatch( removeError());
+            dispatch( starLoadingColleges() );
             dispatch( finishLoading() );
         }).catch(error =>{
             dispatch(setError('Credenciales invalidas'));

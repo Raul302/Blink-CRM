@@ -154,7 +154,7 @@ function AddOrEditCollege() {
             if(data.type === 'Boarding School'){
                 showModalTwo();
             }else {
-                showModalThree();
+                showModalFour();
             }
         }
         if(modalTwo){
@@ -175,7 +175,6 @@ function AddOrEditCollege() {
             obj.special_c = special_c;
             setJson({...obj});
             dispatch( newCollege(json) );
-            dispatch ( starLoadingColleges() );
             close();
         }
     }
@@ -294,7 +293,7 @@ function AddOrEditCollege() {
                 // onHide={handleClose}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}> </Modal.Title>
+                    <Modal.Title style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}>Facts & Figures </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
 
@@ -434,7 +433,7 @@ function AddOrEditCollege() {
                 // onHide={handleClose}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}>Three </Modal.Title>
+                    <Modal.Title style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}> </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
 
