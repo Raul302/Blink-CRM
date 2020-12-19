@@ -5,15 +5,19 @@ import { loadColleges } from '../../helpers/loadColleges';
 import { useHistory } from 'react-router-dom';
 import {activeCollege} from '../../actions/colleges';
 import Skeleton from 'react-loading-skeleton';
+import { finishLoading } from '../../actions/ui';
 
 function TableColleges() {
+    const dispatch = useDispatch();
+    useEffect(()=>{
+        dispatch( finishLoading());
+    },[])
     const {colleges} = useSelector( state => state.colleges);
     const { loading } = useSelector(state => state.ui);
     const history = useHistory();
-    const dispatch = useDispatch();
     function handleGoto(obj){
         dispatch( activeCollege( obj.id,obj) );
-         history.replace("colleges/"+ 13 + "/detail");
+         history.replace("colleges/"+ obj.id + "/detail");
     }
     return (
         <> {loading ?
@@ -22,7 +26,7 @@ function TableColleges() {
             </div>
 
         :
-            <div className="ag-theme-alpine twml mt-3" style={{ width: '100%', height: '300px' }}>
+            <div className="ag-theme-alpine twml mt-1" style={{ width: '100%', height: '300px' }}>
                     <table class="table">
                         <thead style={{ backgroundColor: '#F8F8F8' }} >
                             <tr>

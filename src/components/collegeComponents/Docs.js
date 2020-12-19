@@ -1,33 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';   
+import * as BSicons from "react-icons/bs";
+import { useDispatch, useSelector } from 'react-redux';
+import { finishLoading, startLoading } from '../../actions/ui';
+import Skeleton from 'react-loading-skeleton';
+import { useAlert } from 'react-alert'
 
 function Docs() {
-    const {active} = useSelector( state => state.colleges);
-    console.log(active);
+    const { loading } = useSelector(state => state.ui);
+    useEffect(() => {
+        getFiles();
+    }, [])
+    const alert = useAlert()
+
+    const dispatch = useDispatch();
+    const pathFiles = 'http://api.boardingschools.mx/storage/';
+    const { active } = useSelector(state => state.colleges);
     const [picture, setPicture] = useState('');
+    const [displays, setDisplays] = useState('');
     const [pictureTwo, setPictureTwo] = useState('');
     const [modal, setModal] = useState(false);
-    const [fileOne,setFileOne] = useState(true);
-    const [fileTwo,setFileTwo] = useState(true);
+    const [fileOne, setFileOne] = useState(true);
+    const [fileTwo, setFileTwo] = useState(true);
     const { register, handleSubmit, errors, reset } = useForm({});
 
     const getFiles = () => {
-        axios.post('http://api.boardingschools.mx/api/files/index',{id:active.id})
+        dispatch(startLoading());
+        axios.post('http://api.boardingschools.mx/api/files/index', { id: active.id })
             .then(function (response) {
-                console.log('XX',response);
+                const { data } = response;
+                if (data[0]) {
+                    setDisplays(data[0]);
+                    dispatch(finishLoading());
+                }
+            }).catch(error => {
+                dispatch(finishLoading());
             });
     }
     const onChangePicture = (e) => {
-        console.log('picture: ', e.target.files[0]);
         setPicture(URL.createObjectURL(e.target.files[0]))
     };
     const onChangePictureTwo = (e) => {
-        console.log('picture: ', e.target.files[0]);
         setPictureTwo(URL.createObjectURL(e.target.files[0]))
-        console.log('pictureTwo',pictureTwo);
     };
     const handleShow = (e) => {
         setModal(!modal);
@@ -36,41 +52,85 @@ function Docs() {
         setModal(!modal);
     }
     const handlefileOne = (e) => {
-        console.log(e.target.value);
         setFileOne(false);
     }
     const handlefileTwo = (e) => {
-        console.log(e.target.value);
         setFileTwo(false);
     }
-     function onSubmit(data) {
-        console.log('data',data.fileCuota[0]);
+    function onSubmit(data) {
         let formData = new FormData();
-        formData.append("calendar", data.fileCalendar[0]);
-        formData.append("calendar_date", data.calendar);
-        formData.append("cuote", data.fileCuota[0]);
-        formData.append("cuote_cicly", data.cicly);
+        formData.append("calendar", data.fileCalendar[0] ? data.fileCalendar[0] : null);
+        formData.append("calendar_date", data.calendar ? data.calendar : null);
+        formData.append("cuote", data.fileCuota[0] ? data.fileCuota[0] : null);
+        formData.append("cuote_cicly", data.cicly ? data.cicly : null);
         formData.append("idCollege", active.id);
+        if (displays.id) {
+            formData.append('id', displays.id);
+        }
         axios({
-            method:'post',
-            url:'http://api.boardingschools.mx/api/files/upload',
+            method: 'post',
+            url: 'http://api.boardingschools.mx/api/files/upload',
             data: formData,
-            headers: {'Content-Type': 'multipart/form-data' }
+            headers: { 'Content-Type': 'multipart/form-data' }
         })
-        .then(function (response) {
-            // console.log('response',response);
-        })
-        getFiles();
+            .then(function (response) {
+                alert.show(response.data, {
+                    timeout: 2000, // custom timeout just for this one alert
+                    type: 'success'
+                })
+                handleClose();
+                getFiles();
+            })
     }
     return (
         <>
-            <div className="mt-3 container cwml">
-                <Row>
-                    <div class="col d-flex justify-content-end">
-                        <Button onClick={(e) => handleShow(e)}>Subir archivos</Button>
+            {!displays ?
+                <div className="mt-3 container cwml">
+                    <Row>
+                        <div class="col d-flex justify-content-end">
+                            <Button onClick={(e) => handleShow(e)}>Subir archivos</Button>
+                        </div>
+                    </Row>
+                </div>
+                :
+                [loading ?
+                    <div className="mt-3 container cwml">
+                        <Row>
+
+                        </Row>
+                        <Row className="mt-5">
+                            <div class="col-6">
+                                <Skeleton width={150} height={150} count={1} />
+                            </div>
+                            <div class="col-6">
+                                <Skeleton width={150} height={150} count={1} />
+
+                            </div>
+                        </Row>
                     </div>
-                </Row>
-            </div>
+                    :
+                    <div className="mt-3 container cwml">
+                        <Row>
+                            <div class="col d-flex justify-content-end">
+                                <Button onClick={(e) => handleShow(e)}>Subir archivos</Button>
+                            </div>
+                        </Row>
+                        <Row className="mt-3">
+                            <Col className="col-6" style={{backgroundColor:'white',borderStyle:'dashed',borderColor:'#CACACA',borderWidth:'2px'}}>
+                            <img style={{height:'100px',width:'100px'}}className="mt-2 mb-2 playerProfilePic_home_tile" 
+                src={pathFiles + displays.file_path_cuote}></img> 
+                <span style={{ overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',display:'inline-block', maxWidth:'13ch' }}class="Inter">{displays.name_cuote}</span>
+                <span style={{ overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',display:'inline-block', maxWidth:'20ch' }}
+                class="Inter">Cuota {displays.cicly ?? ''}</span>
+                  <a style={{ overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',display:'inline-block', maxWidth:'20ch' }} href={pathFiles + displays.file_path_cuote} target="_blank" rel="noopener noreferrer" download>
+                  <BSicons.BsCloudDownload style={{color:'red'}}/>
+                  </a>      
+                            </Col>
+                      
+                        </Row>
+                    </div>
+                ]
+            }
             {/* FirstModal */}
             <Modal
                 show={modal}
@@ -84,10 +144,10 @@ function Docs() {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="container-fluid">
                             <Row>
-                            <Col className="col-6" >
+                                <Col className="col-6" >
                                     <Form.Label className="formGray">Ciclo escolar</Form.Label>
-                                    <Form.Control ref={register} onChange={(e)=>handlefileOne(e)} autoComplete="off" name="cicly" as="select" size="sm" custom>
-                                    <option disabled value="" selected></option>
+                                    <Form.Control ref={register} onChange={(e) => handlefileOne(e)} autoComplete="off" name="cicly" as="select" size="sm" custom>
+                                        <option disabled value="" selected></option>
                                         <option value="2015-2016">2015 - 2016</option>
                                         <option>2016 - 2017</option>
                                         <option>2017 - 2018</option>
@@ -107,23 +167,23 @@ function Docs() {
                                     </Form.Control>
                                 </Col>
                                 <Col>
-                                <img style={{height:'70px',width:'70px'}}className="playerProfilePic_home_tile" src={picture}></img>
+                                    <img style={{ height: '70px', width: '70px' }} className="playerProfilePic_home_tile" src={picture}></img>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col>
-                                <Form.Label className="formGray"><h5>Cuota</h5></Form.Label>
-                                <Form.Control 
-                                disabled ={fileOne}
-                                id="profilePic" ref={register} name="fileCuota" type="file" onChange={onChangePicture} />
+                                    <Form.Label className="formGray"><h5>Cuota</h5></Form.Label>
+                                    <Form.Control
+                                        disabled={fileOne}
+                                        id="profilePic" ref={register} name="fileCuota" type="file" onChange={onChangePicture} />
                                 </Col>
                             </Row>
 
                             <Row className="mt-3">
-                            <Col className="col-6" >
+                                <Col className="col-6" >
                                     <Form.Label className="formGray">Calendario</Form.Label>
-                                    <Form.Control ref={register} onChange={(e)=>handlefileTwo(e)}autoComplete="off" name="calendar" as="select" size="sm" custom>
-                                    <option disabled value="" selected></option>
+                                    <Form.Control ref={register} onChange={(e) => handlefileTwo(e)} autoComplete="off" name="calendar" as="select" size="sm" custom>
+                                        <option disabled value="" selected></option>
                                         <option value="2015-2016">2015 - 2016</option>
                                         <option>2016 - 2017</option>
                                         <option>2017 - 2018</option>
@@ -143,15 +203,15 @@ function Docs() {
                                     </Form.Control>
                                 </Col>
                                 <Col>
-                                <img style={{height:'70px',width:'70px'}}className="playerProfilePic_home_tile" src={pictureTwo}></img>
+                                    <img style={{ height: '70px', width: '70px' }} className="playerProfilePic_home_tile" src={pictureTwo}></img>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col>
-                                <Form.Label className="formGray"><h5>Calendario</h5></Form.Label>
-                                <Form.Control 
-                                disabled ={fileTwo}
-                                id="profilePic" type="file" onChange={onChangePictureTwo} name="fileCalendar" ref={register}  />
+                                    <Form.Label className="formGray"><h5>Calendario</h5></Form.Label>
+                                    <Form.Control
+                                        disabled={fileTwo}
+                                        id="profilePic" type="file" onChange={onChangePictureTwo} name="fileCalendar" ref={register} />
                                 </Col>
                             </Row>
                         </div>
@@ -159,6 +219,7 @@ function Docs() {
                             <Col>
                                 <Button
                                     className="float-right mb-3 mr-2" type="submit"
+                                    disabled={fileTwo || fileOne}
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="primary">Guardar</Button>
                                 <Button onClick={handleClose} style={{ color: '#4479ff', fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="light" >
