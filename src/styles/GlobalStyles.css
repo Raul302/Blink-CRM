@@ -208,7 +208,9 @@ input, textarea, button, select {
     font: inherit;
     vertical-align: baseline;
 }
-
+.modal-90w {
+    max-width: 55% !important;
+}
 @media screen and (min-width: 480px) {
     .twml{
         margin-top:-50px;

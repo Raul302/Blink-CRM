@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useState, useEffect } from 'react'
+import React, { useState,useRef, useEffect } from 'react'
 import *  as FIcons from "react-icons/fi";
 import *  as FAIcons from "react-icons/fa";
 import *  as HIcons from "react-icons/hi";
@@ -19,6 +19,7 @@ import {
 } from 'react-router-dom';
 import { useAlert } from 'react-alert'
 import axios from 'axios';
+import NotificationAlert from "react-notification-alert";
 
 function Bio() {
     // Set moment spanish
@@ -26,6 +27,7 @@ function Bio() {
     const alert = useAlert();
     const { username: email } = useSelector(state => state.auth);
     const { active } = useSelector(state => state.colleges);
+    const notificationAlert = useRef();
     useEffect(() => {
         consult();
         getBioRecords();
@@ -58,7 +60,6 @@ function Bio() {
             }
         })
             .then(function (response) {
-                console.log('response', response.data);
                 setBioRecords(response.data);
             });
     }
@@ -99,7 +100,6 @@ function Bio() {
     const [values, setValues] = useState([{}]);
     const showModal = function showModal(row) {
         setModal(true);
-        console.log('ROW', row);
         setParam(row);
         setTempParam(row.text);
     };
@@ -120,9 +120,7 @@ function Bio() {
     async function onSubmit(data) {
         if(modal){
             let obj = param;
-            console.log('obj',obj);
             obj.text = tempParam;
-            console.log(obj);
             await axios.post('http://api.boardingschools.mx/api/bio/update', obj, {
                 headers: {
                     "Accept": "application/json"
@@ -158,7 +156,6 @@ function Bio() {
         setTextBio(e.target.value);
     }
     // const showText = (text) =>{
-    // console.log('text');
     // }
     const handleEdit = (e) => {
         setTempParam(param.text);
@@ -206,29 +203,46 @@ function Bio() {
     }
 
     const changeBio = async (e) => {
-        console.log('EEE',e.target.value);
         setTempParam(e.target.value);
         let name = '';
         name = await e.target.value;
     }
     const deleteComment = async (id) => {
-        console.log('id',id);
         await axios.post('http://api.boardingschools.mx/api/bio/delete', {id:id}, {
             headers: {
                 "Accept": "application/json"
             }
         })
             .then(function (response) {
-                alert.show('Borrado correctamente');
+                notification('success','Borrado correctamente');
                 handleClose();
                 getBioRecords();
             });
     }
+    const notification =  (type,message) => {
+        let place = "tc";
+        var options = {};
+        options = {
+          place: place,
+          message: (
+            <div>
+              <div>
+                {message}
+              </div>
+            </div>
+          ),
+          type: type,
+          icon: "nc-icon nc-bell-55",
+          autoDismiss: 7,
+          }
+        notificationAlert.current.notificationAlert(options);
+     }
 
     return (
         <>
-            <div className="mt-3 container cwml">
-                <div class="card mt-3">
+            <div className="content">
+            <NotificationAlert ref={notificationAlert} />
+                <div class="card">
                     <div class="card-body">
                         <div class="row">
                             <span onClick={() => showModalLog('Llamada')} class="Inter600B">
@@ -248,7 +262,7 @@ function Bio() {
                     </div>
                 </div>
                 {bioRecords ?
-                    <div className="ag-theme-alpine twml mt-3" style={{ width: '100%', height: '300px' }}>
+                    <div className="content" style={{ width: '100%', height: '300px' }}>
                         <table class="table">
                             <thead style={{ backgroundColor: '#F8F8F8' }} >
                                 <tr>
@@ -293,8 +307,10 @@ function Bio() {
                 {/* FirstModal */}
                 <Modal
                     show={modal}
-                    dialogClassName="modalMax"
+                    dialogClassName="modal-90w"
                     onHide={handleClose}
+                    style={{marginTop:'50px'}}
+
 
                 >
                     <Modal.Body style={{ background: '#F4F5F6', border: '1px' }}>
@@ -354,7 +370,7 @@ function Bio() {
                                                     onSubmit={handleSubmit(onSubmit)}
                                                     className="float-right" type="submit"
                                                     variant="primary">Guardar</Button>
-                                                <Button onClick={handleEdit} style={{ color: '#4479ff', fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="light" >
+                                                <Button onClick={handleEdit} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                                     Cancelar
                                 </Button>
                                             </Col>
@@ -374,7 +390,8 @@ function Bio() {
 
                 <Modal
                     show={modalLog}
-                    dialogClassName="modalMax"
+                    style={{marginTop:'50px'}}
+                    dialogClassName="modal-90w"
                     onHide={handleClose}
 
                 >
@@ -415,7 +432,7 @@ function Bio() {
                                 <Row className="mt-3">
                                     <InputGroup className="">
                                         <InputGroup.Prepend>
-                                            <InputGroup.Text className="Inter600B" style={{ backgroundColor: '#FFFFFF', borderRight: '0' }}>Motivo:</InputGroup.Text>
+                                            <InputGroup.Text className="ml-3 Inter600B" style={{ backgroundColor: '#FFFFFF', borderRight: '0' }}>Motivo:</InputGroup.Text>
                                         </InputGroup.Prepend>
                                         <FormControl style={{ backgroundColor: '#FFFFFF', borderBottom: '0', borderLeft: '0' }} value={subject} id="inlineFormInputGroup" placeholder="" />
                                     </InputGroup>
@@ -433,7 +450,7 @@ function Bio() {
                                             onSubmit={handleSubmit(onSubmit)}
                                             className="float-right" type="submit"
                                             variant="primary">Guardar</Button>
-                                        <Button onClick={handleClose} style={{ color: '#4479ff', fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="light" >
+                                        <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                             Cancelar
                                 </Button>
 

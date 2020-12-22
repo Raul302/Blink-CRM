@@ -2,8 +2,8 @@ import React from 'react'
 
 function Reminds() {
     return (
-        <div>
-            wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+        <div className="content">
+        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
         </div>
     )
 }

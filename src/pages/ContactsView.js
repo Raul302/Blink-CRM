@@ -7,13 +7,12 @@ import { BrowserRouter as Router, Switch,
 export default function ContactsView(props) {
     let { id } = useParams();
     const { pathname } = useLocation();
-    console.log(pathname);
     const [fullName,setFullName] = useState(`${props.contact.name} ${props.contact.father_lastname}`);
     return (
         <>
-         <div className="mt-3 container cwml">
-            <h1 className="Inter400">{fullName}</h1>
-            <div className=" mt-3sc-bdVaJa styles__Nav-sc-19n49a3-0 gOZeoI">
+         <div  style={{marginBottom:'-520px'}} className="content">
+            <h1  style={{marginTop:'-10px'}} className="Inter400">{fullName}</h1>
+            <div style={{marginTop:'-20px'}} className=" mt-3sc-bdVaJa styles__Nav-sc-19n49a3-0 gOZeoI">
                <Link className={[ '/contacts/'+id +'/bio'].includes(pathname) ? 
                'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active Inter600' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl Inter600'} 
                to={"/contacts/"+id+"/bio"}>Bitacora</Link>

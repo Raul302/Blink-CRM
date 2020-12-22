@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Switch,
 function Docs() {
     return (
     <>
-        <div className="mt-3 container cwml">
+        <div className="content">
         <div class=" mt-3sc-bdVaJa styles__Nav-sc-19n49a3-0 ">
         <span class="Inter">Fotografia</span>
         <span class="Inter">Pasaportes</span>

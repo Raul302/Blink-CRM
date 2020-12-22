@@ -11,9 +11,6 @@ import { StreetData } from '../profileComponents/StreetData';
 
 function PersonalData(props) {
     useEffect(() => {
-        // console.log('props',props.contact.contacts_direction);
-        console.log('propsxxx',props.contact);
-        console.log('INPUTLIST',inputList);
         setFilterValues(props.contact);
         consultStates();
     }, [props]);
@@ -62,14 +59,12 @@ function PersonalData(props) {
     const alert = useAlert();
 
     const handleInputChangeEmail = (e, index) => {
-        console.log(inputEmail);
         const { name, value } = e.target;
         const list = [...inputEmail];
         list[index][name] = value;
         setInputEmail(list);
     };
     const handleInputTypeEmail = (e, index) => {
-        console.log(inputEmail);
         const { name, value } = e.target;
         const list = [...inputEmail];
         list[index][name] = value;
@@ -90,7 +85,6 @@ function PersonalData(props) {
 
     // ----------------------------------------------------------    
     const handleInputChangePhone = (e, index) => {
-        console.log(inputPhone);
         const { name, value } = e.target;
         const list = [...inputPhone];
         list[index][name] = value;
@@ -111,8 +105,6 @@ function PersonalData(props) {
     // ---------------------------------------------------------
     // handle input change
     const handleInputChange = (e, index) => {
-        console.log('CAMBIOOO',e.target);
-        console.log(inputList);
         const { name, value } = e.target;
         const list = [...inputList];
         list[index][name] = value;
@@ -184,7 +176,6 @@ function PersonalData(props) {
         setGrade(props.grade);
         setCicly(props.cicly);
         if(directions.length > 0){
-            console.log('directions',directions);
             setInputList(directions);
         }
         if(phones.length > 0){
@@ -337,7 +328,7 @@ function PersonalData(props) {
                                     <h5 style={{ fontWeight: '600' }} class="Inter card-title">Informacion</h5>
                                 </div>
                                 <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
-                                    <button onClick={(e) => edit()} type="button" class="Inter btn btn-outline-dark">Cancelar</button>
+                                    <button onClick={(e) => edit()} type="button" class="Inter btn btn-danger">Cancelar</button>
                                     <button onSubmit={handleSubmit(onSubmit)}
                                         type="submit" class="Inter ml-1 btn btn-success">Guardar</button>
                                 </div>
@@ -450,7 +441,7 @@ function PersonalData(props) {
                                     <h5 style={{ fontWeight: '600' }} class="Inter card-title">Perfil academico</h5>
                                 </div>
                                 <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
-                                    <button onClick={(e) => editAcademicP()} type="button" class="Inter btn btn-outline-dark">Cancelar</button>
+                                    <button onClick={(e) => editAcademicP()} type="button" class="Inter btn btn-danger">Cancelar</button>
                                     <button onSubmit={handleSubmit(onSubmit)}
                                         type="submit" class="Inter ml-1 btn btn-success">Guardar</button>
                                 </div>
@@ -594,7 +585,7 @@ function PersonalData(props) {
                                     <h5 style={{ fontWeight: '600' }} class="Inter card-title">Detalles de contacto</h5>
                                 </div>
                                 <div class="col-1 d-flex justify-content-end">
-                                    <button onClick={(e) => editCDetails()} type="button" class="Inter btn btn-outline-dark">Cancelar</button>
+                                    <button onClick={(e) => editCDetails()} type="button" class="Inter btn btn-danger">Cancelar</button>
                                     <button onSubmit={handleSubmit(onSubmit)}
                                         type="submit" class="Inter ml-1 btn btn-success">Guardar</button>
                                 </div>

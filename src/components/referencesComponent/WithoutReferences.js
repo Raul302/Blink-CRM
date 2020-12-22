@@ -10,7 +10,6 @@ import axios from 'axios';
 function WithoutReferences(props) {
 
     useEffect(() => {
-        console.log('WITHOUT',props)
     }, [props])
     const [validFieldFour, setvalidFieldFour] = useState(true);
     const [extra, setExtra] = useState(false);
@@ -32,8 +31,6 @@ function WithoutReferences(props) {
    const Add = addrtype.map(Add => Add
    )
    // function showReference (e){
-   //     console.log('e',e.target.value);
-   //     console.log('extra',extra);
    // }
    const showOtherReference = (e) => {
        if (e.target.value) {
@@ -68,7 +65,6 @@ async function onSubmit(data) {
         data.idContact = props.id;
         await axios.post('http://api.boardingschools.mx/api/references',data)
         .then(function (response) {
-          console.log(response);
         })
         showModal4();
         resetReference();
@@ -90,7 +86,6 @@ function handlevalidFour(e) {
     } else {
         setvalidFieldFour(true);
     }
-    // console.log(e.target.value);
 }
 
     return (
@@ -104,11 +99,12 @@ function handlevalidFour(e) {
             {/* Three Modal */}
             <Modal
                 show={modal3}
-                dialogClassName="modalMax"
+                dialogClassName="modal-90w"
+                style={{marginTop:'50px'}}
                 onHide={handleClose}
             >
-                <Modal.Header closeButton>
-                    <Modal.Title style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}>Agregar referencia</Modal.Title>
+                 <Modal.Header style={{height:'60px'}} closeButton>
+                    <Modal.Title style={{ marginTop:'5px',fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}>Agregar referencia</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
                 <form onSubmit={handleSubmitReference(onSubmit)}>
@@ -175,8 +171,8 @@ function handlevalidFour(e) {
                                 <Button 
                                 disabled={validFieldThree || validFieldFour}
                                 className="float-right mb-3 mr-2" type="submit" variant="primary">Guardar</Button>
-                                <Button onClick={handleClose} style={{ color: '#4479ff', fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="light" >
-                                    Cancel
+                                <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
+                                    Cancelar
 </Button>
 
                             </Col>

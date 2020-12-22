@@ -84,53 +84,9 @@ function Docs() {
     }
     return (
         <>
-            {!displays ?
-                <div className="mt-3 container cwml">
-                    <Row>
-                        <div class="col d-flex justify-content-end">
-                            <Button onClick={(e) => handleShow(e)}>Subir archivos</Button>
-                        </div>
-                    </Row>
-                </div>
-                :
-                [loading ?
-                    <div className="mt-3 container cwml">
-                        <Row>
-
-                        </Row>
-                        <Row className="mt-5">
-                            <div class="col-6">
-                                <Skeleton width={150} height={150} count={1} />
-                            </div>
-                            <div class="col-6">
-                                <Skeleton width={150} height={150} count={1} />
-
-                            </div>
-                        </Row>
-                    </div>
-                    :
-                    <div className="mt-3 container cwml">
-                        <Row>
-                            <div class="col d-flex justify-content-end">
-                                <Button onClick={(e) => handleShow(e)}>Subir archivos</Button>
-                            </div>
-                        </Row>
-                        <Row className="mt-3">
-                            <Col className="col-6" style={{backgroundColor:'white',borderStyle:'dashed',borderColor:'#CACACA',borderWidth:'2px'}}>
-                            <img style={{height:'100px',width:'100px'}}className="mt-2 mb-2 playerProfilePic_home_tile" 
-                src={pathFiles + displays.file_path_cuote}></img> 
-                <span style={{ overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',display:'inline-block', maxWidth:'13ch' }}class="Inter">{displays.name_cuote}</span>
-                <span style={{ overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',display:'inline-block', maxWidth:'20ch' }}
-                class="Inter">Cuota {displays.cicly ?? ''}</span>
-                  <a style={{ overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',display:'inline-block', maxWidth:'20ch' }} href={pathFiles + displays.file_path_cuote} target="_blank" rel="noopener noreferrer" download>
-                  <BSicons.BsCloudDownload style={{color:'red'}}/>
-                  </a>      
-                            </Col>
-                      
-                        </Row>
-                    </div>
-                ]
-            }
+        <div className="content">
+        
+        </div>
             {/* FirstModal */}
             <Modal
                 show={modal}
@@ -230,38 +186,6 @@ function Docs() {
                     </form>
                 </Modal.Body>
             </Modal>
-
-            {/* <div className="register_wrapper">
-                    <div className="register_player_column_layout_one">
-                        <div className="register_player_Twocolumn_layout_two">
-                            <form className="myForm">
-                                <div className="formInstructionsDiv formElement">
-                                    <h2 className="formTitle" >Cuota</h2>
-                                    <p className="instructionsText"></p>
-                                    <div className="previewProfilePic" >
-                                        {/* <img style={{height:'100px',width:'100px'}}className="playerProfilePic_home_tile" src={picture}></img> */}
-            {/* </div>
-                                    <div className="register_profile_image">
-                                        <input id="profilePic" type="file" onChange={onChangePicture} />
-                                    </div>
-                                </div>
-                                <div className="fillContentDiv formElement">
-                                    <div className="names formContentElement">
-                                        <input className="inputRequest " type="text" placeholder="First Name" />
-                                        <input className="inputRequest " type="text" placeholder="Last Name" />
-                                    </div>
-                                </div>
-                                <div className="submitButtonDiv formElement">
-                                    <button className="submitButton">Register</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>  */}
-
-
-
-
         </>
     )
 }

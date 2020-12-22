@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useRef } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/GlobalStyles.css';
 import * as GrIcons from 'react-icons/gr';
@@ -6,10 +6,13 @@ import { Row, Col, Button, Modal, Form, FormControl, FormLabel } from 'react-boo
 import { useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
 import axios from 'axios';
+import NotificationAlert from "react-notification-alert";
 
 
 
 function MultipleModals(props) {
+    // Refs
+    const notificationAlert = useRef();
     // states
     const [modal1, setModal1] = useState(false);
     const [modal2, setModal2] = useState(false);
@@ -47,16 +50,12 @@ function MultipleModals(props) {
         2030
     ];
     useEffect(() => {
-        // console.log('states',years);
         consultStates();
         setExtra(false);
 
-        // console.log('states', states);
-        // console.log('cities', cities);
     }, []);
 
     function changeCities(e) {
-        console.log('Cambio', e.target.value)
         let val = e.target.value;
         axios.get('https://www.universal-tutorial.com/api/cities/' + val, {
             headers: {
@@ -79,7 +78,6 @@ function MultipleModals(props) {
             }
         }).then(function (response) {
            x = response.data.auth_token;
-            // console.log('Auth',auth);
         });
         axios.get('https://www.universal-tutorial.com/api/states/Mexico', {
             headers: {
@@ -89,10 +87,7 @@ function MultipleModals(props) {
         }).then(function (response) {
             setStates(response.data);
             setAth(x);
-
-
         });
-
     }
     // Register to save data
     const { register: student, handleSubmit, errors, formState,reset: reset } = useForm({
@@ -116,8 +111,6 @@ function MultipleModals(props) {
     const Add = addrtype.map(Add => Add
     )
     // function showReference (e){
-    //     console.log('e',e.target.value);
-    //     console.log('extra',extra);
     // }
     const showOtherReference = (e) => {
         if (e.target.value) {
@@ -146,7 +139,6 @@ function MultipleModals(props) {
 
     }
     function handlevalidPhone(e) {
-        // console.log('e', e.target.value);
         let regex = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
         // if (!regex.test(e.target.value)) {
         //     setvalidFieldTwo(true);
@@ -207,7 +199,6 @@ function MultipleModals(props) {
         } else {
             setvalidFieldTwo(true);
         }
-        // console.log(e.target.value);
     }
     function handleValid(e) {
         if (e.target.value) {
@@ -215,7 +206,6 @@ function MultipleModals(props) {
         } else {
             setvalidField(true);
         }
-        // console.log(e.target.value);
     }
     function handlevalidFive(e){
         if(e.target.value) {
@@ -225,7 +215,6 @@ function MultipleModals(props) {
         }
     }
     function handlevalidSix(e){
-        // console.log('Holas',e.target.value);
         if(e.target.value) {
             setvalidFieldSix(false);
         } else {
@@ -238,11 +227,9 @@ function MultipleModals(props) {
         } else {
             setvalidFieldFour(true);
         }
-        // console.log(e.target.value);
     }
     async function onSubmit(data) {
         if(modal1 === true){
-            console.log('data',data);
            await axios.post('http://api.boardingschools.mx/api/contacts',data)
               .then(function (response) {
                 setIDContact(response.data.id);
@@ -269,12 +256,13 @@ function MultipleModals(props) {
 
             {/* FirstModal */}
             <Modal
+                style={{marginTop:'50px'}}
                 show={modal1}
-                dialogClassName="modalMax"
+                dialogClassName="modal-90w"
                 onHide={handleClose}
             >
-                <Modal.Header closeButton>
-                    <Modal.Title style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}>Agregar contacto </Modal.Title>
+                <Modal.Header style={{height:'60px'}} closeButton>
+                    <Modal.Title style={{ fontFamily: 'Inter', marginTop:'5px', fontWeight: '600', fontSize: '18px' }}>Agregar contacto </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
 
@@ -460,7 +448,7 @@ function MultipleModals(props) {
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="primary">Guardar</Button>
-                                <Button onClick={handleClose} style={{ color: '#4479ff', fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="light" >
+                                <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                     Cancel
                 </Button>
 
@@ -473,16 +461,15 @@ function MultipleModals(props) {
 
             {/* Second Modal */}
             <Modal
-                style={{ height: '604px', maxHeight: '604px' }}
+                style={{marginTop:'50px', height: '500px', maxHeight: '604px' }}
                 show={modal2}
-                dialogClassName="modalMax"
+                dialogClassName="modal-90w"
                 onHide={handleClose}
             >
-                <Modal.Header closeButton>
-                    <Modal.Title style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}>Agregar contacto</Modal.Title>
+            <Modal.Header style={{height:'60px'}} closeButton>
+                    <Modal.Title style={{ fontFamily: 'Inter', marginTop:'5px', fontWeight: '600', fontSize: '18px' }}>Agregar contacto</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
-                    <div className="row mt-5"></div>
                     <div className="row mt-5"></div>
                     <div className="row mt-5"></div>
                     <div className="container">
@@ -491,25 +478,24 @@ function MultipleModals(props) {
                                 <h1 className="Inter600B">Contacto Guardado!</h1>
                             </div>
                         </div>
-                        <div className="row">
+                        <div style={{marginTop:'-15px'}} className="row">
                             <div className="mx-auto">
                                 <span className="Inter500" > ¿Qué mas te gustaría hacer?</span>
                             </div>
                         </div>
                     </div>
-                    <div className="row mt-2">
+                    <div className="row">
                         <div className="mx-auto">
                             <button className="btn btn-primary Inter600" onClick={showModal3}>Agregar una referencia</button>
 
                         </div>
                     </div>
-                    <div className="row mt-2">
+                    <div className="row ">
                         <div className="mx-auto">
-                            <button style={{ width: '181.13px' }} onClick={showModal1} className="btn btn-primary Inter600">Agregar un contacto</button>
-
+                            <button  onClick={showModal1} className="btn btn-primary Inter600">Agregar un contacto</button>
                         </div>
                     </div>
-                    <div className="row mt-2">
+                    <div className="row">
                         <div className="mx-auto">
                             <a className="Inter500B" onClick={handleClose}>Listo!</a>
                         </div>
@@ -525,11 +511,12 @@ function MultipleModals(props) {
             {/* Three Modal */}
             <Modal
                 show={modal3}
-                dialogClassName="modalMax"
                 onHide={handleClose}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}>Agregar referencia</Modal.Title>
+                dialogClassName="modal-90w"
+                style={{marginTop:'50px', height: '500px', maxHeight: '604px' }}
+                >
+                <Modal.Header style={{height:'60px'}} closeButton>
+                <Modal.Title style={{ fontFamily: 'Inter', marginTop:'5px', fontWeight: '600', fontSize: '18px' }}>Agregar referencia</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
                 <form onSubmit={handleSubmitReference(onSubmit)}>
@@ -596,7 +583,7 @@ function MultipleModals(props) {
                                 <Button 
                                 disabled={validFieldThree || validFieldFour}
                                 className="float-right mb-3 mr-2" type="submit" variant="primary">Guardar</Button>
-                                <Button onClick={handleClose} style={{ color: '#4479ff', fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="light" >
+                                <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                     Cancel
 </Button>
 
@@ -612,15 +599,14 @@ function MultipleModals(props) {
             {/* Four Modal */}
             <Modal
                 show={modal4}
-                dialogClassName="modalMax"
                 onHide={handleClose}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}>Agregar Referencia</Modal.Title>
+                dialogClassName="modal-90w"
+                style={{marginTop:'50px', height: '500px', maxHeight: '604px' }}
+                >
+                <Modal.Header style={{height:'60px'}} closeButton>
+                <Modal.Title style={{ fontFamily: 'Inter', marginTop:'5px', fontWeight: '600', fontSize: '18px' }}>Agregar Referencia</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
-                    <div className="row mt-5"></div>
-                    <div className="row mt-5"></div>
                     <div className="row mt-5"></div>
                     <div className="container">
                         <div className="row">
@@ -634,19 +620,19 @@ function MultipleModals(props) {
                             </div>
                         </div>
                     </div>
-                    <div className="row mt-2">
+                    <div className="row">
                         <div className="mx-auto">
                             <button className="btn btn-primary Inter600" onClick={showModal3}>Agregar una referencia</button>
 
                         </div>
                     </div>
-                    <div className="row mt-2">
+                    <div className="row">
                         <div className="mx-auto">
-                            <button style={{ width: '181.13px' }} onClick={showModal1} className="btn btn-primary Inter600">Agregar un contacto</button>
+                            <button onClick={showModal1} className="btn btn-primary Inter600">Agregar un contacto</button>
 
                         </div>
                     </div>
-                    <div className="row mt-2">
+                    <div className="row ">
                         <div className="mx-auto">
                             <a className="Inter500B" onClick={handleClose}>Terminar</a>
                         </div>

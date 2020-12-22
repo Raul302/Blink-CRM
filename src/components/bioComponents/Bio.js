@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useState, useEffect } from 'react'
+import React, { useState,useRef, useEffect } from 'react'
 import *  as FIcons from "react-icons/fi";
 import *  as FAIcons from "react-icons/fa";
 import *  as HIcons from "react-icons/hi";
@@ -9,8 +9,8 @@ import * as MDIcons from "react-icons/md";
 import * as BIIcons from "react-icons/bi";
 import * as GRIcons from "react-icons/gr";
 import { useForm } from "react-hook-form";
-import { useParams,} from "react-router";
-import { Row, Col, Button, Modal, Form, InputGroup, Popover, OverlayTrigger, FormControl, FormLabel } from 'react-bootstrap';
+import { useParams, } from "react-router";
+import {  Button, Modal, Form, InputGroup, Popover, OverlayTrigger, FormControl, FormLabel } from 'react-bootstrap';
 import Select from 'react-select';
 import moment from 'moment'
 import 'moment/locale/es'  // without this line it didn't work
@@ -20,6 +20,16 @@ import {
 } from 'react-router-dom';
 import { useAlert } from 'react-alert'
 import axios from 'axios';
+import {
+    Card,
+    CardHeader,
+    CardBody,
+    CardTitle,
+    Table,
+    Row,
+    Col,
+  } from "reactstrap";
+import NotificationAlert from "react-notification-alert";
 
 
 function Bio() {
@@ -27,6 +37,7 @@ function Bio() {
     // Set moment spanish
     moment.locale('es-mx')
     const alert = useAlert();
+    const notificationAlert = useRef();
     const { username: email } = useSelector(state => state.auth);
     useEffect(() => {
         consult();
@@ -119,7 +130,7 @@ function Bio() {
         setModalLog(false);
     }
     async function onSubmit(data) {
-        if(modal){
+        if (modal) {
             let obj = param;
             obj.text = tempParam;
             await axios.post('http://api.boardingschools.mx/api/bio/update', obj, {
@@ -157,7 +168,6 @@ function Bio() {
         setTextBio(e.target.value);
     }
     // const showText = (text) =>{
-    // console.log('text');
     // }
     const handleEdit = (e) => {
         setTempParam(param.text);
@@ -210,7 +220,7 @@ function Bio() {
         name = await e.target.value;
     }
     const deleteComment = async (id) => {
-        await axios.post('http://api.boardingschools.mx/api/bio/delete', {id:id}, {
+        await axios.post('http://api.boardingschools.mx/api/bio/delete', { id: id }, {
             headers: {
                 "Accept": "application/json"
             }
@@ -224,7 +234,7 @@ function Bio() {
 
     return (
         <>
-            <div className="mt-3 container cwml">
+            <div className="content">
                 <div class="card mt-3">
                     <div class="card-body">
                         <div class="row">
@@ -245,43 +255,56 @@ function Bio() {
                     </div>
                 </div>
                 {bioRecords ?
-                    <div className="ag-theme-alpine twml mt-3" style={{ width: '100%', height: '300px' }}>
-                        <table class="table">
-                            <thead style={{ backgroundColor: '#F8F8F8' }} >
-                                <tr>
-                                    <th >Motivo</th>
-                                    <th >Fecha</th>
-                                    <th >Texto</th>
-                                    <th >Participantes</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {bioRecords.map(row => (
-                                    <tr onClick={(e) => showModal(row)} key={row.id}>
-                                        <td>{showSubject(row.subject)}</td>
-                                        <td>{showDate(row.date)}</td>
-                                        <td >
-                                            <OverlayTrigger trigger={["hover", "hover"]} placement="top"
-                                                overlay={PopoverComponent(row.text)}>
-                                                <Button variant="white">
-                                                    <svg width="16" height="16" viewBox="0 0 16 16" style={{ color: 'rgb(192, 203, 227)' }}>
-                                                        <path fill="currentColor"
-                                                            d="M9.944 0a.72.72 0 0 1 .511.213l4.333 4.364A.73.73 0 0 1 15 5.09v8.727C15 15.023 14.03 16 12.833 16H4.167A2.174 2.174 0 0 1 2 13.818V2.182C2 .977 2.97 0 4.167 0h5.777zm-.299 1.455H4.167a.725.725 0 0 0-.723.727v11.636c0 .402.324.727.723.727h8.666a.725.725 0 0 0 .723-.727V5.392l-3.91-3.937z"></path><path fill="currentColor" d="M10.667 4.364h3.61c.4 0 .723.325.723.727a.725.725 0 0 1-.722.727H9.944a.725.725 0 0 1-.722-.727V.727c0-.401.324-.727.722-.727.4 0 .723.326.723.727v3.637zM11.389 8c.399 0 .722.326.722.727a.725.725 0 0 1-.722.728H5.61a.725.725 0 0 1-.722-.728c0-.401.323-.727.722-.727h5.778zM11.389 10.91c.399 0 .722.325.722.726a.725.725 0 0 1-.722.728H5.61a.725.725 0 0 1-.722-.728c0-.401.323-.727.722-.727h5.778zM7.056 5.09c.398 0 .722.327.722.728a.725.725 0 0 1-.722.727H5.61a.725.725 0 0 1-.722-.727c0-.401.323-.727.722-.727h1.445z">
-                                                        </path>
-                                                    </svg>
-                                                </Button>
-                                            </OverlayTrigger>
-                                        </td>
-                                        <td>{row.participants.map(part => (
-                                            <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{showParticipant(part.name)}</span>
-                                        ))}
+                    <div className="content">
+                        <NotificationAlert ref={notificationAlert} />
+                        <Row>
+                            <Col md="12">
+                                <Card>
+                                    <CardHeader>
+                                        {/* <CardTitle tag="h4">Usuarios</CardTitle> */}
+                                    </CardHeader>
+                                    <CardBody>
+                                        <Table responsive>
+                                            <thead className="text-primary">
+                                                <tr>
+                                                    <th >Motivo</th>
+                                                    <th >Fecha</th>
+                                                    <th >Texto</th>
+                                                    <th >Participantes</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {bioRecords.map(row => (
+                                                    <tr onClick={(e) => showModal(row)} key={row.id}>
+                                                        <td>{showSubject(row.subject)}</td>
+                                                        <td>{showDate(row.date)}</td>
+                                                        <td >
+                                                            <OverlayTrigger trigger={["hover", "hover"]} placement="top"
+                                                                overlay={PopoverComponent(row.text)}>
+                                                                <Button variant="white">
+                                                                    <svg width="16" height="16" viewBox="0 0 16 16" style={{ color: 'rgb(192, 203, 227)' }}>
+                                                                        <path fill="currentColor"
+                                                                            d="M9.944 0a.72.72 0 0 1 .511.213l4.333 4.364A.73.73 0 0 1 15 5.09v8.727C15 15.023 14.03 16 12.833 16H4.167A2.174 2.174 0 0 1 2 13.818V2.182C2 .977 2.97 0 4.167 0h5.777zm-.299 1.455H4.167a.725.725 0 0 0-.723.727v11.636c0 .402.324.727.723.727h8.666a.725.725 0 0 0 .723-.727V5.392l-3.91-3.937z"></path><path fill="currentColor" d="M10.667 4.364h3.61c.4 0 .723.325.723.727a.725.725 0 0 1-.722.727H9.944a.725.725 0 0 1-.722-.727V.727c0-.401.324-.727.722-.727.4 0 .723.326.723.727v3.637zM11.389 8c.399 0 .722.326.722.727a.725.725 0 0 1-.722.728H5.61a.725.725 0 0 1-.722-.728c0-.401.323-.727.722-.727h5.778zM11.389 10.91c.399 0 .722.325.722.726a.725.725 0 0 1-.722.728H5.61a.725.725 0 0 1-.722-.728c0-.401.323-.727.722-.727h5.778zM7.056 5.09c.398 0 .722.327.722.728a.725.725 0 0 1-.722.727H5.61a.725.725 0 0 1-.722-.727c0-.401.323-.727.722-.727h1.445z">
+                                                                        </path>
+                                                                    </svg>
+                                                                </Button>
+                                                            </OverlayTrigger>
+                                                        </td>
+                                                        <td>{row.participants.map(part => (
+                                                            <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{showParticipant(part.name)}</span>
+                                                        ))}
 
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </Table>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                        </Row>
                     </div>
+
                     :
                     ''
                 }
@@ -290,7 +313,8 @@ function Bio() {
                 {/* FirstModal */}
                 <Modal
                     show={modal}
-                    dialogClassName="modalMax"
+                    dialogClassName="modal-90w"
+                    style={{marginTop:'50px'}}
                     onHide={handleClose}
 
                 >
@@ -302,7 +326,7 @@ function Bio() {
                                         {param.subject}
                                     </div>
                                     <div class="justify-content-end">
-                                    <FAIcons.FaTrashAlt style={{color:'red'}} size={18} onClick={(e) => {deleteComment(param.id)}} /> 
+                                        <FAIcons.FaTrashAlt style={{ color: '#EF8157' }} size={18} onClick={(e) => { deleteComment(param.id) }} />
                                     </div>
                                 </Row>
                                 <Row className="mt-2">
@@ -351,7 +375,7 @@ function Bio() {
                                                     onSubmit={handleSubmit(onSubmit)}
                                                     className="float-right" type="submit"
                                                     variant="primary">Guardar</Button>
-                                                <Button onClick={handleEdit} style={{ color: '#4479ff', fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="light" >
+                                                <Button onClick={handleEdit} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                                     Cancelar
                                 </Button>
                                             </Col>
@@ -370,8 +394,9 @@ function Bio() {
                 </Modal>
 
                 <Modal
+                    style={{marginTop:'50px'}}
                     show={modalLog}
-                    dialogClassName="modalMax"
+                    dialogClassName="modal-90w"
                     onHide={handleClose}
 
                 >
@@ -430,7 +455,7 @@ function Bio() {
                                             onSubmit={handleSubmit(onSubmit)}
                                             className="float-right" type="submit"
                                             variant="primary">Guardar</Button>
-                                        <Button onClick={handleClose} style={{ color: '#4479ff', fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="light" >
+                                        <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                             Cancelar
                                 </Button>
 

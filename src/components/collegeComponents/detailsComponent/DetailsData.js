@@ -8,7 +8,6 @@ import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux';   
 function DetailsData(props) {
     const {active} = useSelector( state => state.colleges);
-console.log(active);
 
     return (
         <>

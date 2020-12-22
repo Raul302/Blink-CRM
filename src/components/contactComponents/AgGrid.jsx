@@ -71,8 +71,6 @@ function GridExample(props) {
         return rowData;
     };
     useEffect(() => {
-        console.log('TableContacts');
-        console.log()
     },[props]);
     const [rowData, setRowData] = useState(props.rowData);
     

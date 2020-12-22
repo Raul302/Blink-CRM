@@ -14,7 +14,6 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 
 const goRouter = function (param){
-    console.log('Hola este es el param',param);
 }
 function Contacts() {
     const [rowData, setRowData] = useState([]);
@@ -26,7 +25,6 @@ function Contacts() {
 
     async function consultRow(){
         setLoading(true);
-        console.log('Consulte');
         await axios.get('http://api.boardingschools.mx/api/contacts', {
             headers: {
                 "Accept": "application/json"
@@ -39,25 +37,16 @@ function Contacts() {
         });
     }
     return (
-        <>
-        <div className="mt-3 container cwml animate__animated animate__fadeIn">
-            <div class=" row mt-5">
-                <div class="col-9 container">
-                <h1 className="Inter400">Contactos</h1>
-                </div>
-                <div class="col-3">
+        <div className="content animate__animated animate__fadeIn">
+        <div class="row">
+            <div class="col-12">
+            <div class="col d-flex justify-content-end">
             <MultipleModals consult={consultRow}/>
-                </div>
             </div>
-            <div class="row">
-                {loading == false ?
-                <TableContacts rowData={rowData} />
-                :
-                <h4>Cargando...</h4>
-                }
+              <TableContacts rowData={rowData} />
             </div>
         </div>
-        </> 
+        </div>
     )
 }
 

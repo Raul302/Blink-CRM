@@ -40,7 +40,6 @@ function ReferencesData(props) {
     )
 
     useEffect(() => {
-      console.log('Props',props);
       typeRef(props.reference);
       consultStates();
       setFilterValues(props.reference);
@@ -56,10 +55,8 @@ function ReferencesData(props) {
         }
         if (e.target) {
             if(e.target.value != undefined){
-                console.log('EPA',e);
                 const list = [...inputList];
                 // list[i][name] = value;
-                console.log('LIST',list[i]);
                  handleInputChange(e,i);            
                 setState(e.target.value);
             }
@@ -115,7 +112,6 @@ function ReferencesData(props) {
         setNameRefO(e.target.value);
     }
     const handleInputChangeEmail = (e, index) => {
-        console.log(inputEmail);
         const { name, value } = e.target;
         const list = [...inputEmail];
         list[index][name] = value;
@@ -136,7 +132,6 @@ function ReferencesData(props) {
 
     // ----------------------------------------------------------    
     const handleInputChangePhone = (e, index) => {
-        console.log(inputPhone);
         const { name, value } = e.target;
         const list = [...inputPhone];
         list[index][name] = value;
@@ -157,7 +152,6 @@ function ReferencesData(props) {
     // ---------------------------------------------------------
     // handle input change
     const handleInputChange = (e, index) => {
-        console.log(inputList);
         const { name, value } = e.target;
         const list = [...inputList];
         list[index][name] = value;
@@ -385,7 +379,7 @@ function ReferencesData(props) {
                     <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
                         <button  onClick={(e) => editing()}
                         type="button"
-                         class="Inter btn btn-outline-dark">Cancelar</button>
+                         class="Inter btn btn-danger">Cancelar</button>
                         <button onSubmit={handleSubmit(onSubmit)}
                             type="submit" class="Inter ml-1 btn btn-success">Guardar</button>
                     </div>

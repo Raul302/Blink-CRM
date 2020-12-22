@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useRef } from 'react'
 import * as IOIcons from "react-icons/io";
 import * as BIIcons from "react-icons/bi";
 import { Row, Col, Button, Modal, Form, InputGroup, FormControl } from 'react-bootstrap';
@@ -8,14 +8,15 @@ import axios from 'axios';
 import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
 import { newCollege } from '../../actions/colleges';
-// import { setColleges, starLoadingColleges,activeCollege } from '../actions/colleges';
 import {starLoadingColleges} from '../../actions/colleges';
+import NotificationAlert from "react-notification-alert";
 
 function AddOrEditCollege() {
     useEffect(() => {
         consultCountries();
         consultStates();
     }, [])
+    const notificationAlert = useRef();
     const dispatch = useDispatch();
     const [sport,setSports] = useState();
     const [art,setArts] = useState();
@@ -121,10 +122,15 @@ function AddOrEditCollege() {
             }
     }
     function handleShow() {
+        setModalTwo(false);
+        setModalThree(false);
+        setModalFour(false);
         setModal(!modal);
     }
     const showModalTwo = function close() {
         setModal(false);
+        setModalThree(false);
+        setModalFour(false);
         setModalTwo(true);
     }
     const showModalFour = function close(){
@@ -136,6 +142,7 @@ function AddOrEditCollege() {
     const showModalThree = function close() {
         setModal(false);
         setModalTwo(false);
+        setModalFour(false);
         setModalThree(true);
     }
     function handleClose() {
@@ -187,11 +194,11 @@ function AddOrEditCollege() {
             {/* FirstModal */}
             <Modal
                 show={modal}
-                dialogClassName="modalMax"
-                // onHide={handleClose}
+                style={{marginTop:'50px'}}
+                dialogClassName="modal-90w"
             >
-                <Modal.Header closeButton>
-                    <Modal.Title style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}>Agregar colegio </Modal.Title>
+                 <Modal.Header style={{height:'60px'}} closeButton>
+                    <Modal.Title style={{ fontFamily: 'Inter', marginTop:'5px', fontWeight: '600', fontSize: '18px' }}>Agregar colegio </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
 
@@ -276,7 +283,7 @@ function AddOrEditCollege() {
                                     disabled={!formState.isValid}
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="primary">Siguiente</Button>
-                                <Button onClick={handleClose} style={{ color: '#4479ff', fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="light" >
+                                <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                     Cancelar
                                 </Button>
                             </Col>
@@ -289,11 +296,11 @@ function AddOrEditCollege() {
             {/* Second Modal */}
              <Modal
                 show={modalTwo}
-                dialogClassName="modalMax"
-                // onHide={handleClose}
+                style={{marginTop:'50px'}}
+                dialogClassName="modal-90w"
             >
-                <Modal.Header closeButton>
-                    <Modal.Title style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}>Facts & Figures </Modal.Title>
+                 <Modal.Header style={{height:'60px'}} closeButton>
+                    <Modal.Title style={{ fontFamily: 'Inter', marginTop:'5px', fontWeight: '600', fontSize: '18px' }}>Facts & Figures </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
 
@@ -382,14 +389,14 @@ function AddOrEditCollege() {
                                     <Form.Label className="formGray">Total boarding students</Form.Label>
                                     <Form.Control name="total_boarding_grade" ref={register({
                                             })}
-                                            class="form-control" type="number" min="0"  >
+                                            className="form-control" type="number" min="0"  >
                                     </Form.Control>
                                 </Col>
                                 <Col className="col-4">
                                     <Form.Label className="formGray">Total international students</Form.Label>
                                     <Form.Control name="total_international_grade" ref={register({
                                             })}
-                                            class="form-control" type="number" min="0"  >
+                                            className="form-control" type="number" min="0"  >
                                     </Form.Control>
                                 </Col>
                             </Row>
@@ -398,14 +405,14 @@ function AddOrEditCollege() {
                                     <Form.Label className="formGray">Total day students</Form.Label>
                                     <Form.Control name="total_day_students" ref={register({
                                             })}
-                                            class="form-control" type="number" min="0"  >
+                                            className="form-control" type="number" min="0"  >
                                     </Form.Control>
                                 </Col>
                                 <Col className="col-4">
                                     <Form.Label className="formGray">Total students in school</Form.Label>
                                     <Form.Control name="total_students_in_school" ref={register({
                                             })}
-                                            class="form-control" type="number" min="0"  >
+                                            className="form-control" type="number" min="0"  >
                                     </Form.Control>
                                 </Col>
                             </Row>
@@ -416,8 +423,11 @@ function AddOrEditCollege() {
                             <Col>
                                 <Button
                                     className="float-right mb-3 mr-2" type="submit"
-                                    onSubmit={handleSubmit(onSubmit)}
+                                    onSubmit={(e)=> handleShow()}
                                     variant="primary">Siguiente</Button>
+                                     <Button onClick={(e)=>handleShow()} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
+                                    Atras
+                                </Button>
                             </Col>
                         </Row>
                     </form>
@@ -429,16 +439,16 @@ function AddOrEditCollege() {
              {/* Second Modal */}
              <Modal
                 show={modalThree}
-                dialogClassName="modalMax"
-                // onHide={handleClose}
+                style={{marginTop:'50px'}}
+                dialogClassName="modal-90w"
             >
-                <Modal.Header closeButton>
-                    <Modal.Title style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}> </Modal.Title>
+                 <Modal.Header style={{height:'60px'}} closeButton>
+                    <Modal.Title style={{ fontFamily: 'Inter', marginTop:'5px', fontWeight: '600', fontSize: '18px' }}> </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
 
                     <form  onSubmit={handleSubmit(onSubmit)}>
-                        <div className="container-fluid">
+                        <div class="container-fluid">
                             <Row>
                                 <Col className="col-8">
                                     <Form.Label className="formGray">Sports</Form.Label>
@@ -491,11 +501,11 @@ function AddOrEditCollege() {
             {/* Four modal */}
             <Modal
                 show={modalFour}
-                dialogClassName="modalMax"
-                // onHide={handleClose}
+                style={{marginTop:'50px'}}
+                dialogClassName="modal-90w"
             >
-                <Modal.Header closeButton>
-                    <Modal.Title style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}>Location </Modal.Title>
+                 <Modal.Header style={{height:'60px'}} closeButton>
+                    <Modal.Title style={{ fontFamily: 'Inter', marginTop:'5px', fontWeight: '600', fontSize: '18px' }}>Location </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
 

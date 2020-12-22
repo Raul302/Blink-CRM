@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-import '../App.css';
+// import '../App.css';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import DashboardRoutes from './DashboardRoutes';
 import ContactsRouters from './ContactsRouters';
@@ -14,7 +14,7 @@ import { login } from '../actions/auth';
 import Loader from '../components/loaderComponents/Loader';
 import { loadColleges } from '../helpers/loadColleges';       
 import { setColleges, starLoadingColleges,activeCollege } from '../actions/colleges';
-export const AppRouter = () => {
+export const AppRouter = (props) => {
     const dispatch = useDispatch();
 
     const [ checking, setChecking ] = useState(true);
@@ -74,6 +74,7 @@ export const AppRouter = () => {
                     <PrivateRouter
                     path="/" 
                     component={DashboardRoutes}
+                    {...props}
                     isAuthenticated={ isLoggedIn }
                     />
                     

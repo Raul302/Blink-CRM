@@ -22,12 +22,11 @@ function Profile(props) {
             }
         }).then(function (response) {
             setToken(response.data.auth_token);
-            // console.log('Auth',auth);
         });
     }
     return (
         <>
-            <div className="mt-3 container cwml">
+            <div className="content">
             <PersonalData handleUpdate={updateProfile} token={token} contact={props.contact}/>
             </div>
         </>

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useRef } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/GlobalStyles.css';
 import { Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import { useAlert } from 'react-alert'
 import axios from 'axios';
+import NotificationAlert from "react-notification-alert";
 
 
 function AddEdit(props) {
@@ -19,7 +20,8 @@ function AddEdit(props) {
     const [motherE,setMotherE] = useState(null);
     const [modal, setModal] = useState(false);
     const { register, handleSubmit, errors, reset } = useForm({});
-    const alert = useAlert()
+    const alert = useAlert();
+    const notificationAlert = useRef();
 
     useEffect(() => {
         setModal(props.newUser);
@@ -49,22 +51,19 @@ function AddEdit(props) {
                         timeout: 2000, // custom timeout just for this one alert
                         type: 'success'
                     })
-                  } else {
-                     alert.show('Ocurrio un error por favor intentar mas tarde');
-                  }
+                } else {
+                    alert.show('Ocurrio un error por favor intentar mas tarde');
+                }
             });
         } else {
             await axios.post('http://api.boardingschools.mx/api/register',data)
             .then(function (response) {
               if(response.status === 200){
                 props.handleupdateTable();
-                alert.show('Contacto guardado', {
-                    timeout: 2000, // custom timeout just for this one alert
-                    type: 'success'
-                })
-              } else {
-                 alert.show('Ocurrio un error por favor intentar mas tarde');
-              }
+                notification('success','Usuario guardado');
+            } else {
+                notification('danger','Ocurrio un error,por favor intenta más tarde ó contacta a soporte');
+            }
             });
             reset();
         }
@@ -100,18 +99,37 @@ function AddEdit(props) {
             width: "100%",
         },
     };
-
+ const notification =  (type,message) => {
+        let place = "tc";
+        var options = {};
+        options = {
+          place: place,
+          message: (
+            <div>
+              <div>
+                {message}
+              </div>
+            </div>
+          ),
+          type: type,
+          icon: "nc-icon nc-bell-55",
+          autoDismiss: 7,
+          }
+        notificationAlert.current.notificationAlert(options);
+     }
 
     return (
         <>
+        <NotificationAlert ref={notificationAlert} />
               {/* FirstModal */}
-              <Modal
+               <Modal
+                style={{marginTop:'50px'}}
+                dialogClassName="modal-90w"
                 show={modal}
-                dialogClassName="modalMax"
                 onHide={e => props.handlerClose()}
             >
-                <Modal.Header closeButton>
-                    <Modal.Title style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}>Agregar Usuario </Modal.Title>
+                <Modal.Header style={{height:'60px'}} closeButton>
+                    <Modal.Title style={{ fontFamily: 'Inter', marginTop:'5px', fontWeight: '600', fontSize: '18px' }}>Agregar Usuario </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
 
@@ -215,7 +233,7 @@ function AddEdit(props) {
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="primary">Guardar</Button>
-                                <Button onClick={handleClose} style={{ color: '#4479ff', fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="light" >
+                                <Button onClick={handleClose} style={{  fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                     Cancelar
                 </Button>
 
@@ -232,9 +250,11 @@ function AddEdit(props) {
                 show={modalEdit}
                 dialogClassName="modalMax"
                 onHide={handleClose}
+                dialogClassName="modal-90w"
+
             >
-                <Modal.Header closeButton>
-                    <Modal.Title style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}>Editar Usuario </Modal.Title>
+                <Modal.Header style={{height:'60px'}} closeButton>
+                    <Modal.Title style={{ fontFamily: 'Inter', marginTop:'5px', fontWeight: '600', fontSize: '18px' }}>Editar Usuario </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
                     <form onSubmit={handleSubmit(onSubmit)}>
@@ -308,7 +328,7 @@ function AddEdit(props) {
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="primary">Guardar</Button>
-                                <Button onClick={handleClose} style={{ color: '#4479ff', fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="light" >
+                                <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                     Cancelar
                 </Button>
 

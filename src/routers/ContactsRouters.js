@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import NavBar from '../components/NavBar';
+import React, { useState,useRef, useEffect } from 'react'
 import {
     BrowserRouter as Router, Switch, Redirect,
-    Route,useLocation
+    Route, useLocation
 } from 'react-router-dom';
 import Dashboard from '../pages/Dashboard';
 import Users from '../pages/Users';
@@ -16,15 +15,20 @@ import { Spinner } from 'react-bootstrap';
 import { useParams } from "react-router";
 import Docs from '../components/docsComponents/Docs';
 import axios from 'axios';
+import Nav from "../components/Nav/Nav";
+import SideBar from '../components/SideBar/SideBar';
+import routes from "../routes.js";
 
 
-
-function ContactsRouters() {
+function ContactsRouters(props) {
     let { id } = useParams();
     const { pathname } = useLocation();
     const [loading, setLoading] = useState(true);
     const [contact, setContact] = useState(null);
-    const [references,setReferences] = useState(null);
+    const [references, setReferences] = useState(null);
+    const [backgroundColor, setBackGroundColor] = useState('black');
+    const [activeColor, setActiveColor] = useState('info');
+    const mainPanel = useRef();
     useEffect(() => {
         consultContact(id);
     }, [])
@@ -39,19 +43,27 @@ function ContactsRouters() {
             setLoading(false);
         });
     }
-    function update(){
+    function update() {
         consultContact(id);
     }
     return (
-        <>
-            <NavBar />
-            { loading === true ?
-                <div className="mt-5 container cwml">
+        <div className="wrapper">
+            <SideBar
+                {...props}
+                routes={routes}
+                bgColor={backgroundColor}
+                activeColor={activeColor}
+            />
+            <div className="main-panel" ref={mainPanel}>
+                <Nav {...props} />
+                { loading === true ?
+                <div className="content">
                     <Spinner animation="border" variant="primary" />
                 </div>
                 :
                 <>
-                    <ContactsView contact={contact } />
+                   <ContactsView contact={contact } />
+            <Nav {...props}/>
                     <Switch>
                     <Route exact path="/contacts/:id/bio"
                         render={(props) => (
@@ -77,7 +89,7 @@ function ContactsRouters() {
                                 />
                         )}
                     />
-                      <Route exact path="/contacts/:id/docs"
+                    <Route exact path="/contacts/:id/docs"
                         render={(props) => (
                                 <Docs {...props}
                                 updateRoute={update}
@@ -87,11 +99,10 @@ function ContactsRouters() {
                     />
                         <Redirect to="/login" />
                     </Switch>
-                </>
+                    </>
             }
-
-
-        </>
+            </div>
+        </div>
     )
 }
 

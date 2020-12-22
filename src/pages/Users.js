@@ -50,21 +50,21 @@ function Users() {
 
     }    
     return (
-        <> 
-            <div className="mt-5 container cwml animate__animated animate__fadeIn">
-            <h1 className="Inter400">Usuarios</h1>
+        <div className="content">
+        <div class="row">
+            <div class="col-12">
             <div class="col d-flex justify-content-end">
-                <button class="btn btn-primary" onClick={showModal}><FAIcons.FaUserPlus />  Usuario</button>
+            <button class="btn btn-primary" onClick={showModal}><FAIcons.FaUserPlus />  Usuario</button>
+        </div>
+        {/* Tabla */}
+        <Suspense fallback={<div>Loading...</div>}>
+            <TableUsers handleupdateTable= {consultRow} clickHandler={showModalEdit} rowData={rowData}/>
+            <AddEdit  handleupdateTable= {consultRow} handlerClose= {handleClose} userToEdit={object} editUser={modalEdit} newUser={modal} />
+        </Suspense>
             </div>
-            {/* Tabla */}
-            <Suspense fallback={<div>Loading...</div>}>
-                <TableUsers handleupdateTable= {consultRow} clickHandler={showModalEdit} rowData={rowData}/>
-                <AddEdit  handleupdateTable= {consultRow} handlerClose= {handleClose} userToEdit={object} editUser={modalEdit} newUser={modal} />
-            </Suspense>
-            </div>
-
-
-        </>
+        </div>    
+       </div>
+        
     )
 }
 

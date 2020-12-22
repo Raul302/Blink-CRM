@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import NavBar from '../components/NavBar';
+import React, { useState,useRef, useEffect } from 'react'
 import {
     BrowserRouter as Router, Switch, Redirect,
     Route,useLocation
@@ -17,23 +16,29 @@ import Reminds from '../components/collegeComponents/Reminds';
 import { Spinner } from 'react-bootstrap';
 import { useParams } from "react-router";
 import axios from 'axios';
+import Nav from "../components/Nav/Nav";
+import SideBar from '../components/SideBar/SideBar';
+import routes from "../routes.js";
 
 
 
-function CollegesRouter() {
+function CollegesRouter(props) {
     const [loading, setLoading] = useState(false);
-   
+    const [backgroundColor, setBackGroundColor] = useState('black');
+    const [activeColor, setActiveColor] = useState('info');
+    const mainPanel = useRef();
     return (
-        <>
-            <NavBar />
-            { loading === true ?
-                <div className="mt-5 container cwml">
-                    <Spinner animation="border" variant="primary" />
-                </div>
-                :
-                <>
-                    <CollegesView  />
-                    <Switch>
+        <div className="wrapper">
+        <SideBar
+          {...props}
+          routes={routes}
+          bgColor={backgroundColor}
+          activeColor={activeColor}
+        />
+        <div className="main-panel" ref={mainPanel}>
+            <Nav {...props} />
+          <CollegesView  />
+          <Switch>
                     <Route exact path="/colleges/:id/bio"
                         render={(props) => (
                             <Bio {...props}
@@ -65,12 +70,18 @@ function CollegesRouter() {
                         )}
                     />
                         <Redirect to="/login" />
-                    </Switch>
-                </>
-            }
-
-
-        </>
+          </Switch>
+          {/* <Footer fluid /> */}
+        </div>
+        {/* <FixedPlugin
+          bgColor={this.state.backgroundColor}
+          activeColor={this.state.activeColor}
+          handleActiveClick={this.handleActiveClick}
+          handleBgClick={this.handleBgClick}
+        /> */}
+      </div>
+        
+                    
     )
 }
 

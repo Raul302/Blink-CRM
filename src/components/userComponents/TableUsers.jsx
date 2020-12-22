@@ -1,21 +1,31 @@
-import React, { useState, useEffect, Suspense } from 'react'
+import React, { useState, useEffect, Suspense,useRef } from 'react'
 import *  as FAIcons from "react-icons/fa";
 import axios from 'axios';
 import { useAlert } from 'react-alert'
 import swal from 'sweetalert';
+import {
+    Card,
+    CardHeader,
+    CardBody,
+    CardTitle,
+    Table,
+    Row,
+    Col,
+  } from "reactstrap";
+  import NotificationAlert from "react-notification-alert";
+
 
 function TableUsers(props) {
     
     // Manage of States
     const [user,setUser] = useState();
     const [init] = useState(JSON.parse(localStorage.getItem('user')) || { logged: false });
-    const alert = useAlert();
+    const notificationAlert = useRef();
+
 
     // ComponenDidMount && ComponentDidUpdate
     useEffect(() => {
         setUser(props.rowData);
-        console.log('props',props.rowData);
-        console.log('users',user);
     }, [props]);  
 
 
@@ -27,6 +37,24 @@ function TableUsers(props) {
         });
 
     }
+    const notification =  (type,message) => {
+      let place = "tc";
+      var options = {};
+      options = {
+        place: place,
+        message: (
+          <div>
+            <div>
+              {message}
+            </div>
+          </div>
+        ),
+        type: type,
+        icon: "nc-icon nc-bell-55",
+        autoDismiss: 7,
+        }
+      notificationAlert.current.notificationAlert(options);
+   }
      function deleteUser(id){
         swal({
             title: "Estas seguro?",
@@ -44,7 +72,7 @@ function TableUsers(props) {
                      axios.post('http://api.boardingschools.mx/api/users/delete',datax)
                    .then(function (response) {
                        if(response.status === 200){
-                           alertCustom('Contacto Eliminado correctamente','success');
+                         notification('success','Contacto eliminado correctamente');
                            props.handleupdateTable();
                            }
                        });
@@ -59,19 +87,27 @@ function TableUsers(props) {
     return (
         <>
         {user ?
-        <div className="ag-theme-alpine twml mt-3" style={{ width: '100%', height: '300px' }}>
-                    <table class="table">
-                        <thead style={{ backgroundColor: '#F8F8F8' }} >
-                            <tr>
-                                <th >ID</th>
-                                <th >Nombre</th>
-                                <th >Usuario</th>
-                                <th >Tipo</th>
-                                <th >Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {user.map(row => (
+         <div className="content">
+         <NotificationAlert ref={notificationAlert} />
+         <Row>
+           <Col md="12">
+             <Card>
+               <CardHeader>
+                 {/* <CardTitle tag="h4">Usuarios</CardTitle> */}
+               </CardHeader>
+               <CardBody>
+                 <Table responsive>
+                   <thead className="text-primary">
+                     <tr>
+                     <th >ID</th>
+                     <th >Nombre</th>
+                     <th >Usuario</th>
+                     <th >Tipo</th>
+                     <th >Acciones</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                   {user.map(row => (
                                 <tr>
                                 <td>{row.id}</td>
                                     <td>{row.name} {row.father_lastname}  {row.mother_lastname}</td>
@@ -79,11 +115,12 @@ function TableUsers(props) {
                                     <td>{row.type}</td>
                                     <td> 
                                     <a><FAIcons.FaRegEdit size={18} 
+                                    style={{color:'#34B5B8'}}
                                     onClick={e => props.clickHandler(row)}/> </a>   
                                     {init.type === 'Administrador' 
                                     ?
                                     <>                                 
-                                    <a ><FAIcons.FaTrashAlt style={{color:'red'}} size={18}onClick={() => deleteUser(row.id)} /> </a>
+                                    <a ><FAIcons.FaTrashAlt style={{color:'#DC3545'}} size={18}onClick={() => deleteUser(row.id)} /> </a>
                                     </>
                                     :
                                     <>
@@ -93,9 +130,13 @@ function TableUsers(props) {
                                     </td>
                                     </tr>
                                 ))}
-                        </tbody>
-                    </table>      
-                    </div> 
+                   </tbody>
+                 </Table>
+               </CardBody>
+             </Card>
+           </Col>
+           </Row>
+           </div>
                     :
                     ''
                     }

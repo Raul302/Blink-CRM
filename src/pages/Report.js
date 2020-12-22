@@ -3,9 +3,14 @@ import  'bootstrap/dist/css/bootstrap.min.css';
 
 function Report() {
     return (
-        <div className=" mr-5 container">
-            <h1>Reports</h1>
+        <div className="content">
+        <div class="row">
+            <div class="col-12">
         </div>
+        </div>
+        </div>
+     
+        
     )
 }
 

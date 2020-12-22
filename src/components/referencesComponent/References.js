@@ -17,7 +17,6 @@ function References(props) {
         consultReferences();
         // typeRef(props.reference);
     }, [props])
-    console.log('references',references);
     async function consultReferences() {
          setLoading(true);
         await axios.post('http://api.boardingschools.mx/api/references/show/refcontact',{
@@ -43,13 +42,12 @@ function References(props) {
             }
         }).then(function (response) {
             setToken(response.data.auth_token);
-            // console.log('Auth',auth);
         });
     }
     
     return (
         <>
-            <div className="mt-3 container cwml">
+            <div className="content">
             <WithouReferences handlerUpdate={update} id={props.contact.id} />
             { loading === true ?
             <div class="spinner-border text-primary" role="status">
