@@ -384,4 +384,7 @@ constructed stylesheet
 .hkWfcR {
     margin-right: 0px;
 }
+.modal-image{
+    max-height: 150px !important;
+}
 

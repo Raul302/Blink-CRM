@@ -4,8 +4,7 @@ import React, { Component } from "react";
 import {ProgressBar,Form} from 'react-bootstrap';
 import axios from 'axios';
 import { store } from "store/store";
-import Colleges from "pages/Colleges";
-
+import ModalImage from "react-modal-image";
 var college;
 export class CollegeCuote extends Component {
 constructor(props){
@@ -21,6 +20,9 @@ constructor(props){
     calendar:null,
     turn:0,
     id:null,
+    domain:'',
+    name_calendar:'image',
+    name_cuote:'image',
   }
   
   componentDidMount = () =>{
@@ -60,15 +62,16 @@ uploadFile = ({ target: { files,name } }) =>{
         headers: {'Content-Type':'multipart/form-data'}
         }
         ).then(res => { 
-            console.log(res);
-        const {file_path_cuote,domain,file_path_calendar,id} = res.data;
-        this.setState({ id:id,avatar: domain + file_path_cuote,avatarTwo: domain + file_path_calendar, uploadPercentage: 100 }, ()=>{
+        const {name_calendar,name_cuote,file_path_cuote,domain,file_path_calendar,id} = res.data;
+        this.setState({ domain:domain,name_calendar:name_calendar,
+            name_cuote:name_cuote,id:id,avatar: domain + file_path_cuote,avatarTwo: domain + file_path_calendar, uploadPercentage: 100 }, ()=>{
           setTimeout(() => {
             this.setState({ uploadPercentage: 0 })
           }, 1000);
         })
     })
   }
+  rfc
   handleValid = (e) => {
     this.setState({cicly:e.target.value,turn:0})
   }
@@ -81,30 +84,33 @@ uploadFile = ({ target: { files,name } }) =>{
     .then( res => {
         console.log(res.data);
         const{ domain } = res.data;
-        const {file_path_cuote,calendar,cicly,file_path_calendar,id} = res.data[0];
-        this.setState({ id:id,calendar:calendar,cicly:cicly,avatar: domain + file_path_cuote,avatarTwo: domain + file_path_calendar});
+        const {name_cuote,name_calendar,file_path_cuote,calendar,cicly,file_path_calendar,id} = res.data[0];
+        this.setState({ domain:domain,name_cuote:name_cuote,name_calendar:name_calendar,id:id,calendar:calendar,cicly:cicly,avatar: domain + file_path_cuote,avatarTwo: domain + file_path_calendar});
         console.log(this.state);
     }).catch(error => {
     });
   }
   render() {
-    const {uploadPercentage,turn} = this.state;
+    const {uploadPercentage,turn,domain} = this.state;
+    const {id} = college;
     return (
     <div class="row">
     <div class="col-6">
     <div className="card card-user">
         <div>
             <center>
-            <img
-                className="avatar border-gray"
-                src={this.state.avatar}
-                alt="..."
-            />
+            <ModalImage
+            className="modal-image"
+            small={this.state.avatar}
+            medium={this.state.avatar }
+            large={domain +'c/'+id + '/'+ this.state.name_cuote}
+            alt={this.state.name_cuote}
+            />;
             </center>
             <input
             disabled={!this.state.cicly}
             type="file" className="form-control profile-pic-uploader" name="cicly" onChange={this.uploadFile} />
-            { (uploadPercentage > 0 && turn == 0) && <ProgressBar now={uploadPercentage} active label={`${uploadPercentage}%`} /> }
+            { (uploadPercentage > 0 && turn === 0) && <ProgressBar now={uploadPercentage} active label={`${uploadPercentage}%`} /> }
         </div>
         <div class="row">
             <div class="col">
@@ -136,17 +142,19 @@ uploadFile = ({ target: { files,name } }) =>{
         <div class="col-6">
         <div className="card card-user">
         <div>
-            <center>
-            <img
-                className="avatar border-gray"
-                src={this.state.avatarTwo}
-                alt="..."
-            />
+        <center>
+            <ModalImage
+            className="modal-image"
+            small={this.state.avatarTwo}
+            medium={this.state.avatarTwo}
+            large={domain +'c/'+id + '/'+ this.state.name_calendar}
+            alt={this.state.name_calendar}
+            />;
             </center>
             <input
             disabled={!this.state.calendar}
             type="file" className="form-control profile-pic-uploader" name="calendar" onChange={this.uploadFile} />
-            { (uploadPercentage > 0 && turn == 1) && <ProgressBar now={uploadPercentage} active label={`${uploadPercentage}%`} /> }
+            { (uploadPercentage > 0 && turn === 1) && <ProgressBar now={uploadPercentage} active label={`${uploadPercentage}%`} /> }
         </div>
         <div class="row">
             <div class="col">

@@ -85,7 +85,7 @@ function Docs() {
     }
     return (
         <div className="content">
-            <Row>
+            <Row className="mt-3">
                 <Col>
                 <CollegeCuote/>
                 </Col>
