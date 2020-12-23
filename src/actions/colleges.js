@@ -19,6 +19,20 @@ export const newCollege = (data) =>{
     }
 }
 
+export const deleteCollege = (id) =>{
+    return async (dispatch) => {
+        dispatch( startLoading() );
+    await axios.post('http://api.boardingschools.mx/api/colleges/delete',{id:id})
+        .then(function (response) {
+            dispatch( removeError());
+            dispatch( starLoadingColleges() );
+            dispatch( finishLoading() );
+        }).catch(error =>{
+            dispatch(setError('Ocurrio un error'));
+            dispatch( finishLoading() );
+            });
+    }
+}
 export const starLoadingColleges = () => {
     return async (dispatch) => {
         const colleges = await loadColleges();

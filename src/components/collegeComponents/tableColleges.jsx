@@ -3,9 +3,11 @@ import *  as FAIcons from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 import { loadColleges } from '../../helpers/loadColleges'; 
 import { useHistory } from 'react-router-dom';
-import {activeCollege} from '../../actions/colleges';
+import {activeCollege,deleteCollege} from '../../actions/colleges';
 import Skeleton from 'react-loading-skeleton';
 import { finishLoading } from '../../actions/ui';
+import swal from 'sweetalert';
+
 import {
     Card,
     CardHeader,
@@ -27,7 +29,24 @@ function TableColleges() {
     const history = useHistory();
     function handleGoto(obj){
         dispatch( activeCollege( obj.id,obj) );
-         history.replace("colleges/"+ obj.id + "/bio");
+        history.replace("colleges/"+ obj.id + "/bio");
+    }
+    const dropCollege =  (id) => {
+      swal({
+        title: "Estas seguro?",
+        text: "Una vez eliminado,no podras recuperar este Colegio!",
+        icon: "warning",
+        dangerMode: true,
+        buttons: ["No","Si"],
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          dispatch( deleteCollege(id));
+          notification('success','Colegio eliminado Correctamente');
+        } else {
+          swal("Operacion cancelada!");
+        }
+      });
     }
     const notification =  (type,message) => {
         let place = "tc";
@@ -50,6 +69,7 @@ function TableColleges() {
     return (
         <> {loading ?
             <div class="row mt-2">
+                       <NotificationAlert ref={notificationAlert} />
                 <Skeleton width="60rem"  height={30} count={10} />
             </div>
 
@@ -71,6 +91,7 @@ function TableColleges() {
                      <th >País</th>
                      <th ># Prospecciones</th>
                      <th ># Aplicaciones</th>
+                     <th >Acciones</th>
                      </tr>
                    </thead>
                    <tbody>
@@ -84,6 +105,9 @@ function TableColleges() {
                                     <td>{row.country}</td>
                                     <td> #</td>
                                     <td> # </td>
+                                    <td>
+                                    <a ><FAIcons.FaTrashAlt style={{color:'#DC3545'}} size={18}onClick={(e) => dropCollege(row.id)} /> </a>
+                                    </td>
                                     </tr>
                                 ))} 
                    </tbody>
