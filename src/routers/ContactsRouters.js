@@ -26,8 +26,8 @@ function ContactsRouters(props) {
     const [loading, setLoading] = useState(true);
     const [contact, setContact] = useState(null);
     const [references, setReferences] = useState(null);
-    const [backgroundColor, setBackGroundColor] = useState('black');
-    const [activeColor, setActiveColor] = useState('info');
+    const [backgroundColor, setBackGroundColor] = useState(JSON.parse(localStorage.getItem('bgColor')) || 'white');
+    const [activeColor, setActiveColor] = useState(JSON.parse(localStorage.getItem('activeColor')) || 'info');
     const mainPanel = useRef();
     useEffect(() => {
         consultContact(id);

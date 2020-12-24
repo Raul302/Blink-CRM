@@ -21,14 +21,14 @@ export const AppRouter = (props) => {
     const [ isLoggedIn, setIsLoggedIn ] = useState(false);
 
 
-
+    // const {token:authToken} = useSelector( state => state.auth,shallowEqual);
     const select = useSelector(state => state.auth,shallowEqual);
     // const[flag,setFlag] = useState(false);
     // const [user,setUser] = useState();
     useEffect(() => {
         if(JSON.parse(localStorage.getItem('user'))){
-            const {name,type,token} = JSON.parse(localStorage.getItem('user'));
-            dispatch( login(name,type,token));
+            const {email,id,name,token,type} = JSON.parse(localStorage.getItem('user'));
+            dispatch( login(email,id,name,token,type));
             dispatch ( starLoadingColleges() );
             if(JSON.parse(localStorage.getItem('collegeActive'))){
                 const json = JSON.parse(localStorage.getItem('collegeActive'));

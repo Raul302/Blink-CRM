@@ -24,8 +24,8 @@ import routes from "../routes.js";
 
 function CollegesRouter(props) {
     const [loading, setLoading] = useState(false);
-    const [backgroundColor, setBackGroundColor] = useState('black');
-    const [activeColor, setActiveColor] = useState('info');
+    const [backgroundColor, setBackGroundColor] = useState(JSON.parse(localStorage.getItem('bgColor')) || 'white');
+    const [activeColor, setActiveColor] = useState(JSON.parse(localStorage.getItem('activeColor')) || 'info');
     const mainPanel = useRef();
     return (
         <div className="wrapper">

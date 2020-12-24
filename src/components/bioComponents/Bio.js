@@ -33,6 +33,10 @@ import NotificationAlert from "react-notification-alert";
 
 
 function Bio() {
+    const { id: IDX } = useSelector(state => state.auth);
+
+    const [timeBio, setTimeBio] = useState();
+    const [editing,setEditing] = useState(false);
     let { id } = useParams();
     // Set moment spanish
     moment.locale('es-mx')
@@ -75,10 +79,17 @@ function Bio() {
                 setBioRecords(response.data);
             });
     }
+    function changeTime(e){
+        setTimeBio(e.target.value);
+    }
+    const handleChangeSubject = (e) => {
+        console.log('e',e.target.value);
+        setSubject(e.target.value);
+    }
     const consult = async () => {
         let data = {
             id: id,
-            email: email
+            idx: IDX
         };
         await axios.post('http://api.boardingschools.mx/api/defaultSelectBio', data)
             .then(function (response) {
@@ -116,8 +127,12 @@ function Bio() {
         setTempParam(row.text);
     };
     const handleChange = (e) => {
-        setSubject(e[1] ? tempsubject + ' a ' + e[1].value : tempsubject + ' a ' + '')
-        setSelectValue(e);
+        if(e!=null){
+            setSubject(e[1] ? tempsubject + ' a ' + e[1].value : tempsubject + ' a ' + '')
+            setSelectValue(e);
+        } else {
+            notification('danger','Este campo no puede estar vacio');
+        }
     }
     const showModalLog = function showModalLog(subject) {
         setTextBio("");
@@ -139,6 +154,7 @@ function Bio() {
                 }
             })
                 .then(function (response) {
+                    notification('success','Actualizado correctamente');
                     setParam(response.data);
                     getBioRecords();
                     handleEdit();
@@ -153,7 +169,7 @@ function Bio() {
             };
             axios.post('http://api.boardingschools.mx/api/bio/save', datax)
                 .then(function (response) {
-                    alert.show('Guardado correctamente');
+                    notification('success','Creado correctamente');
                     getBioRecords();
                 });
             // alert.show('Ocurrio un error inesperado en la Base de datos');
@@ -207,13 +223,28 @@ function Bio() {
     }
     const PopoverComponent = (text) => {
         return (<Popover id="popover-basic">
-            {/* <Popover.Title as="h3">Popover right</Popover.Title> */}
             <Popover.Content>
                 <strong>{text}</strong>
             </Popover.Content>
         </Popover>)
     }
-
+    const edit = () => {
+        let array = [];
+        param.participants.forEach((element,index) => {
+            values.forEach(el => {
+                if(element.name === el.value){
+                    array[index] = el;
+                }
+            })
+        })
+        setSelectValue(array);
+        setEditing(true);
+        showModalLog(param.subject);
+        setSubject(param.subject);
+        setTextBio(param.text);
+        setDateBio(param.date);
+        setTimeBio(param.timeBio);
+    }
     const changeBio = async (e) => {
         setTempParam(e.target.value);
         let name = '';
@@ -231,11 +262,33 @@ function Bio() {
                 getBioRecords();
             });
     }
+    function notification(type,message){
+        console.log('here');
+        let place = "tc";
+        var options = {};
+        options = {
+          place: place,
+          message: (
+            <div>
+              <div>
+                {message}
+              </div>
+            </div>
+          ),
+          type: type,
+          icon: "nc-icon nc-bell-55",
+          autoDismiss: 7,
+          }
+          console.log('options',options);
+          console.log('notification',notificationAlert);
+        notificationAlert.current.notificationAlert(options);
+     }
 
     return (
         <>
             <div className="content">
-                <div class="card mt-3">
+            <NotificationAlert ref={notificationAlert} /> 
+                <div class="card">
                     <div class="card-body">
                         <div class="row">
                             <span onClick={() => showModalLog('Llamada')} class="Inter600B">
@@ -255,56 +308,43 @@ function Bio() {
                     </div>
                 </div>
                 {bioRecords ?
-                    <div className="content">
-                        <NotificationAlert ref={notificationAlert} />
-                        <Row>
-                            <Col md="12">
-                                <Card>
-                                    <CardHeader>
-                                        {/* <CardTitle tag="h4">Usuarios</CardTitle> */}
-                                    </CardHeader>
-                                    <CardBody>
-                                        <Table responsive>
-                                            <thead className="text-primary">
-                                                <tr>
-                                                    <th >Motivo</th>
-                                                    <th >Fecha</th>
-                                                    <th >Texto</th>
-                                                    <th >Participantes</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {bioRecords.map(row => (
-                                                    <tr onClick={(e) => showModal(row)} key={row.id}>
-                                                        <td>{showSubject(row.subject)}</td>
-                                                        <td>{showDate(row.date)}</td>
-                                                        <td >
-                                                            <OverlayTrigger trigger={["hover", "hover"]} placement="top"
-                                                                overlay={PopoverComponent(row.text)}>
-                                                                <Button variant="white">
-                                                                    <svg width="16" height="16" viewBox="0 0 16 16" style={{ color: 'rgb(192, 203, 227)' }}>
-                                                                        <path fill="currentColor"
-                                                                            d="M9.944 0a.72.72 0 0 1 .511.213l4.333 4.364A.73.73 0 0 1 15 5.09v8.727C15 15.023 14.03 16 12.833 16H4.167A2.174 2.174 0 0 1 2 13.818V2.182C2 .977 2.97 0 4.167 0h5.777zm-.299 1.455H4.167a.725.725 0 0 0-.723.727v11.636c0 .402.324.727.723.727h8.666a.725.725 0 0 0 .723-.727V5.392l-3.91-3.937z"></path><path fill="currentColor" d="M10.667 4.364h3.61c.4 0 .723.325.723.727a.725.725 0 0 1-.722.727H9.944a.725.725 0 0 1-.722-.727V.727c0-.401.324-.727.722-.727.4 0 .723.326.723.727v3.637zM11.389 8c.399 0 .722.326.722.727a.725.725 0 0 1-.722.728H5.61a.725.725 0 0 1-.722-.728c0-.401.323-.727.722-.727h5.778zM11.389 10.91c.399 0 .722.325.722.726a.725.725 0 0 1-.722.728H5.61a.725.725 0 0 1-.722-.728c0-.401.323-.727.722-.727h5.778zM7.056 5.09c.398 0 .722.327.722.728a.725.725 0 0 1-.722.727H5.61a.725.725 0 0 1-.722-.727c0-.401.323-.727.722-.727h1.445z">
-                                                                        </path>
-                                                                    </svg>
-                                                                </Button>
-                                                            </OverlayTrigger>
-                                                        </td>
-                                                        <td>{row.participants.map(part => (
-                                                            <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{showParticipant(part.name)}</span>
-                                                        ))}
+                    <div className="content" style={{ width: '100%', height: '300px' }}>
+                        <table class="table">
+                            <thead style={{ backgroundColor: '#F8F8F8' }} >
+                                <tr>
+                                    <th >Tipo</th>
+                                    <th >Fecha</th>
+                                    <th >Detalle</th>
+                                    <th >Participantes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {bioRecords.map(row => (
+                                    <tr onClick={(e) => showModal(row)} key={row.id}>
+                                        <td>{showSubject(row.subject)}</td>
+                                        <td>{showDate(row.date,row.timeBio)}</td>
+                                        <td >
+                                        <OverlayTrigger trigger={["hover", "hover"]} placement="top"
+                                                overlay={PopoverComponent(row.text)}>
+                                                <a>
+                                                    <svg width="16" height="16" viewBox="0 0 16 16" style={{ color: 'rgb(192, 203, 227)' }}>
+                                                        <path fill="currentColor"
+                                                            d="M9.944 0a.72.72 0 0 1 .511.213l4.333 4.364A.73.73 0 0 1 15 5.09v8.727C15 15.023 14.03 16 12.833 16H4.167A2.174 2.174 0 0 1 2 13.818V2.182C2 .977 2.97 0 4.167 0h5.777zm-.299 1.455H4.167a.725.725 0 0 0-.723.727v11.636c0 .402.324.727.723.727h8.666a.725.725 0 0 0 .723-.727V5.392l-3.91-3.937z"></path><path fill="currentColor" d="M10.667 4.364h3.61c.4 0 .723.325.723.727a.725.725 0 0 1-.722.727H9.944a.725.725 0 0 1-.722-.727V.727c0-.401.324-.727.722-.727.4 0 .723.326.723.727v3.637zM11.389 8c.399 0 .722.326.722.727a.725.725 0 0 1-.722.728H5.61a.725.725 0 0 1-.722-.728c0-.401.323-.727.722-.727h5.778zM11.389 10.91c.399 0 .722.325.722.726a.725.725 0 0 1-.722.728H5.61a.725.725 0 0 1-.722-.728c0-.401.323-.727.722-.727h5.778zM7.056 5.09c.398 0 .722.327.722.728a.725.725 0 0 1-.722.727H5.61a.725.725 0 0 1-.722-.727c0-.401.323-.727.722-.727h1.445z">
+                                                        </path>
+                                                    </svg>
+                                                </a>
+                                            </OverlayTrigger>
+                                        </td>
+                                        <td>{row.participants.map(part => (
+                                            <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{showParticipant(part.name)}</span>
+                                        ))}
 
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </Table>
-                                    </CardBody>
-                                </Card>
-                            </Col>
-                        </Row>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
-
                     :
                     ''
                 }
@@ -314,8 +354,9 @@ function Bio() {
                 <Modal
                     show={modal}
                     dialogClassName="modal-90w"
-                    style={{marginTop:'50px'}}
                     onHide={handleClose}
+                    style={{marginTop:'50px'}}
+
 
                 >
                     <Modal.Body style={{ background: '#F4F5F6', border: '1px' }}>
@@ -326,7 +367,10 @@ function Bio() {
                                         {param.subject}
                                     </div>
                                     <div class="justify-content-end">
-                                        <FAIcons.FaTrashAlt style={{ color: '#EF8157' }} size={18} onClick={(e) => { deleteComment(param.id) }} />
+                                    <a>
+                                    <FIcons.FiEdit onClick={(e) => edit()} size={18} style={{ color: '#386CEF' }} />
+                                    </a>
+                                    <FAIcons.FaTrashAlt style={{color:'#DC3545'}} size={18} onClick={(e) => {deleteComment(param.id)}} /> 
                                     </div>
                                 </Row>
                                 <Row className="mt-2">
@@ -338,14 +382,14 @@ function Bio() {
                                                 <path d="M-3-1h24v24H-3z">
                                                 </path>
                                             </g>
-                                        </svg>  {showDate(param.date)}
+                                        </svg>  {showDate(param.date,param.timeBio)}
                                     </div>
                                 </Row>
                                 {param.participants
                                     &&
                                     <Row className="mt-3">
                                         <div style={{ fontSize: '14px' }} class="col Inter600B">
-                                            Atendido por :
+                                            Participantes:
                                         {param.participants.map(part => (
                                             <Row className="mt-2">
                                                 <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{showParticipant(part.name)}</span>
@@ -355,51 +399,24 @@ function Bio() {
                                         </div>
                                     </Row>
                                 }
-                                {twopart ?
-                                    <>
-                                        <Row className="mt-2">
-                                            <div style={{ fontSize: '16px' }} class="col Inter600B">
-                                                Editar la nota
-                                    </div>
-                                            <InputGroup className="mt-2 ml-3" style={{ borderTop: '0', width: '100%', marginTop: '0px' }}>
-                                                <Form.Control
-                                                    onChange={(e) => changeBio(e)}
-                                                    value={tempParam} as="textarea" placeholder="Escriba su mensaje..." rows={8} />
-                                            </InputGroup>
-                                        </Row>
-                                        <Row>
-                                            <Col className="mt-3 ">
-
-                                                <Button
-                                                    style={{ marginRight: '-15px' }}
-                                                    onSubmit={handleSubmit(onSubmit)}
-                                                    className="float-right" type="submit"
-                                                    variant="primary">Guardar</Button>
-                                                <Button onClick={handleEdit} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
-                                                    Cancelar
-                                </Button>
-                                            </Col>
-                                        </Row>
-                                    </>
-                                    :
                                     <Row >
                                         <div onClick={(e) => handleEdit(e)} style={{ backgroundColor: 'white' }} class="ml-3 mt-3 container">
                                             <p style={{ color: '#7A859C' }}> {param.text}</p>
                                         </div>
                                     </Row>
-                                }
                             </div>
                         </form>
                     </Modal.Body>
                 </Modal>
 
                 <Modal
-                    style={{marginTop:'50px'}}
                     show={modalLog}
+                    style={{marginTop:'50px'}}
                     dialogClassName="modal-90w"
                     onHide={handleClose}
 
                 >
+                 {/* <NotificationAlert ref={notificationAlert} /> */}
                     <Modal.Body style={{ background: '#F4F5F6', border: '1px' }}>
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="container-fluid">
@@ -427,19 +444,25 @@ function Bio() {
 
                                 </Row>
                                 <Row className="mt-3">
-                                    <Col className="col-6">
+                                    <Col className="col-4">
                                         <Form.Control style={{ height: '100px', width: '180px' }}
                                             onChange={(e) => changeDate(e)}
                                             value={dateBio} autoComplete="off" name="date"
                                             className="formGray" type="date" placeholder="Ingrese su Fecha" />
                                     </Col>
+                                    <Col className="mt-4">
+                                    <Form.Control style={{ height: '30px', width: '100px' }}
+                                            onChange={(e) => changeTime(e)}
+                                            value={timeBio} autoComplete="off" name="date"
+                                            className="formGray" type="time" placeholder="Ingrese su Fecha" />
+                                    </Col>
                                 </Row>
                                 <Row className="mt-3">
                                     <InputGroup className="">
                                         <InputGroup.Prepend>
-                                            <InputGroup.Text className="Inter600B" style={{ backgroundColor: '#FFFFFF', borderRight: '0' }}>Motivo:</InputGroup.Text>
+                                            <InputGroup.Text className="ml-3 Inter600B" style={{ backgroundColor: '#FFFFFF', borderRight: '0' }}>Motivo:</InputGroup.Text>
                                         </InputGroup.Prepend>
-                                        <FormControl style={{ backgroundColor: '#FFFFFF', borderBottom: '0', borderLeft: '0' }} value={subject} id="inlineFormInputGroup" placeholder="" />
+                                        <FormControl style={{ backgroundColor: '#FFFFFF', borderBottom: '0', borderLeft: '0' }} onChange={(e) => handleChangeSubject(e)} value={subject} id="inlineFormInputGroup" placeholder="" />
                                     </InputGroup>
                                     <InputGroup className="ml-3" style={{ borderTop: '0', width: '100%', marginTop: '0px' }}>
                                         <Form.Control

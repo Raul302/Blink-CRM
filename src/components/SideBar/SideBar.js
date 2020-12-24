@@ -16,7 +16,6 @@ class Sidebar extends React.Component {
     this.sidebar = React.createRef();
     typeUser = store.getState().auth ?store.getState().auth.type : 'user';
   }
-  // verifies if routeName is the one active (in browser input)
   activeRoute(routeName) {
     return this.props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
   }

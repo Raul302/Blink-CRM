@@ -624,10 +624,14 @@ function PersonalData(props) {
                                                 }
                                                 {inputEmail.length - 1 === i && <button onClick={handleAddClickEmail}
                                                     type="submit" class="Inter ml-1 btn btn-success btn-sm"><AIIcons.AiOutlinePlus/></button>
-
                                                 }
                                             </div>
                                         </div>
+                                        <Row>
+                                            <Col>
+                                        <hr></hr>
+                                            </Col>
+                                        </Row>
                                     </div>
                                 );
                             })}
@@ -665,11 +669,15 @@ function PersonalData(props) {
                                                     <button onClick={() => handleRemoveClickPhone(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
                                                 }
                                                 {inputPhone.length - 1 === i && <button onClick={handleAddClickPhone}
-                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm">ADD</button>
-
+                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm"><AIIcons.AiOutlinePlus/></button>
                                                 }
-                                            </div>
+                                              </div>
                                         </div>
+                                        <Row>
+                                            <Col>
+                                        <hr></hr>
+                                            </Col>
+                                        </Row>
                                     </div>
                                 );
                             })}
@@ -766,8 +774,7 @@ function PersonalData(props) {
                                                     <button onClick={() => handleRemoveClick(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
                                                 }
                                                 {inputList.length - 1 === i && <button onClick={handleAddClick}
-                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm">ADD</button>
-
+                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm"><AIIcons.AiOutlinePlus/></button>
                                                 }
                                             </div>
                                         </div>
