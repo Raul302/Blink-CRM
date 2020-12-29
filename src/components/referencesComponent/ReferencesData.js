@@ -36,10 +36,11 @@ function ReferencesData(props) {
     const [cities, setCities] = useState([]);
     const [states, setStates] = useState([]);
     const [addrtype, setAddrtype] = useState(["Papa", "Mama", "Hermano/Hermana", "Otro"])
-    const Add = addrtype.map(Add => Add
-    )
+    const Add = addrtype.map(Add => Add)
+    const [token,setToken] = useState(props.token ?? JSON.parse(localStorage.getItem('tokenStates')));
 
     useEffect(() => {
+
       typeRef(props.reference);
       consultStates();
       setFilterValues(props.reference);

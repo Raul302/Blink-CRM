@@ -10,7 +10,7 @@ export default function ContactsView(props) {
     const { pathname } = useLocation();
     const {active} = useSelector( state => state.colleges);
     return (
-        <div style={{marginBottom:'-520px'}} className="content">
+        <div style={{marginBottom:'-535px'}} className="content">
              <h1 style={{marginTop:'-10px'}} className="Inter400">{active.name}</h1>
             <div style={{marginTop:'-20px'}} class="sc-bdVaJa styles__Nav-sc-19n49a3-0 gOZeoI">
                <Link className={[ '/colleges/'+id +'/bio'].includes(pathname) ? 

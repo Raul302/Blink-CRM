@@ -42,6 +42,7 @@ function References(props) {
             }
         }).then(function (response) {
             setToken(response.data.auth_token);
+            localStorage.setItem('tokenStates', JSON.stringify(response.data.auth_token));
         });
     }
     

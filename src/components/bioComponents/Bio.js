@@ -1,42 +1,27 @@
-import { useDispatch, useSelector } from 'react-redux';
-import React, { useState,useRef, useEffect } from 'react'
+import { useSelector } from 'react-redux';
+import React, { useState, useRef, useEffect } from 'react'
 import *  as FIcons from "react-icons/fi";
 import *  as FAIcons from "react-icons/fa";
 import *  as HIcons from "react-icons/hi";
-import *  as RIcons from "react-icons/ri";
-import * as CGIcons from "react-icons/cg";
 import * as MDIcons from "react-icons/md";
-import * as BIIcons from "react-icons/bi";
-import * as GRIcons from "react-icons/gr";
 import { useForm } from "react-hook-form";
 import { useParams, } from "react-router";
-import {  Button, Modal, Form, InputGroup, Popover, OverlayTrigger, FormControl, FormLabel } from 'react-bootstrap';
-import Select from 'react-select';
+import { Button, Modal, Form, InputGroup, Popover, OverlayTrigger, FormControl } from 'react-bootstrap';
+import Select, { components } from 'react-select';
 import moment from 'moment'
 import 'moment/locale/es'  // without this line it didn't work
-import {
-    BrowserRouter as Router, Switch,
-    Route, Link
-} from 'react-router-dom';
 import { useAlert } from 'react-alert'
 import axios from 'axios';
-import {
-    Card,
-    CardHeader,
-    CardBody,
-    CardTitle,
-    Table,
-    Row,
-    Col,
-  } from "reactstrap";
+import { Row, Col } from "reactstrap";
 import NotificationAlert from "react-notification-alert";
+import swal from 'sweetalert';
 
 
 function Bio() {
     const { id: IDX } = useSelector(state => state.auth);
 
     const [timeBio, setTimeBio] = useState();
-    const [editing,setEditing] = useState(false);
+    const [editing, setEditing] = useState(false);
     let { id } = useParams();
     // Set moment spanish
     moment.locale('es-mx')
@@ -47,6 +32,7 @@ function Bio() {
         consult();
         getBioRecords();
     }, [])
+    const [prefixSubject, setPrefix] = useState();
     const [twopart, setTwoPart] = useState(false);
     const [bioRecords, setBioRecords] = useState([]);
     const { handleSubmit } = useForm({});
@@ -79,11 +65,10 @@ function Bio() {
                 setBioRecords(response.data);
             });
     }
-    function changeTime(e){
+    function changeTime(e) {
         setTimeBio(e.target.value);
     }
     const handleChangeSubject = (e) => {
-        console.log('e',e.target.value);
         setSubject(e.target.value);
     }
     const consult = async () => {
@@ -93,7 +78,7 @@ function Bio() {
         };
         await axios.post('http://api.boardingschools.mx/api/defaultSelectBio', data)
             .then(function (response) {
-                let { contacts, user, users } = response.data;
+                let { contact,contacts,references, user, users } = response.data;
                 let result = user.map(col => {
                     return {
                         value: col.name,
@@ -101,6 +86,14 @@ function Bio() {
                     };
                 })
                 contacts.map(u => {
+                    result.push(
+                        {
+                            value: u.name,
+                            label: u.name
+                        }
+                    )
+                });
+                references.map(u => {
                     result.push(
                         {
                             value: u.name,
@@ -117,6 +110,7 @@ function Bio() {
                         })
                     }
                 });
+                
                 setValues(result);
             });
     }
@@ -127,14 +121,15 @@ function Bio() {
         setTempParam(row.text);
     };
     const handleChange = (e) => {
-        if(e!=null){
+        if (e != null) {
             setSubject(e[1] ? tempsubject + ' a ' + e[1].value : tempsubject + ' a ' + '')
             setSelectValue(e);
         } else {
-            notification('danger','Este campo no puede estar vacio');
+            notification('danger', 'Este campo no puede estar vacio');
         }
     }
     const showModalLog = function showModalLog(subject) {
+        setPrefix(subject);
         setTextBio("");
         setModalLog(true);
         setTemp(subject);
@@ -145,16 +140,25 @@ function Bio() {
         setModalLog(false);
     }
     async function onSubmit(data) {
-        if (modal) {
-            let obj = param;
-            obj.text = tempParam;
-            await axios.post('http://api.boardingschools.mx/api/bio/update', obj, {
+        let datex = dateBio + " " + timeBio;
+        if (editing) {
+            let datax = {
+                id: param.id,
+                id_contact: id,
+                subject: subject,
+                values: selectValue ? selectValue : [values[0], values[1]],
+                date: dateBio ? datex : null,
+                text: textBio ? textBio : null,
+                id_college: null,
+                type: prefixSubject,
+            };
+            await axios.post('http://api.boardingschools.mx/api/bio/update', datax, {
                 headers: {
                     "Accept": "application/json"
                 }
             })
                 .then(function (response) {
-                    notification('success','Actualizado correctamente');
+                    notification('info', 'Actualizado correctamente');
                     setParam(response.data);
                     getBioRecords();
                     handleEdit();
@@ -162,19 +166,21 @@ function Bio() {
         } else {
             let datax = {
                 id_contact: id,
-                subject: subject,
+                id_college: null,
+                subject: subject ? subject : null,
                 values: selectValue ? selectValue : [values[0], values[1]],
-                date: dateBio,
-                text: textBio
+                date: dateBio ? datex : null,
+                text: textBio ? textBio : null,
+                type: prefixSubject,
             };
             axios.post('http://api.boardingschools.mx/api/bio/save', datax)
                 .then(function (response) {
-                    notification('success','Creado correctamente');
+                    notification('success', 'Creado correctamente');
                     getBioRecords();
                 });
-            // alert.show('Ocurrio un error inesperado en la Base de datos');
         }
         handleClose();
+        consult();
     }
 
     function changeDate(e) {
@@ -189,25 +195,25 @@ function Bio() {
         setTempParam(param.text);
         setTwoPart(!twopart);
     }
-    const showDate = (dateBD) => {
-        return moment(dateBD).locale('es-mx').format('LL');
+    const showDate = (dateBD, timeBio) => {
+        return moment(dateBD).locale('es-mx').format("ddd,D MMMM YYYY, h:mm:ss a");
     }
-    const showSubject = (subject) => {
+    const showSubject = (type, subject) => {
         let tag = '';
-        if (subject.includes('Llamada')) {
+        if (type.includes('Llamada')) {
             tag = <span class="Inter600B">
                 <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" fillRule="nonzero" d="M21 16.92v-.025a.998.998 0 0 0-.85-1.014 13.845 13.845 0 0 1-3.032-.755.998.998 0 0 0-1.05.221l-1.27 1.27a1 1 0 0 1-1.202.162 17 17 0 0 1-6.375-6.375 1 1 0 0 1 .162-1.201l1.266-1.266a1 1 0 0 0 .224-1.057 13.817 13.817 0 0 1-.753-3.02A1.003 1.003 0 0 0 7.11 3h-3a1 1 0 0 0-.996 1.074 18.8 18.8 0 0 0 2.92 8.24 18.511 18.511 0 0 0 5.7 5.697 18.774 18.774 0 0 0 8.176 2.913A1 1 0 0 0 21 19.92v-3zm2 2.996a3 3 0 0 1-3.288 2.998 20.78 20.78 0 0 1-9.058-3.22 20.49 20.49 0 0 1-6.303-6.3A20.805 20.805 0 0 1 1.124 4.27 3 3 0 0 1 4.11 1H7.1a3.002 3.002 0 0 1 3.001 2.59c.117.885.334 1.754.645 2.588a3.002 3.002 0 0 1-.679 3.17l-.717.716a15 15 0 0 0 4.586 4.586l.72-.721a3 3 0 0 1 3.164-.676c.836.312 1.705.529 2.6.647A3 3 0 0 1 23 16.93v2.985z"></path></svg>
 &nbsp;{subject}</span>;
         }
-        if (subject.includes('Whatssap')) {
+        if (type.includes('Whatssap')) {
             tag = <span class="Inter600B"><FAIcons.FaWhatsapp />&nbsp; {subject}</span>
         }
-        if (subject.includes('Cita')) {
+        if (type.includes('Cita')) {
             tag = <span class="Inter600B">
                 <FIcons.FiCalendar />&nbsp;
             {subject}</span>
         }
-        if (subject.includes('Email')) {
+        if (type.includes('Email')) {
             tag = <span class=" Inter600B">
                 <HIcons.HiOutlineMail size={16} />&nbsp;
     {subject}</span>
@@ -230,20 +236,22 @@ function Bio() {
     }
     const edit = () => {
         let array = [];
-        param.participants.forEach((element,index) => {
+        param.participants.forEach((element, index) => {
             values.forEach(el => {
-                if(element.name === el.value){
+                if (element.name === el.value) {
                     array[index] = el;
                 }
             })
         })
+        let datex = moment(param.date).format('YYYY-MM-DD')
+        let timex = moment(param.date).format('HH:MM:ss');
         setSelectValue(array);
         setEditing(true);
-        showModalLog(param.subject);
+        showModalLog(param.type);
         setSubject(param.subject);
         setTextBio(param.text);
-        setDateBio(param.date);
-        setTimeBio(param.timeBio);
+        setDateBio(datex);
+        setTimeBio(timex);
     }
     const changeBio = async (e) => {
         setTempParam(e.target.value);
@@ -251,43 +259,54 @@ function Bio() {
         name = await e.target.value;
     }
     const deleteComment = async (id) => {
-        await axios.post('http://api.boardingschools.mx/api/bio/delete', { id: id }, {
-            headers: {
-                "Accept": "application/json"
-            }
+        swal({
+            title: "Estas seguro?",
+            text: "Una vez eliminado,no podras recuperar este registro!",
+            icon: "warning",
+            dangerMode: true,
+            buttons: ["No", "Si"],
         })
-            .then(function (response) {
-                alert.show('Borrado correctamente');
-                handleClose();
-                getBioRecords();
+            .then(async (willDelete) => {
+                if (willDelete) {
+                    await axios.post('http://api.boardingschools.mx/api/bio/delete', { id: id }, {
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    })
+                        .then(function (response) {
+                            notification('danger', 'Registro eliminado Correctamente');
+                            handleClose();
+                            getBioRecords();
+                        });
+                } else {
+                    swal("Operacion cancelada!");
+                }
             });
     }
-    function notification(type,message){
-        console.log('here');
+    function notification(type, message) {
         let place = "tc";
         var options = {};
         options = {
-          place: place,
-          message: (
-            <div>
-              <div>
-                {message}
-              </div>
-            </div>
-          ),
-          type: type,
-          icon: "nc-icon nc-bell-55",
-          autoDismiss: 7,
-          }
-          console.log('options',options);
-          console.log('notification',notificationAlert);
+            place: place,
+            message: (
+                <div>
+                    <div>
+                        {message}
+                    </div>
+                </div>
+            ),
+            type: type,
+            icon: "nc-icon nc-bell-55",
+            autoDismiss: 7,
+        }
+
         notificationAlert.current.notificationAlert(options);
-     }
+    }
 
     return (
         <>
             <div className="content">
-            <NotificationAlert ref={notificationAlert} /> 
+                <NotificationAlert ref={notificationAlert} />
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -321,10 +340,10 @@ function Bio() {
                             <tbody>
                                 {bioRecords.map(row => (
                                     <tr onClick={(e) => showModal(row)} key={row.id}>
-                                        <td>{showSubject(row.subject)}</td>
-                                        <td>{showDate(row.date,row.timeBio)}</td>
+                                        <td>{showSubject(row.type, row.subject)}</td>
+                                        <td>{showDate(row.date, row.timeBio)}</td>
                                         <td >
-                                        <OverlayTrigger trigger={["hover", "hover"]} placement="top"
+                                            <OverlayTrigger trigger={["hover", "hover"]} placement="top"
                                                 overlay={PopoverComponent(row.text)}>
                                                 <a>
                                                     <svg width="16" height="16" viewBox="0 0 16 16" style={{ color: 'rgb(192, 203, 227)' }}>
@@ -355,7 +374,7 @@ function Bio() {
                     show={modal}
                     dialogClassName="modal-90w"
                     onHide={handleClose}
-                    style={{marginTop:'50px'}}
+                    style={{ marginTop: '50px' }}
 
 
                 >
@@ -367,10 +386,10 @@ function Bio() {
                                         {param.subject}
                                     </div>
                                     <div class="justify-content-end">
-                                    <a>
-                                    <FIcons.FiEdit onClick={(e) => edit()} size={18} style={{ color: '#386CEF' }} />
-                                    </a>
-                                    <FAIcons.FaTrashAlt style={{color:'#DC3545'}} size={18} onClick={(e) => {deleteComment(param.id)}} /> 
+                                        <a>
+                                            <FIcons.FiEdit onClick={(e) => edit()} size={18} style={{ color: '#386CEF' }} />
+                                        </a>
+                                        <FAIcons.FaTrashAlt style={{ color: '#DC3545' }} size={18} onClick={(e) => { deleteComment(param.id) }} />
                                     </div>
                                 </Row>
                                 <Row className="mt-2">
@@ -382,7 +401,7 @@ function Bio() {
                                                 <path d="M-3-1h24v24H-3z">
                                                 </path>
                                             </g>
-                                        </svg>  {showDate(param.date,param.timeBio)}
+                                        </svg>  {showDate(param.date, param.timeBio)}
                                     </div>
                                 </Row>
                                 {param.participants
@@ -399,11 +418,11 @@ function Bio() {
                                         </div>
                                     </Row>
                                 }
-                                    <Row >
-                                        <div onClick={(e) => handleEdit(e)} style={{ backgroundColor: 'white' }} class="ml-3 mt-3 container">
-                                            <p style={{ color: '#7A859C' }}> {param.text}</p>
-                                        </div>
-                                    </Row>
+                                <Row >
+                                    <div onClick={(e) => handleEdit(e)} style={{ backgroundColor: 'white' }} class="ml-3 mt-3 container">
+                                        <p style={{ color: '#7A859C' }}> {param.text}</p>
+                                    </div>
+                                </Row>
                             </div>
                         </form>
                     </Modal.Body>
@@ -411,18 +430,18 @@ function Bio() {
 
                 <Modal
                     show={modalLog}
-                    style={{marginTop:'50px'}}
+                    style={{ marginTop: '50px' }}
                     dialogClassName="modal-90w"
                     onHide={handleClose}
 
                 >
-                 {/* <NotificationAlert ref={notificationAlert} /> */}
+                    {/* <NotificationAlert ref={notificationAlert} /> */}
                     <Modal.Body style={{ background: '#F4F5F6', border: '1px' }}>
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="container-fluid">
                                 <Row>
                                     <Col className="col-2">
-                                        Atendido:
+                                        Participantes:
                                 </Col>
                                     <Col className="col-1">
                                         <MDIcons.MdGroup />
@@ -451,16 +470,16 @@ function Bio() {
                                             className="formGray" type="date" placeholder="Ingrese su Fecha" />
                                     </Col>
                                     <Col className="mt-4">
-                                    <Form.Control style={{ height: '30px', width: '100px' }}
+                                        <Form.Control style={{ height: '30px', width: '120px' }}
                                             onChange={(e) => changeTime(e)}
                                             value={timeBio} autoComplete="off" name="date"
-                                            className="formGray" type="time" placeholder="Ingrese su Fecha" />
+                                            className="formGray" step="1" type="time" placeholder="Ingrese su Fecha" />
                                     </Col>
                                 </Row>
                                 <Row className="mt-3">
                                     <InputGroup className="">
                                         <InputGroup.Prepend>
-                                            <InputGroup.Text className="ml-3 Inter600B" style={{ backgroundColor: '#FFFFFF', borderRight: '0' }}>Motivo:</InputGroup.Text>
+                                            <InputGroup.Text className="ml-3 Inter600B" style={{ backgroundColor: '#FFFFFF', borderRight: '0' }}>Asunto:</InputGroup.Text>
                                         </InputGroup.Prepend>
                                         <FormControl style={{ backgroundColor: '#FFFFFF', borderBottom: '0', borderLeft: '0' }} onChange={(e) => handleChangeSubject(e)} value={subject} id="inlineFormInputGroup" placeholder="" />
                                     </InputGroup>
