@@ -26,7 +26,7 @@ function Profile(props) {
     }
     return (
         <>
-            <div className="content">
+            <div className=" mt-n2 content">
             <PersonalData handleUpdate={updateProfile} token={token} contact={props.contact}/>
             </div>
         </>

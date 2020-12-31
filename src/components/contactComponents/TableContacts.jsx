@@ -5,22 +5,21 @@ import {
     Card,
     CardHeader,
     CardBody,
-    CardTitle,
     Table,
     Row,
     Col,
 } from "reactstrap";
 import *  as RIcons from "react-icons/ri";
-import {
-    BrowserRouter as Router, Switch,
-    Route, Link
-} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import NotificationAlert from "react-notification-alert";
+import LateralReference from './LateralReference';
 
 function TableContacts(props) {
     const [rowData, setRowData] = useState(props.rowData);
     const notificationAlert = useRef();
+    const [dinamicwidth,setDinamicWidth] = useState('0px');
+    const [lateralReference,setLateralReference] = useState(null);
 
     useEffect(() => {
         consultRow();
@@ -34,6 +33,16 @@ function TableContacts(props) {
         }).then(function (response) {
             setRowData(response.data);
         });
+    }
+    const openLateral =  (obj) => {
+        if(obj != null){
+            setLateralReference(obj[0]);
+            setDinamicWidth('50%');
+        }
+    }
+    const closeLateral = () =>{
+        setDinamicWidth('0px');
+        setLateralReference(null);
     }
     const notification = (type, message) => {
         let place = "tc";
@@ -56,9 +65,10 @@ function TableContacts(props) {
     return (
         <>
             <div className="content">
+                <LateralReference reference={lateralReference} close={closeLateral} width={dinamicwidth} />
                 <NotificationAlert ref={notificationAlert} />
                 <Row>
-                    <Col md="12">
+                    <Col className="mt-3" md="12">
                         <Card>
                             <CardHeader>
                                 {/* <CardTitle tag="h4">Usuarios</CardTitle> */}
@@ -78,16 +88,22 @@ function TableContacts(props) {
                                             <tr>
                                                 <td><RIcons.RiUser3Fill size={32} />
                                                     <Link to={"contacts/" + (row.id) + "/bio"} > {row.name} {row.father_lastname} {row.mother_lastname} </Link></td>
-                                                <td>{row.city},{row.state}</td>
-                                                <td>{row.id_program}</td>
-                                                <td>{row.contacts_references.length > 0 ?
+                                                <td>{row.contacts_direction.map((r,i) => (
+                                                    [i === 0 &&
+                                                    r.city+(r.state ? ','+ r.state : '')
+                                                    ]
+                                                ))}
+                                                </td>
+                                                <td>{row.id_program},{row.year}</td>
+                                                <td class="hover" onClick={(e) => 
+                                                openLateral(row.contacts_references.length > 0 ? row.contacts_references : null)}
+                                                >{row.contacts_references.length > 0 ?
                                                     [(row.contacts_references.map((contacts, i) => (
-                                                        (i == 0 ?
+                                                        (i === 0 ?
                                                             (contacts.name + ' ' + contacts.father_lastname)
                                                             :
                                                             ''
                                                         )
-                                                        //   (contacts.father_lastname)
                                                     )))
                                                     ]
                                                     : <h8>Sin referencias</h8>

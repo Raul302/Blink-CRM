@@ -32,7 +32,9 @@ export const AppRouter = (props) => {
             dispatch ( starLoadingColleges() );
             if(JSON.parse(localStorage.getItem('collegeActive'))){
                 const json = JSON.parse(localStorage.getItem('collegeActive'));
-                dispatch( activeCollege( json[0].id,json[0]) );
+                if(json[0]){
+                    dispatch( activeCollege( json[0].id,json[0]));
+                }
             }
 
             setIsLoggedIn(true);

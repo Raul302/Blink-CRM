@@ -10,7 +10,7 @@ export default function ContactsView(props) {
     const [fullName,setFullName] = useState(`${props.contact.name} ${props.contact.father_lastname}`);
     return (
         <>
-         <div  style={{marginBottom:'-520px'}} className="content">
+         <div style={{minHeight:'0px'}} className="pb-0 content">
             <h1  style={{marginTop:'-10px'}} className="Inter400">{fullName}</h1>
             <div style={{marginTop:'-20px'}} className=" mt-3sc-bdVaJa styles__Nav-sc-19n49a3-0 gOZeoI">
                <Link className={[ '/contacts/'+id +'/bio'].includes(pathname) ? 

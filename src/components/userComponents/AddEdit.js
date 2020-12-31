@@ -9,6 +9,7 @@ import NotificationAlert from "react-notification-alert";
 
 
 function AddEdit(props) {
+    const [errorsPassword,setErrorsPasswords] = useState(null);
     const [init] = useState(JSON.parse(localStorage.getItem('user')) || { logged: false });
     const [modalEdit,setModalEdit] = useState(false);
     const [idE,setIdE] = useState(null);
@@ -16,10 +17,13 @@ function AddEdit(props) {
     const [nameE,setnameE] = useState(null);
     const [emailE,setEmailE] = useState(null);
     const [passwordE,setpasswordE] = useState(null);
+    const [password_confirm,setpassworConfirm] = useState(null);
     const [fatherE,setFatherE] = useState(null);
     const [motherE,setMotherE] = useState(null);
     const [modal, setModal] = useState(false);
-    const { register, handleSubmit, errors, reset } = useForm({});
+    const { register, handleSubmit, errors, reset,watch } = useForm({ mode: 'onChange' });
+    const password = useRef({});
+    password.current = watch("password", "");
     const alert = useAlert();
     const notificationAlert = useRef();
 
@@ -35,13 +39,15 @@ function AddEdit(props) {
         setFatherE(row.father_lastname);
         setMotherE(row.mother_lastname);
         setpasswordE(row.password);
+        setpassworConfirm(row.password_confirm);
         setEmailE(row.email);
         setTypeE(row.type);
     }
     async function onSubmit(data) {
+        setErrorsPasswords(null);
         if(modalEdit === true){
             let datax = {id: idE, type:typeE,name:nameE,email:emailE,password:passwordE,father_lastname:fatherE,
-                mother_lastname:motherE
+                mother_lastname:motherE,password_confirm:password_confirm
             }
             await axios.post('http://api.boardingschools.mx/api/users/update',datax)
             .then(function (response) {
@@ -70,6 +76,7 @@ function AddEdit(props) {
     }
     const handleClose = function close() {
         props.handlerClose();
+        setErrorsPasswords(null);
         reset();
     }
     function changeName(e){
@@ -86,6 +93,14 @@ function AddEdit(props) {
     }
     function changePass(e){
         setpasswordE(e.target.value);    
+    }
+    function changePassConfirm(e){
+        setpassworConfirm(e.target.value);  
+        if(passwordE != e.target.value){
+            setErrorsPasswords('Las contraseñan no coinciden');
+        } else {
+            setErrorsPasswords(null);
+        }
     }
     function changeE(e){
         setEmailE(e.target.value);    
@@ -212,6 +227,23 @@ function AddEdit(props) {
                                     <p className='errores'>{errors.password && "Contraseña requerido"}</p>
                                 </Col>
                                 <Col className="col-6">
+                                    <Form.Label className="formGray">Confirmar contraseña</Form.Label>
+                                    <Form.Control 
+                                     name="password_confirm"
+                                     ref={register({
+                                        required: true,
+                                        maxLength: 50,
+                                         validate: value =>
+                                        value === password.current || "The passwords do not match"
+                                    })}
+                                        autoComplete="off" className="formGray" type="password" placeholder="Ingrese su Contraseña"
+                                        style={{ ...styles.input, borderColor: errors.name && "red" }}
+                                    />
+                                    {errors.password_confirm && <p className='errores'>{errors.password_confirm.message}</p>}
+                                </Col>
+                                </Row>
+                                <Row>
+                                <Col className="col-6">
                                     <Form.Label className="formGray">Email</Form.Label>
                                     <Form.Control autoComplete="off" name="email"
                                         ref={register({
@@ -254,7 +286,8 @@ function AddEdit(props) {
 
             >
                 <Modal.Header style={{height:'60px'}} closeButton>
-                    <Modal.Title style={{ fontFamily: 'Inter', marginTop:'5px', fontWeight: '600', fontSize: '18px' }}>Editar Usuario </Modal.Title>
+                    <Modal.Title style={{ fontFamily: 'Inter', marginTop:'5px', fontWeight: '600', fontSize: '18px' }}>Editar Usuario
+                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
                     <form onSubmit={handleSubmit(onSubmit)}>
@@ -311,6 +344,22 @@ function AddEdit(props) {
                                         autoComplete="off" className="formGray" value={passwordE} type="password" placeholder="Ingrese su Contraseña"
                                     />
                                 </Col>
+                            <Col className="col-6">
+                                    <Form.Label className="formGray">Confirmar Contraseña</Form.Label>
+                                    <Form.Control  onChange={(e) => changePassConfirm(e)} name="password_confirm" 
+                                        autoComplete="off" className="formGray" value={password_confirm} type="password" placeholder="Repita su contraseña"
+                                    />
+                                    {errorsPassword &&
+                                    (
+                                        <p class="text-danger">
+                                            {errorsPassword}
+                                        </p>
+                                   
+                                    )
+                                }
+                            </Col>
+                            </Row>
+                            <Row>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Email</Form.Label>
                                     <Form.Control  onChange={(e) => changeE(e)} autoComplete="off" value={emailE} name="email"
@@ -325,6 +374,7 @@ function AddEdit(props) {
 
                             <Col>
                                 <Button
+                                    disabled={errorsPassword}
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="primary">Guardar</Button>

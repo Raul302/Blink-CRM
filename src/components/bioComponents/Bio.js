@@ -1,21 +1,26 @@
 import { useSelector } from 'react-redux';
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState,useRef, useEffect } from 'react'
 import *  as FIcons from "react-icons/fi";
 import *  as FAIcons from "react-icons/fa";
 import *  as HIcons from "react-icons/hi";
+import *  as Ioicons from "react-icons/io";
 import * as MDIcons from "react-icons/md";
 import { useForm } from "react-hook-form";
-import { useParams, } from "react-router";
 import { Button, Modal, Form, InputGroup, Popover, OverlayTrigger, FormControl } from 'react-bootstrap';
-import Select, { components } from 'react-select';
+import Select from 'react-select';
 import moment from 'moment'
+import swal from 'sweetalert';
+import { useParams, } from "react-router";
 import 'moment/locale/es'  // without this line it didn't work
+import {
+    Table,
+    Row,
+    Col,
+  } from "reactstrap";
+
 import { useAlert } from 'react-alert'
 import axios from 'axios';
-import { Row, Col } from "reactstrap";
 import NotificationAlert from "react-notification-alert";
-import swal from 'sweetalert';
-
 
 function Bio() {
     const { id: IDX } = useSelector(state => state.auth);
@@ -40,11 +45,6 @@ function Bio() {
     const [modalLog, setModalLog] = useState(false);
     const [param, setParam] = useState("");
     const [tempParam, setTempParam] = useState("");
-    const [rowData, setRowData] = useState([
-        { Nombre: "Email to Luis", Colegio: "Hace 2 meses", Grado: '10 min', Email: 'email@email.com' },
-        { Nombre: "Email to Juan", Colegio: "Hace 1 mes", Grado: '3 min', Email: 'email@email2.com' },
-        { Nombre: "Email to Alberto", Colegio: "Hace 5 meses", Grado: '8 min', Email: 'email3@email3.com' }
-    ]);
     const [tempsubject, setTemp] = useState();
     const [subject, setSubject] = useState("");
     const [selectValue, setSelectValue] = useState();
@@ -82,14 +82,25 @@ function Bio() {
                 let result = user.map(col => {
                     return {
                         value: col.name,
-                        label: col.name
+                        label: col.name,
+                        type:'user'
                     };
                 })
+                contact.map(u => {
+                    result.push(
+                        {
+                            value: u.name,
+                            label: u.name,
+                            type:'contactos'
+                        }
+                    )
+                });
                 contacts.map(u => {
                     result.push(
                         {
                             value: u.name,
-                            label: u.name
+                            label: u.name,
+                            type:'contactos'
                         }
                     )
                 });
@@ -97,7 +108,8 @@ function Bio() {
                     result.push(
                         {
                             value: u.name,
-                            label: u.name
+                            label: u.name,
+                            type:'referencias'
                         }
                     )
                 })
@@ -106,7 +118,8 @@ function Bio() {
                     } else {
                         result.push({
                             value: us.name,
-                            label: us.name
+                            label: us.name,
+                            type:'user'
                         })
                     }
                 });
@@ -195,8 +208,13 @@ function Bio() {
         setTempParam(param.text);
         setTwoPart(!twopart);
     }
-    const showDate = (dateBD, timeBio) => {
-        return moment(dateBD).locale('es-mx').format("ddd,D MMMM YYYY, h:mm:ss a");
+    const showDate = (dateBD,timeBio) => {
+        let datef = moment(dateBD).locale('es-mx').format("ddd D MMMM, YYYY ");
+        let timef = moment(dateBD).locale('es-mx').format("h:mm A");
+        datef = datef[0].toUpperCase() + datef.slice(1);
+        datef = datef.replace(".","");
+        let tag = <span class="Inter">{datef} <Ioicons.IoMdTime /> {timef}</span>
+        return tag;
     }
     const showSubject = (type, subject) => {
         let tag = '';
@@ -220,12 +238,28 @@ function Bio() {
         }
         return tag
     }
-    const showParticipant = (name) => {
+    const showParticipant = (type = 'use',name) => {
         let n = name ? name : " ";
+        let tag = '';
         if (n) {
             n = n.charAt(0) + n.charAt(1);
         }
-        return n;
+        switch (type) {
+            case 'user':
+            tag = <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{n}</span>;
+            break;
+            case 'contactos':
+            tag = <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">{n}</span>;
+                break;
+            case 'colegio':
+            tag = <Ioicons.IoMdSchool size={32}/>;
+                break;
+            default:
+                tag = <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ">{n}</span>;
+            break;
+        }
+
+        return tag;
     }
     const PopoverComponent = (text) => {
         return (<Popover id="popover-basic">
@@ -305,9 +339,9 @@ function Bio() {
 
     return (
         <>
-            <div className="content">
+            <div className="mt-n2 content">
                 <NotificationAlert ref={notificationAlert} />
-                <div class="card">
+                <div style={{borderRadius:'0px'}}class="card">
                     <div class="card-body">
                         <div class="row">
                             <span onClick={() => showModalLog('Llamada')} class="Inter600B">
@@ -328,21 +362,21 @@ function Bio() {
                 </div>
                 {bioRecords ?
                     <div className="content" style={{ width: '100%', height: '300px' }}>
-                        <table class="table">
-                            <thead style={{ backgroundColor: '#F8F8F8' }} >
+                       <Table responsive>
+                    <thead className="text-primary" tyle={{ backgroundColor: '#F8F8F8' }} >
                                 <tr>
-                                    <th >Tipo</th>
-                                    <th >Fecha</th>
-                                    <th >Detalle</th>
-                                    <th >Participantes</th>
+                                <th class="w-25">Tipo</th>
+                                    <th class="w-25">Fecha</th>
+                                    <th class="w-25 text-center">Detalle</th>
+                                    <th class="w-25">Participantes</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {bioRecords.map(row => (
                                     <tr onClick={(e) => showModal(row)} key={row.id}>
                                         <td>{showSubject(row.type, row.subject)}</td>
-                                        <td>{showDate(row.date, row.timeBio)}</td>
-                                        <td >
+                                        <td>{showDate(row.date,row.timeBio)}</td>
+                                        <td  class="text-center">
                                             <OverlayTrigger trigger={["hover", "hover"]} placement="top"
                                                 overlay={PopoverComponent(row.text)}>
                                                 <a>
@@ -355,14 +389,13 @@ function Bio() {
                                             </OverlayTrigger>
                                         </td>
                                         <td>{row.participants.map(part => (
-                                            <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{showParticipant(part.name)}</span>
+                                        showParticipant(part.type,part.name)
                                         ))}
-
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
-                        </table>
+                            </Table>
                     </div>
                     :
                     ''
@@ -409,9 +442,9 @@ function Bio() {
                                     <Row className="mt-3">
                                         <div style={{ fontSize: '14px' }} class="col Inter600B">
                                             Participantes:
-                                        {param.participants.map(part => (
+                                            {param.participants.map(part => (
                                             <Row className="mt-2">
-                                                <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{showParticipant(part.name)}</span>
+                                                {showParticipant(part.type,part.name)}
                                                 <span>{part.name}</span>
                                             </Row>
                                         ))}
@@ -473,7 +506,7 @@ function Bio() {
                                         <Form.Control style={{ height: '30px', width: '120px' }}
                                             onChange={(e) => changeTime(e)}
                                             value={timeBio} autoComplete="off" name="date"
-                                            className="formGray" step="1" type="time" placeholder="Ingrese su Fecha" />
+                                            className="formGray" type="time" placeholder="Ingrese su Fecha" />
                                     </Col>
                                 </Row>
                                 <Row className="mt-3">
@@ -493,6 +526,7 @@ function Bio() {
 
                                     <Col className="mt-3 ">
                                         <Button
+                                            disabled={!dateBio ? true : !timeBio ? true : false}
                                             style={{ marginRight: '-15px' }}
                                             onSubmit={handleSubmit(onSubmit)}
                                             className="float-right" type="submit"

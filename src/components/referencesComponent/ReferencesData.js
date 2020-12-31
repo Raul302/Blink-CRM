@@ -252,7 +252,7 @@ function ReferencesData(props) {
     return (
         <>
         {!edit  ? 
-         <div class="mt-3 card">
+         <div class="mt-2 card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-11">
@@ -283,7 +283,7 @@ function ReferencesData(props) {
                             </div>
                         </div>
 
-                        <div class="row mt-2 ">
+                        {/* <div class="row mt-2 ">
                             <div class="col-3">
                                 <h6 class="Inter card-subtitle mb-2 text-muted">Tipo</h6>
                             </div>
@@ -293,7 +293,7 @@ function ReferencesData(props) {
                                     {type_ref}
                                 </h6>
                             </div>
-                        </div>
+                        </div> */}
 
                         <div class="row mt-2 ">
                             <div class="col-3">

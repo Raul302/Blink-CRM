@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import React, { useState,useRef, useEffect } from 'react'
 import *  as FIcons from "react-icons/fi";
 import *  as FAIcons from "react-icons/fa";
@@ -6,23 +6,18 @@ import *  as HIcons from "react-icons/hi";
 import *  as Ioicons from "react-icons/io";
 import * as MDIcons from "react-icons/md";
 import { useForm } from "react-hook-form";
-import { Button, Modal, Form, InputGroup, Popover, OverlayTrigger, FormControl, FormLabel } from 'react-bootstrap';
+import { Button, Modal, Form, InputGroup, Popover, OverlayTrigger, FormControl } from 'react-bootstrap';
 import Select from 'react-select';
 import moment from 'moment'
+import swal from 'sweetalert';
+
 import 'moment/locale/es'  // without this line it didn't work
 import {
-    Card,
-    CardHeader,
-    CardBody,
-    CardTitle,
     Table,
     Row,
     Col,
   } from "reactstrap";
-import {
-    BrowserRouter as Router, Switch,
-    Route, Link
-} from 'react-router-dom';
+
 import { useAlert } from 'react-alert'
 import axios from 'axios';
 import NotificationAlert from "react-notification-alert";
@@ -122,7 +117,6 @@ function Bio() {
         setTempParam(row.text);
     };
     const handleChange = (e) => {
-        console.log('E',e);
         if(e!=null){
             setSubject(e[1] ? tempsubject + ' a ' + e[1].value : tempsubject + ' a ' + '')
             setSelectValue(e);
@@ -278,6 +272,15 @@ function Bio() {
         name = await e.target.value;
     }
     const deleteComment = async (id) => {
+        swal({
+            title: "Estas seguro?",
+            text: "Una vez eliminado,no podras recuperar este registro!",
+            icon: "warning",
+            dangerMode: true,
+            buttons: ["No", "Si"],
+        })
+        .then(async (willDelete) => {
+            if (willDelete) {
         await axios.post('http://api.boardingschools.mx/api/bio/delete', {id:id}, {
             headers: {
                 "Accept": "application/json"
@@ -287,6 +290,10 @@ function Bio() {
                 notification('success','Borrado correctamente');
                 handleClose();
                 getBioRecords();
+            });
+             } else {
+                    swal("Operacion cancelada!");
+                }
             });
     }
     const handleChangeSubject = (e) => {

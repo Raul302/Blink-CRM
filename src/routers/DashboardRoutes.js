@@ -4,7 +4,6 @@ import PerfectScrollbar from "perfect-scrollbar";
 import { Route, Switch, Redirect } from "react-router-dom";
 import SideBar from '../components/SideBar/SideBar';
 import Nav from '../components/Nav/Nav';
-
 import routes from "../routes.js";
 import Footer from "components/Footer/Footer";
 import FixedPlugin from "components/Plugin/FixedPlugin";
@@ -73,12 +72,14 @@ class DashboardRoutes extends React.Component {
           </Switch>
            <Footer fluid />
         </div>
+        {this.props.location.pathname === "/dashboard" &&
          <FixedPlugin
           bgColor={this.state.backgroundColor}
           activeColor={this.state.activeColor}
           handleActiveClick={this.handleActiveClick}
           handleBgClick={this.handleBgClick}
         /> 
+        }
       </div>
     );
   }

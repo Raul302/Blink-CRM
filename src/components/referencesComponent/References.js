@@ -48,7 +48,7 @@ function References(props) {
     
     return (
         <>
-            <div className="content">
+            <div className=" mt-n2 content">
             <WithouReferences handlerUpdate={update} id={props.contact.id} />
             { loading === true ?
             <div class="spinner-border text-primary" role="status">

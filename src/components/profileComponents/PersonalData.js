@@ -5,19 +5,16 @@ import { Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { useAlert } from 'react-alert'
-import { StreetData } from '../profileComponents/StreetData';
-
-
-
 function PersonalData(props) {
     useEffect(() => {
         setFilterValues(props.contact);
         consultStates();
+        consultCountries();
     }, [props]);
     const [directions,setDirections] = useState(props.contact.contacts_direction);
     const [phones,setPhones] = useState(props.contact.contacts_phones);
     const [emails,setEmails] = useState(props.contact.contacts_emails);
-    const [inputList, setInputList] = useState([{ street: "", number: "", cp: "",city:"",state:"",typeAddress:"" }]);
+    const [inputList, setInputList] = useState([{ street: "", number: "", cp: "",city:"",state:"",typeAddress:"",country:"" }]);
     const [inputPhone, setInputPhone] = useState([{phone:"",typePhone:"" }]);
     const [inputEmail, setInputEmail] = useState([{ email:"",typeEmail:"" }]);
     const [editInfo, setEditInfo] = useState(false);
@@ -36,28 +33,9 @@ function PersonalData(props) {
     const [state, setState] = useState();
     const [cities, setCities] = useState([]);
     const [states, setStates] = useState([]);
-    const [program, setProgram] = useState(["Boarding Schools",
-        "Año Escolar",
-        "Summer Camps",
-        "Cursos de Idiomas",
-        "Carreras & Maestrias",
-        "Au Pair"]);
-    const years = [
-        2019,
-        2020,
-        2021,
-        2022,
-        2023,
-        2024,
-        2025,
-        2026,
-        2027,
-        2028,
-        2029,
-        2030
-    ];
+    const [countries,setCountries] = useState([]);
+    const [country,setCountry] = useState();
     const alert = useAlert();
-
     const handleInputChangeEmail = (e, index) => {
         const { name, value } = e.target;
         const list = [...inputEmail];
@@ -125,25 +103,32 @@ function PersonalData(props) {
     function changeCiti(e) {
         setCity(e.target.value);
     }
+    // Api to cities
     async function changeCities(e,i=0) {
         let val = e.target.value;
         if (val === undefined) {
             val = props.contact.state;
+        if(val === undefined && inputList[i].state != null){
+        val = inputList[i].state;
+        }
         } else {
             val = e.target.value;
         }
         if (e.target) {
-            // handleInputChange(e,i);            
             setState(e.target.value);
-        }
-       await axios.get('https://www.universal-tutorial.com/api/cities/' + val, {
-            headers: {
-                Authorization: 'Bearer ' + props.token,
-                Accept: "application/json"
+            if(e.target.name){
+                handleInputChange(e,i);
             }
-        }).then(function (response) {
-            setCities(response.data);
-        });
+        }
+            await axios.get('https://www.universal-tutorial.com/api/cities/' + val, {
+                 headers: {
+                     Authorization: 'Bearer ' + props.token,
+                     Accept: "application/json"
+                 }
+             }).then(function (response) {
+                 setCities(response.data);
+             });
+        
     }
     // Api to states
     async function consultStates() {
@@ -161,7 +146,16 @@ function PersonalData(props) {
             };
             changeCities(obj);
         });
-
+    }
+    async function consultCountries() {
+        await axios.get('https://www.universal-tutorial.com/api/countries/', {
+            headers: {
+                Authorization: 'Bearer ' + props.token,
+                Accept: "application/json"
+            }
+        }).then(function (response) {
+            setCountries(response.data);
+        });
     }
     function setFilterValues(props) {
         setBirthday(props.birthday);
@@ -210,6 +204,9 @@ function PersonalData(props) {
     }
     function changePhone(e) {
         setPhone(e.target.value)
+    }
+    function changeCountries(e,i){
+        setCountry(e.target.value);
     }
     async function onSubmit(data) {
         let datax = {
@@ -567,7 +564,7 @@ function PersonalData(props) {
                                         <h6 style={{ color: '#243243', fontWeight: '600' }}
                                             class="Inter card-subtitle mb-2 ">
                                             {x.street} {x.number}, {x.cp}
-                                            <p>{x.city} {x.state}, {x.city} </p>
+                                            <p>{x.state}, {x.city} </p>
                                         </h6>
                                     </div>
                                 </div>
@@ -590,7 +587,7 @@ function PersonalData(props) {
                                         type="submit" class="Inter ml-1 btn btn-success">Guardar</button>
                                 </div>
                             </div>
-                             {inputEmail.map((x, i) => {
+                            {inputEmail.map((x, i) => {
                                 return (
                                     <div className="box">
                                         <div class="row mt-3 ">
@@ -623,7 +620,7 @@ function PersonalData(props) {
                                                     <button onClick={() => handleRemoveClickEmail(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
                                                 }
                                                 {inputEmail.length - 1 === i && <button onClick={handleAddClickEmail}
-                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm"><AIIcons.AiOutlinePlus/></button>
+                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm"><span style={{fontSize:'16px'}}class="Inter">+</span></button>
                                                 }
                                             </div>
                                         </div>
@@ -669,7 +666,7 @@ function PersonalData(props) {
                                                     <button onClick={() => handleRemoveClickPhone(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
                                                 }
                                                 {inputPhone.length - 1 === i && <button onClick={handleAddClickPhone}
-                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm"><AIIcons.AiOutlinePlus/></button>
+                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm"><span style={{fontSize:'16px'}}class="Inter">+</span></button>
                                                 }
                                               </div>
                                         </div>
@@ -697,9 +694,28 @@ function PersonalData(props) {
                                                     className="formGray" type="text" placeholder="Ejemplo : Trabajo,Casa,Negocio" />
                                             </div>
                                             </div>
-                                         <div class="row mt-3 ">
+                                            <div class="row mt-3 ">
                                 <div class="col-3">
-                                    <Form.Label className="formGray">Estado</Form.Label>
+                                    <Form.Label  style={{ fontSize: '16px' }} className="formGray">Pais</Form.Label>
+                                </div>
+                                <div class="col">
+                                    <Form.Control onChange={e => handleInputChange(e,i)} autoComplete="off" 
+                                    name="country" 
+                                    value={x.country} as="select" size="sm" custom>
+                                        <option disabled value="" selected></option>
+                                        {countries.map(countri => (
+                                            <option key={countri.country_name} value={countri.country_name}>
+                                                {countri.country_name}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
+                                </div>
+                            </div>
+                                {x.country === 'Mexico' ?
+                            <>
+                                <div class="row mt-3 ">
+                                <div class="col-3">
+                                    <Form.Label  style={{ fontSize: '16px' }} className="formGray">Estado</Form.Label>
                                 </div>
                                 <div class="col">
                                     <Form.Control onChange={e => changeCities(e,i)} autoComplete="off" 
@@ -732,6 +748,37 @@ function PersonalData(props) {
                                     </Form.Control>
                                 </div>
                             </div>
+                            </>
+                            :
+                            // Manual 
+                            <>
+                                <div class="row mt-3 ">
+                                <div class="col-3">
+                                    <Form.Label  style={{ fontSize: '16px' }} className="formGray">Estado</Form.Label>
+                                </div>
+                                <div class="col">
+                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChange(e,i)}
+                                                    value={x.state}
+                                                    name="state"
+                                                    className="formGray" type="text" placeholder="Ingrese su Estado" />
+                                </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                <div class="col-3">
+                                    <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciudad</Form.Label>
+                                </div>
+                                <div class="col">
+                                    <Form.Control
+                                        onChange={e => handleInputChange(e, i)}
+                                        autoComplete="off" name="city" 
+                                        value={x.city} size="sm" 
+                                        autoComplete="off"
+                                    />
+                                </div>
+                            </div>
+                            </>
+                            }
                                         <div class="row mt-3 ">
                                             <div class="col-3">
                                                 <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Calle</Form.Label>
@@ -774,7 +821,7 @@ function PersonalData(props) {
                                                     <button onClick={() => handleRemoveClick(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
                                                 }
                                                 {inputList.length - 1 === i && <button onClick={handleAddClick}
-                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm"><AIIcons.AiOutlinePlus/></button>
+                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm"><span style={{fontSize:'16px'}}class="Inter">+</span></button>
                                                 }
                                             </div>
                                         </div>
