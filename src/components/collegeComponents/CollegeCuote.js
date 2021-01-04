@@ -5,6 +5,7 @@ import {ProgressBar,Form} from 'react-bootstrap';
 import axios from 'axios';
 import { store } from "store/store";
 import ModalImage from "react-modal-image";
+import { constaApi } from "constants/constants";
 var college;
 export class CollegeCuote extends Component {
 constructor(props){
@@ -56,7 +57,7 @@ uploadFile = ({ target: { files,name } }) =>{
     }
     axios({
         method:'post',
-        url:"http://api.boardingschools.mx/api/files/upload",
+        url: constaApi + 'files/upload',
         data:data,
         options,
         headers: {'Content-Type':'multipart/form-data'}
@@ -80,7 +81,7 @@ uploadFile = ({ target: { files,name } }) =>{
   }
   getDocs = () => {
     const {id} = college;
-    axios.post('http://api.boardingschools.mx/api/files/index', { id: id })
+    axios.post(constaApi +'files/index', { id: id })
     .then( res => {
         console.log(res.data);
         const{ domain } = res.data;

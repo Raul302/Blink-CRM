@@ -21,6 +21,7 @@ import {
 import { useAlert } from 'react-alert'
 import axios from 'axios';
 import NotificationAlert from "react-notification-alert";
+import { constaApi } from 'constants/constants';
 
 function Bio() {
     // Set moment spanish
@@ -53,7 +54,7 @@ function Bio() {
         let obj = {
             id: active.id
         }
-        await axios.post('http://api.boardingschools.mx/api/bio/colleges', obj, {
+        await axios.post( constaApi+'bio/colleges', obj, {
             headers: {
                 "Accept": "application/json"
             }
@@ -67,7 +68,7 @@ function Bio() {
             id: active.id,
             idx: IDX
         };
-        await axios.post('http://api.boardingschools.mx/api/defaultCollegeBio', data)
+        await axios.post( constaApi+'defaultCollegeBio', data)
             .then(function (response) {
                 let { college, user, users,contacts } = response.data;
                 let result = user.map(col => {
@@ -151,7 +152,7 @@ function Bio() {
                 text: textBio ? textBio : null,
                 type: prefixSubject,
             };
-            await axios.post('http://api.boardingschools.mx/api/bio/update', datax, {
+            await axios.post(constaApi+'bio/update', datax, {
                 headers: {
                     "Accept": "application/json"
                 }
@@ -172,7 +173,7 @@ function Bio() {
                 text: textBio ? textBio : null,
                 type: prefixSubject,
             };
-            await axios.post('http://api.boardingschools.mx/api/bio/save', datax)
+            await axios.post(constaApi+'bio/save', datax)
                 .then(async function (response) {
                     notification('success','Creado correctamente');
                     getBioRecords();
@@ -281,7 +282,7 @@ function Bio() {
         })
         .then(async (willDelete) => {
             if (willDelete) {
-        await axios.post('http://api.boardingschools.mx/api/bio/delete', {id:id}, {
+        await axios.post(constaApi+'bio/delete', {id:id}, {
             headers: {
                 "Accept": "application/json"
             }

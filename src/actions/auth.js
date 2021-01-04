@@ -2,11 +2,12 @@ import { types } from "../types/types";
 import axios from 'axios';
 import { setError, removeError, startLoading, finishLoading } from "./ui";
 import { useHistory } from "react-router-dom";
+import { constaApi } from "constants/constants";
 
 export const callLogin = (data) => {
     return async (dispatch) => {
         dispatch(startLoading());
-        await axios.post('http://api.boardingschools.mx/api/login', data)
+        await axios.post( constaApi + 'login', data)
             .then(function (response) {
                 let { data: { data } } = response;
                 dispatch(login(

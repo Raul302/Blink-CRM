@@ -1,7 +1,7 @@
 import React,{ useEffect,useRef } from 'react'
 import *  as FAIcons from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
-import { loadColleges } from '../../helpers/loadColleges'; 
+// import { loadColleges } from '../../helpers/loadColleges'; 
 import { useHistory } from 'react-router-dom';
 import {activeCollege,deleteCollege} from '../../actions/colleges';
 import Skeleton from 'react-loading-skeleton';
@@ -12,7 +12,6 @@ import {
     Card,
     CardHeader,
     CardBody,
-    CardTitle,
     Table,
     Row,
     Col,
@@ -22,7 +21,7 @@ function TableColleges() {
     const dispatch = useDispatch();
     useEffect(()=>{
         dispatch( finishLoading());
-    },[])
+    },[dispatch])
     const notificationAlert = useRef();
     const {colleges} = useSelector( state => state.colleges);
     const { loading } = useSelector(state => state.ui);
@@ -97,7 +96,7 @@ function TableColleges() {
                    <tbody>
                    {colleges.map((row,index) => (
                                 <tr key={index}>
-                                <td><a  onClick={(e)=>handleGoto(row)}>
+                                <td><a onClick={(e)=>handleGoto(row)}>
                                     {row.name}
                                     </a>
                                     </td>

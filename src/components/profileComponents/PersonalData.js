@@ -1,25 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useRef } from 'react';
 import * as FIIcons from "react-icons/fi";
 import * as AIIcons from "react-icons/ai";
 import { Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
-import { useAlert } from 'react-alert'
+import NotificationAlert from "react-notification-alert";
+import { constaApi } from 'constants/constants';
+
 function PersonalData(props) {
     useEffect(() => {
         setFilterValues(props.contact);
         consultStates();
         consultCountries();
     }, [props]);
-    const [directions,setDirections] = useState(props.contact.contacts_direction);
-    const [phones,setPhones] = useState(props.contact.contacts_phones);
-    const [emails,setEmails] = useState(props.contact.contacts_emails);
-    const [inputList, setInputList] = useState([{ street: "", number: "", cp: "",city:"",state:"",typeAddress:"",country:"" }]);
-    const [inputPhone, setInputPhone] = useState([{phone:"",typePhone:"" }]);
-    const [inputEmail, setInputEmail] = useState([{ email:"",typeEmail:"" }]);
+    const notificationAlert = useRef();   
+    const [directions, setDirections] = useState(props.contact.contacts_direction);
+    const [phones, setPhones] = useState(props.contact.contacts_phones);
+    const [emails, setEmails] = useState(props.contact.contacts_emails);
+    const [inputList, setInputList] = useState([{ street: "", number: "", cp: "", city: "", state: "", typeAddress: "", country: "",otherDirection:"" }]);
+    const [inputPhone, setInputPhone] = useState([{ phone: "", typePhone: "",otherPhone: "" }]);
+    const [inputEmail, setInputEmail] = useState([{ email: "", typeEmail: "",otherEmail: "" }]);
     const [editInfo, setEditInfo] = useState(false);
     const [editAcademicProfile, setAcademicProfile] = useState(false);
     const [editDetails, setEditDetails] = useState(false);
+    const [editDirection, setEditDirection] = useState(false);
     const [birthday, setBirthday] = useState();
     const [city, setCity] = useState();
     const [email, setEmail] = useState();
@@ -33,9 +37,8 @@ function PersonalData(props) {
     const [state, setState] = useState();
     const [cities, setCities] = useState([]);
     const [states, setStates] = useState([]);
-    const [countries,setCountries] = useState([]);
-    const [country,setCountry] = useState();
-    const alert = useAlert();
+    const [countries, setCountries] = useState([]);
+    const [country, setCountry] = useState();
     const handleInputChangeEmail = (e, index) => {
         const { name, value } = e.target;
         const list = [...inputEmail];
@@ -58,7 +61,7 @@ function PersonalData(props) {
 
     // handle click event of the Add button
     const handleAddClickEmail = () => {
-        setInputEmail([...inputEmail, { email:"" }]);
+        setInputEmail([...inputEmail, { email: "" }]);
     };
 
     // ----------------------------------------------------------    
@@ -78,7 +81,7 @@ function PersonalData(props) {
 
     // handle click event of the Add button
     const handleAddClickPhone = () => {
-        setInputPhone([...inputPhone, { phone:"" }]);
+        setInputPhone([...inputPhone, { phone: "" }]);
     };
     // ---------------------------------------------------------
     // handle input change
@@ -98,37 +101,37 @@ function PersonalData(props) {
 
     // handle click event of the Add button
     const handleAddClick = () => {
-        setInputList([...inputList, {  street: "", number: "", cp: "" }]);
+        setInputList([...inputList, { street: "", number: "", cp: "" }]);
     };
     function changeCiti(e) {
         setCity(e.target.value);
     }
     // Api to cities
-    async function changeCities(e,i=0) {
+    async function changeCities(e, i = 0) {
         let val = e.target.value;
         if (val === undefined) {
             val = props.contact.state;
-        if(val === undefined && inputList[i].state != null){
-        val = inputList[i].state;
-        }
+            if (val === undefined && inputList[i].state != null) {
+                val = inputList[i].state;
+            }
         } else {
             val = e.target.value;
         }
         if (e.target) {
             setState(e.target.value);
-            if(e.target.name){
-                handleInputChange(e,i);
+            if (e.target.name) {
+                handleInputChange(e, i);
             }
         }
-            await axios.get('https://www.universal-tutorial.com/api/cities/' + val, {
-                 headers: {
-                     Authorization: 'Bearer ' + props.token,
-                     Accept: "application/json"
-                 }
-             }).then(function (response) {
-                 setCities(response.data);
-             });
-        
+        await axios.get('https://www.universal-tutorial.com/api/cities/' + val, {
+            headers: {
+                Authorization: 'Bearer ' + props.token,
+                Accept: "application/json"
+            }
+        }).then(function (response) {
+            setCities(response.data);
+        });
+
     }
     // Api to states
     async function consultStates() {
@@ -158,6 +161,7 @@ function PersonalData(props) {
         });
     }
     function setFilterValues(props) {
+        console.log('propssss',props);
         setBirthday(props.birthday);
         setCity(props.city);
         setEmail(props.email);
@@ -169,13 +173,14 @@ function PersonalData(props) {
         setState(props.state);
         setGrade(props.grade);
         setCicly(props.cicly);
-        if(directions.length > 0){
+        setCountry(props.country);
+        if (directions.length > 0) {
             setInputList(directions);
         }
-        if(phones.length > 0){
+        if (phones.length > 0) {
             setInputPhone(phones);
         }
-        if(emails.length > 0){
+        if (emails.length > 0) {
             setInputEmail(emails);
         }
     }
@@ -205,10 +210,11 @@ function PersonalData(props) {
     function changePhone(e) {
         setPhone(e.target.value)
     }
-    function changeCountries(e,i){
+    function changeCountries(e, i) {
         setCountry(e.target.value);
     }
     async function onSubmit(data) {
+        console.log('inputPhone',inputPhone);
         let datax = {
             id: props.contact.id,
             father_lastname: fName,
@@ -222,17 +228,17 @@ function PersonalData(props) {
             // state: state,
             cicly: cicly,
             grade: grade,
-            direction : inputList
+            state: state,
+            city: city,
+            country: country,
+            direction: inputList
         };
-        await axios.post('http://api.boardingschools.mx/api/contact/update', datax)
+        await axios.post(constaApi+'update', datax)
             .then(function (response) {
                 if (response.status === 200) {
-                    alert.show('Datos actualizados correctamente', {
-                        timeout: 2000, // custom timeout just for this one alert
-                        type: 'success'
-                    })
+                    notification('success','Datos actualizados correctamente');
                 } else {
-                    alert.show('Ocurrio un error por favor intentar mas tarde');
+                    notification('danger','Ocurrio un error,por favor contacta a soporte');
                 }
             });
         if (editInfo) {
@@ -251,11 +257,33 @@ function PersonalData(props) {
     function editCDetails() {
         setEditDetails(!editDetails);
     }
+    function editD() {
+        setEditDirection(!editDirection);
+    }
     function editAcademicP() {
         setAcademicProfile(!editAcademicProfile);
     }
+    const notification =  (type,message) => {
+        let place = "tc";
+        var options = {};
+        options = {
+          place: place,
+          message: (
+            <div>
+              <div>
+                {message}
+              </div>
+            </div>
+          ),
+          type: type,
+          icon: "nc-icon nc-bell-55",
+          autoDismiss: 7,
+          }
+        notificationAlert.current.notificationAlert(options);
+     }
     return (
         <>
+            <NotificationAlert ref={notificationAlert} />
             {!editInfo ?
                 <div class="card">
                     <div class="card-body">
@@ -311,6 +339,19 @@ function PersonalData(props) {
                                 <h6 style={{ color: '##243243', fontWeight: '600' }}
                                     class="Inter card-subtitle mb-2">
                                     {props.contact.birthday}
+                                </h6>
+                            </div>
+                        </div>
+                        <div class="row mt-3 ">
+                            <div class="col-3">
+                                <h6 class="Inter card-subtitle mb-2 text-muted">Dirección</h6>
+                            </div>
+                            <div class="col">
+                                <h6 style={{ color: '##243243', fontWeight: '600' }}
+                                    class="Inter card-subtitle mb-2">
+                                   {props.contact.country ? props.contact.country: ''}
+                                   {props.contact.state ? ',' + props.contact.state : ''}
+                                   {props.contact.state ? ',' + props.contact.city : '' }
                                 </h6>
                             </div>
                         </div>
@@ -374,6 +415,60 @@ function PersonalData(props) {
                                         name="birthday"
                                         className="formGray" type="date" placeholder="Ingrese su email" />
                                 </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                            <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="formGray">Pais</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control  autoComplete="off"
+                                                    name="country"
+                                                    onChange={e => changeCountries(e)}
+                                                    value={country} as="select" size="sm" custom>
+                                                    <option disabled value="" selected></option>
+                                                    {countries.map(countri => (
+                                                        <option key={countri.country_name} value={countri.country_name}>
+                                                            {countri.country_name}
+                                                        </option>
+                                                    ))}
+                                                </Form.Control>
+                                                </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                            <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="formGray">Estado</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control  autoComplete="off"
+                                                    name="state"
+                                                    onChange={e => changeCities(e, 0)}
+                                                    value={state} as="select" size="sm" custom>
+                                                    <option disabled value="" selected></option>
+                                                    {states.map(state => (
+                                                        <option key={state.state_name} value={state.state_name}>
+                                                            {state.state_name}
+                                                        </option>
+                                                    ))}
+                                                </Form.Control>
+                                                </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                            <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="formGray">Ciudad</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control  autoComplete="off"
+                                                    name="city"
+                                                    onChange={e => changeCiti(e)}
+                                                    value={city} as="select" size="sm" custom>
+                                                    <option disabled value="" selected></option>
+                                                    {cities.map(city => (
+                                                        <option key={city.city_name} value={city.city_name}>
+                                                            {city.city_name}
+                                                        </option>
+                                                    ))}
+                                                </Form.Control>
+                                                </div>
                             </div>
                         </form>
                     </div>
@@ -525,8 +620,8 @@ function PersonalData(props) {
                             </div>
                         </div>
                         {inputEmail.map((x, i) => {
-                                return (
-                                    <div class="row mt-2 ">
+                            return (
+                                <div class="row mt-2 ">
                                     <div class="col-3">
                                         <h6 class="Inter card-subtitle mb-2 text-muted">Email {x.typeEmail}</h6>
                                     </div>
@@ -537,11 +632,11 @@ function PersonalData(props) {
                                         </h6>
                                     </div>
                                 </div>
-                                );
-                            })}
+                            );
+                        })}
                         {inputPhone.map((x, i) => {
-                                return (
-                                    <div class="row mt-3 ">
+                            return (
+                                <div class="row mt-3 ">
                                     <div class="col-3">
                                         <h6 class="Inter card-subtitle mb-2 text-muted">Telefono {x.typePhone}</h6>
                                     </div>
@@ -552,26 +647,9 @@ function PersonalData(props) {
                                         </h6>
                                     </div>
                                 </div>
-                                );
-                            })}
-                        {inputList.map((x, i) => {
-                                return (
-                                    <div class="row mt-3 ">
-                                    <div class="col-3">
-                                        <h6 class="Inter card-subtitle mb-2 text-muted">Direccion {x.typeAddress}</h6>
-                                    </div>
-                                    <div class="col">
-                                        <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                            class="Inter card-subtitle mb-2 ">
-                                            {x.street} {x.number}, {x.cp}
-                                            <p>{x.state}, {x.city} </p>
-                                        </h6>
-                                    </div>
-                                </div>
-                                );
-                            })}
-                        
-                    </div> 
+                            );
+                        })}
+                    </div>
                 </div>
                 :
                 <div class="mt-3 card">
@@ -587,6 +665,11 @@ function PersonalData(props) {
                                         type="submit" class="Inter ml-1 btn btn-success">Guardar</button>
                                 </div>
                             </div>
+                            <div class="d-flex justify-content-left">
+                                <h6 >
+                                    Email
+                            </h6>
+                            </div>
                             {inputEmail.map((x, i) => {
                                 return (
                                     <div className="box">
@@ -595,13 +678,30 @@ function PersonalData(props) {
                                                 <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Tipo</Form.Label>
                                             </div>
                                             <div class="col">
-                                                <Form.Control autoComplete="off"
-                                                    onChange={e => handleInputChangeEmail(e, i)}
-                                                    value={x.typeEmail}
-                                                    name="typeEmail"
-                                                    className="formGray" type="text" placeholder="Ejemplo : Personal,Trabajo,Estudiantil" />
+                                                        <Form.Control
+                                                            onChange={e => handleInputChangeEmail(e, i)}
+                                                            value={x.typeEmail}
+                                                            autoComplete="off" 
+                                                            name="typeEmail"
+                                                            className="formGray"
+                                                            as="select" size="sm" custom>
+                                                            <option disabled value="" selected></option>
+                                                            <option>Personal</option>
+                                                            <option>Trabajo</option>
+                                                            <option>Estudiantil</option>
+                                                            <option>Otro</option>
+                                                        </Form.Control>
                                             </div>
-                                            </div>
+                                            {x.typeEmail === 'Otro' &&
+                                            <div class="col">
+                                             <Form.Control autoComplete="off"
+                                             onChange={e => handleInputChangeEmail(e, i)}
+                                             value={x.otherEmail}
+                                             name="otherEmail"
+                                             className="formGray" type="text" placeholder="Ingrese su tipo de email" />
+                                             </div>
+                                            }
+                                        </div>
                                         <div class="row mt-3 ">
                                             <div class="col-3">
                                                 <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Email</Form.Label>
@@ -620,34 +720,54 @@ function PersonalData(props) {
                                                     <button onClick={() => handleRemoveClickEmail(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
                                                 }
                                                 {inputEmail.length - 1 === i && <button onClick={handleAddClickEmail}
-                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm"><span style={{fontSize:'16px'}}class="Inter">+</span></button>
+                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm"><span style={{ fontSize: '16px' }} class="Inter">+</span></button>
                                                 }
                                             </div>
                                         </div>
-                                        <Row>
-                                            <Col>
-                                        <hr></hr>
-                                            </Col>
-                                        </Row>
                                     </div>
                                 );
                             })}
+                            <Row>
+                                <Col>
+                                    <hr></hr>
+                                    <h6 >
+                                        Telefono
+                            </h6>
+                                </Col>
+                            </Row>
                             {inputPhone.map((x, i) => {
                                 return (
                                     <div className="box mt-1">
-                                        
+
                                         <div class="row mt-3">
-                                        <div class="col-3">
+                                            <div class="col-3">
                                                 <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Tipo</Form.Label>
                                             </div>
                                             <div class="col">
-                                                <Form.Control autoComplete="off"
+                                                <Form.Control 
+                                                autoComplete="off"
                                                     onChange={e => handleInputChangePhone(e, i)}
                                                     value={x.typePhone}
                                                     name="typePhone"
-                                                    className="formGray" type="text" placeholder="Ejemplo : Movil,Personal,Trabajo" />
+                                                    className="formGray" type="text"
+                                                            as="select" size="sm" custom>
+                                                            <option disabled value="" selected></option>
+                                                            <option>Movil</option>
+                                                            <option>Personal</option>
+                                                            <option>Trabajo</option>
+                                                            <option>Otro</option>
+                                                        </Form.Control>
                                             </div>
-                                            </div>
+                                            {x.typePhone === 'Otro' &&
+                                            <div class="col">
+                                             <Form.Control autoComplete="off"
+                                             onChange={e => handleInputChangePhone(e, i)}
+                                             value={x.otherPhone}
+                                             name="otherPhone"
+                                             className="formGray" type="text" placeholder="Ingrese su tipo de telefono" />
+                                             </div>
+                                            }
+                                        </div>
                                         <div class="row mt-3 ">
                                             <div class="col-3">
                                                 <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Telefono</Form.Label>
@@ -666,24 +786,67 @@ function PersonalData(props) {
                                                     <button onClick={() => handleRemoveClickPhone(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
                                                 }
                                                 {inputPhone.length - 1 === i && <button onClick={handleAddClickPhone}
-                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm"><span style={{fontSize:'16px'}}class="Inter">+</span></button>
+                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm"><span style={{ fontSize: '16px' }} class="Inter">+</span></button>
                                                 }
-                                              </div>
+                                            </div>
                                         </div>
-                                        <Row>
-                                            <Col>
-                                        <hr></hr>
-                                            </Col>
-                                        </Row>
                                     </div>
                                 );
                             })}
-                           
+                        </form>
+                    </div>
+                </div>
+            }
+            {!editDirection ?
+                <div class="mt-3 card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 style={{ fontWeight: '600' }} class="Inter card-title">Direccion</h5>
+                            </div>
+                            <div class="col-1 d-flex justify-content-end">
+                                <a>
+                                    <FIIcons.FiEdit onClick={(e) => editD()} size={18} style={{ color: '#386CEF' }} />
+                                </a>
+                            </div>
+                        </div>
+                        {inputList.map((x, i) => {
+                            return (
+                                <div class="row mt-3 ">
+                                    <div class="col-3">
+                                        <h6 class="Inter card-subtitle mb-2 text-muted">Direcciòn {x.typeAddress}</h6>
+                                    </div>
+                                    <div class="col">
+                                        <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                            class="Inter card-subtitle mb-2 ">
+                                            {x.street} {x.number}, {x.cp}
+                                            <p>{x.state}, {x.city} </p>
+                                        </h6>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+                :
+                <div class="mt-3 card">
+                    <div class="card-body">
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            <div class="row">
+                                <div class="col">
+                                    <h5 style={{ fontWeight: '600' }} class="Inter card-title">Direcciòn</h5>
+                                </div>
+                                <div class="col-1 d-flex justify-content-end">
+                                    <button onClick={(e) => editD()} type="button" class="Inter btn btn-danger">Cancelar</button>
+                                    <button onSubmit={handleSubmit(onSubmit)}
+                                        type="submit" class="Inter ml-1 btn btn-success">Guardar</button>
+                                </div>
+                            </div>
                             {inputList.map((x, i) => {
                                 return (
                                     <div className="box">
                                         <div class="row mt-3">
-                                        <div class="col-3">
+                                            <div class="col-3">
                                                 <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Tipo</Form.Label>
                                             </div>
                                             <div class="col">
@@ -691,94 +854,110 @@ function PersonalData(props) {
                                                     onChange={e => handleInputChange(e, i)}
                                                     value={x.typeAddress}
                                                     name="typeAddress"
-                                                    className="formGray" type="text" placeholder="Ejemplo : Trabajo,Casa,Negocio" />
+                                                    className="formGray"
+                                                    as="select" size="sm" custom>
+                                                    <option disabled value="" selected></option>
+                                                    <option>Trabajo</option>
+                                                    <option>Casa</option>
+                                                    <option>Negocio</option>
+                                                    <option>Otro</option>
+                                                </Form.Control>
+                                    </div>
+                                    {x.typeAddress === 'Otro' &&
+                                    <div class="col">
+                                     <Form.Control autoComplete="off"
+                                     onChange={e => handleInputChange(e, i)}
+                                     value={x.otherDirection}
+                                     name="otherDirection"
+                                     className="formGray" type="text" placeholder="Ingrese su tipo de dirección" />
+                                     </div>
+                                    }
+                                        </div>
+                                        <div class="row mt-3 ">
+                                            <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="formGray">Pais</Form.Label>
                                             </div>
+                                            <div class="col">
+                                                <Form.Control onChange={e => handleInputChange(e, i)} autoComplete="off"
+                                                    name="country"
+                                                    value={x.country} as="select" size="sm" custom>
+                                                    <option disabled value="" selected></option>
+                                                    {countries.map(countri => (
+                                                        <option key={countri.country_name} value={countri.country_name}>
+                                                            {countri.country_name}
+                                                        </option>
+                                                    ))}
+                                                </Form.Control>
                                             </div>
-                                            <div class="row mt-3 ">
-                                <div class="col-3">
-                                    <Form.Label  style={{ fontSize: '16px' }} className="formGray">Pais</Form.Label>
-                                </div>
-                                <div class="col">
-                                    <Form.Control onChange={e => handleInputChange(e,i)} autoComplete="off" 
-                                    name="country" 
-                                    value={x.country} as="select" size="sm" custom>
-                                        <option disabled value="" selected></option>
-                                        {countries.map(countri => (
-                                            <option key={countri.country_name} value={countri.country_name}>
-                                                {countri.country_name}
-                                            </option>
-                                        ))}
-                                    </Form.Control>
-                                </div>
-                            </div>
-                                {x.country === 'Mexico' ?
-                            <>
-                                <div class="row mt-3 ">
-                                <div class="col-3">
-                                    <Form.Label  style={{ fontSize: '16px' }} className="formGray">Estado</Form.Label>
-                                </div>
-                                <div class="col">
-                                    <Form.Control onChange={e => changeCities(e,i)} autoComplete="off" 
-                                    name="state" 
-                                    value={x.state} as="select" size="sm" custom>
-                                        <option disabled value="" selected></option>
-                                        {states.map(state => (
-                                            <option key={state.state_name} value={state.state_name}>
-                                                {state.state_name}
-                                            </option>
-                                        ))}
-                                    </Form.Control>
-                                </div>
-                            </div>
-                            <div class="row mt-3 ">
-                                <div class="col-3">
-                                    <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciudad</Form.Label>
-                                </div>
-                                <div class="col">
-                                    <Form.Control
-                                        onChange={e => handleInputChange(e, i)}
-                                        autoComplete="off" name="city" 
-                                        value={x.city} as="select" size="sm" custom>
-                                        <option key={x.city} defaultValue={x.city}></option>
-                                        {cities.map(city => (
-                                            <option key={city.city_name} value={city.city_name}>
-                                                {city.city_name}
-                                            </option>
-                                        ))}
-                                    </Form.Control>
-                                </div>
-                            </div>
-                            </>
-                            :
-                            // Manual 
-                            <>
-                                <div class="row mt-3 ">
-                                <div class="col-3">
-                                    <Form.Label  style={{ fontSize: '16px' }} className="formGray">Estado</Form.Label>
-                                </div>
-                                <div class="col">
-                                <Form.Control autoComplete="off"
-                                                    onChange={e => handleInputChange(e,i)}
-                                                    value={x.state}
-                                                    name="state"
-                                                    className="formGray" type="text" placeholder="Ingrese su Estado" />
-                                </div>
-                            </div>
-                            <div class="row mt-3 ">
-                                <div class="col-3">
-                                    <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciudad</Form.Label>
-                                </div>
-                                <div class="col">
-                                    <Form.Control
-                                        onChange={e => handleInputChange(e, i)}
-                                        autoComplete="off" name="city" 
-                                        value={x.city} size="sm" 
-                                        autoComplete="off"
-                                    />
-                                </div>
-                            </div>
-                            </>
-                            }
+                                        </div>
+                                        {x.country === 'Mexico' ?
+                                            <>
+                                                <div class="row mt-3 ">
+                                                    <div class="col-3">
+                                                        <Form.Label style={{ fontSize: '16px' }} className="formGray">Estado</Form.Label>
+                                                    </div>
+                                                    <div class="col">
+                                                        <Form.Control onChange={e => changeCities(e, i)} autoComplete="off"
+                                                            name="state"
+                                                            value={x.state} as="select" size="sm" custom>
+                                                            <option disabled value="" selected></option>
+                                                            {states.map(state => (
+                                                                <option key={state.state_name} value={state.state_name}>
+                                                                    {state.state_name}
+                                                                </option>
+                                                            ))}
+                                                        </Form.Control>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3 ">
+                                                    <div class="col-3">
+                                                        <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciudad</Form.Label>
+                                                    </div>
+                                                    <div class="col">
+                                                        <Form.Control
+                                                            onChange={e => handleInputChange(e, i)}
+                                                            autoComplete="off" name="city"
+                                                            value={x.city} as="select" size="sm" custom>
+                                                            <option key={x.city} defaultValue={x.city}></option>
+                                                            {cities.map(city => (
+                                                                <option key={city.city_name} value={city.city_name}>
+                                                                    {city.city_name}
+                                                                </option>
+                                                            ))}
+                                                        </Form.Control>
+                                                    </div>
+                                                </div>
+                                            </>
+                                            :
+                                            // Manual 
+                                            <>
+                                                <div class="row mt-3 ">
+                                                    <div class="col-3">
+                                                        <Form.Label style={{ fontSize: '16px' }} className="formGray">Estado</Form.Label>
+                                                    </div>
+                                                    <div class="col">
+                                                        <Form.Control autoComplete="off"
+                                                            onChange={e => handleInputChange(e, i)}
+                                                            value={x.state}
+                                                            name="state"
+                                                            className="formGray" type="text" placeholder="Ingrese su Estado" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3 ">
+                                                    <div class="col-3">
+                                                        <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciudad</Form.Label>
+                                                    </div>
+                                                    <div class="col">
+                                                        <Form.Control
+                                                            onChange={e => handleInputChange(e, i)}
+                                                            autoComplete="off" name="city"
+                                                            value={x.city} size="sm"
+                                                            autoComplete="off"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </>
+                                        }
                                         <div class="row mt-3 ">
                                             <div class="col-3">
                                                 <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Calle</Form.Label>
@@ -821,7 +1000,7 @@ function PersonalData(props) {
                                                     <button onClick={() => handleRemoveClick(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
                                                 }
                                                 {inputList.length - 1 === i && <button onClick={handleAddClick}
-                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm"><span style={{fontSize:'16px'}}class="Inter">+</span></button>
+                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm"><span style={{ fontSize: '16px' }} class="Inter">+</span></button>
                                                 }
                                             </div>
                                         </div>

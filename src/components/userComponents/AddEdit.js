@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useAlert } from 'react-alert'
 import axios from 'axios';
 import NotificationAlert from "react-notification-alert";
+import { constaApi } from 'constants/constants';
 
 
 function AddEdit(props) {
@@ -49,7 +50,7 @@ function AddEdit(props) {
             let datax = {id: idE, type:typeE,name:nameE,email:emailE,password:passwordE,father_lastname:fatherE,
                 mother_lastname:motherE,password_confirm:password_confirm
             }
-            await axios.post('http://api.boardingschools.mx/api/users/update',datax)
+            await axios.post(constaApi+'users/update',datax)
             .then(function (response) {
                 if(response.status === 200){
                     props.handleupdateTable();
@@ -62,7 +63,7 @@ function AddEdit(props) {
                 }
             });
         } else {
-            await axios.post('http://api.boardingschools.mx/api/register',data)
+            await axios.post(constaApi+'register',data)
             .then(function (response) {
               if(response.status === 200){
                 props.handleupdateTable();

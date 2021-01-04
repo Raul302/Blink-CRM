@@ -8,6 +8,7 @@ import { finishLoading, startLoading } from '../../actions/ui';
 import Skeleton from 'react-loading-skeleton';
 import { useAlert } from 'react-alert'
 import CollegeCuote from './CollegeCuote';
+import { constaApi,constPathFiles } from 'constants/constants';
 
 function Docs() {
     const { loading } = useSelector(state => state.ui);
@@ -17,7 +18,7 @@ function Docs() {
     const alert = useAlert()
 
     const dispatch = useDispatch();
-    const pathFiles = 'http://api.boardingschools.mx/storage/';
+    const pathFiles = constPathFiles;
     const { active } = useSelector(state => state.colleges);
     const [picture, setPicture] = useState('');
     const [displays, setDisplays] = useState('');
@@ -29,7 +30,7 @@ function Docs() {
 
     const getFiles = () => {
         dispatch(startLoading());
-        axios.post('http://api.boardingschools.mx/api/files/index', { id: active.id })
+        axios.post(constaApi+'files/index', { id: active.id })
             .then(function (response) {
                 const { data } = response;
                 if (data[0]) {
@@ -70,7 +71,7 @@ function Docs() {
         }
         axios({
             method: 'post',
-            url: 'http://api.boardingschools.mx/api/files/upload',
+            url: constaApi+'files/upload',
             data: formData,
             headers: { 'Content-Type': 'multipart/form-data' }
         })

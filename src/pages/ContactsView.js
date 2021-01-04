@@ -29,9 +29,9 @@ export default function ContactsView(props) {
                'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active Inter600' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl Inter600'} 
                to={"/contacts/"+id+"/docs"}>Doc</Link>
 
-                <Link  className={[ '/contacts/'+id +'/pendings'].includes(pathname) ? 
+                <Link  className={[ '/contacts/'+id +'/reminders'].includes(pathname) ? 
                'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active Inter600' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl Inter600'} 
-               to={"/contacts/"+id+"/pendings"}>Pendientes</Link>
+               to={"/contacts/"+id+"/reminders"}>Recordatorios</Link>
 
                 <Link  className={[ '/contacts/'+id +'/prospect'].includes(pathname) ? 
                'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active Inter600' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl Inter600'} 

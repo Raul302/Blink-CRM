@@ -3,11 +3,12 @@ import axios from 'axios';
 import { setError,removeError, startLoading, finishLoading } from "./ui";
 import { useHistory } from "react-router-dom";
 import { loadColleges } from '../helpers/loadColleges';       
+import { constaApi } from "constants/constants";
 
 export const newCollege = (data) =>{
     return async (dispatch) => {
         dispatch( startLoading() );
-    await axios.post('http://api.boardingschools.mx/api/colleges/save',data)
+    await axios.post( constaApi +'colleges/save',data)
         .then(function (response) {
             dispatch( removeError());
             dispatch( starLoadingColleges() );
@@ -22,7 +23,7 @@ export const newCollege = (data) =>{
 export const deleteCollege = (id) =>{
     return async (dispatch) => {
         dispatch( startLoading() );
-    await axios.post('http://api.boardingschools.mx/api/colleges/delete',{id:id})
+    await axios.post(constaApi+'delete',{id:id})
         .then(function (response) {
             dispatch( removeError());
             dispatch( starLoadingColleges() );

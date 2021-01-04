@@ -13,6 +13,7 @@ import {
     Col,
   } from "reactstrap";
   import NotificationAlert from "react-notification-alert";
+import { constaApi } from 'constants/constants';
 
 
 function TableUsers(props) {
@@ -69,7 +70,7 @@ function TableUsers(props) {
                     alertCustom('Accion no permitida','error');
                 } else {
                     let datax = {id:id};
-                     axios.post('http://api.boardingschools.mx/api/users/delete',datax)
+                     axios.post(constaApi+'users/delete',datax)
                    .then(function (response) {
                        if(response.status === 200){
                          notification('success','Contacto eliminado correctamente');

@@ -5,6 +5,7 @@ import { Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { useForm } from "react-hook-form";
 import { useAlert } from 'react-alert'
+import { constaApi } from 'constants/constants';
 
 
 
@@ -40,7 +41,6 @@ function ReferencesData(props) {
     const [token,setToken] = useState(props.token ?? JSON.parse(localStorage.getItem('tokenStates')));
 
     useEffect(() => {
-
       typeRef(props.reference);
       consultStates();
       setFilterValues(props.reference);
@@ -194,7 +194,21 @@ function ReferencesData(props) {
         setFilterValues(props.reference);
         setEdit(!edit);
     }
-    
+
+    async function deleteReference (id) {
+        await axios.post(constaApi+'references/'+id)
+        .then(function (response) {
+            if(response.status === 201){
+                props.handlerUpdate();
+                alert.show('Referencia Eliminada correctamente', {
+                    timeout: 2000, // custom timeout just for this one alert
+                    type: 'success'
+                })
+            } else {
+                alert.show('Ocurrio un error por favor intentar mas tarde');
+            }
+        });
+    }
     function changeName(e){
         setNameR(e.target.value);
     }
@@ -235,7 +249,7 @@ function ReferencesData(props) {
             email: inputEmail,
             phone: inputPhone
         }
-        await axios.post('http://api.boardingschools.mx/api/reference/update',datax)
+        await axios.post(constaApi+'reference/update',datax)
         .then(function (response) {
             if(response.status === 200){
                 props.handlerUpdate();
@@ -266,7 +280,7 @@ function ReferencesData(props) {
                                 </a>
                                 <a class="ml-1">
                                     <FAIcons.FaTrashAlt
-                                     onClick={(e) => editing()}
+                                     onClick={(e) => deleteReference(props.reference.id)}
                                      size={18} style={{ color: '#FF0101' }} />
                                 </a>
                             </div>
@@ -377,6 +391,7 @@ function ReferencesData(props) {
                 <div class="col-11">
                                 <h5 style={{ fontWeight: '600' }} class="Inter card-title">{type_ref}</h5>
                 </div>
+                
                     <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
                         <button  onClick={(e) => editing()}
                         type="button"
@@ -384,7 +399,14 @@ function ReferencesData(props) {
                         <button onSubmit={handleSubmit(onSubmit)}
                             type="submit" class="Inter ml-1 btn btn-success">Guardar</button>
                     </div>
-                </div>
+                </div><Row>
+                                <Col>
+                                    <hr></hr>
+                                    <h6 >
+                                        Datos personales
+                            </h6>
+                                </Col>
+                            </Row>
                 <div class="row mt-2">
                     <div class="col-3">
                         <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Nombre</Form.Label>
@@ -450,7 +472,14 @@ function ReferencesData(props) {
                             className="formGray" type="text" placeholder="Ingrese su Apellido materno" />
                     </div>
                 </div>
-
+                <Row>
+                                <Col>
+                                    <hr></hr>
+                                    <h6 >
+                                        Email
+                            </h6>
+                                </Col>
+                            </Row>
                 {inputEmail.map((x, i) => {
                                 return (
                                     <div className="box">
@@ -484,7 +513,7 @@ function ReferencesData(props) {
                                                     <button onClick={() => handleRemoveClickEmail(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
                                                 }
                                                 {inputEmail.length - 1 === i && <button onClick={handleAddClickEmail}
-                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm">ADD</button>
+                                                    type="submit" style={{fontSize:'16px'}}class="Inter ml-1 btn btn-success btn-sm">+</button>
 
                                                 }
                                             </div>
@@ -492,6 +521,14 @@ function ReferencesData(props) {
                                     </div>
                                 );
                             })}
+                            <Row>
+                                <Col>
+                                    <hr></hr>
+                                    <h6 >
+                                        Telefono
+                            </h6>
+                                </Col>
+                            </Row>
                             {inputPhone.map((x, i) => {
                                 return (
                                     <div className="box mt-1">
@@ -526,7 +563,7 @@ function ReferencesData(props) {
                                                     <button onClick={() => handleRemoveClickPhone(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
                                                 }
                                                 {inputPhone.length - 1 === i && <button onClick={handleAddClickPhone}
-                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm">ADD</button>
+                                                    type="submit" style={{fontSize:'16px'}}class="Inter ml-1 btn btn-success btn-sm">+</button>
 
                                                 }
                                             </div>
@@ -534,6 +571,14 @@ function ReferencesData(props) {
                                     </div>
                                 );
                             })}
+                            <Row>
+                                <Col>
+                                    <hr></hr>
+                                    <h6 >
+                                        Dirección
+                            </h6>
+                                </Col>
+                            </Row>
                              {inputList.map((x, i) => {
                                 return (
                                     <div className="box">
@@ -626,7 +671,7 @@ function ReferencesData(props) {
                                                     <button onClick={() => handleRemoveClick(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
                                                 }
                                                 {inputList.length - 1 === i && <button onClick={handleAddClick}
-                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm">ADD</button>
+                                                    type="submit" style={{fontSize:'16px'}}class="Inter ml-1 btn btn-success btn-sm">+</button>
 
                                                 }
                                             </div>

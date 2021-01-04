@@ -12,6 +12,7 @@ import TableContacts from '../components/contactComponents/TableContacts';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import { constaApi } from 'constants/constants';
 
 const goRouter = function (param){
 }
@@ -25,7 +26,7 @@ function Contacts() {
 
     async function consultRow(){
         setLoading(true);
-        await axios.get('http://api.boardingschools.mx/api/contacts', {
+        await axios.get(constaApi+'contacts', {
             headers: {
                 "Accept": "application/json"
             }

@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/GlobalStyles.css';
 import *  as FAIcons from "react-icons/fa";
 import axios from 'axios';
+import { constaApi } from 'constants/constants';
 const AddEdit = React.lazy(() => import('../components/userComponents/AddEdit'));
 const TableUsers = React.lazy(() => import('../components/userComponents/TableUsers'));
 
@@ -27,7 +28,7 @@ function Users() {
              "Accept": "application/json"
          };
          let data = { type: init.type };
-        await axios.post('http://api.boardingschools.mx/api/users',data,{
+        await axios.post(constaApi+'users',data,{
         }).then(function (response) {
             let array = [];
              Object.keys(response.data).map(item => {

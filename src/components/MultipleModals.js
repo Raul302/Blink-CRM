@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
 import axios from 'axios';
 import NotificationAlert from "react-notification-alert";
+import { constaApi } from 'constants/constants';
 
 
 
@@ -14,6 +15,7 @@ function MultipleModals(props) {
     // Refs
     const notificationAlert = useRef();
     // states
+    const [blocked,setBlocked] = useState(false);
     const [modal1, setModal1] = useState(false);
     const [modal2, setModal2] = useState(false);
     const [modal3, setModal3] = useState(false);
@@ -49,12 +51,27 @@ function MultipleModals(props) {
         2029,
         2030
     ];
+    const [country, setCountry] = useState();
+    const [countries, setCountries] = useState([]);
+
     useEffect(() => {
         consultStates();
         setExtra(false);
 
     }, []);
-
+    async function consultCountries(auth) {
+        await axios.get('https://www.universal-tutorial.com/api/countries/', {
+            headers: {
+                Authorization: 'Bearer ' + auth,
+                Accept: "application/json"
+            }
+        }).then(function (response) {
+            setCountries(response.data);
+        });
+    }
+    function changeCountries(e, i) {
+        setCountry(e.target.value);
+    }
     function changeCities(e) {
         let val = e.target.value;
         axios.get('https://www.universal-tutorial.com/api/cities/' + val, {
@@ -78,6 +95,7 @@ function MultipleModals(props) {
             }
         }).then(function (response) {
            x = response.data.auth_token;
+           consultCountries(x);
         });
         axios.get('https://www.universal-tutorial.com/api/states/Mexico', {
             headers: {
@@ -229,19 +247,22 @@ function MultipleModals(props) {
         }
     }
     async function onSubmit(data) {
+        setBlocked(true);
         if(modal1 === true){
-           await axios.post('http://api.boardingschools.mx/api/contacts',data)
+           await axios.post(constaApi+'contacts',data)
               .then(function (response) {
                 setIDContact(response.data.id);
               });
             showModal2();
+            setBlocked(false);
         }
         if(modal3 === true){
             data.idContact = idContact;
-            await axios.post('http://api.boardingschools.mx/api/references',data)
+            await axios.post(constApi+'references',data)
             .then(function (response) {
             })
             showModal4();
+            setBlocked(false);
         }
         reset();
         resetReference()
@@ -412,7 +433,19 @@ function MultipleModals(props) {
                                 </Col>
                             </Row>
                             <Row className="mt-1">
-                                <Col className="col-6">
+                            <Col className="col-4">
+                                    <Form.Label className="formGray">Pais</Form.Label>
+                                    <Form.Control  autoComplete="off" name="country" ref={student} as="select" size="sm" custom>
+                                        <option disabled value="" selected></option>
+                                        {countries.map(countri => (
+                                                        <option key={countri.country_name} value={countri.country_name}>
+                                                            {countri.country_name}
+                                                        </option>
+                                                    ))}
+                                    </Form.Control>
+                                    <p className='errores'>{errors.country && "Pais requerido"}</p>
+                                </Col>
+                                <Col className="col-4">
                                     <Form.Label className="formGray">Estado</Form.Label>
                                     <Form.Control onChange={e => changeCities(e)} autoComplete="off" name="state" ref={student} as="select" size="sm" custom>
                                         <option disabled value="" selected></option>
@@ -424,7 +457,7 @@ function MultipleModals(props) {
                                     </Form.Control>
                                     <p className='errores'>{errors.state && "Estado requerido"}</p>
                                 </Col>
-                                <Col className="col-6">
+                                <Col className="col-4">
                                     <Form.Label className="formGray">Ciudad</Form.Label>
                                     <Form.Control autoComplete="off" name="city" ref={student} as="select" size="sm" custom>
                                     <option disabled value="" selected></option>
@@ -444,7 +477,7 @@ function MultipleModals(props) {
 
                             <Col>
                                 <Button
-                                    disabled={valid() || validTwo() || validFieldFive || validFieldSix}
+                                    disabled={valid() || validTwo() || validFieldFive || validFieldSix || blocked}
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="primary">Guardar</Button>
@@ -532,7 +565,7 @@ function MultipleModals(props) {
                                         onChange={e => showReference(e)}
                                         className="browser-default custom-select" >
                                         {
-                                            Add.map((address, key) => <option value={key}>{address}</option>)
+                                            Add.map((address, key) => <option key={key} value={key}>{address}</option>)
                                         }
                                     <option disabled value= "" selected ></option>
                                     </select >

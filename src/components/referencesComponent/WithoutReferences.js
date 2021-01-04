@@ -6,6 +6,7 @@ import { Row, Col, Button, Modal, Form, FormControl, FormLabel } from 'react-boo
 import { useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
 import axios from 'axios';
+import { constaApi } from 'constants/constants';
 
 function WithoutReferences(props) {
 
@@ -63,7 +64,7 @@ function WithoutReferences(props) {
 
 async function onSubmit(data) {
         data.idContact = props.id;
-        await axios.post('http://api.boardingschools.mx/api/references',data)
+        await axios.post(constaApi +'references',data)
         .then(function (response) {
         })
         showModal4();
@@ -91,7 +92,7 @@ function handlevalidFour(e) {
     return (
         <>
         <div class="d-flex justify-content-end">
-        <button onClick={(e) => showModal3()} class="btn btn-primary">Agre.Ref</button>
+        <button onClick={(e) => showModal3()} class="btn btn-primary"><span style={{fontSize:'16px'}} >+</span> Referencia</button>
         </div>
             {/* MODAL */}
 

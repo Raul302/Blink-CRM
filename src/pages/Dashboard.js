@@ -4,7 +4,7 @@ import  'bootstrap/dist/css/bootstrap.min.css';
 function Dashboard() {
     return (
         <div className="content">
-        <div class="row">
+        <div className="row">
         Dashboard    
         </div>    
         </div>

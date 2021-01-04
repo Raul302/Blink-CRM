@@ -21,6 +21,7 @@ import {
 import { useAlert } from 'react-alert'
 import axios from 'axios';
 import NotificationAlert from "react-notification-alert";
+import { constaApi } from 'constants/constants';
 
 function Bio() {
     const { id: IDX } = useSelector(state => state.auth);
@@ -56,7 +57,7 @@ function Bio() {
         let obj = {
             id: id
         }
-        await axios.post('http://api.boardingschools.mx/api/bio/contacts', obj, {
+        await axios.post(constaApi+'contacts', obj, {
             headers: {
                 "Accept": "application/json"
             }
@@ -76,13 +77,15 @@ function Bio() {
             id: id,
             idx: IDX
         };
-        await axios.post('http://api.boardingschools.mx/api/defaultSelectBio', data)
+        await axios.post(constaApi+'defaultSelectBio', data)
             .then(function (response) {
                 let { contact,contacts,references, user, users } = response.data;
+                console.log(user);
                 let result = user.map(col => {
                     return {
                         value: col.name,
                         label: col.name,
+                        fullname: col.name +' ' + col.father_lastname + ' ' +  col.mother_lastname,
                         type:'user'
                     };
                 })
@@ -91,6 +94,7 @@ function Bio() {
                         {
                             value: u.name,
                             label: u.name,
+                            fullname: u.name +' ' + u.father_lastname + ' ' +  u.mother_lastname,
                             type:'contactos'
                         }
                     )
@@ -104,21 +108,27 @@ function Bio() {
                         }
                     )
                 });
-                references.map(u => {
-                    result.push(
-                        {
-                            value: u.name,
-                            label: u.name,
-                            type:'referencias'
-                        }
-                    )
-                })
+                if(Object.keys(references).length != 0){
+                    references.map(u => {
+                        result.push(
+                            {
+                                value: u.name,
+                                label: u.name,
+                                fullname: u.name +' ' + u.father_lastname + ' ' +  u.mother_lastname,
+                                type:'referencias'
+                            }
+                        )
+                    });
+                } else {
+
+                }
                 users.forEach(us => {
                     if (us.name === result[1].value) {
                     } else {
                         result.push({
                             value: us.name,
                             label: us.name,
+                            fullname: us.name +' ' + us.father_lastname + ' ' +  us.mother_lastname,
                             type:'user'
                         })
                     }
@@ -149,6 +159,9 @@ function Bio() {
         setSubject(values[1] ? subject + ' a ' + values[1].value : subject + ' a ' + '');
     }
     const handleClose = function close() {
+        setSelectValue([values[0],values[1]]);
+        setDateBio("");
+        setTimeBio("");
         setModal(false);
         setModalLog(false);
     }
@@ -165,7 +178,7 @@ function Bio() {
                 id_college: null,
                 type: prefixSubject,
             };
-            await axios.post('http://api.boardingschools.mx/api/bio/update', datax, {
+            await axios.post( constaApi+'update', datax, {
                 headers: {
                     "Accept": "application/json"
                 }
@@ -186,7 +199,7 @@ function Bio() {
                 text: textBio ? textBio : null,
                 type: prefixSubject,
             };
-            axios.post('http://api.boardingschools.mx/api/bio/save', datax)
+            axios.post( constaApi+'save', datax)
                 .then(function (response) {
                     notification('success', 'Creado correctamente');
                     getBioRecords();
@@ -238,7 +251,7 @@ function Bio() {
         }
         return tag
     }
-    const showParticipant = (type = 'use',name) => {
+    const showParticipant = (type = 'use',name,fullname = "") => {
         let n = name ? name : " ";
         let tag = '';
         if (n) {
@@ -251,9 +264,9 @@ function Bio() {
             case 'contactos':
             tag = <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">{n}</span>;
                 break;
-            case 'colegio':
-            tag = <Ioicons.IoMdSchool size={32}/>;
-                break;
+                case 'referencias':
+                    tag = <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">{n}</span>;
+                        break;
             default:
                 tag = <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ">{n}</span>;
             break;
@@ -302,7 +315,7 @@ function Bio() {
         })
             .then(async (willDelete) => {
                 if (willDelete) {
-                    await axios.post('http://api.boardingschools.mx/api/bio/delete', { id: id }, {
+                    await axios.post( constaApi+'delete', { id: id }, {
                         headers: {
                             "Accept": "application/json"
                         }
@@ -389,7 +402,7 @@ function Bio() {
                                             </OverlayTrigger>
                                         </td>
                                         <td>{row.participants.map(part => (
-                                        showParticipant(part.type,part.name)
+                                        showParticipant(part.type,part.name,part.fullname)
                                         ))}
                                         </td>
                                     </tr>
@@ -443,9 +456,9 @@ function Bio() {
                                         <div style={{ fontSize: '14px' }} class="col Inter600B">
                                             Participantes:
                                             {param.participants.map(part => (
-                                            <Row className="mt-2">
-                                                {showParticipant(part.type,part.name)}
-                                                <span>{part.name}</span>
+                                            <Row key={part.id} className="mt-2">
+                                                {showParticipant(part.type,part.name,part.fullname)}
+                                                <span>{part.fullname}</span>
                                             </Row>
                                         ))}
                                         </div>

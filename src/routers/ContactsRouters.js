@@ -3,10 +3,7 @@ import {
     BrowserRouter as Router, Switch, Redirect,
     Route, useLocation
 } from 'react-router-dom';
-import Dashboard from '../pages/Dashboard';
-import Users from '../pages/Users';
-import Report from '../pages/Report';
-import Contacts from '../pages/Contacts';
+import { constaApi } from '../constants/constants';
 import ContactsView from '../pages/ContactsView';
 import Bio from '../components/bioComponents/Bio';
 import Profile from '../components/profileComponents/Profile';
@@ -18,6 +15,7 @@ import axios from 'axios';
 import Nav from "../components/Nav/Nav";
 import SideBar from '../components/SideBar/SideBar';
 import routes from "../routes.js";
+import Reminders from 'components/contactComponents/RemindersComponents/Reminders';
 
 
 function ContactsRouters(props) {
@@ -34,7 +32,7 @@ function ContactsRouters(props) {
     }, [])
     async function consultContact() {
         setLoading(true);
-        await axios.get('http://api.boardingschools.mx/api/contacts/' + id, {
+        await axios.get(constaApi + 'contacts/' + id, {
             headers: {
                 "Accept": "application/json"
             }
@@ -92,6 +90,15 @@ function ContactsRouters(props) {
                     <Route exact path="/contacts/:id/docs"
                         render={(props) => (
                                 <Docs {...props}
+                                updateRoute={update}
+                                contact={contact}
+                                />
+                        )}
+                    />
+
+                    <Route exact path="/contacts/:id/reminders"
+                        render={(props) => (
+                                <Reminders {...props}
                                 updateRoute={update}
                                 contact={contact}
                                 />

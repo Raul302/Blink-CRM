@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useAlert } from 'react-alert';
 import ReferencesData from '../referencesComponent/ReferencesData';
 import WithouReferences from '../referencesComponent/WithoutReferences';
+import { constaApi } from 'constants/constants';
 
 function References(props) {
     const [type_ref,setTypeRef] =useState();
@@ -15,11 +16,10 @@ function References(props) {
     useEffect(() => {
         getToken();
         consultReferences();
-        // typeRef(props.reference);
     }, [props])
     async function consultReferences() {
          setLoading(true);
-        await axios.post('http://api.boardingschools.mx/api/references/show/refcontact',{
+        await axios.post( constaApi+'references/show/refcontact',{
             id:props.contact.id,
             headers: {
                 "Accept": "application/json"
@@ -30,7 +30,8 @@ function References(props) {
         });
     }
     function update(){
-        props.updateRoute();
+        props.noReload === true ? props.update() : consultReferences();
+        props.noReload === true ? consultReferences() : props.updateRoute();
     }
     async function getToken(){
         //    info : L6HkSxDySdCLf8NsKYB64pLX5rE4XJVQvG0ROvYXBwYXZ7e0kRlU7gwVgo49xcFX6FI
