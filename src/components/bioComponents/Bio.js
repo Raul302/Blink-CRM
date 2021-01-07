@@ -57,7 +57,7 @@ function Bio() {
         let obj = {
             id: id
         }
-        await axios.post(constaApi+'contacts', obj, {
+        await axios.post(constaApi+'bio/contacts', obj, {
             headers: {
                 "Accept": "application/json"
             }
@@ -80,7 +80,6 @@ function Bio() {
         await axios.post(constaApi+'defaultSelectBio', data)
             .then(function (response) {
                 let { contact,contacts,references, user, users } = response.data;
-                console.log(user);
                 let result = user.map(col => {
                     return {
                         value: col.name,
@@ -99,15 +98,7 @@ function Bio() {
                         }
                     )
                 });
-                contacts.map(u => {
-                    result.push(
-                        {
-                            value: u.name,
-                            label: u.name,
-                            type:'contactos'
-                        }
-                    )
-                });
+               
                 if(Object.keys(references).length != 0){
                     references.map(u => {
                         result.push(
@@ -145,7 +136,6 @@ function Bio() {
     };
     const handleChange = (e) => {
         if (e != null) {
-            setSubject(e[1] ? tempsubject + ' a ' + e[1].value : tempsubject + ' a ' + '')
             setSelectValue(e);
         } else {
             notification('danger', 'Este campo no puede estar vacio');
@@ -178,7 +168,7 @@ function Bio() {
                 id_college: null,
                 type: prefixSubject,
             };
-            await axios.post( constaApi+'update', datax, {
+            await axios.post( constaApi+'bio/update', datax, {
                 headers: {
                     "Accept": "application/json"
                 }
@@ -199,7 +189,7 @@ function Bio() {
                 text: textBio ? textBio : null,
                 type: prefixSubject,
             };
-            axios.post( constaApi+'save', datax)
+            axios.post( constaApi+'bio/save', datax)
                 .then(function (response) {
                     notification('success', 'Creado correctamente');
                     getBioRecords();
@@ -315,7 +305,7 @@ function Bio() {
         })
             .then(async (willDelete) => {
                 if (willDelete) {
-                    await axios.post( constaApi+'delete', { id: id }, {
+                    await axios.post( constaApi+'bio/delete', { id: id }, {
                         headers: {
                             "Accept": "application/json"
                         }
@@ -346,7 +336,7 @@ function Bio() {
             icon: "nc-icon nc-bell-55",
             autoDismiss: 7,
         }
-
+        console.log('N',notificationAlert);
         notificationAlert.current.notificationAlert(options);
     }
 
@@ -497,7 +487,7 @@ function Bio() {
                                             <Select
                                                 isMulti
                                                 name="values"
-                                                value={selectValue}
+                                                value={selectValue ?? [values[0],values[1]]}
                                                 onChange={(e) => handleChange(e)}
                                                 defaultValue={[values[0], values[1]]}
                                                 className="basic-multi-select"

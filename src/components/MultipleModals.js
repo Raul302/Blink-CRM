@@ -249,7 +249,7 @@ function MultipleModals(props) {
     async function onSubmit(data) {
         setBlocked(true);
         if(modal1 === true){
-           await axios.post(constaApi+'contacts',data)
+           await axios.post(constaApi+'contacts/save',data)
               .then(function (response) {
                 setIDContact(response.data.id);
               });
@@ -258,7 +258,7 @@ function MultipleModals(props) {
         }
         if(modal3 === true){
             data.idContact = idContact;
-            await axios.post(constApi+'references',data)
+            await axios.post(constaApi+'references',data)
             .then(function (response) {
             })
             showModal4();

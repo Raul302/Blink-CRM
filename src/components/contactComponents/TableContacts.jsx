@@ -110,7 +110,7 @@ function TableContacts(props) {
                                                 <td><RIcons.RiUser3Fill size={32} />
                                                     <Link to={"contacts/" + (row.id) + "/bio"} > {row.name} {row.father_lastname} {row.mother_lastname} </Link></td>
                                                 <td>
-                                                {(row.city ? row.city : ' ') + (row.state ? ',' + row.state : '')}
+                                                {(row.city ? row.city : ' ') + (row.state ? ', ' + row.state : '')}
                                                 </td>
                                                 <td>{row.id_program} {row.year}</td>
                                                 {/* <td class="hover" onClick={(e) => 

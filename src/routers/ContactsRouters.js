@@ -1,4 +1,5 @@
-import React, { useState,useRef, useEffect } from 'react'
+import React, { useState,useRef, useEffect} from 'react';
+import { useDispatch, useSelector,shallowEqual } from 'react-redux';
 import {
     BrowserRouter as Router, Switch, Redirect,
     Route, useLocation
@@ -16,9 +17,11 @@ import Nav from "../components/Nav/Nav";
 import SideBar from '../components/SideBar/SideBar';
 import routes from "../routes.js";
 import Reminders from 'components/contactComponents/RemindersComponents/Reminders';
+import NotificationAlert from "react-notification-alert";
 
 
 function ContactsRouters(props) {
+    const notificationAlert = useRef();
     let { id } = useParams();
     const { pathname } = useLocation();
     const [loading, setLoading] = useState(true);
@@ -26,10 +29,39 @@ function ContactsRouters(props) {
     const [references, setReferences] = useState(null);
     const [backgroundColor, setBackGroundColor] = useState(JSON.parse(localStorage.getItem('bgColor')) || 'white');
     const [activeColor, setActiveColor] = useState(JSON.parse(localStorage.getItem('activeColor')) || 'info');
+    // const {name} = useSelector(state => state.auth,shallowEqual);
+    // const [condiitionalX,setC] =useState(false);
     const mainPanel = useRef();
     useEffect(() => {
         consultContact(id);
     }, [])
+    // if(notificationAlert.current != undefined && name){
+    //     if(condiitionalX === false){
+    //         notification('success',name);
+    //         setC(true);
+    //     } else {
+    //         console.log('else');
+    //     }
+    // }
+    // methods
+    function notification(type, message) {
+        let place = "tc";
+        var options = {};
+        options = {
+            place: place,
+            message: (
+                <div>
+                    <div>
+                        {message}
+                    </div>
+                </div>
+            ),
+            type: type,
+            icon: "nc-icon nc-bell-55",
+            autoDismiss: 7,
+        }
+        notificationAlert.current.notificationAlert(options);
+    }
     async function consultContact() {
         setLoading(true);
         await axios.get(constaApi + 'contacts/' + id, {
@@ -54,6 +86,7 @@ function ContactsRouters(props) {
             />
             <div className="main-panel" ref={mainPanel}>
                 <Nav {...props} />
+                <NotificationAlert ref={notificationAlert} />
                 { loading === true ?
                 <div className="content">
                     <Spinner animation="border" variant="primary" />
@@ -61,7 +94,7 @@ function ContactsRouters(props) {
                 :
                 <>
                    <ContactsView contact={contact } />
-            <Nav {...props}/>
+                   <Nav {...props}/>
                     <Switch>
                     <Route exact path="/contacts/:id/bio"
                         render={(props) => (
