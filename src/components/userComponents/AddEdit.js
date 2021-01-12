@@ -10,6 +10,7 @@ import { constaApi } from 'constants/constants';
 
 
 function AddEdit(props) {
+    const [flag,setFlags] = useState(false);
     const [errorsPassword,setErrorsPasswords] = useState(null);
     const [init] = useState(JSON.parse(localStorage.getItem('user')) || { logged: false });
     const [modalEdit,setModalEdit] = useState(false);
@@ -33,7 +34,24 @@ function AddEdit(props) {
         setModalEdit(props.editUser);
         seteos(props.userToEdit);
     }, [props]);
-
+    
+     function validateNoRepeatEmail(id = null, email){
+        let resp = false;
+     let datax = {
+         id: id,
+         email: email
+     };
+       axios.post(constaApi+'users/validate',datax)
+            .then( function (response) {
+               if(response.data[0]){
+                   resp = true;
+                notification('warning','Correo ya ligado a otro usuario');
+                } else {
+                 resp = false;
+                }
+            });
+      return resp;
+    }
     function seteos(row){
         setnameE(row.name);
         setIdE(row.id);
@@ -44,13 +62,14 @@ function AddEdit(props) {
         setEmailE(row.email);
         setTypeE(row.type);
     }
-    async function onSubmit(data) {
+     function onSubmit(data) {
         setErrorsPasswords(null);
         if(modalEdit === true){
             let datax = {id: idE, type:typeE,name:nameE,email:emailE,password:passwordE,father_lastname:fatherE,
                 mother_lastname:motherE,password_confirm:password_confirm
             }
-            await axios.post(constaApi+'users/update',datax)
+            
+             axios.post(constaApi+'users/update',datax)
             .then(function (response) {
                 if(response.status === 200){
                     props.handleupdateTable();
@@ -61,9 +80,12 @@ function AddEdit(props) {
                 } else {
                     alert.show('Ocurrio un error por favor intentar mas tarde');
                 }
+            }).catch(error => {
+                notification('warning','Correo ya ligado a otro usuario');
+
             });
         } else {
-            await axios.post(constaApi+'register',data)
+             axios.post(constaApi+'register',data)
             .then(function (response) {
               if(response.status === 200){
                 props.handleupdateTable();
@@ -71,8 +93,11 @@ function AddEdit(props) {
             } else {
                 notification('danger','Ocurrio un error,por favor intenta más tarde ó contacta a soporte');
             }
-            });
             reset();
+            }).catch(error => {
+                notification('warning','Correo ya ligado a otro usuario');
+
+            });   
         }
     }
     const handleClose = function close() {
@@ -248,7 +273,7 @@ function AddEdit(props) {
                                     <Form.Label className="formGray">Email</Form.Label>
                                     <Form.Control autoComplete="off" name="email"
                                         ref={register({
-                                            required: false,
+                                            required: true,
                                             pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
                                         })}
                                         className="formGray" type="email" placeholder="Ingrese su email" />

@@ -15,4 +15,11 @@ export const types = {
     collegesUpdated: '[College] Updated College',
     collegeDelete: '[College] Delete College',
     collegeCleaning: '[College] College cleaning',
+
+    remindersCAddNew: '[RemindersC] New ReminderC',
+    remindersCActive: '[RemindersC] Set Active ReminderC',
+    remindersCLoad:   '[RemindersC] Load ReminderC',
+    remindersUpdated: '[RemindersC] Updated ReminderC',
+    remindersCDelete: '[RemindersC] Delete ReminderC',
+    remindersCleaningn: '[RemindersC] ReminderC cleaning',
 }

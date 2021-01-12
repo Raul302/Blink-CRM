@@ -18,7 +18,6 @@ import Skeleton from 'react-loading-skeleton';
 
 
 function LateralReference(props) {
-    console.log('props',props);
     function closeNav() {
         props.close()
     }

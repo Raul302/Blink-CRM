@@ -49,7 +49,7 @@ uploadFile = ({ target: { files,name } }) =>{
       onUploadProgress: (progressEvent) => {
         const {loaded, total} = progressEvent;
         let percent = Math.floor( (loaded * 100) / total )
-        console.log( `${loaded}kb of ${total}kb | ${percent}%` );
+        // console.log( `${loaded}kb of ${total}kb | ${percent}%` );
         if( percent < 100 ){
           this.setState({ uploadPercentage: percent })
         }
@@ -83,11 +83,9 @@ uploadFile = ({ target: { files,name } }) =>{
     const {id} = college;
     axios.post(constaApi +'files/index', { id: id })
     .then( res => {
-        console.log(res.data);
         const{ domain } = res.data;
         const {name_cuote,name_calendar,file_path_cuote,calendar,cicly,file_path_calendar,id} = res.data[0];
         this.setState({ domain:domain,name_cuote:name_cuote,name_calendar:name_calendar,id:id,calendar:calendar,cicly:cicly,avatar: domain + file_path_cuote,avatarTwo: domain + file_path_calendar});
-        console.log(this.state);
     }).catch(error => {
     });
   }

@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 /src/constants
+/src/helpers
+/src/styles
+/src/reducers
 
 # testing
 /coverage

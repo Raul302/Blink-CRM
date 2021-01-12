@@ -3,6 +3,8 @@ import AddEditReminders from './AddEditReminders'
 import TableReminders from './TableReminders'
 
 function Reminders(props) {
+    function open(){
+    }
     return (
         <div className="content">
         <div class="mt-n5 row">
@@ -10,7 +12,7 @@ function Reminders(props) {
             <div class="col d-flex justify-content-end">
             <AddEditReminders {...props}/>
             </div>
-            <TableReminders />
+            <TableReminders openModal={open}{...props}/>
             </div>
         </div>
         </div>

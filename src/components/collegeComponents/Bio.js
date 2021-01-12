@@ -311,7 +311,6 @@ function Bio() {
         })
         let datex = moment(param.date).format('YYYY-MM-DD')
         let timex = moment(param.date).format('HH:MM:ss');
-        console.log(timex);
         setSelectValue(array);
         setEditing(true);
         showModalLog(param.type);

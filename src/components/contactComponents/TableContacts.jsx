@@ -58,12 +58,10 @@ function TableContacts(props) {
 
     }
     const showModal = (row) => {
-        console.log('row',row);
         setTheContact(row);
         setmodal(!modal);
     }
     const updateRoute = () => {
-        console.log('updateROute');
         notification('success','Actualizado correctamente');
     }
     const notification = (type, message) => {

@@ -28,6 +28,7 @@ const initialState = {
 export const collegesReducer = ( state = initialState,action ) => {
     switch (action.type) {
             case types.collegesActive:
+                localStorage.setItem( 'collegeActive', JSON.stringify(action.payload));
                 return {
                     ...state,
                     active: {
@@ -35,8 +36,6 @@ export const collegesReducer = ( state = initialState,action ) => {
                     }
                 }
             case types.collegesLoad:
-                localStorage.setItem( 'collegeActive', JSON.stringify(action.payload));
-
                 return {
                     ...state,
                     colleges: [...action.payload]

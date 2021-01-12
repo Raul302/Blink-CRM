@@ -161,7 +161,6 @@ function PersonalData(props) {
         });
     }
     function setFilterValues(props) {
-        console.log('propssss',props);
         setBirthday(props.birthday);
         setCity(props.city);
         setEmail(props.email);
@@ -214,7 +213,6 @@ function PersonalData(props) {
         setCountry(e.target.value);
     }
     async function onSubmit(data) {
-        console.log('inputPhone',inputPhone);
         let datax = {
             id: props.contact.id,
             father_lastname: fName,

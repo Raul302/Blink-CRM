@@ -1,17 +1,16 @@
 import { types } from "../types/types";
 import axios from 'axios';
 import { setError,removeError, startLoading, finishLoading } from "./ui";
-import { useHistory } from "react-router-dom";
-import { loadColleges } from '../helpers/loadColleges';       
 import { constaApi } from "constants/constants";
+import { loadReminders } from "helpers/loadReminders";
 
-export const newCollege = (data) =>{
+export const newReminderC = (data) =>{
     return async (dispatch) => {
         dispatch( startLoading() );
-    await axios.post( constaApi +'colleges/save',data)
+    await axios.post( constaApi +'reminders/save',data)
         .then(function (response) {
             dispatch( removeError());
-            dispatch( starLoadingColleges() );
+            dispatch( starLoadingRemindersC() );
             dispatch( finishLoading() );
         }).catch(error =>{
             dispatch(setError('Credenciales invalidas'));
@@ -20,13 +19,13 @@ export const newCollege = (data) =>{
     }
 }
 
-export const deleteCollege = (id) =>{
+export const deleteReminderC = (id,idContact) =>{
     return async (dispatch) => {
         dispatch( startLoading() );
-    await axios.post(constaApi+'colleges/delete',{id:id})
+    await axios.post(constaApi+'reminders/delete',{id:id})
         .then(function (response) {
             dispatch( removeError());
-            dispatch( starLoadingColleges() );
+            dispatch( starLoadingRemindersC(idContact) );
             dispatch( finishLoading() );
         }).catch(error =>{
             dispatch(setError('Ocurrio un error'));
@@ -34,22 +33,24 @@ export const deleteCollege = (id) =>{
             });
     }
 }
-export const starLoadingColleges = () => {
+export const starLoadingRemindersC = (id) => {
     return async (dispatch) => {
-        const colleges = await loadColleges();
-        dispatch( setColleges(colleges) );
+        dispatch( startLoading() );
+        const reminders = await loadReminders(id);
+        await dispatch( setRemindersC(reminders) );
+        dispatch( finishLoading() );
     }
 }
 
-export const activeCollege = (id,college) => ({
-    type: types.collegesActive,
+export const activeReminderC = (id,reminderC) => ({
+    type: types.remindersCActive,
     payload:{
         id,
-        ...college
+        ...reminderC
     }
 })
 
-export const setColleges = ( colleges ) => ({
-    type: types.collegesLoad,
-    payload:[...colleges]
+export const setRemindersC = ( remindersC ) => ({
+    type: types.remindersCLoad,
+    payload:[...remindersC]
 })

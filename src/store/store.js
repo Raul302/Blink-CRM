@@ -1,3 +1,4 @@
+import { reminderContactReducer } from '../reducers/reminderContactReducer';
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { authReducer } from '../reducers/authReducer';
@@ -8,6 +9,7 @@ import { uiReducer } from '../reducers/uiReducer';
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 
 const reducers = combineReducers({
+    remindersC: reminderContactReducer,
     auth: authReducer,
     ui : uiReducer,
     colleges: collegesReducer,

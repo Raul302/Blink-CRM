@@ -1,5 +1,4 @@
 import React, { useState,useRef, useEffect} from 'react';
-import { useDispatch, useSelector,shallowEqual } from 'react-redux';
 import {
     BrowserRouter as Router, Switch, Redirect,
     Route, useLocation
@@ -10,6 +9,7 @@ import Bio from '../components/bioComponents/Bio';
 import Profile from '../components/profileComponents/Profile';
 import References from '../components/referencesComponent/References';
 import { Spinner } from 'react-bootstrap';
+import { useDispatch, useSelector,shallowEqual } from 'react-redux';
 import { useParams } from "react-router";
 import Docs from '../components/docsComponents/Docs';
 import axios from 'axios';
@@ -18,11 +18,13 @@ import SideBar from '../components/SideBar/SideBar';
 import routes from "../routes.js";
 import Reminders from 'components/contactComponents/RemindersComponents/Reminders';
 import NotificationAlert from "react-notification-alert";
+import { starLoadingRemindersC } from 'actions/remindersContact';
 
 
 function ContactsRouters(props) {
     const notificationAlert = useRef();
     let { id } = useParams();
+    const dispatch = useDispatch();
     const { pathname } = useLocation();
     const [loading, setLoading] = useState(true);
     const [contact, setContact] = useState(null);
@@ -34,13 +36,16 @@ function ContactsRouters(props) {
     const mainPanel = useRef();
     useEffect(() => {
         consultContact(id);
-    }, [])
+        if(id){
+            dispatch(starLoadingRemindersC(id))
+        }
+    }, [dispatch])
     // if(notificationAlert.current != undefined && name){
     //     if(condiitionalX === false){
     //         notification('success',name);
     //         setC(true);
     //     } else {
-    //         console.log('else');
+    //        
     //     }
     // }
     // methods

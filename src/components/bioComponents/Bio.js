@@ -336,7 +336,6 @@ function Bio() {
             icon: "nc-icon nc-bell-55",
             autoDismiss: 7,
         }
-        console.log('N',notificationAlert);
         notificationAlert.current.notificationAlert(options);
     }
 

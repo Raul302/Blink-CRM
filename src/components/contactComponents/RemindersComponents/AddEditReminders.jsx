@@ -1,15 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { Row, Col, Button, Modal, Form, InputGroup, FormControl } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { constaApi } from 'constants/constants';
 import Select from 'react-select';
 import NotificationAlert from "react-notification-alert";
+import { activeReminderC } from 'actions/remindersContact';
+import moment from 'moment'
+import { starLoadingRemindersC } from 'actions/remindersContact';
 
 
 export default function AddEditReminders(props) {
+
     // variables
+    const dispatch = useDispatch();
+    const [flagEdit,setFlago] = useState(false);
+    const { active:activeReminder } = useSelector(state => state.remindersC);
     const { id: IDX } = useSelector(state => state.auth);
     const [selectValue, setSelectValue] = useState();
     const { contact } = props;
@@ -27,8 +34,37 @@ export default function AddEditReminders(props) {
     const notificationAlert = useRef();
     useEffect(() => {
         consult();
-    }, [])
+        if(activeReminder != null){
+            setActiveReminder();
+        }   
+    }, [activeReminder])
+    
     // Methods
+    function setActiveReminder(){
+        if(activeReminder.id != null){
+            let array = [];
+            activeReminder.emails_to.forEach((element, index) => {
+                values.forEach(el => {
+                    if (element.email_user === el.email) {
+                        array[index] = el;
+                    }
+                })
+            })
+            console.log('ARRAY',array);
+            let datex = moment(activeReminder.dateReminder).format('YYYY-MM-DD')
+            let timex = moment(activeReminder.dateReminder).format('HH:MM:ss');
+            setTimeReminder(timex);
+            setDateReminder(datex);
+            setFlago(true);
+            setNameContact(activeReminder.contact ?? null);
+            setSubject(activeReminder.subject ?? null);
+            setSelectValue(array ?? null);
+            setDepartament(activeReminder.departament ?? null);
+            setNotes(activeReminder.notes ?? null);
+            setNotificationReminder(activeReminder.timenotification ?? null);
+            showModal();
+        }
+    }
     function changeSubject (e) {
         setSubject(e.target.value);
     }
@@ -76,8 +112,11 @@ export default function AddEditReminders(props) {
         setModal(!modal);
     }
     async function onSubmit(data) {
+        let url = flagEdit ? 'reminders/updated' : 'reminders/save';
         let datex = dateReminder + " " + timeReminder;
         let obj = {
+            id : activeReminder ? activeReminder.id : null,
+            id_contact:contact.id ?? null,
             contact: nameContact ?? null,
             subject: subject ?? null,
             emailTo : selectValue ?? null,
@@ -86,10 +125,28 @@ export default function AddEditReminders(props) {
             notes : notes ?? null,
             departament : departament ?? null,
         };
-        console.log(obj,'OBJ');
+        await axios.post(constaApi+url, obj)
+            .then(function (response) {
+                console.log('response',response);
+                dispatch( starLoadingRemindersC(contact.id ));
+            }).catch(error => {
+
+            });
+            dispatch(activeReminderC(null,null));
+            handleClose();
     }
     function handleClose() {
+        dispatch(activeReminderC(null,null));
+        setTimeReminder(null);
+        setDateReminder(null);
+        setNameContact(null);
+        setSubject(null);
+        setSelectValue(null);
+        setDepartament(null);
+        setNotes(null);
+        setNotificationReminder(null);
         setModal(!modal);
+        setFlago(false);
     }
     const styles = {
         container: {
@@ -133,7 +190,8 @@ export default function AddEditReminders(props) {
                 onHide={e => handleClose()}
             >
                 <Modal.Header style={{ height: "60px" }} closeButton>
-                    <Modal.Title style={{ fontFamily: "Inter", marginTop: "5px", fontWeight: "600", fontSize: "18px" }}>Agregar Recordatorio </Modal.Title>
+                    <Modal.Title style={{ fontFamily: "Inter", marginTop: "5px", fontWeight: "600", fontSize: "18px" }}>
+                        {flagEdit ? 'Actualizar Recordatorio' : 'Agregar Recordatorio'} </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: "#F4F5F6", border: "0px" }}>
                     <form onSubmit={handleSubmit(onSubmit)}>
@@ -235,7 +293,7 @@ export default function AddEditReminders(props) {
                                     disabled={!subject ? true : !dateReminder ? true : !timeReminder ? true : !notificationReminder ? true : false }
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
-                                    variant="primary">Guardar</Button>
+                                    variant="primary">{flagEdit ? 'Actualizar' : 'Guardar'}</Button>
                                 <Button onClick={handleClose} style={{ fontFamily: "Inter", fontWeight: "500" }} className="float-right mb-3 mr-2" variant="danger" >
                                     Cancelar
                 </Button>
