@@ -50,9 +50,9 @@ export default function AddEditReminders(props) {
                     }
                 })
             })
-            console.log('ARRAY',array);
             let datex = moment(activeReminder.dateReminder).format('YYYY-MM-DD')
-            let timex = moment(activeReminder.dateReminder).format('HH:MM:ss');
+            let timex = moment(activeReminder.dateReminder).format('HH:mm');
+            console.log('Timex',timex);
             setTimeReminder(timex);
             setDateReminder(datex);
             setFlago(true);
@@ -127,7 +127,6 @@ export default function AddEditReminders(props) {
         };
         await axios.post(constaApi+url, obj)
             .then(function (response) {
-                console.log('response',response);
                 dispatch( starLoadingRemindersC(contact.id ));
             }).catch(error => {
 
@@ -253,11 +252,11 @@ export default function AddEditReminders(props) {
                                      autoComplete="off" 
                                      value={notificationReminder} name="type"  as="select" size="sm" custom>
                                       <option disabled value="" selected></option>
-                                       <option value="misma hora">Misma hora</option>
-                                       <option value="1 hora antes">1 Hora Antes</option>
-                                       <option value="1 dia antes">1 Dia Antes</option>
-                                       <option value="2 dias antes">2 Dias Antes</option>
-                                       <option value="1 semana antes">1 Semana Antes</option>
+                                       <option value="-0 hour">Misma hora</option>
+                                       <option value="-1 hour">1 Hora Antes</option>
+                                       <option value="-24 hour">1 Dia Antes</option>
+                                       <option value="-48 hour">2 Dias Antes</option>
+                                       <option value="-168 hour">1 Semana Antes</option>
                                     </Form.Control>
                                     </Col>
                                 </Row>
