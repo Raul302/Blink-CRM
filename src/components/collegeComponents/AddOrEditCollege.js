@@ -16,11 +16,15 @@ function AddOrEditCollege() {
         consultCountries();
         consultStates();
     }, [])
+    const [obj,setObj] = useState({name:"",tipo:"",pais:"",website:""});
     const notificationAlert = useRef();
     const dispatch = useDispatch();
     const [sport,setSports] = useState();
+    const [selectSport,setSelectSport] = useState();
     const [art,setArts] = useState();
+    const [selectArt,setSelectArt] = useState();
     const [special_c,setSpecial_C] = useState();
+    const [selectSpecial,setSelectSpecial] = useState();
     const [json,setJson] = useState();
     const [countries, setCountries] = useState();
     const [cities, setCities] = useState([]);
@@ -68,6 +72,9 @@ function AddOrEditCollege() {
     }
     function changeCities(e) {
         let val = e.target.value;
+        if(e){
+            changeObj(e);
+        }
         axios.get('https://www.universal-tutorial.com/api/cities/' + val, {
             headers: {
                 Authorization: 'Bearer ' + auth,
@@ -102,23 +109,18 @@ function AddOrEditCollege() {
     }
     function handleSports(e){
         if(e){
-        setSports(e.map(ex => {
-            return ex.value;
-        }));
+            setSelectSport(e);
         }
+        
     }
     function handleSpecial(e){
         if(e){
-            setSpecial_C(e.map(ex => {
-                return ex.value;
-            }));
+           setSelectSpecial(e);
             }
     }
     function handleArts(e){
         if(e){
-            setArts(e.map(ex => {
-                return ex.value;
-            }));
+            setSelectArt(e);
             }
     }
     function handleShow() {
@@ -148,6 +150,12 @@ function AddOrEditCollege() {
     function handleClose() {
         setModal(!modal);
     }
+    function changeObj(e){
+        const { name, value } = e.target;
+        const list = {...obj};
+        list[name] = value;
+        setObj(list);
+    }
     function close() {
         setModal(false);
         setModalTwo(false);
@@ -157,8 +165,8 @@ function AddOrEditCollege() {
     }
     function onSubmit(data) {
         if(modal){
-            setJson(data);
-            if(data.type === 'Boarding School'){
+            setJson(obj);
+            if(obj.type === 'Boarding School'){
                 showModalTwo();
             }else {
                 showModalFour();
@@ -174,15 +182,9 @@ function AddOrEditCollege() {
 
         }
         if(modalFour){
-            let obj =  Object.assign(json,data);
-            setJson({...obj});
-            obj = {};
-            obj.sports = sport;
-            obj.arts = art;
-            obj.special_c = special_c;
-            setJson({...obj});
-            dispatch( newCollege(json) );
+            dispatch( newCollege(obj) );
             close();
+            setObj({});
         }
     }
     return (
@@ -210,12 +212,11 @@ function AddOrEditCollege() {
                                     <Form.Control
                                         name="name"
                                         autoComplete="off" className="formGray" type="text" placeholder="Ingrese su nombre"
-                                        ref={register({
-                                            required: true
-                                        })}
-                                        style={{ ...styles.input, borderColor: errors.name && "red" }}
+                                        onChange={(e) => changeObj(e)}
+                                        value={obj.name}
+                                        // style={{ ...styles.input, borderColor: errors.name && "red" }}
                                     />
-                                    <p className='errores'>{errors.name && "Nombre requerido"}</p>
+                                    {/* <p className='errores'>{errors.name && "Nombre requerido"}</p> */}
                                 </Col>
                             </Row>
                             <Row>
@@ -224,9 +225,9 @@ function AddOrEditCollege() {
                                     <Form.Control
                                         name="type"
                                         autoComplete="off" className="formGray" type="text" placeholder="Seleccione el tipo"
-                                        ref={register({
-                                            required: true
-                                        })} as="select" size="sm" custom>
+                                        onChange={(e) => changeObj(e)}
+                                        value={obj.type}
+                                        as="select" size="sm" custom>
                                         <option disabled value="" selected></option>
                                         {types.map(typ => (
                                             <option key={typ} value={typ}>
@@ -234,7 +235,6 @@ function AddOrEditCollege() {
                                             </option>
                                         ))}
                                     </Form.Control>
-                                    <p className='errores'>{errors.type && "Tipo requerido"}</p>
                                 </Col>
                                 <Col>
                                     <Form.Label className="formGray">País</Form.Label>
@@ -243,9 +243,9 @@ function AddOrEditCollege() {
                                             <Form.Control
                                                 name="country"
                                                 autoComplete="off" className="formGray" type="text" placeholder="Seleccione el país"
-                                                ref={register({
-                                                    required: true
-                                                })} as="select" size="sm" custom>
+                                                onChange={(e) => changeObj(e)}
+                                                value={obj.country}
+                                                as="select" size="sm" custom>
                                                 <option disabled value="" selected></option>
                                                 {countries.map(countr => (
                                                     <option key={countr.name} value={countr.name}>
@@ -253,7 +253,6 @@ function AddOrEditCollege() {
                                                     </option>
                                                 ))}
                                             </Form.Control>
-                                            <p className='errores'>{errors.country && "País requerido"}</p>
                                         </>
                                         : ''
                                     }
@@ -267,20 +266,18 @@ function AddOrEditCollege() {
                                             <InputGroup.Text >https://</InputGroup.Text>
                                         </InputGroup.Prepend>
                                         <FormControl name="website"
-                                            ref={register({
-                                                required: true
-                                            })}
+                                            onChange={(e) => changeObj(e)}
+                                            value={obj.website}
                                             id="inlineFormInputGroup" placeholder="Ingrese su sitio web" />
                                     </InputGroup>
-                                    <p className='errores'>{errors.website && "Sitio web requerido"}</p>
                                 </Col>
                             </Row>
                         </div>
                         <Row className="mt-3">
                             <Col>
                                 <Button
+                                    disabled={!obj.name || !obj.type || !obj.country || !obj.website}
                                     className="float-right mb-3 mr-2" type="submit"
-                                    disabled={!formState.isValid}
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="primary">Siguiente</Button>
                                 <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
@@ -310,9 +307,9 @@ function AddOrEditCollege() {
                                 <Col className="col-12">
                                     <Form.Label className="formGray">Descripcion</Form.Label>
                                     <InputGroup  style={{ borderTop:'0',width:'100%',marginTop:'0px'}}>
-                                        <Form.Control name="description"  ref={register({
-                                                maxLength: 400,
-                                            })}
+                                        <Form.Control name="description"
+                                         onChange={(e) => changeObj(e)}
+                                         value={obj.description}
                                             as="textarea" placeholder="Escriba su mensaje..."cols={12} rows={4} />
                                     </InputGroup>
                                 </Col>
@@ -324,8 +321,9 @@ function AddOrEditCollege() {
                                     <Form.Control
                                                 name="start_boarding_grade"
                                                 autoComplete="off" className="formGray" type="text" placeholder="Seleccione el país"
-                                                ref={register({
-                                                })} as="select" size="sm" custom>
+                                                onChange={(e) => changeObj(e)}
+                                                value={obj.start_boarding_grade}
+                                                as="select" size="sm" custom>
                                                 <option disabled value="" selected></option>
                                                 {numbers.map(numb => (
                                                     <option key={numb} value={numb}>
@@ -339,8 +337,9 @@ function AddOrEditCollege() {
                                     <Form.Control
                                                 name="end_boarding_grade"
                                                 autoComplete="off" className="formGray" type="text" placeholder="Seleccione el país"
-                                                ref={register({
-                                                })} as="select" size="sm" custom>
+                                                onChange={(e) => changeObj(e)}
+                                                value={obj.end_boarding_grade}
+                                                as="select" size="sm" custom>
                                                 <option disabled value="" selected></option>
                                                 {numbers.map(numb => (
                                                     <option key={numb} value={numb}>
@@ -358,8 +357,9 @@ function AddOrEditCollege() {
                                     <Form.Control
                                                 name="start_day_grade"
                                                 autoComplete="off" className="formGray" type="text" placeholder="Seleccione el país"
-                                                ref={register({
-                                                })} as="select" size="sm" custom>
+                                                onChange={(e) => changeObj(e)}
+                                                value={obj.start_day_grade} 
+                                                as="select" size="sm" custom>
                                                 <option disabled value="" selected></option>
                                                 {numbers.map(numb => (
                                                     <option key={numb} value={numb}>
@@ -373,8 +373,9 @@ function AddOrEditCollege() {
                                     <Form.Control
                                                 name="end_day_grade"
                                                 autoComplete="off" className="formGray" type="text" placeholder="Seleccione el país"
-                                                ref={register({
-                                                })} as="select" size="sm" custom>
+                                                onChange={(e) => changeObj(e)}
+                                                value={obj.end_day_grade} 
+                                                as="select" size="sm" custom>
                                                 <option disabled value="" selected></option>
                                                 {numbers.map(numb => (
                                                     <option key={numb} value={numb}>
@@ -387,15 +388,17 @@ function AddOrEditCollege() {
                             <Row className="mt-3">
                                 <Col className="col-4">
                                     <Form.Label className="formGray">Total boarding students</Form.Label>
-                                    <Form.Control name="total_boarding_grade" ref={register({
-                                            })}
+                                    <Form.Control name="total_boarding_grade" 
+                                    onChange={(e) => changeObj(e)}
+                                    value={obj.total_boarding_grade}
                                             className="form-control" type="number" min="0"  >
                                     </Form.Control>
                                 </Col>
                                 <Col className="col-4">
                                     <Form.Label className="formGray">Total international students</Form.Label>
-                                    <Form.Control name="total_international_grade" ref={register({
-                                            })}
+                                    <Form.Control name="total_international_grade" 
+                                    onChange={(e) => changeObj(e)}
+                                    value={obj.total_international_grade}
                                             className="form-control" type="number" min="0"  >
                                     </Form.Control>
                                 </Col>
@@ -403,15 +406,17 @@ function AddOrEditCollege() {
                             <Row>
                                 <Col className="col-4">
                                     <Form.Label className="formGray">Total day students</Form.Label>
-                                    <Form.Control name="total_day_students" ref={register({
-                                            })}
+                                    <Form.Control name="total_day_students"
+                                    onChange={(e) => changeObj(e)}
+                                    value={obj.total_day_students}
                                             className="form-control" type="number" min="0"  >
                                     </Form.Control>
                                 </Col>
                                 <Col className="col-4">
                                     <Form.Label className="formGray">Total students in school</Form.Label>
-                                    <Form.Control name="total_students_in_school" ref={register({
-                                            })}
+                                    <Form.Control name="total_students_in_school"
+                                     onChange={(e) => changeObj(e)}
+                                     value={obj.total_students_in_school}
                                             className="form-control" type="number" min="0"  >
                                     </Form.Control>
                                 </Col>
@@ -455,6 +460,7 @@ function AddOrEditCollege() {
                                     <Select
                                     onChange={(e)=>handleSports(e)}
                                     isMulti
+                                    value={selectSport}
                                     name="sports"
                                     className="basic-multi-select"
                                     classNamePrefix="select"
@@ -469,6 +475,7 @@ function AddOrEditCollege() {
                                     name="arts"
                                     onChange={(e)=>handleArts(e)}
                                     isMulti
+                                    value={selectArt}
                                     options={arts}
                                     />
                                 </Col>
@@ -476,7 +483,8 @@ function AddOrEditCollege() {
                             <Row>
                             <Col className="col-8">
                                     <Form.Label className="formGray">Special Clinics</Form.Label>
-                                    <Select 
+                                    <Select
+                                    value={selectSpecial}
                                     isMulti
                                     onChange={(e)=>handleSpecial(e)}
                                     name="special_clinics"
@@ -491,6 +499,9 @@ function AddOrEditCollege() {
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="primary">Siguiente</Button>
+                                      <Button onClick={(e)=>showModalTwo()} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
+                                    Atras
+                                </Button>
                             </Col>
                         </Row>
                     </form>
@@ -517,8 +528,8 @@ function AddOrEditCollege() {
                                 <Form.Control
                                         name="street"
                                         autoComplete="off" className="formGray" type="text" placeholder="Ingrese su Calle"
-                                        ref={register({
-                                        })}
+                                        onChange={(e) => changeObj(e)}
+                                        value={obj.street}
                                     />
                                 </Col>
                                 <Col>
@@ -526,8 +537,8 @@ function AddOrEditCollege() {
                                 <Form.Control
                                         name="number"
                                         autoComplete="off" className="formGray" type="text" placeholder="Ejem: 710"
-                                        ref={register({
-                                        })}
+                                        onChange={(e) => changeObj(e)}
+                                        value={obj.number}
                                     />
                                     </Col>
                                 <Col>
@@ -535,15 +546,17 @@ function AddOrEditCollege() {
                                 <Form.Control
                                         name="cp"
                                         autoComplete="off" className="formGray" type="text" placeholder="Ingrese su CP"
-                                        ref={register({
-                                        })}
+                                        onChange={(e) => changeObj(e)}
+                                        value={obj.cp}
                                     />
                                 </Col>
                             </Row>
                         <Row className="mt-1">
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Estado</Form.Label>
-                                    <Form.Control onChange={e => changeCities(e)} autoComplete="off" name="state" ref={register} as="select" size="sm" custom>
+                                    <Form.Control onChange={e => changeCities(e)} autoComplete="off" name="state" 
+                                    value={obj.state}
+                                    as="select" size="sm" custom>
                                         <option disabled value="" selected></option>
                                         {states.map(state => (
                                             <option key={state.state_name} value={state.state_name}>
@@ -555,7 +568,10 @@ function AddOrEditCollege() {
                                 </Col>
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Ciudad</Form.Label>
-                                    <Form.Control autoComplete="off" name="city" ref={register} as="select" size="sm" custom>
+                                    <Form.Control autoComplete="off" name="city"
+                                                                            onChange={(e) => changeObj(e)}
+                                    value={obj.city}
+                                     as="select" size="sm" custom>
                                     <option disabled value="" selected></option>
                                         {cities.map(state => (
                                             <option key={state.city_name} value={state.city_name}>
@@ -573,6 +589,14 @@ function AddOrEditCollege() {
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="primary">Guardar</Button>
+                                      <Button onClick={
+                                          obj.type === 'Boarding School' ?
+                                          (e) => showModalThree()
+                                          :
+                                          (e)=>handleShow()
+                                          } style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
+                                    Atras
+                                </Button>
                             </Col>
                         </Row>
                     </form>

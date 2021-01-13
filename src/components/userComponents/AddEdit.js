@@ -23,7 +23,7 @@ function AddEdit(props) {
     const [fatherE,setFatherE] = useState(null);
     const [motherE,setMotherE] = useState(null);
     const [modal, setModal] = useState(false);
-    const { register, handleSubmit, errors, reset,watch } = useForm({ mode: 'onChange' });
+    const { register, handleSubmit, errors,formState, reset,watch } = useForm({ mode: 'onChange' });
     const password = useRef({});
     password.current = watch("password", "");
     const alert = useAlert();
@@ -35,23 +35,46 @@ function AddEdit(props) {
         seteos(props.userToEdit);
     }, [props]);
     
-     function validateNoRepeatEmail(id = null, email){
+    // methods
+    const emailRepeat = async (email,id = null) => {
         let resp = false;
-     let datax = {
-         id: id,
-         email: email
-     };
-       axios.post(constaApi+'users/validate',datax)
-            .then( function (response) {
-               if(response.data[0]){
-                   resp = true;
-                notification('warning','Correo ya ligado a otro usuario');
-                } else {
-                 resp = false;
-                }
-            });
-      return resp;
+        let datax = {
+            id: id,
+            email: email
+        };
+          resp = await priomise(datax);
+          console.log('resp',resp);
+          return resp;
     }
+    const priomise = async (datax) => {
+        let resp = null;
+        await axios.post(constaApi+'users/validate',datax)
+        .then( async function (response) {
+           if(response.data[0]){
+               resp = await false;
+            } else {
+             resp = await true;
+            }
+        });
+        return resp;
+    }
+    //  function validateNoRepeatEmail(id = null, email){
+    //     let resp = false;
+    //  let datax = {
+    //      id: id,
+    //      email: email
+    //  };
+    //    axios.post(constaApi+'users/validate',datax)
+    //         .then( function (response) {
+    //            if(response.data[0]){
+    //                resp = true;
+    //             notification('warning','Correo ya ligado a otro usuario');
+    //             } else {
+    //              resp = false;
+    //             }
+    //         });
+    //   return resp;
+    // }
     function seteos(row){
         setnameE(row.name);
         setIdE(row.id);
@@ -274,11 +297,17 @@ function AddEdit(props) {
                                     <Form.Control autoComplete="off" name="email"
                                         ref={register({
                                             required: true,
-                                            pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+                                            pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                                            validate: emailRepeat
                                         })}
                                         className="formGray" type="email" placeholder="Ingrese su email" />
-                                    <p className='errores'>{errors.email && "Formato invalido"}</p>
-
+                                    {/* <p className='errores'>{errors.email && "Formato invalido"}</p> */}
+                                    <p className='errores'>{errors.email && errors.email.type === "validate" &&
+                                    "Email repetido"}</p>
+                                    <p className='errores'>{errors.email && errors.email.type === "required" &&
+                                    "Email Requerido"}</p>
+                                    <p className='errores'>{errors.email && errors.email.type === "pattern" &&
+                                    "Formato invalido"}</p>
                                 </Col>
                             </Row>
 
@@ -288,6 +317,7 @@ function AddEdit(props) {
 
                             <Col>
                                 <Button
+                                    disabled={!formState.isValid}
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="primary">Guardar</Button>
