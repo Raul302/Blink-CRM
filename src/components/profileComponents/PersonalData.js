@@ -1,11 +1,13 @@
 import React, { useEffect, useState,useRef } from 'react';
 import * as FIIcons from "react-icons/fi";
-import * as AIIcons from "react-icons/ai";
-import { Row, Col, Button, Modal, Form } from 'react-bootstrap';
+import * as TIicons from "react-icons/ti";
+import { Row, Col, Button, Modal, Form,InputGroup } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import NotificationAlert from "react-notification-alert";
 import { constaApi } from 'constants/constants';
+
+
 
 function PersonalData(props) {
     useEffect(() => {
@@ -852,7 +854,7 @@ function PersonalData(props) {
                                                     onChange={e => handleInputChange(e, i)}
                                                     value={x.typeAddress}
                                                     name="typeAddress"
-                                                    className="formGray"
+                                                    className="informGray"
                                                     as="select" size="sm" custom>
                                                     <option disabled value="" selected></option>
                                                     <option>Trabajo</option>
@@ -860,59 +862,123 @@ function PersonalData(props) {
                                                     <option>Negocio</option>
                                                     <option>Otro</option>
                                                 </Form.Control>
-                                    </div>
+                                         </div>
+                                    
                                     {x.typeAddress === 'Otro' &&
                                     <div class="col">
                                      <Form.Control autoComplete="off"
                                      onChange={e => handleInputChange(e, i)}
                                      value={x.otherDirection}
                                      name="otherDirection"
-                                     className="formGray" type="text" placeholder="Ingrese su tipo de dirección" />
+                                     className="informGray" type="text" placeholder="Ingrese su tipo de dirección" />
                                      </div>
                                     }
-                                        </div>
-                                        <div class="row mt-3 ">
-                                            <div class="col-3">
-                                                <Form.Label style={{ fontSize: '16px' }} className="formGray">Pais</Form.Label>
+                                    </div>
+                                    <div class="row mt-3 ">
+                                            <div class="col-8">
+                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Calle</Form.Label>
+                                                <InputGroup>
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChange(e, i)}
+                                                    value={x.street}
+                                                    name="street"
+                                                    className="informGray" type="text" placeholder="Ingrese su Calle" />
+                                                <InputGroup.Append>
+                                                <InputGroup.Text className="informGray" ><TIicons.TiHome /></InputGroup.Text>
+                                                </InputGroup.Append>
+                                                </InputGroup>
                                             </div>
-                                            <div class="col">
-                                                <Form.Control onChange={e => handleInputChange(e, i)} autoComplete="off"
-                                                    name="country"
-                                                    value={x.country} as="select" size="sm" custom>
-                                                    <option disabled value="" selected></option>
-                                                    {countries.map(countri => (
-                                                        <option key={countri.country_name} value={countri.country_name}>
-                                                            {countri.country_name}
-                                                        </option>
-                                                    ))}
-                                                </Form.Control>
+                                            <div class="col-2">
+                                            <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Numero exterior</Form.Label>
+                                            <InputGroup>
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChange(e, i)}
+                                                    value={x.street}
+                                                    name="street"
+                                                    className="informGray" type="text" placeholder="#" />
+                                                     <InputGroup.Append>
+                                                <InputGroup.Text className="informGray" ><TIicons.TiHome /></InputGroup.Text>
+                                                </InputGroup.Append>
+                                                </InputGroup>
                                             </div>
+                                            <div class="col-2">
+                                            <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Numero Interior</Form.Label>
+                                                <InputGroup>
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChange(e, i)}
+                                                    value={x.street}
+                                                    name="street"
+                                                    className="informGray" type="text" placeholder="#" />
+                                             <InputGroup.Append>
+                                                <InputGroup.Text className="informGray"><TIicons.TiHome /></InputGroup.Text>
+                                                </InputGroup.Append>
+                                                </InputGroup>
+                                            </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col">
+                                        <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Codigo postal</Form.Label>
+                                                <InputGroup>
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChange(e, i)}
+                                                    value={x.street}
+                                                    title="respeta el formato,solo numeros"
+                                                    pattern="[0-9]{10}"
+                                                    name="street"
+                                                    className="informGray" type="text" placeholder="Ingrese su # interior" />
+                                                    <InputGroup.Append>
+                                                <InputGroup.Text className="informGray"><TIicons.TiHome /></InputGroup.Text>
+                                                </InputGroup.Append>
+                                                </InputGroup>
                                         </div>
-                                        {x.country === 'Mexico' ?
+                                        <div class="col">
+                                        <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Colonia</Form.Label>
+                                        <InputGroup>
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChange(e, i)}
+                                                    value={x.street}
+                                                    name="street"
+                                                    className="informGray" type="text" placeholder="Ingrese su # interior" />
+                                                     <InputGroup.Append>
+                                                <InputGroup.Text className="informGray"><TIicons.TiHome /></InputGroup.Text>
+                                                </InputGroup.Append>
+                                                </InputGroup>
+                                        </div>
+                                        <div class="col">
+                                        <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Delegacion o Municipio</Form.Label>
+                                        <InputGroup>
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChange(e, i)}
+                                                    value={x.street}
+                                                    name="street"
+                                                    className="informGray" type="text" placeholder="Ingrese su # interior" />
+                                                      <InputGroup.Append>
+                                                <InputGroup.Text className="informGray"><TIicons.TiHome /></InputGroup.Text>
+                                                </InputGroup.Append>
+                                                </InputGroup>
+                                        </div>
+                                    </div>
+                                    {x.country === 'Mexico' ?
                                             <>
                                                 <div class="row mt-3 ">
-                                                    <div class="col-3">
-                                                        <Form.Label style={{ fontSize: '16px' }} className="formGray">Estado</Form.Label>
-                                                    </div>
                                                     <div class="col">
+                                                        <Form.Label style={{ fontSize: '16px' }} className="formGray">Estado</Form.Label>
                                                         <Form.Control onChange={e => changeCities(e, i)} autoComplete="off"
                                                             name="state"
+                                                            className="informGray"
                                                             value={x.state} as="select" size="sm" custom>
-                                                            <option disabled value="" selected></option>
+                                                            <option disabled value="" selected> </option>
                                                             {states.map(state => (
                                                                 <option key={state.state_name} value={state.state_name}>
                                                                     {state.state_name}
                                                                 </option>
                                                             ))}
-                                                        </Form.Control>
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-3 ">
-                                                    <div class="col-3">
-                                                        <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciudad</Form.Label>
+                                                        </Form.Control>                                                      
                                                     </div>
                                                     <div class="col">
+                                                        <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciudad</Form.Label>
                                                         <Form.Control
+                                                            className="informGray"
                                                             onChange={e => handleInputChange(e, i)}
                                                             autoComplete="off" name="city"
                                                             value={x.city} as="select" size="sm" custom>
@@ -930,66 +996,75 @@ function PersonalData(props) {
                                             // Manual 
                                             <>
                                                 <div class="row mt-3 ">
-                                                    <div class="col-3">
-                                                        <Form.Label style={{ fontSize: '16px' }} className="formGray">Estado</Form.Label>
-                                                    </div>
                                                     <div class="col">
-                                                        <Form.Control autoComplete="off"
-                                                            onChange={e => handleInputChange(e, i)}
-                                                            value={x.state}
-                                                            name="state"
-                                                            className="formGray" type="text" placeholder="Ingrese su Estado" />
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-3 ">
-                                                    <div class="col-3">
-                                                        <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciudad</Form.Label>
-                                                    </div>
-                                                    <div class="col">
+                                                    <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciudad</Form.Label>
+                                                    <InputGroup>
                                                         <Form.Control
+                                                        className="informGray"
                                                             onChange={e => handleInputChange(e, i)}
                                                             autoComplete="off" name="city"
                                                             value={x.city} size="sm"
                                                             autoComplete="off"
                                                         />
+                                                              <InputGroup.Append>
+                                                <InputGroup.Text className="informGray"><TIicons.TiHome /></InputGroup.Text>
+                                                </InputGroup.Append>
+                                                </InputGroup>
+                                                    </div>
+                                                    <div class="col">
+                                                        <Form.Label style={{ fontSize: '16px' }} className="formGray">Estado</Form.Label>
+                                                        <InputGroup>
+                                                        <Form.Control autoComplete="off"
+                                                            onChange={e => handleInputChange(e, i)}
+                                                            value={x.state}
+                                                            name="state"
+                                                            className="informGray" type="text" placeholder="Ingrese su Estado" />
+                                                    <InputGroup.Append>
+                                                <InputGroup.Text className="informGray"><TIicons.TiHome /></InputGroup.Text>
+                                                </InputGroup.Append>
+                                                 </InputGroup>
                                                     </div>
                                                 </div>
                                             </>
                                         }
+                                <Row className="mt-3">
+                                <Col>
+                                <label class="container">One
+  <input type="checkbox" checked="checked"/>
+  <span class="checkmark"></span>
+</label>
+
+<label class="container">Two
+  <input type="checkbox"/>
+  <span class="checkmark"></span>
+</label>
+
+<label class="container">Three
+  <input type="checkbox"/>
+  <span class="checkmark"></span>
+</label>
+
+<label class="container">Four
+  <input type="checkbox"/>
+  <span class="checkmark"></span>
+</label>
+</Col>
+                                </Row>
                                         <div class="row mt-3 ">
                                             <div class="col-3">
-                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Calle</Form.Label>
+                                                <Form.Label style={{ fontSize: '16px' }} className="formGray">Pais</Form.Label>
                                             </div>
                                             <div class="col">
-                                                <Form.Control autoComplete="off"
-                                                    onChange={e => handleInputChange(e, i)}
-                                                    value={x.street}
-                                                    name="street"
-                                                    className="formGray" type="text" placeholder="Ingrese su Calle" />
-                                            </div>
-                                        </div>
-                                        <div class="row mt-3 ">
-                                            <div class="col-3">
-                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Numero</Form.Label>
-                                            </div>
-                                            <div class="col">
-                                                <Form.Control autoComplete="off"
-                                                    onChange={e => handleInputChange(e, i)}
-                                                    value={x.number}
-                                                    name="number"
-                                                    className="formGray" type="text" placeholder="Ingrese su Numero" />
-                                            </div>
-                                        </div>
-                                        <div class="row mt-3 ">
-                                            <div class="col-3">
-                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Codigo postal</Form.Label>
-                                            </div>
-                                            <div class="col">
-                                                <Form.Control autoComplete="off"
-                                                    onChange={e => handleInputChange(e, i)}
-                                                    value={x.cp}
-                                                    name="cp"
-                                                    className="formGray" type="text" placeholder="Ingrese su Codigo postal" />
+                                                <Form.Control onChange={e => handleInputChange(e, i)} autoComplete="off"
+                                                    name="country"
+                                                    value={x.country} as="select" size="sm" custom>
+                                                    <option disabled value="" selected></option>
+                                                    {countries.map(countri => (
+                                                        <option key={countri.country_name} value={countri.country_name}>
+                                                            {countri.country_name}
+                                                        </option>
+                                                    ))}
+                                                </Form.Control>
                                             </div>
                                         </div>
                                         <div class="row">

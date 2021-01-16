@@ -28,10 +28,10 @@ export default function TableReminders(props) {
     // vars
     const dispatch = useDispatch();
     const notificationAlert = useRef();
-    const { reminders } = useSelector(state => state.remindersC);
+    const { remindersC:reminders } = useSelector(state => state.remindersC);
     const { loading } = useSelector(state => state.ui);
     const { contact } = props;
-
+    console.log('reminder',reminders);
     useEffect(() => {
 
     }, []);

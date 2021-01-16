@@ -114,7 +114,7 @@ function Bio() {
 
                 }
                 users.forEach(us => {
-                    if (us.name === result[1].value) {
+                    if (us.name === result[0].value) {
                     } else {
                         result.push({
                             value: us.name,

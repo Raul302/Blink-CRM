@@ -78,6 +78,9 @@
     line-height: 14px;
     color:#6e7a93;
 }
+.informGray {
+    background:#EEEEEE !important;
+}
  
 
 .login {
@@ -492,3 +495,30 @@ box-shadow: -4px -1px 10px -4px rgba(83,94,97,1);
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
+
+input[type="checkbox"] {
+    display: none;
+  }
+  
+  input[type="checkbox"] + label {
+    -webkit-transition: all 500ms ease;
+    transition: all 500ms ease;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 50px;
+    background-color: #fff;
+    border:solid 1px #7d7d7d;
+    padding: 0.5rem 0.5rem;
+    display: inline-block;
+    -moz-user-select: -moz-none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  
+  input[type="checkbox"]:checked + label {
+    -webkit-transition: all 500ms ease;
+    transition: all 500ms ease;
+    background-color:#108A88; color: white; border-color:#108A88;
+  }

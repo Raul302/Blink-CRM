@@ -1,9 +1,9 @@
-import { reminderContactReducer } from '../reducers/reminderContactReducer';
+import { reminderContactReducer } from '../reducers/contactsReducers/reminderContactReducer';
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { authReducer } from '../reducers/authReducer';
 import { collegesReducer } from '../reducers/collegesReducer';
-import { contactsReducer } from '../reducers/contactsReducer';
+import { contactsReducer } from '../reducers/contactsReducers/contactsReducer';
 import { uiReducer } from '../reducers/uiReducer';
 
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;

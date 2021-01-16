@@ -2,7 +2,7 @@ import { types } from "../types/types";
 import axios from 'axios';
 import { setError,removeError, startLoading, finishLoading } from "./ui";
 import { constaApi } from "constants/constants";
-import { loadReminders } from "helpers/loadReminders";
+import { loadReminders } from "helpers/contactsHelpers/loadReminders";
 
 export const newReminderC = (data) =>{
     return async (dispatch) => {

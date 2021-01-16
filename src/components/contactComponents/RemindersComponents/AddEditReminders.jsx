@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Row, Col, Button, Modal, Form, InputGroup, FormControl } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
@@ -15,8 +15,8 @@ export default function AddEditReminders(props) {
 
     // variables
     const dispatch = useDispatch();
-    const [flagEdit,setFlago] = useState(false);
-    const { active:activeReminder } = useSelector(state => state.remindersC);
+    const [flagEdit, setFlago] = useState(false);
+    const { active: activeReminder } = useSelector(state => state.remindersC);
     const { id: IDX } = useSelector(state => state.auth);
     const [selectValue, setSelectValue] = useState();
     const { contact } = props;
@@ -32,16 +32,23 @@ export default function AddEditReminders(props) {
     const [departament, setDepartament] = useState("");
     const [values, setValues] = useState([{}]);
     const notificationAlert = useRef();
+    const [now, setNow] = useState();
+    const [urgent, setUrgent] = useState(false);
     useEffect(() => {
         consult();
-        if(activeReminder != null){
+        present();
+        if (activeReminder != null) {
             setActiveReminder();
-        }   
+        }
     }, [activeReminder])
-    
+
     // Methods
-    function setActiveReminder(){
-        if(activeReminder.id != null){
+    function present() {
+        setNow(moment().format("YYYY-MM-DD"));
+        console.log(moment().format('YYYY-MM-DD'));
+    }
+    function setActiveReminder() {
+        if (activeReminder.id != null) {
             let array = [];
             activeReminder.emails_to.forEach((element, index) => {
                 values.forEach(el => {
@@ -52,7 +59,7 @@ export default function AddEditReminders(props) {
             })
             let datex = moment(activeReminder.dateReminder).format('YYYY-MM-DD')
             let timex = moment(activeReminder.dateReminder).format('HH:mm');
-            console.log('Timex',timex);
+            console.log('Timex', timex);
             setTimeReminder(timex);
             setDateReminder(datex);
             setFlago(true);
@@ -65,22 +72,22 @@ export default function AddEditReminders(props) {
             showModal();
         }
     }
-    function changeSubject (e) {
+    function changeSubject(e) {
         setSubject(e.target.value);
     }
-    function changeDepartament(e){
+    function changeDepartament(e) {
         setDepartament(e.target.value);
     }
-    function changeNotes (e) {
+    function changeNotes(e) {
         setNotes(e.target.value);
     }
-    function changeTimeReminder (e) {
+    function changeTimeReminder(e) {
         setNotificationReminder(e.target.value);
     }
-    function changeDate (e) {
+    function changeDate(e) {
         setDateReminder(e.target.value)
     }
-    function changeTime(e){
+    function changeTime(e) {
         setTimeReminder(e.target.value);
     }
     const handleChange = (e) => {
@@ -97,7 +104,7 @@ export default function AddEditReminders(props) {
                 let { users } = response.data;
                 users.forEach(us => {
                     result.push({
-                        id : us.id,
+                        id: us.id,
                         value: us.name,
                         label: us.name,
                         email: us.email,
@@ -115,27 +122,27 @@ export default function AddEditReminders(props) {
         let url = flagEdit ? 'reminders/updated' : 'reminders/save';
         let datex = dateReminder + " " + timeReminder;
         let obj = {
-            id : activeReminder ? activeReminder.id : null,
-            id_contact:contact.id ?? null,
+            id: activeReminder ? activeReminder.id : null,
+            id_contact: contact.id ?? null,
             contact: nameContact ?? null,
             subject: subject ?? null,
-            emailTo : selectValue ?? null,
-            dateReminder : datex ?? null,
-            timenotification : notificationReminder ?? null,
-            notes : notes ?? null,
-            departament : departament ?? null,
+            emailTo: selectValue ?? null,
+            dateReminder: datex ?? null,
+            timenotification: notificationReminder ?? null,
+            notes: notes ?? null,
+            departament: departament ?? null,
         };
-        await axios.post(constaApi+url, obj)
+        await axios.post(constaApi + url, obj)
             .then(function (response) {
-                dispatch( starLoadingRemindersC(contact.id ));
+                dispatch(starLoadingRemindersC(contact.id));
             }).catch(error => {
 
             });
-            dispatch(activeReminderC(null,null));
-            handleClose();
+        dispatch(activeReminderC(null, null));
+        handleClose();
     }
     function handleClose() {
-        dispatch(activeReminderC(null,null));
+        dispatch(activeReminderC(null, null));
         setTimeReminder(null);
         setDateReminder(null);
         setNameContact(null);
@@ -209,9 +216,9 @@ export default function AddEditReminders(props) {
                                 <Col className="col-8">
                                     <Form.Label className="formGray">Asunto</Form.Label>
                                     <Form.Control name="subject"
-                                       onChange = {(e) => changeSubject(e)}
-                                       autoComplete="off" className="formGray" type="text" placeholder="Escriba el asunto..."
-                                       value={subject}
+                                        onChange={(e) => changeSubject(e)}
+                                        autoComplete="off" className="formGray" type="text" placeholder="Escriba el asunto..."
+                                        value={subject}
                                     />
                                 </Col>
                             </Row>
@@ -234,62 +241,68 @@ export default function AddEditReminders(props) {
                                 </Col>
                             </Row>
                             <Row className="mt-3">
-                                    <Col >
-                                        <Form.Control style={{ height: '100px', width: '180px' }}
-                                            onChange={(e) => changeDate(e)}
-                                            value={dateReminder} autoComplete="off" name="date"
-                                            className="formGray" type="date" placeholder="Ingrese su Fecha" />
-                                    </Col>
-                                    <Col className="mt-4">
-                                        <Form.Control style={{ height: '30px', width: '120px' }}
-                                            onChange={(e) => changeTime(e)}
-                                            value={timeReminder} autoComplete="off" name="date"
-                                            className="formGray" type="time" placeholder="Ingrese su Fecha" />
-                                    </Col>
-                                    <Col className="col-5">
+                                <Col >
+                                    <Form.Control style={{ height: '100px', width: '180px' }}
+                                        onChange={(e) => changeDate(e)}
+                                        value={dateReminder} autoComplete="off" name="date"
+                                        className="formGray" min={now} type="date" placeholder="Ingrese su Fecha" />
+                                </Col>
+                                <Col className="mt-4">
+                                    <Form.Control style={{ height: '30px', width: '120px' }}
+                                        onChange={(e) => changeTime(e)}
+                                        value={timeReminder} autoComplete="off" name="date"
+                                        className="formGray" type="time" placeholder="Ingrese su Fecha" />
+                                </Col>
+                                <Col className="col-5">
                                     <Form.Label className="formGray">Notificación</Form.Label>
-                                    <Form.Control  onChange={(e) => changeTimeReminder(e)}
-                                     autoComplete="off" 
-                                     value={notificationReminder} name="type"  as="select" size="sm" custom>
-                                      <option disabled value="" selected></option>
-                                       <option value="-0 hour">Misma hora</option>
-                                       <option value="-1 hour">1 Hora Antes</option>
-                                       <option value="-24 hour">1 Dia Antes</option>
-                                       <option value="-48 hour">2 Dias Antes</option>
-                                       <option value="-168 hour">1 Semana Antes</option>
+                                    <Form.Control onChange={(e) => changeTimeReminder(e)}
+                                        autoComplete="off"
+                                        value={notificationReminder} name="type" as="select" size="sm" custom>
+                                        <option disabled value="" selected></option>
+                                        <option value="-0 hour">Misma hora</option>
+                                        <option value="-1 hour">1 Hora Antes</option>
+                                        <option value="-24 hour">1 Dia Antes</option>
+                                        <option value="-48 hour">2 Dias Antes</option>
+                                        <option value="-168 hour">1 Semana Antes</option>
                                     </Form.Control>
-                                    </Col>
-                                </Row>
-                                <Row className="mt-3">
-                                    <Col>
+                                </Col>
+                            </Row>
+                            <Row className="mt-3">
+                                <Col>
                                     <Form.Label className="formGray">Notas</Form.Label>
-                                    <InputGroup  style={{ borderTop: '0', width: '100%', marginTop: '0px' }}>
+                                    <InputGroup style={{ borderTop: '0', width: '100%', marginTop: '0px' }}>
                                         <Form.Control
                                             onChange={(e) => changeNotes(e)}
                                             value={notes} as="textarea" placeholder="Escriba su mensaje..." rows={8} />
                                     </InputGroup>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col className="col-6">
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col className="col-6">
                                     <Form.Label className="formGray">Departamento</Form.Label>
-                                    <Form.Control  onChange={(e) => changeDepartament(e)}
-                                     autoComplete="off" 
-                                     value={departament} name="type"  as="select" size="sm" custom>
-                                      <option disabled value="" selected></option>
-                                       <option value="prospeccion">Prospección</option>
-                                       <option value="aplicacion">Aplicación</option>
-                                       <option value="general">General</option>
+                                    <Form.Control onChange={(e) => changeDepartament(e)}
+                                        autoComplete="off"
+                                        value={departament} name="type" as="select" size="sm" custom>
+                                        <option disabled value="" selected></option>
+                                        <option value="prospeccion">Prospección</option>
+                                        <option value="aplicacion">Aplicación</option>
+                                        <option value="general">General</option>
                                     </Form.Control>
-                                    </Col>
-                                </Row>
-                                
+                                </Col>
+                                <Col>
+                                    {/* <div class="form-check">
+                                        <Form.Control type="checkbox" class="form-check-input" id="exampleCheck1"> </Form.Control>
+                                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                                    </div> */}
+                                </Col>
+                            </Row>
+
                         </div>
                         <Row>
 
                             <Col>
                                 <Button
-                                    disabled={!subject ? true : !dateReminder ? true : !timeReminder ? true : !notificationReminder ? true : false }
+                                    disabled={!subject ? true : !dateReminder ? true : !timeReminder ? true : !notificationReminder ? true : false}
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="primary">{flagEdit ? 'Actualizar' : 'Guardar'}</Button>
