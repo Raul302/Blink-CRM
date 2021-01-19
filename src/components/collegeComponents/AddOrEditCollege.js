@@ -11,7 +11,7 @@ import { newCollege } from '../../actions/colleges';
 import { starLoadingColleges } from '../../actions/colleges';
 import NotificationAlert from "react-notification-alert";
 
-const Checkbox = function Checkbox(props) {
+export const Checkbox = function Checkbox(props) {
     function changeCheck(e) {
         props.changeCheck(e);
     }

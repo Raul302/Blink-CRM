@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import * as FIIcons from "react-icons/fi";
 import * as FAIcons from "react-icons/fa";
-import { Row, Col, Button, Modal, Form } from 'react-bootstrap';
+import * as TIicons from "react-icons/ti";
+import { Row, Col, Button, Modal, Form,InputGroup } from 'react-bootstrap';
 import axios from 'axios';
 import { useForm } from "react-hook-form";
 import { useAlert } from 'react-alert'
-import { constaApi } from 'constants/constants';
+import { constaApi,constzipCodeApi } from 'constants/constants';
 import swal from 'sweetalert';
-
-
+import { Checkbox } from '../collegeComponents/AddOrEditCollege';
 
 // papa = 0 
 // mama = 1
@@ -16,10 +16,12 @@ import swal from 'sweetalert';
 // otro = 3
 
 function ReferencesData(props) {
+    const [countries, setCountries] = useState([]);
+    const [optionscols,setCols] = useState([{colonia:""}]);
     const [directions, setDirections] = useState(props.reference.reference_address);
     const [phones, setPhones] = useState(props.reference.reference_phones);
     const [emails, setEmails] = useState(props.reference.reference_emails);
-    const [inputList, setInputList] = useState([{ street: "", number: "", cp: "", city: "", state: "", typeAddress: "" }]);
+    const [inputList, setInputList] = useState([{ street: "", number: "", cp: "", city: "", state: "",country: "Mexico", typeAddress: "" }]);
     const [inputPhone, setInputPhone] = useState([{ phone: "", typePhone: "" }]);
     const [inputEmail, setInputEmail] = useState([{ email: "", typeEmail: "" }]);
     const alert = useAlert()
@@ -42,12 +44,28 @@ function ReferencesData(props) {
     const [token, setToken] = useState(props.token ?? JSON.parse(localStorage.getItem('tokenStates')));
 
     useEffect(() => {
+        console.log('props',props);
         typeRef(props.reference);
         consultStates();
+        consultCountries();
         setFilterValues(props.reference);
     }, [props])
+    const [flagCountry,setFlagCoutnry] = useState({
+        value:'Pais',
+        isChecked:false,
+        label:'Pais'
+    });
 
-
+    async function consultCountries() {
+        await axios.get('https://www.universal-tutorial.com/api/countries/', {
+            headers: {
+                Authorization: 'Bearer ' + props.token,
+                Accept: "application/json"
+            }
+        }).then(function (response) {
+            setCountries(response.data);
+        });
+    }
     async function changeCities(e, i = 0) {
         let val = e.target.value;
         if (val === undefined) {
@@ -71,6 +89,25 @@ function ReferencesData(props) {
         }).then(function (response) {
             setCities(response.data);
         });
+    }
+    // Methods
+
+    function changeChecked(){
+        let check = flagCountry.isChecked;
+        check = check ? false : true ;
+        setFlagCoutnry({...flagCountry,isChecked:check});
+    }
+    const tagMun = (mun) => {
+        let tag = '';
+        return tag = <span><strong class="Inter">Municipio: </strong>{mun}</span>;
+    }
+    const tagCOL = (col) => {
+    let tag = '';
+        return tag = <span><strong class="Inter">Colonia: </strong>{col}     </span>;
+    }
+    const tagSpan = (num) => {
+        let tag = '';
+        return tag = <span><strong class="Inter">Interior: </strong>{num}</span>;
     }
     // Api to states
     async function consultStates() {
@@ -155,11 +192,35 @@ function ReferencesData(props) {
     // handle input change
     const handleInputChange = (e, index) => {
         const { name, value } = e.target;
+        if(name === "cp" && value.length === 5){
+            callCP(index,value);
+        }
         const list = [...inputList];
         list[index][name] = value;
         setInputList(list);
     };
-
+    const callCP = async (index,val) => {
+        await await axios.get(constzipCodeApi+ val, {
+        }).then(function (response) {
+            let {data} = response;
+            if(data){
+                let colx = [];
+                let resp = data.map(d => {
+                    return d.response;
+                })
+                const list = [...inputList];
+                list[index]['state'] = resp[0].estado === "Coahuila de Zaragoza" ? "Coahuila" : resp[0].estado;
+                list[index]['city'] = resp[0].municipio;
+                list[index]['col'] = resp[0].asentamiento;
+                list[index]['mun'] = resp[0].municipio;
+                setInputList(list);
+                 colx = resp.map(re => {
+                    return {colonia:re.asentamiento};
+                });
+                setCols(colx);
+            }
+        });
+    }
     // handle click event of the Remove button
     const handleRemoveClick = index => {
         const list = [...inputList];
@@ -381,18 +442,58 @@ function ReferencesData(props) {
                         })}
                         {inputList.map((x, i) => {
                             return (
+                                <>
                                 <div class="row mt-3 ">
                                     <div class="col-3">
-                                        <h6 class="Inter card-subtitle mb-2 text-muted">Direccion {x.typeAddress}</h6>
+                                        <h6 class="Inter card-subtitle mb-2 text-muted">Direcciòn {x.typeAddress}</h6>
+                                    </div>
+                                    <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                            class="Inter card-subtitle mb-2 ">
+                                            {x.street} &nbsp;&nbsp;
+                                            {x.intNum &&
+                                            tagSpan(x.intNum)
+                                            }
+                                    </h6>
+                                </div>
+                                <div class="row mr-5">
+                                    <div class="col-3">
+
                                     </div>
                                     <div class="col">
-                                        <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                    <h6 class="mt-2"style={{ color: '#243243', fontWeight: '600' }}
                                             class="Inter card-subtitle mb-2 ">
-                                            {x.street} {x.number}, {x.cp}
-                                            <p>{x.city} {x.state}, {x.city} </p>
+                                            {x.col &&
+                                            tagCOL(x.col)
+                                            }
+                                            {x.mun &&
+                                            tagMun(x.mun)
+                                            }
                                         </h6>
                                     </div>
                                 </div>
+                                <div class="row mr-5">
+                                    <div class="col-3">
+
+                                    </div>
+                                    <div class="col">
+                                    <h6 class="mt-2"style={{ color: '#243243', fontWeight: '600' }}
+                                            class="Inter card-subtitle mb-2 ">
+                                                {x.city}, {x.state}, {x.country}
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div class="row mr-5">
+                                    <div class="col-3">
+
+                                    </div>
+                                    <div class="col">
+                                    <h6 class="mt-2"style={{ color: '#243243', fontWeight: '600' }}
+                                            class="Inter card-subtitle mb-2 ">
+                                                {x.cp}
+                                        </h6>
+                                    </div>
+                                </div>
+                                </>
                             );
                         })}
 
@@ -611,76 +712,180 @@ function ReferencesData(props) {
                                             </div>
                                         </div>
                                         <div class="row mt-3 ">
-                                            <div class="col-3">
-                                                <Form.Label className="formGray">Estado</Form.Label>
-                                            </div>
-                                            <div class="col">
-                                                <Form.Control onChange={e => changeCities(e, i)} autoComplete="off"
-                                                    name="state"
-                                                    value={x.state} as="select" size="sm" custom>
-                                                    <option disabled value="" selected></option>
-                                                    {states.map(state => (
-                                                        <option key={state.state_name} value={state.state_name}>
-                                                            {state.state_name}
-                                                        </option>
-                                                    ))}
-                                                </Form.Control>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-3 ">
-                                            <div class="col-3">
-                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciudad</Form.Label>
-                                            </div>
-                                            <div class="col">
-                                                <Form.Control
-                                                    onChange={e => handleInputChange(e, i)}
-                                                    autoComplete="off" name="city"
-                                                    value={x.city} as="select" size="sm" custom>
-                                                    <option key={x.city} defaultValue={x.city}></option>
-                                                    {cities.map(city => (
-                                                        <option key={city.city_name} value={city.city_name}>
-                                                            {city.city_name}
-                                                        </option>
-                                                    ))}
-                                                </Form.Control>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-3 ">
-                                            <div class="col-3">
+                                            <div class="col-8">
                                                 <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Calle</Form.Label>
-                                            </div>
-                                            <div class="col">
+                                                <InputGroup>
                                                 <Form.Control autoComplete="off"
                                                     onChange={e => handleInputChange(e, i)}
                                                     value={x.street}
                                                     name="street"
-                                                    className="formGray" type="text" placeholder="Ingrese su Calle" />
+                                                    className="informGray" type="text" placeholder="Ingrese su Calle" />
+                                                <InputGroup.Append>
+                                                <InputGroup.Text className="informGray" ><TIicons.TiHome /></InputGroup.Text>
+                                                </InputGroup.Append>
+                                                </InputGroup>
                                             </div>
-                                        </div>
-                                        <div class="row mt-3 ">
-                                            <div class="col-3">
-                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Numero</Form.Label>
-                                            </div>
-                                            <div class="col">
+                                            <div class="col-2">
+                                            <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Numero exterior</Form.Label>
+                                            <InputGroup>
                                                 <Form.Control autoComplete="off"
                                                     onChange={e => handleInputChange(e, i)}
-                                                    value={x.number}
-                                                    name="number"
-                                                    className="formGray" type="text" placeholder="Ingrese su Numero" />
+                                                    value={x.extNum}
+                                                    name="extNum"
+                                                    className="informGray" type="text" placeholder="#" />
+                                                     <InputGroup.Append>
+                                                <InputGroup.Text className="informGray" ><TIicons.TiHome /></InputGroup.Text>
+                                                </InputGroup.Append>
+                                                </InputGroup>
                                             </div>
-                                        </div>
-                                        <div class="row mt-3 ">
-                                            <div class="col-3">
-                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Codigo postal</Form.Label>
+                                            <div class="col-2">
+                                            <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Numero Interior</Form.Label>
+                                                <InputGroup>
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChange(e, i)}
+                                                    value={x.intNum}
+                                                    name="intNum"
+                                                    className="informGray" type="text" placeholder="#" />
+                                             <InputGroup.Append>
+                                                <InputGroup.Text className="informGray"><TIicons.TiHome /></InputGroup.Text>
+                                                </InputGroup.Append>
+                                                </InputGroup>
                                             </div>
-                                            <div class="col">
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col">
+                                        <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Codigo postal</Form.Label>
+                                                <InputGroup>
                                                 <Form.Control autoComplete="off"
                                                     onChange={e => handleInputChange(e, i)}
                                                     value={x.cp}
+                                                    title="respeta el formato,solo numeros"
+                                                    pattern="[0-9]{5}"
                                                     name="cp"
-                                                    className="formGray" type="text" placeholder="Ingrese su Codigo postal" />
+                                                    className="informGray" type="text" placeholder="Ingrese su codigo postal" />
+                                                    <InputGroup.Append>
+                                                <InputGroup.Text className="informGray"><TIicons.TiHome /></InputGroup.Text>
+                                                </InputGroup.Append>
+                                                </InputGroup>
+                                        </div>
+                                        {x.country === "Mexico" &&
+                                        <>
+                                        <div class="col">
+                                        <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Colonia</Form.Label>
+                                        <InputGroup>
+                                        <Form.Control onChange={e => handleInputChange(e, i)} autoComplete="off"
+                                                    name="col"
+                                                    value={x.col} as="select" size="sm" custom>
+                                                    {optionscols.map(opcol => (
+                                                        <option key={opcol.opcolonia} value={opcol.colonia}>
+                                                            {opcol.colonia}
+                                                        </option>
+                                                    ))}
+                                        </Form.Control>
+                                                     <InputGroup.Append>
+                                                </InputGroup.Append>
+                                                </InputGroup>
+                                        </div>
+                                        <div class="col">
+                                        <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Delegacion o Municipio</Form.Label>
+                                        <InputGroup>
+                                                <Form.Control autoComplete="off"
+                                                    onChange={e => handleInputChange(e, i)}
+                                                    value={x.mun}
+                                                    name="mun"
+                                                    className="informGray" type="text" placeholder="Ingrese su Municipio" />
+                                                      <InputGroup.Append>
+                                                <InputGroup.Text className="informGray"><TIicons.TiHome /></InputGroup.Text>
+                                                </InputGroup.Append>
+                                                </InputGroup>
+                                        </div>
+                                        </>
+                                    }
+                                     {x.country === 'Mexico' ?
+                                    <>
+                                                <div class="row ">
+                                                    <div class="col">
+                                                        <Form.Label style={{ fontSize: '16px' }} className="formGray">Estado</Form.Label>
+                                                        <Form.Control
+                                                        className="informGray"
+                                                            onChange={e => handleInputChange(e, i)}
+                                                            autoComplete="off" name="city"
+                                                            value={x.state} size="sm"
+                                                            autoComplete="off"
+                                                        />                                                      
+                                                    </div>
+                                                    <div class="col">
+                                                        <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciudad</Form.Label>
+                                                        <Form.Control
+                                                        className="informGray"
+                                                            onChange={e => handleInputChange(e, i)}
+                                                            autoComplete="off" name="city"
+                                                            value={x.city} size="sm"
+                                                            autoComplete="off"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </>
+                                            :
+                                            // Manual 
+                                            <>
+                                                <div class="row ">
+                                                    <div class="col">
+                                                    <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciudad</Form.Label>
+                                                    <InputGroup>
+                                                        <Form.Control
+                                                        className="informGray"
+                                                            onChange={e => handleInputChange(e, i)}
+                                                            autoComplete="off" name="city"
+                                                            value={x.city} size="sm"
+                                                            autoComplete="off"
+                                                        />
+                                                              <InputGroup.Append>
+                                                <InputGroup.Text className="informGray"><TIicons.TiHome /></InputGroup.Text>
+                                                </InputGroup.Append>
+                                                </InputGroup>
+                                                    </div>
+                                                    <div class="col">
+                                                        <Form.Label style={{ fontSize: '16px' }} className="formGray">Estado</Form.Label>
+                                                        <InputGroup>
+                                                        <Form.Control autoComplete="off"
+                                                            onChange={e => handleInputChange(e, i)}
+                                                            value={x.state}
+                                                            name="state"
+                                                            className="informGray" type="text" placeholder="Ingrese su Estado" />
+                                                    <InputGroup.Append>
+                                                <InputGroup.Text className="informGray"><TIicons.TiHome /></InputGroup.Text>
+                                                </InputGroup.Append>
+                                                 </InputGroup>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        }
+                                    </div>
+                                    <Row className="mt-3">
+                                <Col>
+                                <Checkbox  {...flagCountry} changeCheck={changeChecked} index={i} />
+                                </Col>
+                                </Row>
+                                {flagCountry.isChecked &&
+                                        <div class="row mt-3 ">
+                                            <div class="col-3">
+                                                <Form.Label style={{ fontSize: '16px' }} className="formGray">Pais</Form.Label>
+                                            </div>
+                                            <div class="col">
+                                                <Form.Control onChange={e => handleInputChange(e, i)} autoComplete="off"
+                                                    name="country"
+                                                    value={x.country} as="select" size="sm" custom>
+                                                    <option disabled value="" selected></option>
+                                                    {countries.map(countri => (
+                                                        <option key={countri.country_name} value={countri.country_name}>
+                                                            {countri.country_name}
+                                                        </option>
+                                                    ))}
+                                                </Form.Control>
                                             </div>
                                         </div>
+                                }
                                         <div class="row">
                                             <div class="col-4 ">
                                                 {inputList.length !== 1 &&

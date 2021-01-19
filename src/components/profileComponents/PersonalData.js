@@ -4,8 +4,11 @@ import * as TIicons from "react-icons/ti";
 import { Row, Col, Button, Modal, Form,InputGroup } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
+import "../../styles/RBCheckboxFormStyles.css";
 import NotificationAlert from "react-notification-alert";
-import { constaApi } from 'constants/constants';
+import { constaApi,constzipCodeApi } from 'constants/constants';
+import { Checkbox } from '../collegeComponents/AddOrEditCollege';
+import { Divider } from 'antd';
 
 
 
@@ -15,11 +18,18 @@ function PersonalData(props) {
         consultStates();
         consultCountries();
     }, [props]);
+    const [flagCountry,setFlagCoutnry] = useState({
+        value:'Pais',
+        isChecked:false,
+        label:'Pais'
+    });
+    const [optionscols,setCols] = useState([{colonia:""}]);
+    const [muns,setMuns] = useState([]);
     const notificationAlert = useRef();   
     const [directions, setDirections] = useState(props.contact.contacts_direction);
     const [phones, setPhones] = useState(props.contact.contacts_phones);
     const [emails, setEmails] = useState(props.contact.contacts_emails);
-    const [inputList, setInputList] = useState([{ street: "", number: "", cp: "", city: "", state: "", typeAddress: "", country: "",otherDirection:"" }]);
+    const [inputList, setInputList] = useState([{ street: "", number: "", cp: "", city: "", state: "", typeAddress: "", country: "Mexico",otherDirection:"" }]);
     const [inputPhone, setInputPhone] = useState([{ phone: "", typePhone: "",otherPhone: "" }]);
     const [inputEmail, setInputEmail] = useState([{ email: "", typeEmail: "",otherEmail: "" }]);
     const [editInfo, setEditInfo] = useState(false);
@@ -41,6 +51,41 @@ function PersonalData(props) {
     const [states, setStates] = useState([]);
     const [countries, setCountries] = useState([]);
     const [country, setCountry] = useState();
+    // Methods
+    const tagMun = (mun) => {
+        let tag = '';
+        return tag = <span><strong class="Inter">Municipio: </strong>{mun}</span>;
+    }
+    const tagCOL = (col) => {
+    let tag = '';
+        return tag = <span><strong class="Inter">Colonia: </strong>{col}     </span>;
+    }
+    const tagSpan = (num) => {
+        let tag = '';
+        return tag = <span><strong class="Inter">Interior: </strong>{num}</span>;
+    }
+    const callCP = async (index,val) => {
+        await await axios.get(constzipCodeApi+ val, {
+        }).then(function (response) {
+            let {data} = response;
+            if(data){
+                let colx = [];
+                let resp = data.map(d => {
+                    return d.response;
+                })
+                const list = [...inputList];
+                list[index]['state'] = resp[0].estado === "Coahuila de Zaragoza" ? "Coahuila" : resp[0].estado;
+                list[index]['city'] = resp[0].municipio;
+                list[index]['col'] = resp[0].asentamiento;
+                list[index]['mun'] = resp[0].municipio;
+                setInputList(list);
+                 colx = resp.map(re => {
+                    return {colonia:re.asentamiento};
+                });
+                setCols(colx);
+            }
+        });
+    }
     const handleInputChangeEmail = (e, index) => {
         const { name, value } = e.target;
         const list = [...inputEmail];
@@ -89,6 +134,9 @@ function PersonalData(props) {
     // handle input change
     const handleInputChange = (e, index) => {
         const { name, value } = e.target;
+        if(name === "cp" && value.length === 5){
+            callCP(index,value);
+        }
         const list = [...inputList];
         list[index][name] = value;
         setInputList(list);
@@ -103,10 +151,15 @@ function PersonalData(props) {
 
     // handle click event of the Add button
     const handleAddClick = () => {
-        setInputList([...inputList, { street: "", number: "", cp: "" }]);
+        setInputList([...inputList, { street: "",country: "Mexico", number: "", cp: "" }]);
     };
     function changeCiti(e) {
         setCity(e.target.value);
+    }
+    function changeChecked(){
+        let check = flagCountry.isChecked;
+        check = check ? false : true ;
+        setFlagCoutnry({...flagCountry,isChecked:check});
     }
     // Api to cities
     async function changeCities(e, i = 0) {
@@ -163,6 +216,7 @@ function PersonalData(props) {
         });
     }
     function setFilterValues(props) {
+        console.log(props,'props');
         setBirthday(props.birthday);
         setCity(props.city);
         setEmail(props.email);
@@ -233,7 +287,7 @@ function PersonalData(props) {
             country: country,
             direction: inputList
         };
-        await axios.post(constaApi+'update', datax)
+        await axios.post(constaApi+'contact/update', datax)
             .then(function (response) {
                 if (response.status === 200) {
                     notification('success','Datos actualizados correctamente');
@@ -258,6 +312,10 @@ function PersonalData(props) {
         setEditDetails(!editDetails);
     }
     function editD() {
+        console.log('input',inputList);
+        if(inputList){
+            callCP(0,inputList[0].cp)
+        }
         setEditDirection(!editDirection);
     }
     function editAcademicP() {
@@ -812,18 +870,58 @@ function PersonalData(props) {
                         </div>
                         {inputList.map((x, i) => {
                             return (
+                                <>
                                 <div class="row mt-3 ">
                                     <div class="col-3">
                                         <h6 class="Inter card-subtitle mb-2 text-muted">Direcciòn {x.typeAddress}</h6>
                                     </div>
-                                    <div class="col">
-                                        <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                    <h6 style={{ color: '#243243', fontWeight: '600' }}
                                             class="Inter card-subtitle mb-2 ">
-                                            {x.street} {x.number}, {x.cp}
-                                            <p>{x.state}, {x.city} </p>
+                                            {x.street} &nbsp;&nbsp;
+                                            {x.intNum &&
+                                            tagSpan(x.intNum)
+                                            }
+                                    </h6>
+                                </div>
+                                <div class="row mr-5">
+                                    <div class="col-3">
+
+                                    </div>
+                                    <div class="col">
+                                    <h6 class="mt-2"style={{ color: '#243243', fontWeight: '600' }}
+                                            class="Inter card-subtitle mb-2 ">
+                                            {x.col &&
+                                            tagCOL(x.col)
+                                            }
+                                            {x.mun &&
+                                            tagMun(x.mun)
+                                            }
                                         </h6>
                                     </div>
                                 </div>
+                                <div class="row mr-5">
+                                    <div class="col-3">
+
+                                    </div>
+                                    <div class="col">
+                                    <h6 class="mt-2"style={{ color: '#243243', fontWeight: '600' }}
+                                            class="Inter card-subtitle mb-2 ">
+                                                {x.city}, {x.state}, {x.country}
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div class="row mr-5">
+                                    <div class="col-3">
+
+                                    </div>
+                                    <div class="col">
+                                    <h6 class="mt-2"style={{ color: '#243243', fontWeight: '600' }}
+                                            class="Inter card-subtitle mb-2 ">
+                                                {x.cp}
+                                        </h6>
+                                    </div>
+                                </div>
+                                </>
                             );
                         })}
                     </div>
@@ -893,8 +991,8 @@ function PersonalData(props) {
                                             <InputGroup>
                                                 <Form.Control autoComplete="off"
                                                     onChange={e => handleInputChange(e, i)}
-                                                    value={x.street}
-                                                    name="street"
+                                                    value={x.extNum}
+                                                    name="extNum"
                                                     className="informGray" type="text" placeholder="#" />
                                                      <InputGroup.Append>
                                                 <InputGroup.Text className="informGray" ><TIicons.TiHome /></InputGroup.Text>
@@ -906,8 +1004,8 @@ function PersonalData(props) {
                                                 <InputGroup>
                                                 <Form.Control autoComplete="off"
                                                     onChange={e => handleInputChange(e, i)}
-                                                    value={x.street}
-                                                    name="street"
+                                                    value={x.intNum}
+                                                    name="intNum"
                                                     className="informGray" type="text" placeholder="#" />
                                              <InputGroup.Append>
                                                 <InputGroup.Text className="informGray"><TIicons.TiHome /></InputGroup.Text>
@@ -921,26 +1019,31 @@ function PersonalData(props) {
                                                 <InputGroup>
                                                 <Form.Control autoComplete="off"
                                                     onChange={e => handleInputChange(e, i)}
-                                                    value={x.street}
+                                                    value={x.cp}
                                                     title="respeta el formato,solo numeros"
-                                                    pattern="[0-9]{10}"
-                                                    name="street"
-                                                    className="informGray" type="text" placeholder="Ingrese su # interior" />
+                                                    pattern="[0-9]{5}"
+                                                    name="cp"
+                                                    className="informGray" type="text" placeholder="Ingrese su codigo postal" />
                                                     <InputGroup.Append>
                                                 <InputGroup.Text className="informGray"><TIicons.TiHome /></InputGroup.Text>
                                                 </InputGroup.Append>
                                                 </InputGroup>
                                         </div>
+                                        {x.country === "Mexico" &&
+                                        <>
                                         <div class="col">
                                         <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Colonia</Form.Label>
                                         <InputGroup>
-                                                <Form.Control autoComplete="off"
-                                                    onChange={e => handleInputChange(e, i)}
-                                                    value={x.street}
-                                                    name="street"
-                                                    className="informGray" type="text" placeholder="Ingrese su # interior" />
+                                        <Form.Control onChange={e => handleInputChange(e, i)} autoComplete="off"
+                                                    name="col"
+                                                    value={x.col} as="select" size="sm" custom>
+                                                    {optionscols.map(opcol => (
+                                                        <option key={opcol.opcolonia} value={opcol.colonia}>
+                                                            {opcol.colonia}
+                                                        </option>
+                                                    ))}
+                                        </Form.Control>
                                                      <InputGroup.Append>
-                                                <InputGroup.Text className="informGray"><TIicons.TiHome /></InputGroup.Text>
                                                 </InputGroup.Append>
                                                 </InputGroup>
                                         </div>
@@ -949,46 +1052,39 @@ function PersonalData(props) {
                                         <InputGroup>
                                                 <Form.Control autoComplete="off"
                                                     onChange={e => handleInputChange(e, i)}
-                                                    value={x.street}
-                                                    name="street"
-                                                    className="informGray" type="text" placeholder="Ingrese su # interior" />
+                                                    value={x.mun}
+                                                    name="mun"
+                                                    className="informGray" type="text" placeholder="Ingrese su Municipio" />
                                                       <InputGroup.Append>
                                                 <InputGroup.Text className="informGray"><TIicons.TiHome /></InputGroup.Text>
                                                 </InputGroup.Append>
                                                 </InputGroup>
                                         </div>
+                                        </>
+                                    }
                                     </div>
                                     {x.country === 'Mexico' ?
-                                            <>
+                                    <>
                                                 <div class="row mt-3 ">
                                                     <div class="col">
                                                         <Form.Label style={{ fontSize: '16px' }} className="formGray">Estado</Form.Label>
-                                                        <Form.Control onChange={e => changeCities(e, i)} autoComplete="off"
-                                                            name="state"
-                                                            className="informGray"
-                                                            value={x.state} as="select" size="sm" custom>
-                                                            <option disabled value="" selected> </option>
-                                                            {states.map(state => (
-                                                                <option key={state.state_name} value={state.state_name}>
-                                                                    {state.state_name}
-                                                                </option>
-                                                            ))}
-                                                        </Form.Control>                                                      
+                                                        <Form.Control
+                                                        className="informGray"
+                                                            onChange={e => handleInputChange(e, i)}
+                                                            autoComplete="off" name="city"
+                                                            value={x.state} size="sm"
+                                                            autoComplete="off"
+                                                        />                                                      
                                                     </div>
                                                     <div class="col">
                                                         <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciudad</Form.Label>
                                                         <Form.Control
-                                                            className="informGray"
+                                                        className="informGray"
                                                             onChange={e => handleInputChange(e, i)}
                                                             autoComplete="off" name="city"
-                                                            value={x.city} as="select" size="sm" custom>
-                                                            <option key={x.city} defaultValue={x.city}></option>
-                                                            {cities.map(city => (
-                                                                <option key={city.city_name} value={city.city_name}>
-                                                                    {city.city_name}
-                                                                </option>
-                                                            ))}
-                                                        </Form.Control>
+                                                            value={x.city} size="sm"
+                                                            autoComplete="off"
+                                                        />
                                                     </div>
                                                 </div>
                                             </>
@@ -1029,27 +1125,10 @@ function PersonalData(props) {
                                         }
                                 <Row className="mt-3">
                                 <Col>
-                                <label class="container">One
-  <input type="checkbox" checked="checked"/>
-  <span class="checkmark"></span>
-</label>
-
-<label class="container">Two
-  <input type="checkbox"/>
-  <span class="checkmark"></span>
-</label>
-
-<label class="container">Three
-  <input type="checkbox"/>
-  <span class="checkmark"></span>
-</label>
-
-<label class="container">Four
-  <input type="checkbox"/>
-  <span class="checkmark"></span>
-</label>
-</Col>
+                                <Checkbox  {...flagCountry} changeCheck={changeChecked} index={i} />
+                                </Col>
                                 </Row>
+                                {flagCountry.isChecked &&
                                         <div class="row mt-3 ">
                                             <div class="col-3">
                                                 <Form.Label style={{ fontSize: '16px' }} className="formGray">Pais</Form.Label>
@@ -1067,6 +1146,7 @@ function PersonalData(props) {
                                                 </Form.Control>
                                             </div>
                                         </div>
+                                }
                                         <div class="row">
                                             <div class="col-4 ">
                                                 {inputList.length !== 1 &&
