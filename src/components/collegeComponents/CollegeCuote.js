@@ -5,7 +5,7 @@ import {ProgressBar,Form} from 'react-bootstrap';
 import axios from 'axios';
 import { store } from "store/store";
 import ModalImage from "react-modal-image";
-import { constaApi } from "constants/constants";
+import { constaApi } from "../../constants/constants";
 var college;
 export class CollegeCuote extends Component {
 constructor(props){

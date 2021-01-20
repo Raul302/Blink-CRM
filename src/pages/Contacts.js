@@ -12,7 +12,7 @@ import TableContacts from '../components/contactComponents/TableContacts';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
-import { constaApi } from 'constants/constants';
+import { constaApi } from '../constants/constants';
 
 const goRouter = function (param){
 }

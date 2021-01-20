@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Row, Col, Button, Modal, Form, InputGroup, FormControl } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
-import { constaApi } from 'constants/constants';
+import { constaApi } from '../../../constants/constants';
 import Select from 'react-select';
 import NotificationAlert from "react-notification-alert";
 import { activeReminderC,starLoadingRemindersC } from 'actions/contacts/remindersContact';

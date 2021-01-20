@@ -6,7 +6,7 @@ import { Row, Col, Button, Modal, Form, FormControl, FormLabel } from 'react-boo
 import { useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
 import axios from 'axios';
-import { constaApi } from 'constants/constants';
+import { constaApi } from '../../constants/constants';
 
 function WithoutReferences(props) {
 

@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/GlobalStyles.css';
 import *  as FAIcons from "react-icons/fa";
 import axios from 'axios';
-import { constaApi } from 'constants/constants';
+import { constaApi } from '../constants/constants';
 const AddEdit = React.lazy(() => import('../components/userComponents/AddEdit'));
 const TableUsers = React.lazy(() => import('../components/userComponents/TableUsers'));
 

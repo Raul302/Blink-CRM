@@ -2,7 +2,7 @@ import { types } from "../../types/types";
 import axios from 'axios';
 import { setError,removeError, startLoading, finishLoading } from "../uiNotificactions/ui";
 import { loadColleges } from '../../helpers/collegesHelpers/loadColleges';       
-import { constaApi } from "constants/constants";
+import { constaApi } from "../../constants/constants";
 
 export const newCollege = (data) =>{
     return async (dispatch) => {

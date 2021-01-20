@@ -8,7 +8,7 @@ import { finishLoading, startLoading } from '../../actions/uiNotificactions/ui';
 import Skeleton from 'react-loading-skeleton';
 import { useAlert } from 'react-alert'
 import CollegeCuote from './CollegeCuote';
-import { constaApi , constPathFiles } from 'constants/constants';
+import { constaApi , constPathFiles } from '../../constants/constants';
 
 function Docs() {
     const { loading } = useSelector(state => state.ui);

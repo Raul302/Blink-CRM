@@ -1,7 +1,7 @@
 import { types } from "../../types/types";
 import axios from 'axios';
 import { setError,removeError, startLoading, finishLoading } from "../uiNotificactions/ui";
-import { constaApi } from "constants/constants";
+import { constaApi } from "../../constants/constants";
 import { loadReminders } from "helpers/contactsHelpers/loadReminders";
 
 export const newReminderC = (data) =>{

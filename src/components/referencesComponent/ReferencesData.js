@@ -6,7 +6,7 @@ import { Row, Col, Button, Modal, Form,InputGroup } from 'react-bootstrap';
 import axios from 'axios';
 import { useForm } from "react-hook-form";
 import { useAlert } from 'react-alert'
-import { constaApi,constzipCodeApi } from 'constants/constants';
+import { constaApi,constzipCodeApi } from '../../constants/constants';
 import swal from 'sweetalert';
 import { Checkbox } from '../collegeComponents/AddOrEditCollege';
 

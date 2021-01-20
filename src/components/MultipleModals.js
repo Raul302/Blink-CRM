@@ -5,7 +5,7 @@ import { Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import NotificationAlert from "react-notification-alert";
-import { constaApi } from 'constants/constants';
+import { constaApi } from '../constants/constants';
 
 
 

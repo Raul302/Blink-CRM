@@ -16,7 +16,7 @@ import * as FIIcons from "react-icons/fi";
 import * as FAIcons from "react-icons/fa";
 import * as Imicons from "react-icons/im";
 import * as AIcons from "react-icons/ai";
-import { constaApi } from 'constants/constants';
+import { constaApi } from '../../../constants/constants';
 import moment from 'moment';
 import { activeReminderC,deleteReminderC } from 'actions/contacts/remindersContact';
 import swal from 'sweetalert';

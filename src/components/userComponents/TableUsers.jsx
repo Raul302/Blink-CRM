@@ -13,7 +13,7 @@ import {
     Col,
   } from "reactstrap";
   import NotificationAlert from "react-notification-alert";
-import { constaApi } from 'constants/constants';
+import { constaApi } from '../../constants/constants';
 
 
 function TableUsers(props) {

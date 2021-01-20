@@ -1,7 +1,7 @@
 import { types } from "../../types/types";
 import axios from 'axios';
 import { setError, removeError, startLoading, finishLoading } from "../uiNotificactions/ui";
-import { constaApi } from "constants/constants";
+import { constaApi } from "../../constants/constants";
 
 export const callLogin = (data) => {
     return async (dispatch) => {

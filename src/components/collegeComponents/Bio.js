@@ -21,7 +21,7 @@ import {
 import { useAlert } from 'react-alert'
 import axios from 'axios';
 import NotificationAlert from "react-notification-alert";
-import { constaApi } from 'constants/constants';
+import { constaApi } from '../../constants/constants';
 
 function Bio() {
     // Set moment spanish

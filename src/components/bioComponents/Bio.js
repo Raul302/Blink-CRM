@@ -1,3 +1,4 @@
+
 import { useSelector } from 'react-redux';
 import React, { useState,useRef, useEffect } from 'react'
 import *  as FIcons from "react-icons/fi";
@@ -21,7 +22,7 @@ import {
 import { useAlert } from 'react-alert'
 import axios from 'axios';
 import NotificationAlert from "react-notification-alert";
-import { constaApi } from 'constants/constants';
+import { constaApi } from '../../constants/constants';
 import TableBio from './TableBio';
 
 function Bio() {

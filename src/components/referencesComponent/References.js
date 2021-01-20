@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useAlert } from 'react-alert';
 import ReferencesData from '../referencesComponent/ReferencesData';
 import WithouReferences from '../referencesComponent/WithoutReferences';
-import { constaApi } from 'constants/constants';
+import { constaApi } from '../../constants/constants';
 
 function References(props) {
     const [type_ref,setTypeRef] =useState();

@@ -17,7 +17,7 @@ import LateralReference from './LateralReference';
 import References from 'components/referencesComponent/References';
 import { useForm } from "react-hook-form";
 import {Button, Modal, Form } from 'react-bootstrap';
-import { constaApi } from 'constants/constants';
+import { constaApi } from '../../constants/constants';
 
 function TableContacts(props) {
     const [rowData, setRowData] = useState(props.rowData);

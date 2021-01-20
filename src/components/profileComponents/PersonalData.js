@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import axios from 'axios';
 import "../../styles/RBCheckboxFormStyles.css";
 import NotificationAlert from "react-notification-alert";
-import { constaApi,constzipCodeApi } from 'constants/constants';
+import { constaApi,constzipCodeApi } from '../../constants/constants';
 import { Checkbox } from '../collegeComponents/AddOrEditCollege';
 import { Divider } from 'antd';
 
