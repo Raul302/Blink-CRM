@@ -10,10 +10,10 @@ import React, { useState,useEffect } from 'react';
 import PrivateRouter from './PrivateRouter';
 import PublicRouter from './PublicRouter';
 import { useDispatch, useSelector,shallowEqual } from 'react-redux';
-import { login } from '../actions/auth';
+import { login } from '../actions/auth/auth';
 import Loader from '../components/loaderComponents/Loader';
-import { loadColleges } from '../helpers/loadColleges';       
-import { setColleges, starLoadingColleges,activeCollege } from '../actions/colleges';
+import { loadColleges } from '../helpers/collegesHelpers/loadColleges';       
+import { setColleges, starLoadingColleges,activeCollege } from '../actions/colleges/colleges';
 export const AppRouter = (props) => {
     const dispatch = useDispatch();
 

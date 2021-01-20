@@ -1,10 +1,8 @@
 import React, { useState, useEffect,useRef } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/GlobalStyles.css';
-import * as GrIcons from 'react-icons/gr';
-import { Row, Col, Button, Modal, Form, FormControl, FormLabel } from 'react-bootstrap';
+import { Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
-import isEmail from "validator/lib/isEmail";
 import axios from 'axios';
 import NotificationAlert from "react-notification-alert";
 import { constaApi } from 'constants/constants';

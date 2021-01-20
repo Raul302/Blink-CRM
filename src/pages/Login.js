@@ -8,7 +8,7 @@ import { useAlert } from 'react-alert'
 import { AuthContext } from '../auth/AuthContext';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { callLogin, login } from '../actions/auth';
+import { callLogin, login } from '../actions/auth/auth';
 
 function Login() {
     const alert = useAlert();

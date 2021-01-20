@@ -18,7 +18,7 @@ import SideBar from '../components/SideBar/SideBar';
 import routes from "../routes.js";
 import Reminders from 'components/contactComponents/RemindersComponents/Reminders';
 import NotificationAlert from "react-notification-alert";
-import { starLoadingRemindersC } from 'actions/remindersContact';
+import { starLoadingRemindersC } from 'actions/contacts/remindersContact';
 
 
 function ContactsRouters(props) {

@@ -1,10 +1,10 @@
-import React, {  useEffect,useReducer } from 'react';
+import React from 'react';
 import {AppRouter}  from './routers/AppRouter';
-import { transitions, positions, Provider as AlertProvider } from 'react-alert'
+import { transitions, Provider as AlertProvider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
-import { authReducer } from '../src/auth/authReducer';
+// import { authReducer } from '../src/auth/authReducer';
 import "bootstrap/dist/css/bootstrap.css";
 import "../src/assets/scss/paper-dashboard.scss";
 import "../src/assets/demo/demo.css";

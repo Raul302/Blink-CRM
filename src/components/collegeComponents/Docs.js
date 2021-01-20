@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import axios from 'axios';
 import * as BSicons from "react-icons/bs";
 import { useDispatch, useSelector } from 'react-redux';
-import { finishLoading, startLoading } from '../../actions/ui';
+import { finishLoading, startLoading } from '../../actions/uiNotificactions/ui';
 import Skeleton from 'react-loading-skeleton';
 import { useAlert } from 'react-alert'
 import CollegeCuote from './CollegeCuote';

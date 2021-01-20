@@ -3,9 +3,9 @@ import *  as FAIcons from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 // import { loadColleges } from '../../helpers/loadColleges'; 
 import { useHistory } from 'react-router-dom';
-import {activeCollege,deleteCollege} from '../../actions/colleges';
+import {activeCollege,deleteCollege} from '../../actions/colleges/colleges';
 import Skeleton from 'react-loading-skeleton';
-import { finishLoading } from '../../actions/ui';
+import { finishLoading } from '../../actions/uiNotificactions/ui';
 import swal from 'sweetalert';
 
 import {

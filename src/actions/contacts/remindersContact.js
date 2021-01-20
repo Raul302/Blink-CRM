@@ -1,6 +1,6 @@
-import { types } from "../types/types";
+import { types } from "../../types/types";
 import axios from 'axios';
-import { setError,removeError, startLoading, finishLoading } from "./ui";
+import { setError,removeError, startLoading, finishLoading } from "../uiNotificactions/ui";
 import { constaApi } from "constants/constants";
 import { loadReminders } from "helpers/contactsHelpers/loadReminders";
 

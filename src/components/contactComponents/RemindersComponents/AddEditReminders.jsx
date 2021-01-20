@@ -6,10 +6,9 @@ import axios from 'axios';
 import { constaApi } from 'constants/constants';
 import Select from 'react-select';
 import NotificationAlert from "react-notification-alert";
-import { activeReminderC } from 'actions/remindersContact';
+import { activeReminderC,starLoadingRemindersC } from 'actions/contacts/remindersContact';
 import moment from 'moment'
 import '../../../styles/RBCheckboxFormStyles.css';
-import { starLoadingRemindersC } from 'actions/remindersContact';
 import { Checkbox } from '../../collegeComponents/AddOrEditCollege';
 
 

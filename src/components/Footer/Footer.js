@@ -14,12 +14,12 @@ class Footer extends React.Component {
             <nav className="footer-nav">
               <ul>
                 <li>
-                  <a href="http://testing.blink.boardingschools.mx/" target="_blank">
+                  <a rel="noopener noreferrer" href="http://testing.blink.boardingschools.mx/" target="_blank">
                     Blink system
                   </a>
                 </li>
                 <li>
-                  <a href="http://testing.blink.boardingschools.mx/" target="_blank">
+                  <a rel="noopener noreferrer" href="http://testing.blink.boardingschools.mx/" target="_blank">
                     WebSite
                   </a>
                 </li>

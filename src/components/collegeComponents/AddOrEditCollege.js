@@ -7,9 +7,8 @@ import isEmail from "validator/lib/isEmail";
 import axios from 'axios';
 import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
-import { newCollege } from '../../actions/colleges';
-import { starLoadingColleges } from '../../actions/colleges';
-import NotificationAlert from "react-notification-alert";
+import { starLoadingColleges,newCollege } from '../../actions/colleges/colleges';
+import NotificationAlert from "react-notification-alert"; 
 
 export const Checkbox = function Checkbox(props) {
     function changeCheck(e) {

@@ -1,8 +1,7 @@
-import { types } from "../types/types";
+import { types } from "../../types/types";
 import axios from 'axios';
-import { setError,removeError, startLoading, finishLoading } from "./ui";
-import { useHistory } from "react-router-dom";
-import { loadColleges } from '../helpers/loadColleges';       
+import { setError,removeError, startLoading, finishLoading } from "../uiNotificactions/ui";
+import { loadColleges } from '../../helpers/collegesHelpers/loadColleges';       
 import { constaApi } from "constants/constants";
 
 export const newCollege = (data) =>{
