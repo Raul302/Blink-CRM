@@ -138,6 +138,10 @@ function PersonalData(props) {
             callCP(index,value);
         }
         const list = [...inputList];
+        if(name ==="country"){
+            list[index]['col'] = "";
+            list[index]['mun'] = "";
+        }
         list[index][name] = value;
         setInputList(list);
     };

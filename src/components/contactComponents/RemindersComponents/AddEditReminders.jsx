@@ -8,7 +8,9 @@ import Select from 'react-select';
 import NotificationAlert from "react-notification-alert";
 import { activeReminderC } from 'actions/remindersContact';
 import moment from 'moment'
+import '../../../styles/RBCheckboxFormStyles.css';
 import { starLoadingRemindersC } from 'actions/remindersContact';
+import { Checkbox } from '../../collegeComponents/AddOrEditCollege';
 
 
 export default function AddEditReminders(props) {
@@ -34,6 +36,11 @@ export default function AddEditReminders(props) {
     const notificationAlert = useRef();
     const [now, setNow] = useState();
     const [urgent, setUrgent] = useState(false);
+    const [flagImportant,setFlagImportant] = useState({
+        value:'Urgente',
+        isChecked:false,
+        label:'Urgente'
+    });
     useEffect(() => {
         consult();
         present();
@@ -43,9 +50,18 @@ export default function AddEditReminders(props) {
     }, [activeReminder])
 
     // Methods
+
+    function resetArrays(){
+        setFlagImportant({...flagImportant,isChecked:false});
+    }
+    function changeChecked(){
+        let check = flagImportant.isChecked;
+        check = check ? false : true ;
+        setFlagImportant({...flagImportant,isChecked:check});
+    }
     function present() {
-        setNow(moment().format("YYYY-MM-DD"));
-        console.log(moment().format('YYYY-MM-DD'));
+        setNow(moment().format("YYYY-MM-DD HH:mm"));
+        console.log(moment().format('YYYY-MM-DD HH:mm'));
     }
     function setActiveReminder() {
         if (activeReminder.id != null) {
@@ -131,6 +147,7 @@ export default function AddEditReminders(props) {
             timenotification: notificationReminder ?? null,
             notes: notes ?? null,
             departament: departament ?? null,
+            urgent: flagImportant ? flagImportant.isChecked : null,
         };
         await axios.post(constaApi + url, obj)
             .then(function (response) {
@@ -142,6 +159,7 @@ export default function AddEditReminders(props) {
         handleClose();
     }
     function handleClose() {
+        resetArrays();
         dispatch(activeReminderC(null, null));
         setTimeReminder(null);
         setDateReminder(null);
@@ -251,7 +269,7 @@ export default function AddEditReminders(props) {
                                     <Form.Control style={{ height: '30px', width: '120px' }}
                                         onChange={(e) => changeTime(e)}
                                         value={timeReminder} autoComplete="off" name="date"
-                                        className="formGray" type="time" placeholder="Ingrese su Fecha" />
+                                        className="formGray" min={now} type="time" placeholder="Ingrese su Fecha" />
                                 </Col>
                                 <Col className="col-5">
                                     <Form.Label className="formGray">Notificación</Form.Label>
@@ -289,11 +307,8 @@ export default function AddEditReminders(props) {
                                         <option value="general">General</option>
                                     </Form.Control>
                                 </Col>
-                                <Col>
-                                    {/* <div class="form-check">
-                                        <Form.Control type="checkbox" class="form-check-input" id="exampleCheck1"> </Form.Control>
-                                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                                    </div> */}
+                                <Col className="col-6">
+                                <Form.Label className=" mt-4 formGray"><Checkbox  {...flagImportant} changeCheck={changeChecked} index={0} /></Form.Label>
                                 </Col>
                             </Row>
 

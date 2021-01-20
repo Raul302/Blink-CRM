@@ -343,7 +343,7 @@ function Bio() {
         <>
             <div className="mt-n2 content">
                 <NotificationAlert ref={notificationAlert} />
-                <div style={{borderRadius:'0px'}}class="card">
+                <div style={{borderRadius:'0px'}} class="card">
                     <div class="card-body">
                         <div class="row">
                             <span onClick={() => showModalLog('Llamada')} class="Inter600B">
@@ -495,7 +495,6 @@ function Bio() {
                                             />
                                         }
                                     </Col>
-
                                 </Row>
                                 <Row className="mt-3">
                                     <Col className="col-4">
@@ -536,7 +535,6 @@ function Bio() {
                                         <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                             Cancelar
                                 </Button>
-
                                     </Col>
                                 </Row>
                             </div>
