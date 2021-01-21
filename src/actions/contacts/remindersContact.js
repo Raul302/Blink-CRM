@@ -18,7 +18,20 @@ export const newReminderC = (data) =>{
             });
     }
 }
-
+export const updatedReminderC = (data) =>{
+    return async (dispatch) => {
+        dispatch( startLoading() );
+    await axios.post( constaApi +'reminders/updated',data)
+        .then(function (response) {
+            dispatch( removeError());
+            dispatch( starLoadingRemindersC(data.id_contact) );
+            dispatch( finishLoading() );
+        }).catch(error =>{
+            dispatch(setError('Ocurrio un error en updatedReminder'));
+            dispatch( finishLoading() );
+            });
+    }
+}
 export const deleteReminderC = (id,idContact) =>{
     return async (dispatch) => {
         dispatch( startLoading() );

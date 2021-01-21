@@ -5,6 +5,7 @@ import *  as FAIcons from "react-icons/fa";
 import *  as HIcons from "react-icons/hi";
 import *  as Ioicons from "react-icons/io";
 import * as MDIcons from "react-icons/md";
+import * as BIicons from "react-icons/bi";
 import { useDispatch, useSelector } from 'react-redux';
 import { Popover,OverlayTrigger } from "react-bootstrap";
 import Skeleton from 'react-loading-skeleton';
@@ -52,27 +53,47 @@ export default function TableBio(props) {
         </Popover>)
     }
     const showModal = (obj) => {
-
+        props.bridge(obj);
     }
     const showSubject = (type, subject) => {
         let tag = '';
-        if (type.includes('Llamada')) {
-            tag = <span class="Inter600B">
-                <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" fillRule="nonzero" d="M21 16.92v-.025a.998.998 0 0 0-.85-1.014 13.845 13.845 0 0 1-3.032-.755.998.998 0 0 0-1.05.221l-1.27 1.27a1 1 0 0 1-1.202.162 17 17 0 0 1-6.375-6.375 1 1 0 0 1 .162-1.201l1.266-1.266a1 1 0 0 0 .224-1.057 13.817 13.817 0 0 1-.753-3.02A1.003 1.003 0 0 0 7.11 3h-3a1 1 0 0 0-.996 1.074 18.8 18.8 0 0 0 2.92 8.24 18.511 18.511 0 0 0 5.7 5.697 18.774 18.774 0 0 0 8.176 2.913A1 1 0 0 0 21 19.92v-3zm2 2.996a3 3 0 0 1-3.288 2.998 20.78 20.78 0 0 1-9.058-3.22 20.49 20.49 0 0 1-6.303-6.3A20.805 20.805 0 0 1 1.124 4.27 3 3 0 0 1 4.11 1H7.1a3.002 3.002 0 0 1 3.001 2.59c.117.885.334 1.754.645 2.588a3.002 3.002 0 0 1-.679 3.17l-.717.716a15 15 0 0 0 4.586 4.586l.72-.721a3 3 0 0 1 3.164-.676c.836.312 1.705.529 2.6.647A3 3 0 0 1 23 16.93v2.985z"></path></svg>
-&nbsp;{subject}</span>;
-        }
-        if (type.includes('Whatssap')) {
-            tag = <span class="Inter600B"><FAIcons.FaWhatsapp />&nbsp; {subject}</span>
-        }
-        if (type.includes('Cita')) {
-            tag = <span class="Inter600B">
-                <FIcons.FiCalendar />&nbsp;
+        if(type == null){
+            tag = 
+            <OverlayTrigger trigger={["hover", "hover"]} placement="top"
+            overlay={PopoverComponent(subject)}>
+            <span  class=" Inter600B">
+            <BIicons.BiMessageDetail size={16}/>&nbsp; 
             {subject}</span>
-        }
-        if (type.includes('Email')) {
-            tag = <span class=" Inter600B">
-                <HIcons.HiOutlineMail size={16} />&nbsp;
-    {subject}</span>
+        </OverlayTrigger>
+        } else {
+            if (type.includes('Llamada')) {
+                tag = <span class="Inter600B">
+                    <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" fillRule="nonzero" d="M21 16.92v-.025a.998.998 0 0 0-.85-1.014 13.845 13.845 0 0 1-3.032-.755.998.998 0 0 0-1.05.221l-1.27 1.27a1 1 0 0 1-1.202.162 17 17 0 0 1-6.375-6.375 1 1 0 0 1 .162-1.201l1.266-1.266a1 1 0 0 0 .224-1.057 13.817 13.817 0 0 1-.753-3.02A1.003 1.003 0 0 0 7.11 3h-3a1 1 0 0 0-.996 1.074 18.8 18.8 0 0 0 2.92 8.24 18.511 18.511 0 0 0 5.7 5.697 18.774 18.774 0 0 0 8.176 2.913A1 1 0 0 0 21 19.92v-3zm2 2.996a3 3 0 0 1-3.288 2.998 20.78 20.78 0 0 1-9.058-3.22 20.49 20.49 0 0 1-6.303-6.3A20.805 20.805 0 0 1 1.124 4.27 3 3 0 0 1 4.11 1H7.1a3.002 3.002 0 0 1 3.001 2.59c.117.885.334 1.754.645 2.588a3.002 3.002 0 0 1-.679 3.17l-.717.716a15 15 0 0 0 4.586 4.586l.72-.721a3 3 0 0 1 3.164-.676c.836.312 1.705.529 2.6.647A3 3 0 0 1 23 16.93v2.985z"></path></svg>
+    &nbsp;{subject}</span>;
+            }
+            if (type.includes('Whatssap')) {
+                tag = <span class="Inter600B"><FAIcons.FaWhatsapp size={16}/>&nbsp; {subject}</span>
+            }
+            if (type.includes('Cita')) {
+                tag = <span class="Inter600B">
+                    <FIcons.FiCalendar size={16} />&nbsp;
+                {subject}</span>
+            }
+            if (type.includes('Email')) {
+                tag = <span class=" Inter600B">
+                    <HIcons.HiOutlineMail size={16} />&nbsp;
+        {subject}</span>
+            }
+            if(type){
+                tag = 
+                <OverlayTrigger trigger={["hover", "hover"]} placement="top"
+                overlay={PopoverComponent(subject)}>
+                <span  class=" Inter600B">
+                <BIicons.BiMessageDetail size={16}/>&nbsp; 
+                {subject}</span>
+            </OverlayTrigger>
+            }
+
         }
         return tag
     }

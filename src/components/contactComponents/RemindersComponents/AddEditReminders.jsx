@@ -78,6 +78,7 @@ export default function AddEditReminders(props) {
             setTimeReminder(timex);
             setDateReminder(datex);
             setFlago(true);
+            setFlagImportant({...flagImportant,isChecked:activeReminder.urgent == "0" ? false : true});
             setNameContact(activeReminder.contact ?? null);
             setSubject(activeReminder.subject ?? null);
             setSelectValue(array ?? null);

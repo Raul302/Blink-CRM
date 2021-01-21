@@ -18,8 +18,9 @@ import * as Imicons from "react-icons/im";
 import * as AIcons from "react-icons/ai";
 import { constaApi } from '../../../constants/constants';
 import moment from 'moment';
-import { activeReminderC,deleteReminderC } from 'actions/contacts/remindersContact';
+import { activeReminderC, deleteReminderC, updatedReminderC } from 'actions/contacts/remindersContact';
 import swal from 'sweetalert';
+import AddEditBio from 'components/bioComponents/AddEditBio';
 
 
 
@@ -27,6 +28,7 @@ import swal from 'sweetalert';
 
 export default function TableReminders(props) {
     // vars
+    const [show, setShow] = useState(false);
     const dispatch = useDispatch();
     const notificationAlert = useRef();
     const { remindersC: reminders } = useSelector(state => state.remindersC);
@@ -51,14 +53,15 @@ export default function TableReminders(props) {
                         title: "¿Que deseas hacer?",
                         icon: "info",
                         dangerMode: true,
-                        buttons: ["Crear entrada en la bitacora","Borrarlo"],
+                        buttons: ["Crear entrada en la bitacora", "Borrarlo"],
                     })
                         .then(async (willDelete) => {
                             if (willDelete) {
                                 await dispatch(deleteReminderC(obj.id, contact.id));
                             } else {
-                                // Aqui creara la otra entrada
-                                swal("Operacion cancelada!");
+                                let obx = { ...obj, emailTo: obj.emails_to, status: 'completado' };
+                                await dispatch(updatedReminderC(obx));
+                                setShow(true);
                             }
                         });
 
@@ -83,16 +86,16 @@ export default function TableReminders(props) {
         }
         switch (obj.type_user) {
             case 'user':
-                tag = <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{n}</span>;
+                tag = <span key={obj.id} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{n}</span>;
                 break;
             case 'contactos':
-                tag = <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">{n}</span>;
+                tag = <span key={obj.id} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">{n}</span>;
                 break;
             case 'referencias':
-                tag = <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">{n}</span>;
+                tag = <span key={obj.id} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">{n}</span>;
                 break;
             default:
-                tag = <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ">{n}</span>;
+                tag = <span key={obj.id} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ">{n}</span>;
                 break;
         }
 
@@ -125,12 +128,17 @@ export default function TableReminders(props) {
         let tag = <span class="Inter">{datef}{timef}</span>
         return dateBD ? tag : '';
     }
+    function closeAll() {
+        setShow(false);
+    }
     return (
         <>
             <div className="content">
                 <NotificationAlert ref={notificationAlert} />
                 {!loading ?
                     <Row>
+                        <AddEditBio noBar={true} closeAll={closeAll} flagTwo={show} />
+                        {/* <AddEditBio setFlag={setFlag} row={row} flag={show}/> */}
                         <Col className="mt-3" md="12">
                             <Card>
                                 <CardHeader>
@@ -176,17 +184,29 @@ export default function TableReminders(props) {
                                                     ))}</td>
                                                     <td>{row.departament ?? ''}</td>
                                                     <td>
-                                                    <a>
-                                                        <AIcons.AiFillCheckCircle
-                                                        onClick={(e) => completeReminder(row)}
-                                                        title="Completar" style={{ color: 'green' }} size={20} />
-                                                    </a>
-                                                    <a>
-                                                        <FIIcons.FiEdit title="Editar" onClick={(e) => editReminder(row)} size={18} style={{ color: '#386CEF' }} />
-                                                    </a>
-                                                    <a className="ml-1">
-                                                        <FAIcons.FaTrashAlt title="Eliminar" style={{ color: '#DC3545' }} size={18} onClick={(e) => { deleteReminder(row.id) }} />
-                                                    </a>
+                                                        {row.status === 'pendiente' ?
+                                                            <a >
+                                                                <AIcons.AiFillCheckCircle
+                                                                    onClick={(e) => completeReminder(row)}
+                                                                    title="Completar"
+                                                                    style={{ color: 'green' }}
+                                                                    size={20} />
+                                                            </a>
+                                                            :
+                                                            <a disabled>
+                                                                <AIcons.AiFillCheckCircle
+                                                                    disabled
+                                                                    title="Completado"
+                                                                    style={{ color: 'gray' }}
+                                                                    size={20} />
+                                                            </a>
+                                                        }
+                                                        <a>
+                                                            <FIIcons.FiEdit title="Editar" onClick={(e) => editReminder(row)} size={18} style={{ color: '#386CEF' }} />
+                                                        </a>
+                                                        <a className="ml-1">
+                                                            <FAIcons.FaTrashAlt title="Eliminar" style={{ color: '#DC3545' }} size={18} onClick={(e) => { deleteReminder(row.id) }} />
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             ))}

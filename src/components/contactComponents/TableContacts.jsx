@@ -18,6 +18,7 @@ import References from 'components/referencesComponent/References';
 import { useForm } from "react-hook-form";
 import {Button, Modal, Form } from 'react-bootstrap';
 import { constaApi } from '../../constants/constants';
+import SearchBar from 'components/GeneralComponents/SearchBar';
 
 function TableContacts(props) {
     const [rowData, setRowData] = useState(props.rowData);
@@ -82,6 +83,9 @@ function TableContacts(props) {
         }
         notificationAlert.current.notificationAlert(options);
     }
+    function setData(e){
+        setRowData(e);
+    }
     return (
         <>
             <div className="content">
@@ -90,9 +94,9 @@ function TableContacts(props) {
                     <Col className="mt-3" md="12">
                         <Card>
                             <CardHeader>
-                                {/* <CardTitle tag="h4">Usuarios</CardTitle> */}
                             </CardHeader>
                             <CardBody>
+                                <SearchBar setData={(e) => setData(e)}/>
                                 <Table responsive>
                                     <thead className="text-primary">
                                         <tr>
@@ -111,19 +115,6 @@ function TableContacts(props) {
                                                 {(row.city ? row.city : ' ') + (row.state ? ', ' + row.state : '')}
                                                 </td>
                                                 <td>{row.id_program} {row.year}</td>
-                                                {/* <td class="hover" onClick={(e) => 
-                                                openLateral(row.contacts_references.length > 0 ? row.contacts_references : null)}
-                                                >{row.contacts_references.length > 0 ?
-                                                    [(row.contacts_references.map((contacts, i) => (
-                                                        (i === 0 ?
-                                                            (contacts.name + ' ' + contacts.father_lastname)
-                                                            :
-                                                            ''
-                                                        )
-                                                    )))
-                                                    ]
-                                                    : <h8>Sin referencias</h8>
-                                                }</td> */}
                                                 <td>
                                                     <a> <RIcons.RiEyeFill onClick={(e) => showModal(row)} style={{ color: '#79B9E1' }} size={18} /></a>
                                                 </td>
