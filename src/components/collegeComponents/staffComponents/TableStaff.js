@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
+import NotificationAlert from "react-notification-alert";
+import { useDispatch, useSelector } from 'react-redux';
 import {
     Card,
     CardHeader,
@@ -8,68 +10,27 @@ import {
     Col,
 } from "reactstrap";
 import { Popover, OverlayTrigger, } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import Skeleton from 'react-loading-skeleton';
-import NotificationAlert from "react-notification-alert";
-import axios from 'axios';
 import * as FIIcons from "react-icons/fi";
 import * as FAIcons from "react-icons/fa";
 import * as Imicons from "react-icons/im";
 import * as AIcons from "react-icons/ai";
-import { constaApi } from '../../../constants/constants';
-import moment from 'moment';
-import { activeReminderC, deleteReminderC, updatedReminderC } from 'actions/contacts/remindersContacts/remindersContact';
-import swal from 'sweetalert';
-import AddEditBio from 'components/bioComponents/AddEditBio';
+import Skeleton from 'react-loading-skeleton';
 
-
-
-
-
-export default function TableReminders(props) {
-    // vars
-    const [show, setShow] = useState(false);
-    const dispatch = useDispatch();
+export default function TableStaff() {
+    // variables
     const notificationAlert = useRef();
-    const { remindersC: reminders } = useSelector(state => state.remindersC);
     const { loading } = useSelector(state => state.ui);
-    const { contact } = props;
-    useEffect(() => {
+    const [staff,setStaff] = useState();
 
-    }, []);
-    // methods
-    const completeReminder = (obj) => {
-        swal({
-            title: "¿Desea marcar como completado este recordatorio?",
-            icon: "info",
-            dangerMode: false,
-            buttons: ["No", "Si"],
-        })
-            .then(async (willDelete) => {
-                if (willDelete) {
-                    // other swal
-                    swal({
-                        title: "¿Que deseas hacer?",
-                        icon: "info",
-                        dangerMode: true,
-                        buttons: ["Crear entrada en la bitacora", "Borrarlo"],
-                    })
-                        .then(async (willDelete) => {
-                            if (willDelete) {
-                                await dispatch(deleteReminderC(obj.id, contact.id));
-                            } else {
-                                let obx = { ...obj, emailTo: obj.emails_to, status: 'completado' };
-                                await dispatch(updatedReminderC(obx));
-                                setShow(true);
-                            }
-                        });
+    // Methods
+    const showDate = () => {}
+    const showEmailsTO = () => {}
+    const completeReminder = () => {}
+    const editReminder = () => {}
+    const deleteReminder = () => {}
 
 
-                } else {
-                    swal("Operacion cancelada!");
-                }
-            });
-    }
+    // Components
     const PopoverComponent = (text) => {
         return (<Popover id="popover-basic">
             <Popover.Content>
@@ -77,66 +38,13 @@ export default function TableReminders(props) {
             </Popover.Content>
         </Popover>)
     }
-    function showEmailsTO(obj) {
-        let n = obj.name_user ? obj.name_user : " ";
-        let tag = '';
-        if (n) {
-            n = n.charAt(0) + n.charAt(1);
-        }
-        switch (obj.type_user) {
-            case 'user':
-                tag = <span key={obj.id} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{n}</span>;
-                break;
-            case 'contactos':
-                tag = <span key={obj.id} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">{n}</span>;
-                break;
-            case 'referencias':
-                tag = <span key={obj.id} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">{n}</span>;
-                break;
-            default:
-                tag = <span key={obj.id} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ">{n}</span>;
-                break;
-        }
-
-        return tag;
-    }
-    function editReminder(obj) {
-        dispatch(activeReminderC(obj.id, obj));
-    }
-    function deleteReminder(id) {
-        swal({
-            title: "Estas seguro?",
-            text: "Una vez eliminado,no podras recuperar este registro!",
-            icon: "warning",
-            dangerMode: true,
-            buttons: ["No", "Si"],
-        })
-            .then(async (willDelete) => {
-                if (willDelete) {
-                    await dispatch(deleteReminderC(id, contact.id));
-                } else {
-                    swal("Operacion cancelada!");
-                }
-            });
-    }
-    function showDate(dateBD, time) {
-        let datef = moment(dateBD).locale('es-mx').format("ddd D MMMM, YYYY ");
-        let timef = moment(dateBD).locale('es-mx').format("h:mm A");
-        datef = datef[0].toUpperCase() + datef.slice(1);
-        datef = datef.replace(".", "");
-        let tag = <span class="Inter">{datef}{timef}</span>
-        return dateBD ? tag : '';
-    }
-    function closeAll() {
-        setShow(false);
-    }
     return (
-        <>
-            <div className="content">
+       <>
+        <div className="content">
                 <NotificationAlert ref={notificationAlert} />
                 {!loading ?
                     <Row>
-                        <AddEditBio noBar={true} closeAll={closeAll} flagTwo={show} />
+                        {/* <AddEditBio noBar={true} closeAll={closeAll} flagTwo={show} /> */}
                         {/* <AddEditBio setFlag={setFlag} row={row} flag={show}/> */}
                         <Col className="mt-3" md="12">
                             <Card>
@@ -147,17 +55,16 @@ export default function TableReminders(props) {
                                     <Table responsive>
                                         <thead className="text-primary">
                                             <tr>
-                                                <th></th>
-                                                <th>Asunto</th>
-                                                <th>Fecha</th>
-                                                <th>descripción</th>
-                                                <th>Usuarios</th>
-                                                <th>departamento</th>
+                                                <th>Nombre</th>
+                                                <th>Puesto</th>
+                                                <th>Email</th>
+                                                <th>Telefono</th>
+                                                <th>Ext.</th>
                                                 <th>Acciones</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            {reminders.map(row => (
+                                        {/* <tbody>
+                                            {staff.map(row => (
                                                 <tr key={row.id}>
                                                     <td>
                                                         {row.urgent == true &&
@@ -209,7 +116,7 @@ export default function TableReminders(props) {
                                                     </td>
                                                 </tr>
                                             ))}
-                                        </tbody>
+                                        </tbody> */}
                                     </Table>
                                 </CardBody>
                             </Card>
@@ -223,8 +130,6 @@ export default function TableReminders(props) {
                 }
 
             </div>
-
-        </>
+       </>
     )
 }
-

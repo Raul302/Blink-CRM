@@ -58,8 +58,10 @@ function TableContacts(props) {
     const onSubmit = () => {
 
     }
-    const showModal = (row) => {
-        setTheContact(row);
+    const showModal = (id) => {
+        let contact = {id:id};
+        console.log(contact);
+        setTheContact(contact);
         setmodal(!modal);
     }
     const updateRoute = () => {
@@ -85,6 +87,7 @@ function TableContacts(props) {
     }
     function setData(e){
         setRowData(e);
+        console.log('set',e);
     }
     return (
         <>
@@ -116,7 +119,7 @@ function TableContacts(props) {
                                                 </td>
                                                 <td>{row.id_program} {row.year}</td>
                                                 <td>
-                                                    <a> <RIcons.RiEyeFill onClick={(e) => showModal(row)} style={{ color: '#79B9E1' }} size={18} /></a>
+                                                    <a> <RIcons.RiEyeFill onClick={(e) => showModal(row.id)} style={{ color: '#79B9E1' }} size={18} /></a>
                                                 </td>
                                             </tr>
                                         ))}

@@ -13,6 +13,7 @@ export const newCollege = (data) =>{
             dispatch( starLoadingColleges() );
             dispatch( finishLoading() );
         }).catch(error =>{
+            dispatch( starLoadingColleges() );
             dispatch(setError('Credenciales invalidas'));
             dispatch( finishLoading() );
             });

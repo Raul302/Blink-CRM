@@ -6,7 +6,7 @@ import axios from 'axios';
 import { constaApi } from '../../../constants/constants';
 import Select from 'react-select';
 import NotificationAlert from "react-notification-alert";
-import { activeReminderC,starLoadingRemindersC } from 'actions/contacts/remindersContact';
+import { activeReminderC,starLoadingRemindersC } from 'actions/contacts/remindersContacts/remindersContact';
 import moment from 'moment'
 import '../../../styles/RBCheckboxFormStyles.css';
 import { Checkbox } from '../../collegeComponents/AddOrEditCollege';
@@ -101,7 +101,12 @@ export default function AddEditReminders(props) {
         setNotificationReminder(e.target.value);
     }
     function changeDate(e) {
-        setDateReminder(e.target.value)
+        console.log('NOW',now);
+        if(e.target.value < now){
+            console.log('IF');
+        } else {
+            setDateReminder(e.target.value)
+        }
     }
     function changeTime(e) {
         setTimeReminder(e.target.value);

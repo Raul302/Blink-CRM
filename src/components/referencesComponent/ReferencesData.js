@@ -797,6 +797,7 @@ function ReferencesData(props) {
                                                     onChange={e => handleInputChange(e, i)}
                                                     value={x.mun}
                                                     name="mun"
+                                                    disabled
                                                     className="informGray" type="text" placeholder="Ingrese su Municipio" />
                                                       <InputGroup.Append>
                                                 <InputGroup.Text className="informGray"><TIicons.TiHome /></InputGroup.Text>

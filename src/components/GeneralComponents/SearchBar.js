@@ -16,16 +16,29 @@ import {
   InputGroupAddon,
   Input,
 } from "reactstrap";
+import '../../styles/checkStyle.css';
 import axios from 'axios';
 import { constaApi } from '../../constants/constants';
 export default function SearchBar(props) {
   const [results,setResults] = useState();
+  const [checkbox,setCheckbox] = useState(false);
+  function checked(){
+    setCheckbox(!checkbox);
+  }
   async function search(e){
-    await axios.post(constaApi+'search/contact',{query:e.target.value})
-    .then(function (response) {
-      let {data} = response;
-      props.setData(data);
-    });
+     let query = e.target.value ?? 'Hola';
+     query = query == "" ? 'defaultReactOption' : query;
+      await axios.get(constaApi +'search/contact/'+query
+      +'/'+checkbox, {
+       headers: {
+           "Accept": "application/json"
+       }}).then(function (response) {
+         let {data} = response;
+         props.setData(data);
+       }).catch(error => {
+         let {response} = error;
+         let {data} = response;
+       });
   }
     return (
         <div className="mb-n5">
@@ -40,6 +53,13 @@ export default function SearchBar(props) {
                 </InputGroupAddon>
               </InputGroup>
             </div>
+                  <label class="custom-radio-checkbox">
+    <input class="custom-radio-checkbox__input" 
+    value={checkbox}
+    checked={checkbox} type="checkbox" onClick={(e) => checked(e)} />
+    <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+    <span class="custom-radio-checkbox__text">Ref.</span>
+                 </label>
             </div>
         </div>
     )

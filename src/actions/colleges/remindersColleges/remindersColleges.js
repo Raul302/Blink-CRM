@@ -4,13 +4,13 @@ import { setError,removeError, startLoading, finishLoading } from "../uiNotifica
 import { constaApi } from "../../constants/constants";
 import { loadReminders } from "helpers/contactsHelpers/loadReminders";
 
-export const newReminderC = (data) =>{
+export const newReminderCollege = (data) =>{
     return async (dispatch) => {
         dispatch( startLoading() );
     await axios.post( constaApi +'reminders/save',data)
         .then(function (response) {
             dispatch( removeError());
-            dispatch( starLoadingRemindersC() );
+            dispatch( starLoadingRemindersColleges() );
             dispatch( finishLoading() );
         }).catch(error =>{
             dispatch(setError('Credenciales invalidas'));
@@ -18,13 +18,13 @@ export const newReminderC = (data) =>{
             });
     }
 }
-export const updatedReminderC = (data) =>{
+export const updatedReminderCollege = (data) =>{
     return async (dispatch) => {
         dispatch( startLoading() );
     await axios.post( constaApi +'reminders/updated',data)
         .then(function (response) {
             dispatch( removeError());
-            dispatch( starLoadingRemindersC(data.id_contact) );
+            dispatch( starLoadingRemindersColleges(data.id_contact) );
             dispatch( finishLoading() );
         }).catch(error =>{
             dispatch(setError('Ocurrio un error en updatedReminder'));
@@ -32,13 +32,13 @@ export const updatedReminderC = (data) =>{
             });
     }
 }
-export const deleteReminderC = (id,idContact) =>{
+export const deleteReminderCollege = (id,idContact) =>{
     return async (dispatch) => {
         dispatch( startLoading() );
     await axios.post(constaApi+'reminders/delete',{id:id})
         .then(function (response) {
             dispatch( removeError());
-            dispatch( starLoadingRemindersC(idContact) );
+            dispatch( starLoadingRemindersColleges(idContact) );
             dispatch( finishLoading() );
         }).catch(error =>{
             dispatch(setError('Ocurrio un error'));
@@ -46,24 +46,24 @@ export const deleteReminderC = (id,idContact) =>{
             });
     }
 }
-export const starLoadingRemindersC = (id) => {
+export const starLoadingRemindersColleges = (id) => {
     return async (dispatch) => {
         dispatch( startLoading() );
         const reminders = await loadReminders(id);
-        await dispatch( setRemindersC(reminders) );
+        await dispatch( setRemindersColleges(reminders) );
         dispatch( finishLoading() );
     }
 }
 
-export const activeReminderC = (id,reminderC) => ({
+export const activeReminderColleges = (id,reminderColleges) => ({
     type: types.remindersCActive,
     payload:{
         id,
-        ...reminderC
+        ...reminderColleges
     }
 })
 
-export const setRemindersC = ( remindersC ) => ({
+export const setRemindersColleges = ( remindersColleges ) => ({
     type: types.remindersCLoad,
-    payload:[...remindersC]
+    payload:[...remindersColleges]
 })

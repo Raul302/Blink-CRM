@@ -14,13 +14,13 @@ function References(props) {
     const [loading,setLoading] = useState(true);
     const[token,setToken] = useState();
     useEffect(() => {
+        console.log('propsX',props);
         getToken();
         consultReferences();
     }, [props])
     async function consultReferences() {
          setLoading(true);
-        await axios.post( constaApi+'references/show/refcontact',{
-            id:props.contact.id,
+        await axios.get( constaApi+'referencesbyId/'+props.contact.id,{
             headers: {
                 "Accept": "application/json"
             }

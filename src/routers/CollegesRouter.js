@@ -9,16 +9,16 @@ import Report from '../pages/Report';
 import Contacts from '../pages/Contacts';
 import CollegesView from '../pages/CollegesView';
 import Bio from '../components/collegeComponents/Bio';
-import Contact from '../components/collegeComponents/Contact';
 import Detail from '../components/collegeComponents/detailsComponent/Detail';
 import Docs from '../components/collegeComponents/Docs';
-import Reminds from '../components/collegeComponents/Reminds';
+import Reminds from '../components/collegeComponents/ReminderComponent/Reminds';
 import { Spinner } from 'react-bootstrap';
 import { useParams } from "react-router";
 import axios from 'axios';
 import Nav from "../components/Nav/Nav";
 import SideBar from '../components/SideBar/SideBar';
 import routes from "../routes.js";
+import Staff from '../components/collegeComponents/staffComponents/Staff';
 
 
 
@@ -51,9 +51,9 @@ function CollegesRouter(props) {
                             />
                         )}
                         />
-                        <Route exact path="/colleges/:id/contact"
+                        <Route exact path="/colleges/:id/staff"
                         render={(props) => (
-                                <Contact {...props}
+                                <Staff {...props}
                                     />
                         )}
                     />

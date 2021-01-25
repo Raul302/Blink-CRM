@@ -28,7 +28,10 @@ function Bio() {
     moment.locale('es-mx')
     const alert = useAlert();
     const { id: IDX } = useSelector(state => state.auth);
-    const { active } = useSelector(state => state.colleges);
+    let { active } = useSelector(state => state.colleges);
+    if(!active){
+        active =  JSON.parse(localStorage.getItem('collegeActive'));
+     }
     const notificationAlert = useRef();
     useEffect(() => {
         consult();
@@ -340,7 +343,7 @@ function Bio() {
 
     return (
         <>
-            <div className="content">
+        <div class="mt-n2 content">
             <NotificationAlert ref={notificationAlert} /> 
                 <div style={{borderRadius:'0px'}}class="card">
                     <div class="card-body">
