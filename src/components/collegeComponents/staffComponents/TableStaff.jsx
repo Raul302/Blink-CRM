@@ -4,19 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import {
-    Card,
-    CardHeader,
-    CardBody,
-    Table,
-    Row,
-    Col,
-} from "reactstrap";
 import { Popover, OverlayTrigger, } from 'react-bootstrap';
-import * as FIIcons from "react-icons/fi";
-import * as FAIcons from "react-icons/fa";
-import * as Imicons from "react-icons/im";
-import * as AIcons from "react-icons/ai";
 import Skeleton from 'react-loading-skeleton';
 import {GeneralFormat,SlotActions,SlotName} from './SlotsStaff';
 

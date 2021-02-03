@@ -63,7 +63,6 @@ function WithoutReferences(props) {
 }
 
 async function onSubmit(data) {
-    console.log('props',props);
         data.idContact = props.id;
         await axios.post(constaApi +'references',data)
         .then(function (response) {

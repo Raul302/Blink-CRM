@@ -1,10 +1,8 @@
 import React, {useState} from 'react'
 import { useParams,} from "react-router";
-import { BrowserRouter as Router, Switch, 
-    Route, Link, useLocation  } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-
-
+import { BrowserRouter as Router, Link, useLocation  } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+ 
 export default function ContactsView(props) {
     let { id } = useParams();
     const { pathname } = useLocation();

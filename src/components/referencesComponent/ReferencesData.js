@@ -44,7 +44,6 @@ function ReferencesData(props) {
     const [token, setToken] = useState(props.token ?? JSON.parse(localStorage.getItem('tokenStates')));
 
     useEffect(() => {
-        console.log('props',props);
         typeRef(props.reference);
         consultStates();
         consultCountries();

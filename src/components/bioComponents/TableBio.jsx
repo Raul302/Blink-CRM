@@ -4,7 +4,6 @@ import *  as FIcons from "react-icons/fi";
 import *  as FAIcons from "react-icons/fa";
 import *  as HIcons from "react-icons/hi";
 import *  as Ioicons from "react-icons/io";
-import * as MDIcons from "react-icons/md";
 import * as BIicons from "react-icons/bi";
 import { useDispatch, useSelector } from 'react-redux';
 import { Popover,OverlayTrigger } from "react-bootstrap";

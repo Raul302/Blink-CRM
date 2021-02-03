@@ -13,7 +13,7 @@ import * as MDIcons from "react-icons/md";
 import { Button, Modal, Form, InputGroup, Popover, OverlayTrigger, FormControl } from 'react-bootstrap';
 import swal from 'sweetalert';
 import NotificationAlert from "react-notification-alert";
-import {Table,Row,Col} from "reactstrap";
+import {Row,Col} from "reactstrap";
 import Select from 'react-select';
 import { newBioC } from 'actions/contacts/bioContact/bioContact';
 import { updatedBioC } from 'actions/contacts/bioContact/bioContact';

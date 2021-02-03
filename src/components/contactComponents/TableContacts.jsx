@@ -60,7 +60,6 @@ function TableContacts(props) {
     }
     const showModal = (id) => {
         let contact = {id:id};
-        console.log(contact);
         setTheContact(contact);
         setmodal(!modal);
     }
@@ -87,7 +86,6 @@ function TableContacts(props) {
     }
     function setData(e){
         setRowData(e);
-        console.log('set',e);
     }
     return (
         <>

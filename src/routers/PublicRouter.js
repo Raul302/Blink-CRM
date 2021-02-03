@@ -20,6 +20,6 @@ export const PublicRouter = ({
 
 export default PublicRouter
     PublicRouter.propTypes = {
-        // isAuthenticated: PropTypes.bool.isRequired,
+        // // isAuthenticated: PropTypes.bool.isRequired,
         component: PropTypes.func.isRequired
     }

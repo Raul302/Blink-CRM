@@ -43,7 +43,6 @@ function AddEdit(props) {
             email: email
         };
           resp = await priomise(datax);
-          console.log('resp',resp);
           return resp;
     }
     const priomise = async (datax) => {

@@ -60,7 +60,6 @@ export default function AddEditReminders(props) {
     }
     function present() {
         setNow(moment().format("YYYY-MM-DD HH:mm"));
-        console.log(moment().format('YYYY-MM-DD HH:mm'));
     }
     function setActiveReminder() {
         if (activeReminder.id != null) {
@@ -74,7 +73,6 @@ export default function AddEditReminders(props) {
             })
             let datex = moment(activeReminder.dateReminder).format('YYYY-MM-DD')
             let timex = moment(activeReminder.dateReminder).format('HH:mm');
-            console.log('Timex', timex);
             setTimeReminder(timex);
             setDateReminder(datex);
             setFlago(true);
@@ -101,7 +99,6 @@ export default function AddEditReminders(props) {
         setNotificationReminder(e.target.value);
     }
     function changeDate(e) {
-        console.log('NOW',now);
         if(e.target.value < now){
             console.log('IF');
         } else {

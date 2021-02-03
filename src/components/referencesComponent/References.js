@@ -14,7 +14,6 @@ function References(props) {
     const [loading,setLoading] = useState(true);
     const[token,setToken] = useState();
     useEffect(() => {
-        console.log('propsX',props);
         getToken();
         consultReferences();
     }, [props])

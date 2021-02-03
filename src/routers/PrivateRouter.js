@@ -22,6 +22,6 @@ export const PrivateRouter = ({
 
 export default PrivateRouter
     PrivateRouter.propTypes = {
-        // isAuthenticated: PropTypes.bool.isRequired,
+        // // isAuthenticated: PropTypes.bool.isRequired,
         component: PropTypes.func.isRequired
     }

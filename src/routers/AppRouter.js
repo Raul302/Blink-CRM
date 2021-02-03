@@ -12,16 +12,13 @@ import PublicRouter from './PublicRouter';
 import { useDispatch, useSelector,shallowEqual } from 'react-redux';
 import { login } from '../actions/auth/auth';
 import Loader from '../components/loaderComponents/Loader';
-import { loadColleges } from '../helpers/collegesHelpers/loadColleges';       
 import { setColleges, starLoadingColleges,activeCollege } from '../actions/colleges/colleges';
 export const AppRouter = (props) => {
     const dispatch = useDispatch();
 
     const [ checking, setChecking ] = useState(true);
     const [ isLoggedIn, setIsLoggedIn ] = useState(false);
-
-
-    // const {token:authToken} = useSelector( state => state.auth,shallowEqual);
+    // // const {token:authToken} = useSelector( state => state.auth,shallowEqual);
     const select = useSelector(state => state.auth,shallowEqual);
     // const[flag,setFlag] = useState(false);
     // const [user,setUser] = useState();

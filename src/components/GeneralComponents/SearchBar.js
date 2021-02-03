@@ -9,7 +9,6 @@ import '../../styles/checkStyle.css';
 import axios from 'axios';
 import { constaApi } from '../../constants/constants';
 export default function SearchBar(props) {
-  const [results,setResults] = useState();
   const [checkbox,setCheckbox] = useState(false);
   function checked(){
     setCheckbox(!checkbox);
