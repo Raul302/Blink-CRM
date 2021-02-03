@@ -1,16 +1,24 @@
-import React from 'react'
+import React, {useState} from 'react'
 import AddEditStaff from './AddEditStaff'
 import TableStaff from './TableStaff'
 
-function Staff() {
+
+function Staff(props) {
+    const [flag,setFlag] = useState(false);
+    function click(e){
+        setFlag(true);
+    }
+    function clickFlag(){
+        setFlag(false);
+    }
     return (
         <div className="content">
         <div class="mt-n5 row">
             <div class="col-12">
             <div class="col d-flex justify-content-end">
-            <AddEditStaff/>
+            <AddEditStaff  clickFlag={clickFlag} flag={flag} {...props}/>
             </div>
-            <TableStaff/>
+            <TableStaff click={(e) => click(e)}/>
             </div>
         </div>
         </div>

@@ -6,6 +6,7 @@ import { collegesReducer } from '../reducers/colleges/collegesReducer';
 import { contactsReducer } from '../reducers/contactsReducers/contactsReducer';
 import { uiReducer } from '../reducers/ui/uiReducer';
 import { bioReducer } from 'reducers/contactsReducers/bioReducer';
+import { staffReducer } from 'reducers/colleges/staffsReducer/staffReducer';
 
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 
@@ -16,6 +17,7 @@ const reducers = combineReducers({
     colleges: collegesReducer,
     contacts: contactsReducer,
     bioContact : bioReducer,
+    staff: staffReducer,
 });
 
 export const store = createStore(

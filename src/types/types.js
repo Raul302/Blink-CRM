@@ -41,5 +41,14 @@ export const types = {
     biosCDelete: '[BiosC] Delete BioC',
     biosCleaningn: '[BiosC] BioC cleaning',
 
+    // bio of contact
+    StaffCAddNew: '[Staff] New Staff',
+    StaffCActive: '[Staff] Set Active Staff',
+    StaffCLoad:   '[Staff] Load Staff',
+    StaffUpdated: '[Staff] Updated Staff',
+    StaffCDelete: '[Staff] Delete Staff',
+    StaffCleaningn: '[Staff] Staff cleaning',
+
+
 
 }

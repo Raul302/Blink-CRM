@@ -3,30 +3,31 @@ import {
     BrowserRouter as Router, Switch, Redirect,
     Route,useLocation
 } from 'react-router-dom';
-import Dashboard from '../pages/Dashboard';
-import Users from '../pages/Users';
-import Report from '../pages/Report';
-import Contacts from '../pages/Contacts';
 import CollegesView from '../pages/CollegesView';
 import Bio from '../components/collegeComponents/Bio';
 import Detail from '../components/collegeComponents/detailsComponent/Detail';
 import Docs from '../components/collegeComponents/Docs';
 import Reminds from '../components/collegeComponents/ReminderComponent/Reminds';
-import { Spinner } from 'react-bootstrap';
-import { useParams } from "react-router";
-import axios from 'axios';
 import Nav from "../components/Nav/Nav";
 import SideBar from '../components/SideBar/SideBar';
 import routes from "../routes.js";
+import { useParams } from "react-router";
 import Staff from '../components/collegeComponents/staffComponents/Staff';
+import { useDispatch } from 'react-redux';
+import { startLoadingStaffs } from 'actions/colleges/staff/staff';
 
 
 
 function CollegesRouter(props) {
+    const dispatch = useDispatch();
+    let { id } = useParams();
     const [loading, setLoading] = useState(false);
     const [backgroundColor, setBackGroundColor] = useState(JSON.parse(localStorage.getItem('bgColor')) || 'white');
     const [activeColor, setActiveColor] = useState(JSON.parse(localStorage.getItem('activeColor')) || 'info');
     const mainPanel = useRef();
+    useEffect(() => {
+      dispatch( startLoadingStaffs(id));
+    }, [dispatch])
     return (
         <div className="wrapper">
         <SideBar

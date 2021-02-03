@@ -522,3 +522,50 @@ input[type="checkbox"] {
     transition: all 500ms ease;
     background-color:#108A88; color: white; border-color:#108A88;
   }
+
+  div.ag-theme-balham div.ag-row {
+    font-size: 14px !important;
+    font-family: 'Inter';
+    min-width: 30px;
+    min-height: 30px;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    line-height: normal;
+    font-weight: 500;
+   
+}
+
+div.ag-theme-balham  div.ag-header-cell{
+    font-size: 16px !important;
+    font-weight: 600;
+    color:#182739;
+    font-family: 'Inter' ;
+    
+}
+.ag-theme-balham .ag-cell {
+    border: 1px solid transparent;
+    line-height: 35px !important;
+    padding-left: 11px;
+    padding-right: 11px; }
+.jdbeFR{
+    min-width: 30px;
+    min-height: 30px;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    font-size: 12px;
+    line-height: normal;
+    font-weight: 500;
+    width: 30px;
+    height: 30px;
+    padding: 9px 11px;
+    border-radius: 3px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(66, 82, 110);
+    box-shadow: rgb(255 255 255) 0px 0px 0px 1px;
+}

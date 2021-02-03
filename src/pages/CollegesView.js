@@ -24,7 +24,7 @@ export default function ContactsView(props) {
                'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active Inter600' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl Inter600'} 
                to={"/colleges/"+id+"/detail"}>Detalles</Link>
 
-             <Link  className={[ '/colleges/'+id +'/contact'].includes(pathname) ? 
+             <Link  className={[ '/colleges/'+id +'/staff'].includes(pathname) ? 
                'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active Inter600' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl Inter600'} 
                to={"/colleges/"+id+"/staff"}>Staff</Link>
 
