@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/GlobalStyles.css';
+import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import {
-    Card,
-    CardHeader,
-    CardBody,
-    Table,
     Row,
     Col,
 } from "reactstrap";
-import *  as RIcons from "react-icons/ri";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import NotificationAlert from "react-notification-alert";
@@ -19,15 +17,40 @@ import { useForm } from "react-hook-form";
 import {Button, Modal, Form } from 'react-bootstrap';
 import { constaApi } from '../../constants/constants';
 import SearchBar from 'components/GeneralComponents/SearchBar';
+import { SlotName,SlotOrigin,SlotProgram,SlotReferences } from './SlotContacts';
 
 function TableContacts(props) {
+    const [frameworkComponents,setFramwrokw] = useState({slotName:SlotName,slotOrigin:SlotOrigin,slotProgram:SlotProgram,slotReferences:SlotReferences});
     const [rowData, setRowData] = useState(props.rowData);
     const notificationAlert = useRef();
+    const [gridApi, setGridApi] = useState();
+    const [columnApi, setColumnApi] = useState();
     const [dinamicwidth, setDinamicWidth] = useState('0px');
     const [lateralReference, setLateralReference] = useState(null);
     const [modal, setmodal] = useState(false);
     const { register, handleSubmit, errors, reset,watch } = useForm({ mode: 'onChange' });
     const [theContact,setTheContact] = useState(null);
+    const [columnDefs, setColumns] = useState([
+        { headerName: "Nombre", field: "name",width: 250,
+        cellRenderer:"slotName",
+        cellRendererParams: {
+            clicked: function(data) {
+              alert(`${data} was clicked`);
+            },
+        }
+    },
+        { headerName: "Ciudad", field: "city",width: 200,
+        cellRenderer:'slotOrigin' },
+        { headerName: "Programa", field: "id_program",width: 200,cellRenderer:'slotProgram'},
+        { headerName: "Referencia",width: 200,
+        cellRenderer:"slotReferences",
+        cellRendererParams: {
+            clickx: function(id) {
+                showModal(id);
+            },
+        }},
+        { headerName: "Acciones",width: 220 },
+    ]);
 
     useEffect(() => {
         consultRow();
@@ -41,6 +64,10 @@ function TableContacts(props) {
         }).then(function (response) {
             setRowData(response.data);
         });
+    }
+    const onGridReady = (params) => {
+        setGridApi(params.api);
+        setColumnApi(params.columnApi); 
     }
     const openLateral = (obj) => {
         if (obj != null) {
@@ -91,42 +118,27 @@ function TableContacts(props) {
         <>
             <div className="content">
                 <NotificationAlert ref={notificationAlert} />
-                <Row>
-                    <Col className="mt-3" md="12">
-                        <Card>
-                            <CardHeader>
-                            </CardHeader>
-                            <CardBody>
-                                <SearchBar setData={(e) => setData(e)}/>
-                                <Table responsive>
-                                    <thead className="text-primary">
-                                        <tr>
-                                            <th>Nombre</th>
-                                            <th>Ciudad</th>
-                                            <th>Programa</th>
-                                            <th>Referencia</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {rowData.map(row => (
-                                            <tr key={row.id}>
-                                                <td><RIcons.RiUser3Fill size={32} />
-                                                    <Link to={"contacts/" + (row.id) + "/bio"} > {row.name} {row.father_lastname} {row.mother_lastname} </Link></td>
-                                                <td>
-                                                {(row.city ? row.city : ' ') + (row.state ? ', ' + row.state : '')}
-                                                </td>
-                                                <td>{row.id_program} {row.year}</td>
-                                                <td>
-                                                    <a> <RIcons.RiEyeFill onClick={(e) => showModal(row.id)} style={{ color: '#79B9E1' }} size={18} /></a>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </Table>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
+                <div
+                        className="ag-theme-balham"
+                        style={{ height: '100%', width: '100%' }}
+                        >
+                             <AgGridReact
+                            columnDefs={columnDefs}
+                            rowData={rowData}
+                            pagination={true}
+                            rowSelection="multiple"
+                            defaultColDef={{
+                                width: 150,
+                                sortable: true,
+                                resizable: true,
+                                filter: true,
+                              }}
+                              rowHeight={40}
+                            domLayout="autoHeight"
+                            frameworkComponents={frameworkComponents}
+                            onGridReady={onGridReady}
+                            />
+                    </div>
 
                 {/* editModal */}
                 <Modal

@@ -158,8 +158,12 @@ function ReferencesData(props) {
 
     // handle click event of the Remove button
     const handleRemoveClickEmail = index => {
-        const list = [...inputEmail];
-        list.splice(index, 1);
+        let list = [...inputEmail];
+        if(index === 0){
+            list = [{ email: "", typeEmail: "" }];
+        } else {
+            list.splice(index, 1);
+        }
         setInputEmail(list);
     };
 
@@ -178,8 +182,12 @@ function ReferencesData(props) {
 
     // handle click event of the Remove button
     const handleRemoveClickPhone = index => {
-        const list = [...inputPhone];
-        list.splice(index, 1);
+        let list = [...inputPhone];
+        if(index === 0){
+            list = [{ phone: "", typePhone: "" }];
+        } else {
+            list.splice(index, 1);
+        }
         setInputPhone(list);
     };
 
@@ -226,8 +234,12 @@ function ReferencesData(props) {
     }
     // handle click event of the Remove button
     const handleRemoveClick = index => {
-        const list = [...inputList];
-        list.splice(index, 1);
+        let list = [...inputList];
+        if(index === 0){
+        list = [{ street: "", number: "", cp: "", city: "", state: "",country: "Mexico", typeAddress: "" }];
+        } else {
+            list.splice(index, 1);
+        }
         setInputList(list);
     };
 
@@ -629,8 +641,10 @@ function ReferencesData(props) {
                                         </div>
                                         <div class="row">
                                             <div class="col-4 ">
-                                                {inputEmail.length !== 1 &&
-                                                    <button onClick={() => handleRemoveClickEmail(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
+                                                {inputEmail.length !== 0 &&
+                                                    <button onClick={() => handleRemoveClickEmail(i)} type="button" class="Inter btn btn-danger btn-sm">
+                                                    <FAIcons.FaTrashAlt  style={{ color: 'white' }} size={18} />
+                                                    </button>
                                                 }
                                                 {inputEmail.length - 1 === i && <button onClick={handleAddClickEmail}
                                                     type="submit" style={{ fontSize: '16px' }} class="Inter ml-1 btn btn-success btn-sm">+</button>
@@ -679,8 +693,10 @@ function ReferencesData(props) {
                                         </div>
                                         <div class="row">
                                             <div class="col-4 ">
-                                                {inputPhone.length !== 1 &&
-                                                    <button onClick={() => handleRemoveClickPhone(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
+                                                {inputPhone.length !== 0 &&
+                                                <button onClick={() => handleRemoveClickPhone(i)} type="button" class="Inter btn btn-danger btn-sm">
+                                                <FAIcons.FaTrashAlt  style={{ color: 'white' }} size={18} />
+                                                </button>
                                                 }
                                                 {inputPhone.length - 1 === i && <button onClick={handleAddClickPhone}
                                                     type="submit" style={{ fontSize: '16px' }} class="Inter ml-1 btn btn-success btn-sm">+</button>
@@ -868,7 +884,13 @@ function ReferencesData(props) {
                                     </div>
                                     <Row className="mt-3">
                                 <Col>
-                                <Checkbox  {...flagCountry} changeCheck={changeChecked} index={i} />
+                                <label class="custom-radio-checkbox">
+                                                    <input class="custom-radio-checkbox__input"
+                                                        value={flagCountry}
+                                                        checked={flagCountry.isChecked} type="checkbox" onClick={(e) => changeChecked(e)} />
+                                                    <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+                                                    <span class="custom-radio-checkbox__text">Cambiar país</span>
+                                </label>
                                 </Col>
                                 </Row>
                                 {flagCountry.isChecked &&
@@ -892,8 +914,10 @@ function ReferencesData(props) {
                                 }
                                         <div class="row">
                                             <div class="col-4 ">
-                                                {inputList.length !== 1 &&
-                                                    <button onClick={() => handleRemoveClick(i)} type="button" class="Inter btn btn-outline-dark btn-sm">Remove</button>
+                                                {inputList.length !== 0 &&
+                                                     <button onClick={() => handleRemoveClick(i)} type="button" class="Inter btn btn-danger btn-sm">
+                                                     <FAIcons.FaTrashAlt  style={{ color: 'white' }} size={18} />
+                                                     </button>
                                                 }
                                                 {inputList.length - 1 === i && <button onClick={handleAddClick}
                                                     type="submit" style={{ fontSize: '16px' }} class="Inter ml-1 btn btn-success btn-sm">+</button>

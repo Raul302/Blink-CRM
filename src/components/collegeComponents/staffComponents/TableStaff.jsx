@@ -17,7 +17,7 @@ export default function TableStaff(props) {
     const { loading } = useSelector(state => state.ui);
     const { staffs:rowData } = useSelector(state => state.staff);
     const [columnDefs, setColumns] = useState([
-        { headerName: "Nombre", field: "name",
+        { headerName: "Nombre", field: "name",width: 200,
         cellRenderer:"slotName",
         cellRendererParams: {
             clicked: function(data) {
@@ -25,9 +25,9 @@ export default function TableStaff(props) {
             },
         }
     },
-        { headerName: "Puesto", field: "position",
+        { headerName: "Puesto", field: "position",width: 200,
         cellRenderer:'generalFormat' },
-        { headerName: "Email", field: "email" },
+        { headerName: "Email", field: "email",width: 200 },
         { headerName: "Telefono", field: "phone" },
         { headerName: "Ext.", field: "ext" },
         { headerName: "Acciones",
