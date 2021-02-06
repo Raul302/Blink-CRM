@@ -29,11 +29,13 @@ export default function SearchBar(props) {
        });
   }
     return (
-        <div className="mb-n5">
+        <div className="">
           <div class="row">
             <div class="col-4">
          <InputGroup className="no-border">
-                <Input onChange={(e) => search(e)} placeholder="Search..." />
+                <Input 
+                // onChange={(e) => search(e)} 
+                placeholder="Search..." />
                 <InputGroupAddon addonType="append">
                   <InputGroupText >
                     <i className="nc-icon nc-zoom-split" />

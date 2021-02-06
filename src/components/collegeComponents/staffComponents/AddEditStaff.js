@@ -26,14 +26,14 @@ export default function AddEditStaff(props) {
     const { register, handleSubmit, errors, reset, watch } = useForm({ mode: "onChange" });
     let { active } = useSelector(state => state.colleges);
     if(!active){
-        active =  JSON.parse(localStorage.getItem('staffActive'));
+        active =  JSON.parse(localStorage.getItem('collegeActive'));
      }
     // Methods
     function changeObj(e) {
         const { name, value } = e.target;
         switch (name) {
             case "name":
-                setObj({ ...obj, name: value });
+                setObj({ ...obj,id_college: active.id,name: value });
                 break;
             case "fname":
                 setObj({ ...obj, fname: value });
@@ -57,8 +57,7 @@ export default function AddEditStaff(props) {
                 break;
         }
     }
-    function onSubmit() {
-        setObj({ ...obj, id_college: active.id });
+     function onSubmit() {
         if(props.flag){
             dispatch( updateStaff(obj) );
         } else {
@@ -74,6 +73,8 @@ export default function AddEditStaff(props) {
     }
     function handleClose() {
         setModal(!modal);
+        setObj({ name: "", fname: "", mname: "", position: "", email: "", phone: "", ext: "",id_college:"" });
+
     }
     function notification(type, message) {
         let place = "tc";

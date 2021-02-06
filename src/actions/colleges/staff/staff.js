@@ -25,6 +25,7 @@ export const updateStaff = (data) =>{
         .then(function (response) {
             dispatch( removeError());
             dispatch( startLoadingStaffs(data.id_college) );
+            activeStaff(null,null);
             dispatch( finishLoading() );
         }).catch(error =>{
             dispatch(setError('Ocurrio un error en updatedReminder'));
