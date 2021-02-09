@@ -33,13 +33,13 @@ export const updateStaff = (data) =>{
             });
     }
 }
-export const deleteStaff = (id,idContact) =>{
+export const deleteStaff = (id,id_college) =>{
     return async (dispatch) => {
         dispatch( startLoading() );
     await axios.post(constaApi+'colleges/staff/delete',{id:id})
         .then(function (response) {
             dispatch( removeError());
-            dispatch( startLoadingStaffs(idContact) );
+            dispatch( startLoadingStaffs(id_college) );
             dispatch( finishLoading() );
         }).catch(error =>{
             dispatch(setError('Ocurrio un error'));

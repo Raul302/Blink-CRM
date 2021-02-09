@@ -33,6 +33,8 @@ export const GeneralFormat = function GeneralFormat(props) {
 
 export const SlotActions = function SlotActions(props) {
     const dispatch = useDispatch();
+    const { active:activeCollege } = useSelector(state => state.colleges);
+
     function dropStaff (id){
         swal({
             title: "Estas seguro?",
@@ -43,7 +45,7 @@ export const SlotActions = function SlotActions(props) {
         })
         .then(async (willDelete) => {
             if (willDelete) {
-                dispatch( deleteStaff(id) );
+                dispatch( deleteStaff(id,activeCollege.id) );
             } else {
                 swal("Operacion cancelada!");
 

@@ -20,11 +20,13 @@ const goRouter = function (param){
 function Contacts() {
     const [rowData, setRowData] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const [param,setParam] = useState(null);
     useEffect(() => {
         consultRow();
     }, []);
-
+    const consult = (e) => {
+        e.target.value === "" ?  setParam('keyWordSeccret302') :  setParam(e.target.value);
+    }
     async function consultRow(){
         setLoading(true);
         await axios.get(constaApi+'contacts', {
@@ -45,8 +47,8 @@ function Contacts() {
             <div class="col d-flex justify-content-end">
             <MultipleModals consult={consultRow}/>
             </div>
-            <SearchBar />
-              <TableContacts rowData={rowData} />
+            <SearchBar consult={(e) => consult(e)}/>
+              <TableContacts param={param} rowData={rowData} />
             </div>
         </div>
         </div>

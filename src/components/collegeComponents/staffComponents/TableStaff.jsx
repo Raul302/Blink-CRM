@@ -66,8 +66,8 @@ export default function TableStaff(props) {
                 <NotificationAlert ref={notificationAlert} />
                 {!loading ?
                       <div
-                        className="ag-theme-balham"
-                        style={{ height: '100%', width: '100%' }}
+                      className="ag-theme-alpine"
+                      style={{ height: '100%', width: '100%' }}
                         >
                              <AgGridReact
                             columnDefs={columnDefs}

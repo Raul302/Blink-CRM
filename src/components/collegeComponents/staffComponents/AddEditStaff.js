@@ -7,7 +7,7 @@ import { constaApi } from '../../../constants/constants';
 import Select from 'react-select';
 import NotificationAlert from "react-notification-alert";
 import { activeReminderC, starLoadingRemindersC } from 'actions/contacts/remindersContacts/remindersContact';
-import moment from 'moment'
+import moment from 'moment';
 import { newStaff,updateStaff } from 'actions/colleges/staff/staff';
 
 export default function AddEditStaff(props) {
@@ -16,7 +16,8 @@ export default function AddEditStaff(props) {
             setObj({...activeStaff});
             showModal();
         }
-    }, [props])
+    }, [props]);
+    
     const { active:activeStaff } = useSelector(state => state.staff);
     const dispatch = useDispatch();
     const notificationAlert = useRef();
@@ -69,7 +70,6 @@ export default function AddEditStaff(props) {
     
     function showModal() {
         setModal(!modal);
-
     }
     function handleClose() {
         setModal(!modal);

@@ -3,51 +3,50 @@ import *  as RIcons from "react-icons/ri";
 
 export const SlotName = function SlotName(props) {
     console.log(props);
-    const showName = (id = null,name="",fname="",mname="") => {
-        let n = name ? name : " ";
-        let f = fname ? fname: " ";
+    const showName = (id = null, fullname = "") => {
+        let n = fullname ? fullname.split(" ") : " ";
         let tag = '';
-        n = n ? n.charAt(0) + f.charAt(0) : null;
-        tag =  <>
-        <Link  to={"contacts/" + (id) + "/bio"}>
-        <span class="mt-1 mr-1 sc-caSCKo fXbvQO styles__Company-sc-103gogw-0 jdbeFR">{n}</span>
-        <span>{name} {fname} {mname}</span>
-        </Link>
+        n = n ? n[0].charAt(0) + n[1].charAt(0) : null;
+        tag = <>
+            <Link to={"contacts/" + (id) + "/bio"}>
+                <span class="mt-1 mr-1 sc-caSCKo fXbvQO styles__Company-sc-103gogw-0 jdbeFR">{n}</span>
+                <span>{fullname} </span>
+            </Link>
         </>;
         return tag;
     }
     return (
         <>
-          <span>{showName(props.data.id,props.data.name,props.data.father_lastname,props.data.mother_lastname)}</span>
+            <span>{showName(props.data.id, props.data.fullname)}</span>
         </>
     )
 }
 
 export const SlotOrigin = function SlotOrigin(props) {
-    const {city,state} = props.data;
+    const { city, state } = props.data;
     return (
         <>
-          <span>{city ? city + ',' : ''}{state ? state : ''}</span>
+            <span>{city ? city + ',' : ''}{state ? state : ''}</span>
         </>
     )
 }
 
 export const SlotProgram = function SlotProgram(props) {
-    const {id_program:program,year} = props.data;
+    const { id_program: program, year } = props.data;
     return (
         <>
-          <span>{program} {year}</span>
+            <span>{program} {year}</span>
         </>
     )
 }
 
-export const SlotReferences = function SlotReferences(props){
+export const SlotReferences = function SlotReferences(props) {
     const showModal = (id) => {
         props.clickx(id);
     }
     return (
         <>
-       <a> <RIcons.RiEyeFill onClick={(e) => showModal(props.data.id)} style={{ color: '#79B9E1' }} size={18} /></a>
+            <a> <RIcons.RiEyeFill onClick={(e) => showModal(props.data.id)} style={{ color: '#79B9E1' }} size={18} /></a>
         </>
     )
 }

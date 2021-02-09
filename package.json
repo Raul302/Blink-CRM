@@ -5,6 +5,8 @@
   "dependencies": {
     "@ag-grid-community/all-modules": "^24.1.0",
     "@ag-grid-community/react": "^24.1.1",
+    "@ag-grid-enterprise/filter-tool-panel": "^25.0.1",
+    "@ag-grid-enterprise/menu": "^25.0.1",
     "@atlaskit/tooltip": "^17.1.2",
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.2",
