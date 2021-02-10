@@ -160,6 +160,7 @@ export default function AddEditBio(props) {
                 type: prefixSubject,
             };
             dispatch( updatedBioC(datax) );
+          
         } else {
             let datax = {
                 id_contact: id,
@@ -171,6 +172,9 @@ export default function AddEditBio(props) {
                 type: prefixSubject,
             };
             dispatch( newBioC(datax) );
+            if(props.fromBio()){
+                props.fromBio();
+            }
         }
         handleClose();
         if(props.noBar){

@@ -34,6 +34,7 @@ export default function AddEditReminders(props) {
     const [values, setValues] = useState([{}]);
     const notificationAlert = useRef();
     const [now, setNow] = useState();
+    const [nowTime, setNowTime] = useState();
     const [urgent, setUrgent] = useState(false);
     const [flagImportant,setFlagImportant] = useState({
         value:'Urgente',
@@ -59,7 +60,8 @@ export default function AddEditReminders(props) {
         setFlagImportant({...flagImportant,isChecked:check});
     }
     function present() {
-        setNow(moment().format("YYYY-MM-DD HH:mm"));
+        setNow(moment().format("YYYY-MM-DD"));
+        setNowTime(moment().format("HH:mm"));
     }
     function setActiveReminder() {
         if (activeReminder.id != null) {
@@ -96,17 +98,32 @@ export default function AddEditReminders(props) {
         setNotes(e.target.value);
     }
     function changeTimeReminder(e) {
-        setNotificationReminder(e.target.value);
+        let currendate = moment(dateReminder + " "+ timeReminder).format("YYYY-MM-DD HH:mm");
+        let nowDatecomparison = moment(now + " "+ nowTime).format("YYYY-MM-DD HH:mm");
+        let strings = e.target.value;
+        strings = strings.charAt(1)  + strings.charAt(2);
+        let nowDate = moment(currendate).subtract(parseInt(strings), 'hour').format("YYYY-MM-DD HH:mm");
+        if(nowDate < nowDatecomparison){
+            notification('warning','Cuidado,estas ingresando un rango de valor no permitido');
+            setNotificationReminder("");
+        } else {
+            setNotificationReminder(e.target.value);
+        }
+
     }
     function changeDate(e) {
         if(e.target.value < now){
-            console.log('IF');
+            notification('warning','Cuidado,estas ingresando una Fecha menor a la permitida');
         } else {
             setDateReminder(e.target.value)
         }
     }
     function changeTime(e) {
-        setTimeReminder(e.target.value);
+        if(e.target.value < nowTime){
+            notification('warning','Cuidado,estas ingresando una Hora menor a la permitida');
+        } else {
+            setTimeReminder(e.target.value);
+        }
     }
     const handleChange = (e) => {
         setSelectValue(e);
@@ -124,7 +141,7 @@ export default function AddEditReminders(props) {
                     result.push({
                         id: us.id,
                         value: us.name,
-                        label: us.name,
+                        label:  us.name + ' ' + us.father_lastname + ' ' + us.mother_lastname,
                         email: us.email,
                         fullname: us.name + ' ' + us.father_lastname + ' ' + us.mother_lastname,
                         type: 'user',
@@ -205,6 +222,7 @@ export default function AddEditReminders(props) {
 
     return (
         <div className="mt-n5">
+                            <NotificationAlert ref={notificationAlert} />
             <button onClick={(e) => showModal()} className="btn btn-primary">
                 <span className="Inter"
                     style={{ fontSize: "18px" }}>+</span> Recordatorio</button>
@@ -271,14 +289,14 @@ export default function AddEditReminders(props) {
                                     <Form.Control style={{ height: '30px', width: '120px' }}
                                         onChange={(e) => changeTime(e)}
                                         value={timeReminder} autoComplete="off" name="date"
-                                        className="formGray" min={now} type="time" placeholder="Ingrese su Fecha" />
+                                        className="formGray" min={nowTime} type="time" placeholder="Ingrese su Fecha" />
                                 </Col>
                                 <Col className="col-5">
                                     <Form.Label className="formGray">Notificación</Form.Label>
                                     <Form.Control onChange={(e) => changeTimeReminder(e)}
                                         autoComplete="off"
                                         value={notificationReminder} name="type" as="select" size="sm" custom>
-                                        <option disabled value="" selected></option>
+                                        <option disabled selected value=""></option>
                                         <option value="-0 hour">Misma hora</option>
                                         <option value="-1 hour">1 Hora Antes</option>
                                         <option value="-24 hour">1 Dia Antes</option>
@@ -309,8 +327,14 @@ export default function AddEditReminders(props) {
                                         <option value="general">General</option>
                                     </Form.Control>
                                 </Col>
-                                <Col className="col-6">
-                                <Form.Label className=" mt-4 formGray"><Checkbox  {...flagImportant} changeCheck={changeChecked} index={0} /></Form.Label>
+                                <Col className="mt-4 col-6">
+                                <label class="custom-radio-checkbox">
+                                <input class="custom-radio-checkbox__input" 
+                                value={flagImportant}
+                                checked={flagImportant.isChecked} type="checkbox" onChange={(e) => changeChecked(e)} />
+                                <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+                                <span class="custom-radio-checkbox__text">Urgente</span>
+                                 </label>
                                 </Col>
                             </Row>
 

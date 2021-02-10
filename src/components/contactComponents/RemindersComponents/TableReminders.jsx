@@ -34,6 +34,7 @@ export default function TableReminders(props) {
     const { remindersC: reminders } = useSelector(state => state.remindersC);
     const { loading } = useSelector(state => state.ui);
     const { contact } = props;
+    const [objAux,setAux] = useState(null);
     useEffect(() => {
 
     }, []);
@@ -56,10 +57,11 @@ export default function TableReminders(props) {
                     })
                         .then(async (willDelete) => {
                             if (willDelete) {
-                                await dispatch(deleteReminderC(obj.id, contact.id));
+                                deleteReminder(obj.id);
                             } else {
                                 let obx = { ...obj, emailTo: obj.emails_to, status: 'completado' };
-                                await dispatch(updatedReminderC(obx));
+                                setAux(obx);
+                                // await dispatch(updatedReminderC(obx));
                                 setShow(true);
                             }
                         });
@@ -69,6 +71,10 @@ export default function TableReminders(props) {
                     swal("Operacion cancelada!");
                 }
             });
+    }
+
+    const fromBio = () =>{
+         dispatch(deleteReminderC(objAux.id, contact.id));
     }
     const PopoverComponent = (text) => {
         return (<Popover id="popover-basic">
@@ -136,7 +142,7 @@ export default function TableReminders(props) {
                 <NotificationAlert ref={notificationAlert} />
                 {!loading ?
                     <Row>
-                        <AddEditBio noBar={true} closeAll={closeAll} flagTwo={show} />
+                        <AddEditBio fromBio={fromBio} noBar={true} closeAll={closeAll} flagTwo={show} />
                         {/* <AddEditBio setFlag={setFlag} row={row} flag={show}/> */}
                         <Col className="mt-3" md="12">
                             <Card>

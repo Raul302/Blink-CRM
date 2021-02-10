@@ -107,6 +107,7 @@ function TableContacts(props) {
         setTheContact(contact);
         setmodal(!modal);
     }
+    const clickx = () => {}
     const updateRoute = () => {
         notification('success', 'Actualizado correctamente');
     }
@@ -158,7 +159,16 @@ function TableContacts(props) {
                             headerName="Nombre" field="fullname" width="250" />
                         <AgGridColumn headerName="Ciudad" field="ciy" width="200" cellRenderer="slotOrigin" />
                         <AgGridColumn headerName="Programa" field="id_program" width="200" cellRenderer="slotProgram" />
-                        <AgGridColumn headerName="Referencia" cellRenderer="slotReferences" width="200" />
+                        <AgGridColumn 
+                        // cellRendererParams clickx: function(id){
+
+                        // }
+                        //  cellRendererParams: {
+                        //     clickx: function (id) {
+                        //         showModal(id);
+                        //     },
+                        // }
+                        headerName="Referencia" field="fullnameReference" cellRenderer="slotReferences" width="200" />
                         <AgGridColumn
                             headerName="Acciones"
                             width={220}
