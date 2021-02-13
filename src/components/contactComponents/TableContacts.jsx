@@ -17,8 +17,20 @@ import { useForm } from "react-hook-form";
 import { Button, Modal, Form } from 'react-bootstrap';
 import { constaApi } from '../../constants/constants';
 import SearchBar from 'components/GeneralComponents/SearchBar';
-import { SlotName, SlotOrigin, SlotProgram, SlotReferences } from './SlotContacts';
+import { SlotName, SlotOrigin, SlotProgram } from './SlotContacts';
+import *  as RIcons from "react-icons/ri";
 
+export const SlotReferences = function SlotReferences(props) {
+    const showModalS = (id) => {
+        // props.clickx(id);
+        props.context.showModal(id)
+    }
+    return (
+        <>
+            <a> <RIcons.RiEyeFill onClick={(e) => showModalS(props.data.id)} style={{ color: '#79B9E1' }} size={18} /></a>
+        </>
+    )
+}
 function TableContacts(props) {
     const [frameworkComponents, setFramwrokw] = useState({ slotName: SlotName, slotOrigin: SlotOrigin, slotProgram: SlotProgram, slotReferences: SlotReferences });
     const [rowData, setRowData] = useState(props.rowData);
@@ -141,7 +153,9 @@ function TableContacts(props) {
                     style={{ height: '100%', width: '100%' }}
                 >
                     <AgGridReact
-
+                        context={{
+                            showModal
+                        }}
                         rowData={rowData}
                         rowHeight={40}
                         domLayout="autoHeight"
@@ -160,15 +174,7 @@ function TableContacts(props) {
                         <AgGridColumn headerName="Ciudad" field="ciy" width="200" cellRenderer="slotOrigin" />
                         <AgGridColumn headerName="Programa" field="id_program" width="200" cellRenderer="slotProgram" />
                         <AgGridColumn 
-                        // cellRendererParams clickx: function(id){
-
-                        // }
-                        //  cellRendererParams: {
-                        //     clickx: function (id) {
-                        //         showModal(id);
-                        //     },
-                        // }
-                        headerName="Referencia" field="fullnameReference" cellRenderer="slotReferences" width="200" />
+                        headerName="Referencia" cellRenderer="slotReferences" width="200" />
                         <AgGridColumn
                             headerName="Acciones"
                             width={220}

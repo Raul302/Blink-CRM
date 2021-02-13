@@ -1,14 +1,20 @@
 import { Link } from "react-router-dom";
 import *  as RIcons from "react-icons/ri";
+import { activeContact } from "actions/contacts/contacts/contacts";
+import { useDispatch, useSelector } from 'react-redux';
 
 export const SlotName = function SlotName(props) {
-    console.log(props);
+    const dispatch = useDispatch();
+
     const showName = (id = null, fullname = "") => {
+        const click = () => {
+        dispatch( activeContact(props.data) );
+    }
         let n = fullname ? fullname.split(" ") : " ";
         let tag = '';
         n = n ? n[0].charAt(0) + n[1].charAt(0) : null;
         tag = <>
-            <Link to={"contacts/" + (id) + "/bio"}>
+            <Link  onClick={(e) => click(props.data)} to={"contacts/" + (id) + "/bio"}>
                 <span class="mt-1 mr-1 sc-caSCKo fXbvQO styles__Company-sc-103gogw-0 jdbeFR">{n}</span>
                 <span>{fullname} </span>
             </Link>
@@ -40,16 +46,7 @@ export const SlotProgram = function SlotProgram(props) {
     )
 }
 
-export const SlotReferences = function SlotReferences(props) {
-    const showModal = (id) => {
-        props.clickx(id);
-    }
-    return (
-        <>
-            <a> <RIcons.RiEyeFill onClick={(e) => showModal(props.data.id)} style={{ color: '#79B9E1' }} size={18} /></a>
-        </>
-    )
-}
+
 {/* <tr key={row.id}>
                                                 <td><RIcons.RiUser3Fill size={32} />
                                                     <Link to={"contacts/" + (row.id) + "/bio"} > {row.name} {row.father_lastname} {row.mother_lastname} </Link></td>

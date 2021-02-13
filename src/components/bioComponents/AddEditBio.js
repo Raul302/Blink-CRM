@@ -71,7 +71,7 @@ export default function AddEditBio(props) {
                 let result = user.map(col => {
                     return {
                         value: col.name,
-                        label: col.name,
+                        label: col.name +' ' + col.father_lastname + ' ' +  col.mother_lastname,
                         fullname: col.name +' ' + col.father_lastname + ' ' +  col.mother_lastname,
                         type:'user'
                     };
@@ -80,7 +80,7 @@ export default function AddEditBio(props) {
                     result.push(
                         {
                             value: u.name,
-                            label: u.name,
+                            label:  u.name +' ' + u.father_lastname + ' ' +  u.mother_lastname,
                             fullname: u.name +' ' + u.father_lastname + ' ' +  u.mother_lastname,
                             type:'contactos'
                         }
@@ -92,7 +92,7 @@ export default function AddEditBio(props) {
                         result.push(
                             {
                                 value: u.name,
-                                label: u.name,
+                                label: u.name +' ' + u.father_lastname + ' ' +  u.mother_lastname,
                                 fullname: u.name +' ' + u.father_lastname + ' ' +  u.mother_lastname,
                                 type:'referencias'
                             }
@@ -106,7 +106,7 @@ export default function AddEditBio(props) {
                     } else {
                         result.push({
                             value: us.name,
-                            label: us.name,
+                            label: us.name +' ' + us.father_lastname + ' ' +  us.mother_lastname,
                             fullname: us.name +' ' + us.father_lastname + ' ' +  us.mother_lastname,
                             type:'user'
                         })
@@ -172,14 +172,14 @@ export default function AddEditBio(props) {
                 type: prefixSubject,
             };
             dispatch( newBioC(datax) );
-            if(props.fromBio()){
+            if(props.fromBio){
                 props.fromBio();
             }
         }
-        handleClose();
         if(props.noBar){
             props.closeAll();
         }
+        handleClose();
         consult();
     }
 

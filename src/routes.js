@@ -7,7 +7,8 @@ import Colleges from '../src/pages/Colleges';
 import * as TiIcons from "react-icons/ti";
 import * as MDicons from "react-icons/md";
 import * as FAIcons from "react-icons/fa";
-
+import * as BIicons from  "react-icons/bi";
+import RemindersSection from 'pages/RemindersSection';
 
 var routes = [
   {
@@ -17,6 +18,7 @@ var routes = [
     component: Dashboard,
     layout: "/admin",
   },
+  
   {
     path: "/users",
     name: "Usuarios",
@@ -43,6 +45,13 @@ var routes = [
     name: "Colegios",
     icon: <MDicons.MdSchool/>,
     component: Colleges,
+    layout: "/admin",
+  },
+  {
+    path: "/SectionReminders",
+    name: "Recordatorios",
+    icon: <BIicons.BiTime/>,
+    component: RemindersSection,
     layout: "/admin",
   },
  

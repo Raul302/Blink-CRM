@@ -15,6 +15,7 @@ import { useParams } from "react-router";
 import Staff from '../components/collegeComponents/staffComponents/Staff';
 import { useDispatch } from 'react-redux';
 import { startLoadingStaffs } from 'actions/colleges/staff/staff';
+import { starLoadingRemindersColleges } from 'actions/colleges/remindersColleges/remindersColleges';
 
 
 
@@ -27,6 +28,7 @@ function CollegesRouter(props) {
     const mainPanel = useRef();
     useEffect(() => {
       dispatch( startLoadingStaffs(id));
+      dispatch( starLoadingRemindersColleges (id));
     }, [dispatch])
     return (
         <div className="wrapper">

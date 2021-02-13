@@ -33,6 +33,13 @@ export const types = {
     remindersCDelete: '[RemindersC] Delete ReminderC',
     remindersCleaningn: '[RemindersC] ReminderC cleaning',
     
+    // Reminders of contact
+    remindersCollAddNew: '[RemindersColl] New ReminderColl',
+    remindersCollActive: '[RemindersColl] Set Active ReminderColl',
+    remindersCollLoad:   '[RemindersColl] Load ReminderColl',
+    remindersCollUpdated: '[RemindersColl] Updated ReminderColl',
+    remindersCollDelete: '[RemindersColl] Delete ReminderColl',
+    remindersCollleaningn: '[RemindersColl] ReminderColl cleaning',
     // bio of contact
     biosCAddNew: '[BiosC] New BioC',
     biosCActive: '[BiosC] Set Active BioC',
@@ -48,6 +55,14 @@ export const types = {
     StaffUpdated: '[Staff] Updated Staff',
     StaffCDelete: '[Staff] Delete Staff',
     StaffCleaningn: '[Staff] Staff cleaning',
+
+    // contacts
+    ContactCAddNew: '[Contact] New Contact',
+    ContactCActive: '[Contact] Set Active Contact',
+    ContactCLoad:   '[Contact] Load Contact',
+    ContactUpdated: '[Contact] Updated Contact',
+    ContactCDelete: '[Contact] Delete Contact',
+    ContactCleaningn: '[Contact] Contact cleaning',
 
 
 

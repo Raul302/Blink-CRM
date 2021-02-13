@@ -20,7 +20,11 @@ export default function AddEditReminders(props) {
     const { active: activeReminder } = useSelector(state => state.remindersC);
     const { id: IDX } = useSelector(state => state.auth);
     const [selectValue, setSelectValue] = useState();
-    const { contact } = props;
+    let { active: contact } = useSelector(state => state.contacts);
+    if(!contact){
+        contact = JSON.parse(localStorage.getItem('contactsACtive'));
+
+    }
     const { register, handleSubmit, errors, reset, watch } = useForm({ mode: "onChange" });
     const [modal, setModal] = useState(false);
     const [nameContact, setNameContact] = useState(contact.name + ' ' + (contact.father_lastname ?? '') + ' ' + (contact.mother_lastname ?? ''));
@@ -79,7 +83,10 @@ export default function AddEditReminders(props) {
             setDateReminder(datex);
             setFlago(true);
             setFlagImportant({...flagImportant,isChecked:activeReminder.urgent == "0" ? false : true});
-            setNameContact(activeReminder.contact ?? null);
+            if(activeReminder.contact){
+                console.log('ENTR AQUI');
+                setNameContact(activeReminder.contact);
+            }
             setSubject(activeReminder.subject ?? null);
             setSelectValue(array ?? null);
             setDepartament(activeReminder.departament ?? null);
@@ -182,7 +189,6 @@ export default function AddEditReminders(props) {
         dispatch(activeReminderC(null, null));
         setTimeReminder(null);
         setDateReminder(null);
-        setNameContact(null);
         setSubject(null);
         setSelectValue(null);
         setDepartament(null);
