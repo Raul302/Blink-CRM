@@ -4,6 +4,8 @@ import { setError,removeError, startLoading, finishLoading } from "../../uiNotif
 import { constaApi } from "../../../constants/constants";
 import { loadReminders } from "helpers/contactsHelpers/loadReminders";
 import { loadRemindersColleges } from "helpers/collegesHelpers/reminderHelper/loadRemindersColleges";
+import { loadAllReminders } from "helpers/contactsHelpers/loadReminders";
+import { loadAllRemindersColleges } from "helpers/collegesHelpers/reminderHelper/loadRemindersColleges";
 
 export const newReminderCollege = (data) =>{
     return async (dispatch) => {
@@ -33,13 +35,17 @@ export const updatedReminderCollege = (data) =>{
             });
     }
 }
-export const deleteReminderCollege = (id,idCollege) =>{
+export const deleteReminderCollege = (id,idCollege=null) =>{
     return async (dispatch) => {
         dispatch( startLoading() );
     await axios.post(constaApi+'reminders/delete',{id:id})
         .then(function (response) {
             dispatch( removeError());
-            dispatch( starLoadingRemindersColleges(idCollege) );
+            if(idCollege){
+                dispatch( starLoadingRemindersColleges(idCollege) );
+            } else {
+                dispatch( starLoadingAllRemindersColleges() );
+            }
             dispatch( finishLoading() );
         }).catch(error =>{
             dispatch(setError('Ocurrio un error'));
@@ -51,6 +57,15 @@ export const starLoadingRemindersColleges = (id) => {
     return async (dispatch) => {
         dispatch( startLoading() );
         const reminders = await loadRemindersColleges(id);
+        await dispatch( setRemindersColleges(reminders) );
+        dispatch( finishLoading() );
+    }
+}
+
+export const starLoadingAllRemindersColleges = () => {
+    return async (dispatch) => {
+        dispatch( startLoading() );
+        const reminders = await loadAllRemindersColleges();
         await dispatch( setRemindersColleges(reminders) );
         dispatch( finishLoading() );
     }

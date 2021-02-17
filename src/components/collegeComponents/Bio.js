@@ -34,8 +34,6 @@ export const slotType = function SlotName(props) {
     }
     const showSubject = (type = '',subject) => {
         let tag = '';
-        console.log('type',type);
-        console.log('type',subject);
         if(!type || type === '' || type === null){
             tag = <span class="Inter600B">
             {subject}</span>
@@ -265,16 +263,16 @@ function Bio(props) {
                         })
                     }
                 });
-                contacts.map(c => {
-                    result.push(
-                        {
-                            value: c.name,
-                            label: c.name +' ' + c.father_lastname + ' ' +  c.mother_lastname,
-                            fullname: c.name +' ' + c.father_lastname + ' ' +  c.mother_lastname,
-                            type:'contactos'
-                        }
-                    )
-                })
+                // contacts.map(c => {
+                //     result.push(
+                //         {
+                //             value: c.name,
+                //             label: c.name +' ' + c.father_lastname + ' ' +  c.mother_lastname,
+                //             fullname: c.name +' ' + c.father_lastname + ' ' +  c.mother_lastname,
+                //             type:'contactos'
+                //         }
+                //     )
+                // })
                 setValues(result);
                 
             });

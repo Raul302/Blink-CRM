@@ -12,14 +12,16 @@ import '../../../styles/RBCheckboxFormStyles.css';
 import { Checkbox } from '../../collegeComponents/AddOrEditCollege';
 import { starLoadingRemindersColleges } from 'actions/colleges/remindersColleges/remindersColleges';
 import { activeReminderColleges } from 'actions/colleges/remindersColleges/remindersColleges';
+import { starLoadingAllRemindersColleges } from 'actions/colleges/remindersColleges/remindersColleges';
 
 
 export default function AddEditReminders(props) {
-
     // variables
     const dispatch = useDispatch();
+    const [selectCollege,setSelectCollege] = useState();
+    const [colleges,setColleges] = useState();
     const [flagEdit, setFlago] = useState(false);
-    const { active: activeReminder } = useSelector(state => state.remindersC);
+    const { active: activeReminder } = useSelector(state => state.remindersColleges);
     const { id: IDX } = useSelector(state => state.auth);
     const [selectValue, setSelectValue] = useState();
     let { active: college } = useSelector(state => state.colleges);
@@ -86,7 +88,6 @@ export default function AddEditReminders(props) {
             setFlago(true);
             setFlagImportant({...flagImportant,isChecked:activeReminder.urgent == "0" ? false : true});
             if(activeReminder.contact){
-                console.log('ENTR AQUI');
                 setnameCollege(activeReminder.contact);
             }
             setSubject(activeReminder.subject ?? null);
@@ -143,9 +144,10 @@ export default function AddEditReminders(props) {
             idx: IDX
         };
         let result = [];
+        let collegesResult = [];
         await axios.post(constaApi + 'defaultSelectBio', data)
             .then(function (response) {
-                let { users } = response.data;
+                let { users,colleges:collegesx } = response.data;
                 users.forEach(us => {
                     result.push({
                         id: us.id,
@@ -156,6 +158,17 @@ export default function AddEditReminders(props) {
                         type: 'user',
                     })
                 });
+                collegesx.forEach(us => {
+                    collegesResult.push({
+                        id: us.id,
+                        value: us.name,
+                        label:  us.name,
+                        email: us.email,
+                        fullname: us.name,
+                        type: 'user',
+                    })
+                });
+                setColleges(collegesResult);
                 setValues(result);
             });
     }
@@ -167,8 +180,8 @@ export default function AddEditReminders(props) {
         let datex = dateReminder + " " + timeReminder;
         let obj = {
             id: activeReminder ? activeReminder.id : null,
-            id_college: college.id ?? null,
-            college: nameCollege ?? null,
+            id_college: selectCollege ? selectCollege.id : college.id ?? null,
+            college: selectCollege ? selectCollege.name : nameCollege ?? null,
             subject: subject ?? null,
             emailTo: selectValue ?? null,
             dateReminder: datex ?? null,
@@ -183,20 +196,24 @@ export default function AddEditReminders(props) {
             }).catch(error => {
 
             });
+            if(props.openContacts){
+                dispatch( starLoadingAllRemindersColleges() );
+            }
         dispatch( activeReminderColleges(null, null));
         handleClose();
     }
     function handleClose() {
         resetArrays();
-        dispatch(activeReminderC(null, null));
+        dispatch( activeReminderColleges(null, null));
         setTimeReminder(null);
         setDateReminder(null);
         setSubject(null);
         setSelectValue(null);
+        setSelectCollege(null);
         setDepartament(null);
         setNotes(null);
         setNotificationReminder(null);
-        setModal(!modal);
+        setModal(false);
         setFlago(false);
     }
     const styles = {
@@ -208,6 +225,9 @@ export default function AddEditReminders(props) {
             width: "100%",
         },
     };
+    const handleChangeSelect = (e) =>{
+        setSelectCollege(e);
+    }
     function notification(type, message) {
         let place = "tc";
         var options = {};
@@ -224,7 +244,6 @@ export default function AddEditReminders(props) {
             icon: "nc-icon nc-bell-55",
             autoDismiss: 7,
         }
-
         notificationAlert.current.notificationAlert(options);
     }
 
@@ -249,6 +268,7 @@ export default function AddEditReminders(props) {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="container-fluid">
                             <Row>
+                                {!props.openContacts ?
                                 <Col>
                                     <Form.Label className="formGray">Nombre</Form.Label>
                                     <Form.Control name="name"
@@ -257,6 +277,21 @@ export default function AddEditReminders(props) {
                                         value={nameCollege}
                                     />
                                 </Col>
+                            :
+                            <Col>
+                            <Form.Label className="formGray">Nombre</Form.Label>
+                                <Select
+                                    name="values"
+                                    value={selectCollege}
+                                    onChange={(e) => handleChangeSelect(e)}
+                                    className="basic-multi-select"
+                                    classNamePrefix="select"
+                                    placeholder="Selecciona un Colegio"
+                                    isLoading={true}
+                                    options={colleges}
+                                    />                            
+                            </Col>
+                            }
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-8">

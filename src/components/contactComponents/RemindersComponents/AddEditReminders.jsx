@@ -10,12 +10,15 @@ import { activeReminderC,starLoadingRemindersC } from 'actions/contacts/reminder
 import moment from 'moment'
 import '../../../styles/RBCheckboxFormStyles.css';
 import { Checkbox } from '../../collegeComponents/AddOrEditCollege';
+import { starLoadingAllRemindersC } from 'actions/contacts/remindersContacts/remindersContact';
 
 
 export default function AddEditReminders(props) {
 
     // variables
     const dispatch = useDispatch();
+    const [contacts,setContacts] = useState();
+    const [selectContact,setSelectContact] = useState(null);
     const [flagEdit, setFlago] = useState(false);
     const { active: activeReminder } = useSelector(state => state.remindersC);
     const { id: IDX } = useSelector(state => state.auth);
@@ -84,7 +87,6 @@ export default function AddEditReminders(props) {
             setFlago(true);
             setFlagImportant({...flagImportant,isChecked:activeReminder.urgent == "0" ? false : true});
             if(activeReminder.contact){
-                console.log('ENTR AQUI');
                 setNameContact(activeReminder.contact);
             }
             setSubject(activeReminder.subject ?? null);
@@ -135,15 +137,19 @@ export default function AddEditReminders(props) {
     const handleChange = (e) => {
         setSelectValue(e);
     }
+    const handleChangeSelect = (e) =>{
+        setSelectContact(e);
+    }
     const consult = async () => {
         let data = {
             id: contact.id,
             idx: IDX
         };
         let result = [];
+        let contactsResult = [];
         await axios.post(constaApi + 'defaultSelectBio', data)
             .then(function (response) {
-                let { users } = response.data;
+                let { users,contacts:contactx } = response.data;
                 users.forEach(us => {
                     result.push({
                         id: us.id,
@@ -154,6 +160,17 @@ export default function AddEditReminders(props) {
                         type: 'user',
                     })
                 });
+                contactx.forEach(us => {
+                    contactsResult.push({
+                        id: us.id,
+                        value: us.name,
+                        label:  us.name + ' ' + us.father_lastname + ' ' + us.mother_lastname,
+                        email: us.email,
+                        fullname: us.name + ' ' + us.father_lastname + ' ' + us.mother_lastname,
+                        type: 'user',
+                    })
+                });
+                setContacts(contactsResult);
                 setValues(result);
             });
     }
@@ -165,8 +182,8 @@ export default function AddEditReminders(props) {
         let datex = dateReminder + " " + timeReminder;
         let obj = {
             id: activeReminder ? activeReminder.id : null,
-            id_contact: contact.id ?? null,
-            contact: nameContact ?? null,
+            id_contact: selectContact ? selectContact.id : contact.id ?? null,
+            contact: selectContact ? selectContact.fullname : nameContact ?? null,
             subject: subject ?? null,
             emailTo: selectValue ?? null,
             dateReminder: datex ?? null,
@@ -182,6 +199,9 @@ export default function AddEditReminders(props) {
 
             });
         dispatch(activeReminderC(null, null));
+        if(props.openContacts){
+            dispatch(starLoadingAllRemindersC());
+        }
         handleClose();
     }
     function handleClose() {
@@ -191,10 +211,11 @@ export default function AddEditReminders(props) {
         setDateReminder(null);
         setSubject(null);
         setSelectValue(null);
+        setSelectContact(null);
         setDepartament(null);
         setNotes(null);
         setNotificationReminder(null);
-        setModal(!modal);
+        setModal(false);
         setFlago(false);
     }
     const styles = {
@@ -247,6 +268,8 @@ export default function AddEditReminders(props) {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="container-fluid">
                             <Row>
+                                {!props.openContacts 
+                                ?
                                 <Col>
                                     <Form.Label className="formGray">Nombre</Form.Label>
                                     <Form.Control name="name"
@@ -255,6 +278,21 @@ export default function AddEditReminders(props) {
                                         value={nameContact}
                                     />
                                 </Col>
+                                :
+                                <Col>
+                                    <Form.Label className="formGray">Contacto</Form.Label>
+                                        <Select
+                                            name="values"
+                                            value={selectContact}
+                                            onChange={(e) => handleChangeSelect(e)}
+                                            className="basic-multi-select"
+                                            classNamePrefix="select"
+                                            placeholder="Selecciona un contacto"
+                                            isLoading={true}
+                                            options={contacts}
+                                        />
+                                </Col>
+                                }
                             </Row>
                             <Row className="mt-3">
                                 <Col className="col-8">

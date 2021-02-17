@@ -47,7 +47,6 @@ function TableContacts(props) {
             headerName: "Nombre", field: "name", width: 250,
             cellRenderer: "slotName",
             getQuickFilterText: function (params) {
-                console.log('GETQUICKFILTER');
                 return params.value.name;
             },
             cellRendererParams: {
@@ -81,7 +80,6 @@ function TableContacts(props) {
     }, [props]);
     function quickSearch(value) {
         let objx = gridApi;
-        console.log(value);
         value === 'keyWordSeccret302' ? objx.api.setQuickFilter("") : objx.api.setQuickFilter(value);
         setGridApi(objx);
     }

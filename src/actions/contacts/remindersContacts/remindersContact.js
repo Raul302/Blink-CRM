@@ -3,6 +3,8 @@ import axios from 'axios';
 import { setError,removeError, startLoading, finishLoading } from "../../uiNotificactions/ui";
 import { constaApi } from "../../../constants/constants";
 import { loadReminders } from "helpers/contactsHelpers/loadReminders";
+import { loadAllRemindersColleges } from "helpers/collegesHelpers/reminderHelper/loadRemindersColleges";
+import { loadAllReminders } from "helpers/contactsHelpers/loadReminders";
 
 export const newReminderC = (data) =>{
     return async (dispatch) => {
@@ -32,13 +34,17 @@ export const updatedReminderC = (data) =>{
             });
     }
 }
-export const deleteReminderC = (id,idContact) =>{
+export const deleteReminderC = (id,idContact = null) =>{
     return async (dispatch) => {
         dispatch( startLoading() );
     await axios.post(constaApi+'reminders/delete',{id:id})
         .then(function (response) {
             dispatch( removeError());
-            dispatch( starLoadingRemindersC(idContact) );
+            if(idContact){
+                dispatch( starLoadingRemindersC(idContact) );
+            } else {
+                dispatch(starLoadingAllRemindersC());
+            }
             dispatch( finishLoading() );
         }).catch(error =>{
             dispatch(setError('Ocurrio un error'));
@@ -50,6 +56,15 @@ export const starLoadingRemindersC = (id) => {
     return async (dispatch) => {
         dispatch( startLoading() );
         const reminders = await loadReminders(id);
+        await dispatch( setRemindersC(reminders) );
+        dispatch( finishLoading() );
+    }
+}
+
+export const starLoadingAllRemindersC = () => {
+    return async (dispatch) => {
+        dispatch( startLoading() );
+        const reminders = await loadAllReminders();
         await dispatch( setRemindersC(reminders) );
         dispatch( finishLoading() );
     }

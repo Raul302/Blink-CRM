@@ -55,7 +55,6 @@ import {
 
 // Component SLotActions
 export const SlotActions = function SlotActions(props) {
-  console.log('props',props.data);
   function dropStaff (id){
     props.context.dropCollege(id);
   }

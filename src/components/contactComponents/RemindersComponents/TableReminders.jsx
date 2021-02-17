@@ -106,7 +106,7 @@ export default function TableReminders(props) {
 
         return tag;
     }
-    function editReminder(obj) {
+    function editReminder(obj) { console.log('ekisde');
         dispatch(activeReminderC(obj.id, obj));
     }
     function deleteReminder(id) {
@@ -119,7 +119,11 @@ export default function TableReminders(props) {
         })
             .then(async (willDelete) => {
                 if (willDelete) {
-                    await dispatch(deleteReminderC(id, contact.id));
+                    contact ? 
+                    await dispatch(deleteReminderC(id, contact.id))
+                    :
+                    await dispatch(deleteReminderC(id,null));
+                    ;
                 } else {
                     swal("Operacion cancelada!");
                 }

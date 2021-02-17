@@ -23,6 +23,7 @@ import swal from 'sweetalert';
 import AddEditBio from 'components/bioComponents/AddEditBio';
 import { deleteReminderCollege } from 'actions/colleges/remindersColleges/remindersColleges';
 import Bio from '../Bio';
+import { activeReminderColleges } from 'actions/colleges/remindersColleges/remindersColleges';
 
 
 
@@ -30,6 +31,7 @@ import Bio from '../Bio';
 
 export default function TableReminders(props) {
     // vars
+    let noActions = props.noaction ? true : false;
     const [show, setShow] = useState(false);
     const dispatch = useDispatch();
     const notificationAlert = useRef();
@@ -45,7 +47,6 @@ export default function TableReminders(props) {
     }, []);
     // methods
     const completeReminder = (obj) => {
-        console.log('HERE');
         swal({
             title: "¿Desea marcar como completado este recordatorio?",
             icon: "info",
@@ -63,7 +64,11 @@ export default function TableReminders(props) {
                     })
                         .then(async (willDelete) => {
                             if (willDelete) {
-                                deleteReminderCollege(obj.id,college.id);
+                                college ? 
+                                await dispatch(deleteReminderCollege(obj.id, college.id))
+                                :
+                                await dispatch(deleteReminderCollege(obj.id,null));
+                                ;
                             } else {
                                 let obx = { ...obj, emailTo: obj.emails_to, status: 'completado' };
                                 setAux(obx);
@@ -113,7 +118,7 @@ export default function TableReminders(props) {
         return tag;
     }
     function editReminder(obj) {
-        dispatch(activeReminderC(obj.id, obj));
+        dispatch(activeReminderColleges(obj.id, obj));
     }
     function deleteReminder(id) {
         swal({
