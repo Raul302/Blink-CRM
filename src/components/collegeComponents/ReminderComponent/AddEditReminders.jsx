@@ -87,9 +87,11 @@ export default function AddEditReminders(props) {
             setDateReminder(datex);
             setFlago(true);
             setFlagImportant({...flagImportant,isChecked:activeReminder.urgent == "0" ? false : true});
-            if(activeReminder.contact){
-                setnameCollege(activeReminder.contact);
-            }
+            setnameCollege(activeReminder.college);
+            // if(activeReminder.contact){
+            //     console.log('HERE');
+            //     setnameCollege(activeReminder.contact);
+            // }
             setSubject(activeReminder.subject ?? null);
             setSelectValue(array ?? null);
             setDepartament(activeReminder.departament ?? null);
@@ -140,7 +142,7 @@ export default function AddEditReminders(props) {
     }
     const consult = async () => {
         let data = {
-            id: college ? college.id : null,
+            id: college ? college.id : activeReminder ? activeReminder.id_college : null,
             idx: IDX
         };
         let result = [];
