@@ -41,25 +41,25 @@ export const slotType = function SlotName(props) {
             else {
                 if (type.includes('Llamada')) {
                     tag = <span onClick={(e) => showModal(props.data)} class="Inter600B">
-                        <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" fillRule="nonzero" d="M21 16.92v-.025a.998.998 0 0 0-.85-1.014 13.845 13.845 0 0 1-3.032-.755.998.998 0 0 0-1.05.221l-1.27 1.27a1 1 0 0 1-1.202.162 17 17 0 0 1-6.375-6.375 1 1 0 0 1 .162-1.201l1.266-1.266a1 1 0 0 0 .224-1.057 13.817 13.817 0 0 1-.753-3.02A1.003 1.003 0 0 0 7.11 3h-3a1 1 0 0 0-.996 1.074 18.8 18.8 0 0 0 2.92 8.24 18.511 18.511 0 0 0 5.7 5.697 18.774 18.774 0 0 0 8.176 2.913A1 1 0 0 0 21 19.92v-3zm2 2.996a3 3 0 0 1-3.288 2.998 20.78 20.78 0 0 1-9.058-3.22 20.49 20.49 0 0 1-6.303-6.3A20.805 20.805 0 0 1 1.124 4.27 3 3 0 0 1 4.11 1H7.1a3.002 3.002 0 0 1 3.001 2.59c.117.885.334 1.754.645 2.588a3.002 3.002 0 0 1-.679 3.17l-.717.716a15 15 0 0 0 4.586 4.586l.72-.721a3 3 0 0 1 3.164-.676c.836.312 1.705.529 2.6.647A3 3 0 0 1 23 16.93v2.985z"></path></svg>
-        &nbsp;{subject}</span>;
+                        <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#3B83BD" fillRule="nonzero" d="M21 16.92v-.025a.998.998 0 0 0-.85-1.014 13.845 13.845 0 0 1-3.032-.755.998.998 0 0 0-1.05.221l-1.27 1.27a1 1 0 0 1-1.202.162 17 17 0 0 1-6.375-6.375 1 1 0 0 1 .162-1.201l1.266-1.266a1 1 0 0 0 .224-1.057 13.817 13.817 0 0 1-.753-3.02A1.003 1.003 0 0 0 7.11 3h-3a1 1 0 0 0-.996 1.074 18.8 18.8 0 0 0 2.92 8.24 18.511 18.511 0 0 0 5.7 5.697 18.774 18.774 0 0 0 8.176 2.913A1 1 0 0 0 21 19.92v-3zm2 2.996a3 3 0 0 1-3.288 2.998 20.78 20.78 0 0 1-9.058-3.22 20.49 20.49 0 0 1-6.303-6.3A20.805 20.805 0 0 1 1.124 4.27 3 3 0 0 1 4.11 1H7.1a3.002 3.002 0 0 1 3.001 2.59c.117.885.334 1.754.645 2.588a3.002 3.002 0 0 1-.679 3.17l-.717.716a15 15 0 0 0 4.586 4.586l.72-.721a3 3 0 0 1 3.164-.676c.836.312 1.705.529 2.6.647A3 3 0 0 1 23 16.93v2.985z"></path></svg>
+        &nbsp;&nbsp;{subject}</span>;
                 }
                 else if (type.includes('Whatssap')) {
-                    tag = <span  onClick={(e) => showModal(props.data)} class="Inter600B"><FAIcons.FaWhatsapp />&nbsp; {subject}</span>
+                    tag = <span  onClick={(e) => showModal(props.data)} class="Inter600B"><FAIcons.FaWhatsapp color={"#3B83BD"}/>&nbsp; &nbsp;{subject}</span>
                 }
                 else if (type.includes('Cita')) {
                     tag = <span  onClick={(e) => showModal(props.data)} class="Inter600B">
-                        <FIcons.FiCalendar />&nbsp;
+                        <FIcons.FiCalendar  color={"#3B83BD"}/>&nbsp;&nbsp;
                     {subject}</span>
                 }
                 else if (type.includes('Email')) {
                     tag = <span  onClick={(e) => showModal(props.data)} class=" Inter600B">
-                        <HIcons.HiOutlineMail size={16} />&nbsp;
+                        <HIcons.HiOutlineMail color={"#3B83BD"} size={16} />&nbsp;&nbsp;
                {subject}</span>
             } else {
                   tag = 
                  <span  class=" Inter600B">
-                 <BIicons.BiMessageDetail size={16}/>&nbsp; 
+                 <BIicons.BiMessageDetail color={"#3B83BD"} size={16}/>&nbsp; &nbsp;
                  {subject}</span>
             }
             return tag
@@ -88,13 +88,14 @@ export const SlotParticipants = function SlotParticipants(props) {
     }
     switch (type) {
         case 'user':
-        tag = <span onClick={(e) => showModal(props.data)} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{n}</span>;
+        tag = <span onClick={(e) => showModal(props.data)} class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{n}</span>;
         break;
         case 'contactos':
         tag = <span onClick={(e) => showModal(props.data)} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">{n}</span>;
             break;
         case 'colegio':
-        tag = <Ioicons.IoMdSchool size={32}/>;
+          tag = <span onClick={(e) => showModal(props.data)} class="sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ">{n}</span>;
+
             break;
         default:
             tag = <span onClick={(e) => showModal(props.data)} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ">{n}</span>;
@@ -558,16 +559,15 @@ function Bio(props) {
                 rowHeight={40}
                 domLayout="autoHeight"
                 onGridReady={onGridReady}
-                onFirstDataRendered={onFirstDataRendered}
+                // onFirstDataRendered={onFirstDataRendered}
                 frameworkComponents={frameworkComponents}
                 pagination={true}
                 paginationPageSize={10}
                 paginationNumberFormatter={function (params) {
-                  return "[" + params.value.toLocaleString() + "]";
+                  return params.value.toLocaleString() ;
                 }}
                 rowSelection="multiple"
               >
-                <AgGridColumn headerName="ID" field="id" width="100" />
                 <AgGridColumn
                   cellRenderer="slotType"
                   headerName="Tipo"
@@ -577,7 +577,7 @@ function Bio(props) {
                 <AgGridColumn
                   headerName="Fecha"
                   field="type"
-                  width="200"
+                  width="300"
                   cellRenderer="slotDate"
                 />
                 <AgGridColumn
@@ -588,7 +588,7 @@ function Bio(props) {
                 />
                 <AgGridColumn
                   headerName="Participantes"
-                  width="200"
+                  width="300"
                   cellRenderer="slotParticipants"
                 />
               </AgGridReact>
