@@ -215,7 +215,7 @@ function Bio(props) {
 
     const getBioRecords = async () => {
         let obj = {
-            id: active.id
+            id: active ? active.id : null
         }
         await axios.post( constaApi+'bio/colleges', obj, {
             headers: {
@@ -228,7 +228,7 @@ function Bio(props) {
     }
     const consult = async () => {
         let data = {
-            id: active.id,
+            id: active ? active.id : null,
             idx: IDX
         };
         await axios.post( constaApi+'defaultCollegeBio', data)
@@ -254,6 +254,7 @@ function Bio(props) {
                     )
                 })
                 users.forEach(us => {
+                  if(result[1]){
                     if (us.name === result[1].value) {
                     } else {
                         result.push({
@@ -263,6 +264,7 @@ function Bio(props) {
                             type:'user'
                         })
                     }
+                  }
                 });
                 // contacts.map(c => {
                 //     result.push(

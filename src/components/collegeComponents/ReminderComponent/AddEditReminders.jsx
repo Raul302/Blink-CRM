@@ -31,7 +31,7 @@ export default function AddEditReminders(props) {
     }
     const { register, handleSubmit, errors, reset, watch } = useForm({ mode: "onChange" });
     const [modal, setModal] = useState(false);
-    const [nameCollege, setnameCollege] = useState(college.name);
+    const [nameCollege, setnameCollege] = useState(college ? college.name : null);
     const [subject, setSubject] = useState("");
     const [users, setUsers] = useState([{}]);
     const [timeReminder, setTimeReminder] = useState("");
@@ -140,7 +140,7 @@ export default function AddEditReminders(props) {
     }
     const consult = async () => {
         let data = {
-            id: college.id,
+            id: college ? college.id : null,
             idx: IDX
         };
         let result = [];
