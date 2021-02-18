@@ -121,7 +121,7 @@ function handlevalidFour(e) {
                                         onChange={e => showReference(e)}
                                         className="browser-default custom-select" >
                                         {
-                                            Add.map((address, key) => <option value={key}>{address}</option>)
+                                            Add.map((address, key) => <option key={key} value={key}>{address}</option>)
                                         }
                                     <option disabled value= "" selected ></option>
                                     </select >

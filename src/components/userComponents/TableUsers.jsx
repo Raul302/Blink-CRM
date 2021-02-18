@@ -83,10 +83,14 @@ function TableUsers(props) {
     const [frameworkComponents, setFramwrokw] = useState({ slotName: SlotName, slotActions: SlotActions,slotCreated:SlotCreated});
     const [gridApi, setGridApi] = useState();
     const [columnApi, setColumnApi] = useState();
+    const [state, setState] = useState({});
 
     // ComponenDidMount && ComponentDidUpdate
     useEffect(() => {
         setUser(props.rowData);
+        return () => {
+          setState({}); // This worked for me
+        };
     }, [props]);  
 
 
@@ -196,8 +200,8 @@ function TableUsers(props) {
                         <AgGridColumn
                             cellRenderer="slotName"
                             headerName="Nombre" field="fullname" width="100" />
-                        <AgGridColumn headerName="Email" field="email" width="200" cellRenderer="slotOrigin" />
-                        <AgGridColumn headerName="Tipo" field="type" width="200" cellRenderer="slotProgram" />
+                        <AgGridColumn headerName="Email" field="email" width="200" />
+                        <AgGridColumn headerName="Tipo" field="type" width="200" />
                         <AgGridColumn headerName="Fecha creación" field="created_at" width="200" cellRenderer="slotCreated" />
                         {init.type === 'Administrador' 
                                     ?

@@ -15,6 +15,7 @@ export default function RemindersSection(props) {
     const dispatch = useDispatch();
     const { remindersCollege } = useSelector(state => state.remindersColleges);
     const { remindersC } = useSelector(state => state.remindersC);
+    const [init] = useState(JSON.parse(localStorage.getItem('user')) || { logged: false });
 
     useEffect(() => {
         dispatch(starLoadingAllRemindersC());
@@ -25,27 +26,26 @@ export default function RemindersSection(props) {
         <div class="content">
            <div class="row">
            <div class="col-12">
-            <div class="mt-3 col d-flex justify-content-end">
+            <div class="mt-5 col d-flex justify-content-end">
             <AddEditContacts openContacts={true} {...props}/>
             </div>
+            <h6>Contactos</h6>
             <TableContacts  openModal={open}{...props}/>
             </div>
            </div>
+           {init.type === 'Administrador' ? 
            <div class="row">
            <div class="col-12">
             <div class="mt-5 col d-flex justify-content-end">
             <AddEditReminders  openContacts={true} {...props}/>
             </div>
+            <h6>Colegios</h6>
             <TableColleges openModal={open}{...props}/>
             </div>
-               
-               {/* <div class="col-12">
-               <h6 class="text-center">
-                Recordatorios Colegios
-               </h6>
-            <TableColleges noaction={true} />
-               </div> */}
            </div>
+           :
+           <div></div>
+            }
         </div>
     )
 }

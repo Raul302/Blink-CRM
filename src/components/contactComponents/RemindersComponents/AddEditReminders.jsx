@@ -30,7 +30,7 @@ export default function AddEditReminders(props) {
     }
     const { register, handleSubmit, errors, reset, watch } = useForm({ mode: "onChange" });
     const [modal, setModal] = useState(false);
-    const [nameContact, setNameContact] = useState(contact.name + ' ' + (contact.father_lastname ?? '') + ' ' + (contact.mother_lastname ?? ''));
+    const [nameContact, setNameContact] = useState(contact ? contact.name + ' ' + (contact.father_lastname ?? '') + ' ' + (contact.mother_lastname ?? '') : null);
     const [subject, setSubject] = useState("");
     const [users, setUsers] = useState([{}]);
     const [timeReminder, setTimeReminder] = useState("");
@@ -142,7 +142,7 @@ export default function AddEditReminders(props) {
     }
     const consult = async () => {
         let data = {
-            id: contact.id,
+            id: contact ? contact.id : null,
             idx: IDX
         };
         let result = [];
@@ -268,7 +268,7 @@ export default function AddEditReminders(props) {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="container-fluid">
                             <Row>
-                                {!props.openContacts 
+                                {!props.openContacts || flagEdit
                                 ?
                                 <Col>
                                     <Form.Label className="formGray">Nombre</Form.Label>

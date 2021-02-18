@@ -36,18 +36,22 @@ function ReferencesData(props) {
     const [emailR, setEmailR] = useState();
     const [phoneR, setPhoneR] = useState();
     const [nameRef, setNameRefO] = useState();
-    const [state, setState] = useState();
+    const [stateX, setStateX] = useState();
     const [cities, setCities] = useState([]);
     const [states, setStates] = useState([]);
     const [addrtype, setAddrtype] = useState(["Papa", "Mama", "Hermano/Hermana", "Otro"])
     const Add = addrtype.map(Add => Add)
     const [token, setToken] = useState(props.token ?? JSON.parse(localStorage.getItem('tokenStates')));
+    const [state, setState] = useState({});
 
     useEffect(() => {
         typeRef(props.reference);
         consultStates();
         consultCountries();
         setFilterValues(props.reference);
+        return () => {
+            setState({}); // This worked for me
+          };
     }, [props])
     const [flagCountry,setFlagCoutnry] = useState({
         value:'Pais',
@@ -77,7 +81,7 @@ function ReferencesData(props) {
                 const list = [...inputList];
                 // list[i][name] = value;
                 handleInputChange(e, i);
-                setState(e.target.value);
+                setStateX(e.target.value);
             }
         }
         await axios.get('https://www.universal-tutorial.com/api/cities/' + val, {

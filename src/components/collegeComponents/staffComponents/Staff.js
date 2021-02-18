@@ -8,7 +8,6 @@ function Staff(props) {
     const { active:activeCollege } = useSelector(state => state.colleges);
     const distpatch = useDispatch();
     useEffect(() => {
-        // console.log(activeCollege);
         // distpatch( startLoadingStaffs(activeCollege.id) );
     }, [])
     const [flag,setFlag] = useState(false);

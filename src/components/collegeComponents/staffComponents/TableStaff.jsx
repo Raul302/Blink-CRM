@@ -45,7 +45,7 @@ export default function TableStaff(props) {
     const completeReminder = () => { }
     const editReminder = () => { }
     const deleteReminder = () => { }
-    const clickHandler = (e) => {console.log('click',e);}
+    const clickHandler = (e) => {}
     const onGridReady = (params) => {
         setGridApi(params.api);
         setColumnApi(params.columnApi);

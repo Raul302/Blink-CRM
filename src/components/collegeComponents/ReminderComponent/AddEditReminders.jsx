@@ -268,7 +268,7 @@ export default function AddEditReminders(props) {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="container-fluid">
                             <Row>
-                                {!props.openContacts ?
+                                {!props.openContacts || flagEdit ?
                                 <Col>
                                     <Form.Label className="formGray">Nombre</Form.Label>
                                     <Form.Control name="name"

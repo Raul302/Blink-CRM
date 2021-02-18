@@ -15,7 +15,7 @@ export const Checkbox = function Checkbox(props) {
         props.changeCheck(e);
     }
     return (
-        <>
+        <div key={props.key}>
             <input onClick={(e) => changeCheck(e)}
                 key={props.value}
                 value={props.value}
@@ -24,14 +24,19 @@ export const Checkbox = function Checkbox(props) {
                 id={"checkbox" + props.id + props.value} type="checkbox" />
             <label
                 for={"checkbox" + props.id + props.value}>{props.label}</label>
-        </>
+        </div>
     )
 }
 function AddOrEditCollege() {
     useEffect(() => {
         consultCountries();
         consultStates();
+        return () => {
+            setState({}); // This worked for me
+          };
     }, [])
+    const [state, setState] = useState({});
+
     const [obj, setObj] = useState({ name: "", tipo: "", pais: "", website: "" });
     const notificationAlert = useRef();
     const dispatch = useDispatch();
@@ -122,8 +127,8 @@ function AddOrEditCollege() {
         await axios.get('https://www.universal-tutorial.com/api/getaccesstoken', {
             headers: {
                 "Accept": "application/json",
-                "user-email": "18090130@gmail.com",
-                "api-token": "L6HkSxDySdCLf8NsKYB64pLX5rE4XJVQvG0ROvYXBwYXZ7e0kRlU7gwVgo49xcFX6FI"
+                "user-email": "blink.interlageducativo@gmail.com",
+                "api-token": "RjWHZOlhuvyH-x1rkLxxrp0hlbNSSXnSoa7DcnV-OIvJoZigJDOXcg71IyMIQp5fynU"
             }
         }).then(function (response) {
             x = response.data.auth_token;

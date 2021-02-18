@@ -203,8 +203,8 @@ function TableColleges() {
                         <AgGridColumn
                             cellRenderer="slotName"
                             headerName="Colegio" field="name" width="100" />
-                        <AgGridColumn headerName="Tipo" field="type" width="200" cellRenderer="slotOrigin" />
-                        <AgGridColumn headerName="Pais" field="country" width="200" cellRenderer="slotProgram" />
+                        <AgGridColumn headerName="Tipo" field="type" width="200"  />
+                        <AgGridColumn headerName="Pais" field="country" width="200"  />
                         <AgGridColumn headerName="Prospecciones" width="200" cellRenderer="slotProspecciones" />
                         <AgGridColumn headerName="Aplicaciones" width="200" cellRenderer="slotApplicaciones" />
                         <AgGridColumn

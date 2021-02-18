@@ -32,9 +32,9 @@ export const SlotReferences = function SlotReferences(props) {
     )
 }
 function TableContacts(props) {
-    const [frameworkComponents, setFramwrokw] = useState({ slotName: SlotName, slotOrigin: SlotOrigin, slotProgram: SlotProgram, slotReferences: SlotReferences });
     const [rowData, setRowData] = useState(props.rowData);
     const notificationAlert = useRef();
+    const [frameworkComponents, setFramwrokw] = useState({ slotName: SlotName, slotOrigin: SlotOrigin, slotProgram: SlotProgram, slotReferences: SlotReferences });
     const [gridApi, setGridApi] = useState();
     const [columnApi, setColumnApi] = useState();
     const [dinamicwidth, setDinamicWidth] = useState('0px');

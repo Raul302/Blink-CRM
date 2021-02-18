@@ -106,7 +106,7 @@ export const SlotParticipants = function SlotParticipants(props) {
       <>
       <div>
         {participants.map(part => {
-         return(<span>{showParticipant(part.type,part.name)}</span>)
+         return(<span key={part.id}>{showParticipant(part.type,part.name)}</span>)
         })}
     </div>
       </>
