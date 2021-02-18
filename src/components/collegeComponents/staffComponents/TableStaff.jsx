@@ -20,9 +20,9 @@ export default function TableStaff(props) {
         { headerName: "Nombre", field: "name",width: 200,
         cellRenderer:"slotName",
         cellRendererParams: {
-            clicked: function(data) {
-              alert(`${data} was clicked`);
-            },
+            clickx: function(data) {
+                props.click(data);
+              },
         }
     },
         { headerName: "Puesto", field: "position",width: 200,

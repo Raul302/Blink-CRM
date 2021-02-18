@@ -5,20 +5,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import swal from 'sweetalert';
 
 export const SlotName = function SlotName(props) {
+    const dispatch = useDispatch();
+
+    function editStaff(id,obj){
+        dispatch( activeStaff(id,obj) );
+        props.clickx(true);
+    }
     const showName = (name="",fname="",mname="") => {
         let n = name ? name : " ";
         let f = fname ? fname: " ";
         let tag = '';
         n = n ? n.charAt(0) + f.charAt(0) : null;
         tag =  <>
-        <span class="mt-1 mr-1 sc-caSCKo fXbvQO styles__Company-sc-103gogw-0 jdbeFR">{n}</span>
+        <span  class="mt-1 mr-1 sc-caSCKo fXbvQO styles__Company-sc-103gogw-0 jdbeFR">{n}</span>
         <span>{name} {fname} {mname}</span>
         </>;
         return tag;
     }
     return (
         <>
-          <span>{showName(props.data.name,props.data.fname,props.data.mname)}</span>
+          <span onClick={e => editStaff(props.data.id,props.data)}>{showName(props.data.name,props.data.fname,props.data.mname)}</span>
         </>
     )
 }

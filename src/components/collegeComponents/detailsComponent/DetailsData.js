@@ -8,7 +8,10 @@ import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux';   
 function DetailsData(props) {
     // vars
-    const {active} = useSelector( state => state.colleges);
+    let {active} = useSelector( state => state.colleges);
+    if(!active){
+        active =  JSON.parse(localStorage.getItem('collegeActive'));
+    }
     const [editInfo,setEditInfo] = useState(false);
     const [editFacts,setEditFacts] = useState(false);
     const [editAddress,setEditAddress] = useState(false);

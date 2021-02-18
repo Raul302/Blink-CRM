@@ -15,7 +15,7 @@ function Staff(props) {
         setFlag(true);
     }
     function clickFlag(){
-        setFlag(false);
+         setFlag(false);
     }
     return (
         <div className="content">

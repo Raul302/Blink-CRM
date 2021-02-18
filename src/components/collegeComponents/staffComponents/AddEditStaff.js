@@ -64,7 +64,6 @@ export default function AddEditStaff(props) {
         } else {
             dispatch( newStaff(obj) );
         }
-        props.clickFlag();
         handleClose();
     }
     
@@ -72,6 +71,7 @@ export default function AddEditStaff(props) {
         setModal(!modal);
     }
     function handleClose() {
+        props.clickFlag();
         setModal(!modal);
         setObj({ name: "", fname: "", mname: "", position: "", email: "", phone: "", ext: "",id_college:"" });
 
