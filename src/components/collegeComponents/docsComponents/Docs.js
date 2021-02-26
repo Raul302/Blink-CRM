@@ -4,16 +4,18 @@ import { useForm } from "react-hook-form";
 import axios from 'axios';
 import * as BSicons from "react-icons/bs";
 import { useDispatch, useSelector } from 'react-redux';
-import { finishLoading, startLoading } from '../../actions/uiNotificactions/ui';
+import { finishLoading, startLoading } from '../../../actions/uiNotificactions/ui';
 import Skeleton from 'react-loading-skeleton';
 import { useAlert } from 'react-alert'
-import CollegeCuote from './CollegeCuote';
-import { constaApi , constPathFiles } from '../../constants/constants';
+import CollegeCuote from '../CollegeCuote';
+import { constaApi , constPathFiles } from '../../../constants/constants';
+import TableDocs from './TableDocs';
+import AddEditDocs, { AddEditDocsCuote } from './AddEditDocsCuote';
 
 function Docs() {
     const { loading } = useSelector(state => state.ui);
     useEffect(() => {
-        getFiles();
+        // getFiles();
     }, [])
     const alert = useAlert()
 
@@ -85,13 +87,29 @@ function Docs() {
             })
     }
     return (
-        <div className="content">
-            <Row className="mt-3">
-                <Col>
-                <CollegeCuote/>
-                </Col>
-            </Row>
-        </div>  
+        <div className="content mt-n1">
+        <div class="row">
+            <div class="col-12">
+            <div class="col d-flex justify-content-end">
+            <AddEditDocsCuote />
+            </div>
+            <h6>Cuotas</h6>
+            <TableDocs />
+            </div>
+        </div>
+        </div>
+        // <div className="content">
+        //     <Row className="mt-3">
+        //        <Row>
+        //        <Col>
+        //        <TableDocs />
+        //        </Col>
+        //        </Row>
+        //         <Col>
+        //         {/* <CollegeCuote/> */}
+        //         </Col>
+        //     </Row>
+        // </div>  
     )
 }
 

@@ -275,6 +275,8 @@ function AddOrEditCollege() {
                 show={modal}
                 style={{ marginTop: '50px' }}
                 dialogClassName="modal-90w"
+                onHide={handleClose}
+
             >
                 <Modal.Header style={{ height: '60px' }} closeButton>
                     <Modal.Title style={{ fontFamily: 'Inter', marginTop: '5px', fontWeight: '600', fontSize: '18px' }}>Agregar colegio </Modal.Title>

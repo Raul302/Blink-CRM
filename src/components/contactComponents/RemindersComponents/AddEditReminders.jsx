@@ -387,7 +387,7 @@ export default function AddEditReminders(props) {
 
                             <Col>
                                 <Button
-                                    disabled={!subject ? true : !dateReminder ? true : !timeReminder ? true : !notificationReminder ? true : false}
+                                    disabled={!subject ? true : !dateReminder ? true : !timeReminder ? true : !notificationReminder ? true : !departament ? true : false}
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="primary">{flagEdit ? 'Actualizar' : 'Guardar'}</Button>

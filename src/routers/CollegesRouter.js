@@ -6,7 +6,7 @@ import {
 import CollegesView from '../pages/CollegesView';
 import Bio from '../components/collegeComponents/Bio';
 import Detail from '../components/collegeComponents/detailsComponent/Detail';
-import Docs from '../components/collegeComponents/Docs';
+import Docs from '../components/collegeComponents/docsComponents/Docs';
 import Reminds from '../components/collegeComponents/ReminderComponent/Reminds';
 import Nav from "../components/Nav/Nav";
 import SideBar from '../components/SideBar/SideBar';
