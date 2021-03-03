@@ -257,7 +257,14 @@ export default function TableReminders(props) {
     }
 
     const fromBio = () =>{
-         dispatch(deleteReminderC(objAux.id, contact.id));
+      if(objAux){
+        console.log(objAux);
+        if(objAux.id){
+          dispatch(deleteReminderC(objAux.id, contact ? contact.id : props.activeProspect.id));
+        } else {
+
+        }
+      }
     }
     const PopoverComponent = (text) => {
         return (<Popover id="popover-basic">
@@ -343,7 +350,7 @@ export default function TableReminders(props) {
                 <NotificationAlert ref={notificationAlert} />
                 {!loading ?
                     <Row>
-                        <AddEditBio fromBio={fromBio} noBar={true} closeAll={closeAll} flagTwo={show} />
+                        <AddEditBio activeProspect={props.activeProspect ?? null} fromBio={fromBio} noBar={true} closeAll={closeAll} flagTwo={show} />
                         {/* <AddEditBio setFlag={setFlag} row={row} flag={show}/> */}
                         <div
               className="ag-theme-alpine"

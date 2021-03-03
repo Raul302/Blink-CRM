@@ -26,7 +26,7 @@ import { constaApi } from '../../constants/constants';
 import TableBio from './TableBio';
 import AddEditBio from './AddEditBio';
 
-function Bio() {
+function Bio(props) {
     const [show,setShow] = useState(false);
     const [row,setRow] = useState();
     function method(obj){
@@ -39,7 +39,7 @@ function Bio() {
     return (
         <>
         <div class="mt-n2 content">
-        <AddEditBio noBar={false} setFlag={setFlag} row={row} flag={show}/>
+        <AddEditBio noBar={ props.noBar ? true :false} setFlag={setFlag} row={row} flag={show}/>
         <TableBio bridge={(e) => method(e)}/>
         </div>
         </>

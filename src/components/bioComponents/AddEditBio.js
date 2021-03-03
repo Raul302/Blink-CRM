@@ -169,6 +169,8 @@ export default function AddEditBio(props) {
         text: textBio ? textBio : null,
         id_college: null,
         type: prefixSubject,
+        type_prospection: props.activeProspect  ? 'Prospeccion' : 'General',
+        id_type_prospection : props.activeProspect ? props.activeProspect.id : 0
       };
       dispatch(updatedBioC(datax));
     } else {
@@ -180,6 +182,8 @@ export default function AddEditBio(props) {
         date: dateBio ? datex : null,
         text: textBio ? textBio : null,
         type: prefixSubject,
+        type_prospection: props.activeProspect  ? 'Prospeccion' : 'General',
+        id_type_prospection : props.activeProspect ? props.activeProspect.id : 0
       };
       dispatch(newBioC(datax));
       if (props.fromBio) {

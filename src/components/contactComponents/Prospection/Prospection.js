@@ -19,6 +19,8 @@ import Skeleton from 'react-loading-skeleton';
 import Reminders from '../../contactComponents/RemindersComponents/Reminders';
 import { starLoadingProspectRemindersC } from "actions/contacts/remindersContacts/remindersContact";
 import { setRemindersC } from "actions/contacts/remindersContacts/remindersContact";
+import Bio from "components/bioComponents/Bio";
+import { starLoadingProspect } from "actions/contacts/bioContact/bioContact";
 
 export default function Prospection() {
  const dispatch = useDispatch();
@@ -26,7 +28,7 @@ export default function Prospection() {
   const [load,setLoad] = useState(false);
   const [prospections, SetProspections] = useState(null);
   const [selection, SetSelection] = useState(0);
-  const { active } = useSelector((state) => state.contacts);
+  let { active } = useSelector((state) => state.contacts);
   const [modalProspection, setModalProspection] = useState(false);
   const [program, SetProgram] = useState();
   const [objAux, setObjAux] = useState({ program: "", year: "" });
@@ -69,8 +71,14 @@ export default function Prospection() {
     formState,
     reset: reset,
   } = useForm({});
+  if(!active){
+    active = JSON.parse(localStorage.getItem('ActiveContact'));
+  }
   useEffect(() => {
     consultAllProspections(active.id);
+    if(active){
+      localStorage.setItem('ActiveContact', JSON.stringify(active));
+    }
   }, []);
   const consultAllProspections = async (id) => {
     await axios
@@ -94,6 +102,7 @@ export default function Prospection() {
     setActiveProspect(data);
     SetSelection(data.id);
     dispatch( starLoadingProspectRemindersC(active.id,data.id,'Prospeccion'));
+    dispatch( starLoadingProspect(active.id,data.id));
 
   }
   const changeButton = async(id) => {
@@ -103,6 +112,7 @@ export default function Prospection() {
         SetSelection(id);
         setActiveProspect(response.data);
         dispatch( starLoadingProspectRemindersC(active.id,response.data.id,'Prospeccion'));
+        dispatch( starLoadingProspect(active.id,response.data.id));
         changeLoad(false);
     });
     // SetSelection(id);
@@ -243,6 +253,11 @@ disabled
 <div class="mt-5 row">
 <div class="col-12">
     <Reminders activeProspect={activeProspect} prospection={true}/>
+</div>
+</div>
+<div class="mt-5 row">
+<div class="mr-5 mt-5 col-12">
+    <Bio noBar={true}/>
 </div>
 </div>
 </>

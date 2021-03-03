@@ -10,6 +10,7 @@ import axios from 'axios';
 import { setError,removeError, startLoading, finishLoading } from "../../uiNotificactions/ui";
 import { constaApi } from "constants/constants";
 import { loadBios } from "helpers/contactsHelpers/loadBios";
+import { loadBiosProspect } from "helpers/contactsHelpers/loadBios";
 
 export const newBioC = (data) =>{
     return async (dispatch) => {
@@ -64,6 +65,14 @@ export const starLoadingBioC = (id) => {
     }
 }
 
+export const starLoadingProspect = (id,id_type_prospection) => {
+    return async (dispatch) => {
+        dispatch( startLoading() );
+        const biosC = await loadBiosProspect(id,id_type_prospection);
+        await dispatch( setBiosC(biosC) );
+        dispatch( finishLoading() );
+    }
+}
 export const activeBioC = (id,bioC) => ({
     type: types.biosCActive,
     payload:{
