@@ -545,6 +545,20 @@ div.ag-theme-balham  div.ag-header-cell{
     font-family: 'Inter' ;
     
 }
+.inputinvisible{
+    background-color: white;
+    height: 30px;
+    width: 120px;
+    background-color: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    color: #66615b;
+    line-height: normal;
+    font-size: 14px;
+    transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    box-shadow: none;
+
+}
 .ag-theme-balham .ag-cell {
     border: 1px solid transparent;
     line-height: 35px !important;

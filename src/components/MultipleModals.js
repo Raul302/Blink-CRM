@@ -58,12 +58,13 @@ function MultipleModals(props) {
 
     }, []);
     async function consultCountries(auth) {
-        await axios.get('https://www.universal-tutorial.com/api/countries/', {
-            headers: {
-                Authorization: 'Bearer ' + auth,
-                Accept: "application/json"
-            }
+        await axios.get('https://restcountries.eu/rest/v2/all', {
+            // headers: {
+            //     Authorization: 'Bearer ' + auth,
+            //     Accept: "application/json"
+            // }
         }).then(function (response) {
+            console.log('response',response.data);
             setCountries(response.data);
         });
     }
@@ -72,13 +73,14 @@ function MultipleModals(props) {
     }
     function changeCities(e) {
         let val = e.target.value;
-        axios.get('https://www.universal-tutorial.com/api/cities/' + val, {
-            headers: {
-                Authorization: 'Bearer ' + auth,
-                Accept: "application/json"
-            }
+        axios.get('https://api-sepomex.hckdrk.mx/query/get_municipio_por_estado/' + val, {
+            // headers: {
+            //     Authorization: 'Bearer ' + auth,
+            //     Accept: "application/json"
+            // }
         }).then(function (response) {
-            setCities(response.data);
+            console.log('EX',response.data.response.municipios);
+            setCities(response.data.response.municipios);
         });
     }
     // Api to states
@@ -95,14 +97,14 @@ function MultipleModals(props) {
            x = response.data.auth_token;
            consultCountries(x);
         });
-        axios.get('https://www.universal-tutorial.com/api/states/Mexico', {
-            headers: {
-                Authorization: 'Bearer ' + x,
-                Accept: "application/json"
-            }
+        axios.get('https://api-sepomex.hckdrk.mx/query/get_estados', {
+            // headers: {
+            //     Authorization: 'Bearer ' + x,
+            //     Accept: "application/json"
+            // }
         }).then(function (response) {
-            setStates(response.data);
-            setAth(x);
+            console.log('responsexxx',response.data.response.estado);
+            setStates(response.data.response.estado);
         });
     }
     // Register to save data
@@ -436,8 +438,8 @@ function MultipleModals(props) {
                                     <Form.Control  autoComplete="off" name="country" ref={student} as="select" size="sm" custom>
                                         <option disabled value="" selected></option>
                                         {countries.map(countri => (
-                                                        <option key={countri.country_name} value={countri.country_name}>
-                                                            {countri.country_name}
+                                                        <option key={countri.name} value={countri.name}>
+                                                            {countri.name}
                                                         </option>
                                                     ))}
                                     </Form.Control>
@@ -448,8 +450,8 @@ function MultipleModals(props) {
                                     <Form.Control onChange={e => changeCities(e)} autoComplete="off" name="state" ref={student} as="select" size="sm" custom>
                                         <option disabled value="" selected></option>
                                         {states.map(state => (
-                                            <option key={state.state_name} value={state.state_name}>
-                                                {state.state_name}
+                                            <option key={state} value={state}>
+                                                {state}
                                             </option>
                                         ))}
                                     </Form.Control>
@@ -459,9 +461,9 @@ function MultipleModals(props) {
                                     <Form.Label className="formGray">Ciudad</Form.Label>
                                     <Form.Control autoComplete="off" name="city" ref={student} as="select" size="sm" custom>
                                     <option disabled value="" selected></option>
-                                        {cities.map(state => (
-                                            <option key={state.city_name} value={state.city_name}>
-                                                {state.city_name}
+                                        {cities.map(city => (
+                                            <option key={city} value={city}>
+                                                {city}
                                             </option>
                                         ))}
                                     </Form.Control>

@@ -162,6 +162,31 @@ export const slotApplicaciones = function slotApplicaciones(props){
   )
 }
 
+export const SlotProspection = function SlotProspection(props){
+  const {value} = props;
+  const showProspection = (type) => {
+    let tag = '';
+    switch (type) {
+      case 'General':
+        tag = <span style={{color:'#3B83BD'}}>
+          {type}
+          </span>
+        break;
+      default:
+        tag = <span style={{color:'#cb6d51'}}>
+        {type}
+        </span>
+        break;
+    }
+    return tag;
+  }
+  return (
+  <>
+  <div>{showProspection(value)}</div>
+  </>  
+  )
+}
+
 // -----------end SLOTS
 export default function TableBio(props) {
     const dispatch = useDispatch();
@@ -169,7 +194,7 @@ export default function TableBio(props) {
     const { loading } = useSelector(state => state.ui);
     let { id } = useParams();
     const notificationAlert = useRef();
-    const [frameworkComponents, setFramwrokw] = useState({ slotType: slotType, slotDate: SlotDate,slotParticipants: SlotParticipants,slotDetalle: SlotDetalle});
+    const [frameworkComponents, setFramwrokw] = useState({stotProspection:SlotProspection, slotType: slotType, slotDate: SlotDate,slotParticipants: SlotParticipants,slotDetalle: SlotDetalle});
     const [gridApi, setGridApi] = useState();
     const [columnApi, setColumnApi] = useState();
 
@@ -285,6 +310,12 @@ export default function TableBio(props) {
                   field="text"
                   width="200"
                   cellRenderer="slotDetalle"
+                />
+                 <AgGridColumn
+                  headerName="Tipo"
+                  field="type_prospection"
+                  width="230"
+                  cellRenderer="stotProspection"
                 />
                 <AgGridColumn
                   headerName="Participantes"

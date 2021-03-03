@@ -1,0 +1,351 @@
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { constaApi } from "constants/constants";
+import {
+  Button,
+  Modal,
+  Row,
+  Col,
+  Form,
+  InputGroup,
+  Popover,
+  OverlayTrigger,
+  FormControl,
+} from "react-bootstrap";
+import { useForm } from "react-hook-form";
+import moment from 'moment'
+import Skeleton from 'react-loading-skeleton';
+import Reminders from '../../contactComponents/RemindersComponents/Reminders';
+import { starLoadingProspectRemindersC } from "actions/contacts/remindersContacts/remindersContact";
+import { setRemindersC } from "actions/contacts/remindersContacts/remindersContact";
+
+export default function Prospection() {
+ const dispatch = useDispatch();
+  const [activeProspect,setActiveProspect] = useState({id:"",story:"",status:"Evaluacion",name_prospection:"",last_modification:""});
+  const [load,setLoad] = useState(false);
+  const [prospections, SetProspections] = useState(null);
+  const [selection, SetSelection] = useState(0);
+  const { active } = useSelector((state) => state.contacts);
+  const [modalProspection, setModalProspection] = useState(false);
+  const [program, SetProgram] = useState();
+  const [objAux, setObjAux] = useState({ program: "", year: "" });
+  const programs = [
+    "Boarding Schools",
+    "Año Escolar",
+    "Summer Camps",
+    "Cursos de Idiomas",
+    "Carreras & Maestrias",
+    "Au Pair",
+  ];
+  const status = [
+    "Contacto Previo",
+    "Contacto Formal",
+    "Presentacion",
+    "Aclaración de dudas",
+    "Decision",
+    "Aplicar",
+    "Cancelar",
+  ];
+  const years = [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026,
+    2027,
+    2028,
+    2029,
+    2030,
+  ];
+  const [year, SetYear] = useState();
+  const {
+    register: student,
+    handleSubmit,
+    errors,
+    formState,
+    reset: reset,
+  } = useForm({});
+  useEffect(() => {
+    consultAllProspections(active.id);
+  }, []);
+  const consultAllProspections = async (id) => {
+    await axios
+      .get(constaApi + "getProspection/" + id, {
+        headers: {
+          Accept: "application/json",
+        },
+      })
+      .then(function (response) {
+          if(response.data[0]){
+              firstTime(response.data[0]);
+              SetProspections(response.data);
+          } else {
+            dispatch( starLoadingProspectRemindersC(active.id,0,'Prospeccion'));
+
+          }
+      });
+  };
+  
+  const firstTime = (data) => {
+    setActiveProspect(data);
+    SetSelection(data.id);
+    dispatch( starLoadingProspectRemindersC(active.id,data.id,'Prospeccion'));
+
+  }
+  const changeButton = async(id) => {
+      changeLoad(true);
+    await axios.post(constaApi + "showProspection",{id:id})
+    .then(function (response) {
+        SetSelection(id);
+        setActiveProspect(response.data);
+        dispatch( starLoadingProspectRemindersC(active.id,response.data.id,'Prospeccion'));
+        changeLoad(false);
+    });
+    // SetSelection(id);
+    // let auxxx = prospections.filter(prospect => prospect.id === id );
+    //  setActiveProspect(auxxx);
+    // changeLoad(false);
+
+  };
+  const changeLoad = (val) => {
+      setLoad(val);
+  }
+  const changeModal = () => {
+    setModalProspection(!modalProspection);
+  };
+  const closeModal = () => {
+    setModalProspection(false);
+  };
+  const changeStatus = (e) => {
+    setActiveProspect({...activeProspect,status:e.target.value});
+  }
+  const changeStory = (e) => {
+    setActiveProspect({...activeProspect,story:e.target.value});
+
+  }
+  const saveChanges = () => {
+    changeLoad(true);
+    moment.locale("es-mx");
+    let newObj ={
+        id:activeProspect.id,
+        name_prospection: activeProspect.name_prospection,
+        status: activeProspect.status,
+        story: activeProspect.story,
+        last_modification : moment().format("YYYY-MM-DD HH:mm")          ,
+        id_last_contact : active.id,
+        last_contact : active.name,
+    };
+     axios.post(constaApi + "updatedProspection",newObj)
+    .then(function (response) {
+      consultAllProspections(active.id);
+      changeLoad(false);
+    });
+  }
+  const onSubmit = (data) => {
+    moment.locale("es-mx");
+      let newObj ={
+          name_prospection: objAux.program + objAux.year,
+          status: 'Evaluacion',
+          story: null,
+          last_modification : moment().format("YYYY-MM-DD HH:mm")          ,
+          id_last_contact : active.id,
+          last_contact : active.name,
+      };
+       axios.post(constaApi + "saveProspection",newObj)
+      .then(function (response) {
+        consultAllProspections(active.id);
+        closeModal();
+      });
+  };
+  return (
+    <div class="content">
+      {prospections && [
+        prospections.map((pros) => {
+          return (
+            <button
+              onClick={(e) => changeButton(pros.id)}
+              key={pros.id}
+              class={[
+                selection === pros.id
+                  ? " mt-n5 btn btn-sm btn-danger"
+                  : " mt-n5 btn btn-sm ",
+              ]}
+            >
+              {pros.name_prospection}
+            </button>
+          );
+        }),
+      ]}
+      <button
+        onClick={(e) => changeModal()}
+        type="button"
+        class="mt-n5  Inter ml-1 btn btn-success btn-sm"
+      >
+        +
+      </button>
+      <button
+        onClick={(e) => saveChanges()}
+        type="button"
+        class="mt-n5 float-right Inter btn btn-success btn-sm"
+      >
+        Guardar cambios
+      </button>
+      {load === true ?
+                      <Skeleton width="60rem"  height={30} count={10} />
+
+    :
+    <>
+    <div class="row">
+    <div class="content col-4">
+  <Form.Label className="formGray">Estatus</Form.Label>
+  <Form.Control
+    onChange={(e) => changeStatus(e)}
+    autoComplete="off"
+    name="year"
+    value={activeProspect.status}
+    as="select"
+    size="sm"
+    custom
+    >
+    <option value="Evaluacion" selected>
+      Evaluacion
+    </option>
+    {status.map((st) => (
+        <option key={st} value={st}>
+        {st}
+      </option>
+    ))}
+  </Form.Control>
+</div>
+<div class="content col-4">
+<Form.Label className="formGray">Story</Form.Label>
+<Form.Control
+  onChange={(e) => changeStory(e)}
+  value={activeProspect.story}
+                as="textarea"
+                placeholder="Escriba sus notas..."
+                rows={8}
+              />
+</div>
+<div>
+<Form.Label className="formGray">Ultimo contacto</Form.Label>
+<Form.Control  name="last_modification"
+disabled
+ autoComplete="off" className="formGray" type="text"
+ value={activeProspect.last_modification}
+ />
+</div>
+</div>
+<div class="mt-5 row">
+<div class="col-12">
+    <Reminders activeProspect={activeProspect} prospection={true}/>
+</div>
+</div>
+</>
+ }
+     
+   
+
+      {/* Modal prospeccion */}
+      <Modal
+        show={modalProspection}
+        dialogClassName="modalMax"
+        onHide={closeModal}
+        dialogClassName="modal-90w"
+      >
+        <Modal.Header style={{ height: "60px" }} closeButton>
+          <Modal.Title
+            style={{
+              fontFamily: "Inter",
+              marginTop: "5px",
+              fontWeight: "600",
+              fontSize: "18px",
+            }}
+          >
+            Agregar prospeccion
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ background: "#F4F5F6", border: "0px" }}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="container-fluid">
+              <Row>
+                <Col className="col-4">
+                  <Form.Label className="formGray">Programa</Form.Label>
+                  <Form.Control
+                    onChange={(e) =>
+                      setObjAux({ ...objAux, program: e.target.value })
+                    }
+                    autoComplete="off"
+                    name="program"
+                    ref={student({
+                      required: true,
+                    })}
+                    as="select"
+                    size="sm"
+                    custom
+                  >
+                    <option disabled value="" selected></option>
+                    {programs.map((pro) => (
+                      <option key={pro} value={pro}>
+                        {pro}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Col>
+                <Col className="col-2">
+                  <Form.Label className="formGray">Año</Form.Label>
+                  <Form.Control
+                    onChange={(e) =>
+                      setObjAux({ ...objAux, year: e.target.value })
+                    }
+                    autoComplete="off"
+                    name="year"
+                    ref={student({
+                      required: true,
+                    })}
+                    as="select"
+                    size="sm"
+                    custom
+                  >
+                    <option disabled value="" selected></option>
+                    {years.map((y) => (
+                      <option key={y} value={y}>
+                        {y}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Col>
+              </Row>
+            </div>
+            <Row>
+              <Col>
+                <Button
+                  className="float-right mb-3 mr-2"
+                  type="submit"
+                  onSubmit={handleSubmit(onSubmit)}
+                  variant="primary"
+                >
+                  Guardar
+                </Button>
+                <Button
+                  onClick={closeModal}
+                  style={{ fontFamily: "Inter", fontWeight: "500" }}
+                  className="float-right mb-3 mr-2"
+                  variant="danger"
+                >
+                  Cancelar
+                </Button>
+              </Col>
+            </Row>
+          </form>
+        </Modal.Body>
+      </Modal>
+
+      {/* End Modal prospection*/}
+    </div>
+  );
+}

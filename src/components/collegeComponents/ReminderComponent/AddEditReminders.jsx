@@ -16,6 +16,8 @@ import { starLoadingAllRemindersColleges } from 'actions/colleges/remindersColle
 
 
 export default function AddEditReminders(props) {
+    // Set moment spanish
+     moment.locale("es-mx");
     // variables
     const dispatch = useDispatch();
     const [selectCollege,setSelectCollege] = useState();

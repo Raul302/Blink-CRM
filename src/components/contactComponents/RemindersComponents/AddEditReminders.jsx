@@ -11,10 +11,10 @@ import moment from 'moment'
 import '../../../styles/RBCheckboxFormStyles.css';
 import { Checkbox } from '../../collegeComponents/AddOrEditCollege';
 import { starLoadingAllRemindersC } from 'actions/contacts/remindersContacts/remindersContact';
+import { starLoadingProspectRemindersC } from 'actions/contacts/remindersContacts/remindersContact';
 
 
 export default function AddEditReminders(props) {
-
     // variables
     const dispatch = useDispatch();
     const [contacts,setContacts] = useState();
@@ -191,10 +191,16 @@ export default function AddEditReminders(props) {
             notes: notes ?? null,
             departament: departament ?? null,
             urgent: flagImportant ? flagImportant.isChecked : null,
+            type: props.prospection ? 'Prospeccion' : 'General',
+            id_type: props.activeProspect ? props.activeProspect.id : 0
         };
         await axios.post(constaApi + url, obj)
             .then(function (response) {
-                dispatch(starLoadingRemindersC(contact.id));
+                if(props.prospection){
+                    dispatch( starLoadingProspectRemindersC(contact.id,props.activeProspect.id,'Prospeccion'));
+                }else {
+                    dispatch(starLoadingRemindersC(contact.id));
+                }
             }).catch(error => {
 
             });
@@ -329,6 +335,11 @@ export default function AddEditReminders(props) {
                                         value={dateReminder} autoComplete="off" name="date"
                                         className="formGray" min={now} type="date" placeholder="Ingrese su Fecha" />
                                 </Col>
+                                {/* <DatePicker 
+                                selected={dateReminder}
+                                className="mt-4 inputinvisible"
+                                onChange={date => changeDate(date)}
+                                /> */}
                                 <Col className="mt-4">
                                     <Form.Control style={{ height: '30px', width: '120px' }}
                                         onChange={(e) => changeTime(e)}

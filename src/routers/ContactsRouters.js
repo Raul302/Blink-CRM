@@ -19,6 +19,7 @@ import routes from "../routes.js";
 import Reminders from 'components/contactComponents/RemindersComponents/Reminders';
 import NotificationAlert from "react-notification-alert";
 import { starLoadingRemindersC } from 'actions/contacts/remindersContacts/remindersContact';
+import Prospection from 'components/contactComponents/Prospection/Prospection';
 
 
 function ContactsRouters(props) {
@@ -137,6 +138,15 @@ function ContactsRouters(props) {
                     <Route exact path="/contacts/:id/reminders"
                         render={(props) => (
                                 <Reminders {...props}
+                                updateRoute={update}
+                                contact={contact}
+                                />
+                        )}
+                    />
+
+                    <Route exact path="/contacts/:id/prospection"
+                        render={(props) => (
+                                <Prospection {...props}
                                 updateRoute={update}
                                 contact={contact}
                                 />

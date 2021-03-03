@@ -332,8 +332,8 @@ function Bio(props) {
           });
         });
         users.forEach((us) => {
-          if (result[1]) {
-            if (us.name === result[1].value) {
+          if (result[0]) {
+            if (us.name === result[0].value) {
             } else {
               result.push({
                 value: us.name,
