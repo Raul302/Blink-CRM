@@ -10,6 +10,7 @@ import * as FAIcons from "react-icons/fa";
 import * as HIcons from "react-icons/hi";
 import * as Ioicons from "react-icons/io";
 import * as MDIcons from "react-icons/md";
+import * as VsIcons from "react-icons/vsc";
 import {
   Button,
   Modal,
@@ -28,6 +29,8 @@ import { updatedBioC } from "actions/contacts/bioContact/bioContact";
 import { deleteBioC } from "actions/contacts/bioContact/bioContact";
 
 export default function AddEditBio(props) {
+  let contador = 0;
+  const [values, setValues] = useState();
   const { flag } = props;
   const { id: IDX } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -39,14 +42,14 @@ export default function AddEditBio(props) {
   const notificationAlert = useRef();
   const { username: email } = useSelector((state) => state.auth);
   useEffect(() => {
-    consult();
+      consult();
     if (props.flagTwo) {
       showModalLog("Recordatorio");
     }
     if (props.flag) {
       showModal(props.row);
     }
-  }, [props]);
+  }, []);
   const [prefixSubject, setPrefix] = useState();
   const [twopart, setTwoPart] = useState(false);
   const { handleSubmit } = useForm({});
@@ -125,7 +128,6 @@ export default function AddEditBio(props) {
         setValues(result);
       });
   };
-  const [values, setValues] = useState([{}]);
   const showModal = function showModal(row) {
     setModal(true);
     setParam(row);
@@ -260,6 +262,16 @@ export default function AddEditBio(props) {
           {subject}
         </span>
       );
+    }
+    if(type.includes('Video llamada')){
+      tag = (
+        <span class=" Inter600B">
+      <VsIcons.VscDeviceCameraVideo size={16} />
+          &nbsp;
+          {subject}
+        </span>
+      );
+
     }
     return tag;
   };
@@ -408,6 +420,14 @@ export default function AddEditBio(props) {
                 >
                   <HIcons.HiOutlineMail size={16} />
                   Email
+                </span>
+
+                <span
+                  onClick={() => showModalLog("Video llamada")}
+                  class="ml-4 Inter600B"
+                >
+                  <VsIcons.VscDeviceCameraVideo size={16} />
+                  &nbsp; Videollamada
                 </span>
               </div>
             </div>

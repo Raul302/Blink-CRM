@@ -22,7 +22,7 @@ function Contacts() {
     const [loading, setLoading] = useState(true);
     const [param,setParam] = useState(null);
     useEffect(() => {
-        consultRow();
+        // consultRow();
     }, []);
     const consult = (e) => {
         e.target.value === "" ?  setParam('keyWordSeccret302') :  setParam(e.target.value);

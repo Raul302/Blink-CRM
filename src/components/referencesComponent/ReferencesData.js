@@ -60,14 +60,14 @@ function ReferencesData(props) {
     });
 
     async function consultCountries() {
-        await axios.get('https://www.universal-tutorial.com/api/countries/', {
-            headers: {
-                Authorization: 'Bearer ' + props.token,
-                Accept: "application/json"
-            }
-        }).then(function (response) {
-            setCountries(response.data);
-        });
+        // await axios.get('https://www.universal-tutorial.com/api/countries/', {
+        //     headers: {
+        //         Authorization: 'Bearer ' + props.token,
+        //         Accept: "application/json"
+        //     }
+        // }).then(function (response) {
+        //     setCountries(response.data);
+        // });
     }
     async function changeCities(e, i = 0) {
         let val = e.target.value;
@@ -84,14 +84,14 @@ function ReferencesData(props) {
                 setStateX(e.target.value);
             }
         }
-        await axios.get('https://www.universal-tutorial.com/api/cities/' + val, {
-            headers: {
-                Authorization: 'Bearer ' + props.token,
-                Accept: "application/json"
-            }
-        }).then(function (response) {
-            setCities(response.data);
-        });
+        // await axios.get('https://www.universal-tutorial.com/api/cities/' + val, {
+        //     headers: {
+        //         Authorization: 'Bearer ' + props.token,
+        //         Accept: "application/json"
+        //     }
+        // }).then(function (response) {
+        //     setCities(response.data);
+        // });
     }
     // Methods
 
@@ -114,20 +114,20 @@ function ReferencesData(props) {
     }
     // Api to states
     async function consultStates() {
-        await axios.get('https://www.universal-tutorial.com/api/states/Mexico', {
-            headers: {
-                Authorization: 'Bearer ' + props.token,
-                Accept: "application/json"
-            }
-        }).then(function (response) {
-            setStates(response.data);
-            let obj = {
-                target: {
-                    value: state
-                }
-            };
-            changeCities(obj);
-        });
+        // await axios.get('https://www.universal-tutorial.com/api/states/Mexico', {
+        //     headers: {
+        //         Authorization: 'Bearer ' + props.token,
+        //         Accept: "application/json"
+        //     }
+        // }).then(function (response) {
+        //     setStates(response.data);
+        //     let obj = {
+        //         target: {
+        //             value: state
+        //         }
+        //     };
+        //     changeCities(obj);
+        // });
 
     }
 

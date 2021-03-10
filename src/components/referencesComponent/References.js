@@ -34,16 +34,16 @@ function References(props) {
     }
     async function getToken(){
         //    info : L6HkSxDySdCLf8NsKYB64pLX5rE4XJVQvG0ROvYXBwYXZ7e0kRlU7gwVgo49xcFX6FI
-        await axios.get('https://www.universal-tutorial.com/api/getaccesstoken', {
-            headers: {
-                "Accept": "application/json",
-                "user-email": "18090130@gmail.com",
-                "api-token": "L6HkSxDySdCLf8NsKYB64pLX5rE4XJVQvG0ROvYXBwYXZ7e0kRlU7gwVgo49xcFX6FI"
-            }
-        }).then(function (response) {
-            setToken(response.data.auth_token);
-            localStorage.setItem('tokenStates', JSON.stringify(response.data.auth_token));
-        });
+        // await axios.get('https://www.universal-tutorial.com/api/getaccesstoken', {
+        //     headers: {
+        //         "Accept": "application/json",
+        //         "user-email": "18090130@gmail.com",
+        //         "api-token": "L6HkSxDySdCLf8NsKYB64pLX5rE4XJVQvG0ROvYXBwYXZ7e0kRlU7gwVgo49xcFX6FI"
+        //     }
+        // }).then(function (response) {
+        //     setToken(response.data.auth_token);
+        //     localStorage.setItem('tokenStates', JSON.stringify(response.data.auth_token));
+        // });
     }
     
     return (

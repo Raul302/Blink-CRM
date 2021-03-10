@@ -85,25 +85,24 @@ function MultipleModals(props) {
     }
     // Api to states
     async function consultStates() {
-        //    info : L6HkSxDySdCLf8NsKYB64pLX5rE4XJVQvG0ROvYXBwYXZ7e0kRlU7gwVgo49xcFX6FI
-        let x = null;
-        await axios.get('https://www.universal-tutorial.com/api/getaccesstoken', {
-            headers: {
-                "Accept": "application/json",
-                "user-email": "blink.interlageducativo@gmail.com",
-                "api-token": "RjWHZOlhuvyH-x1rkLxxrp0hlbNSSXnSoa7DcnV-OIvJoZigJDOXcg71IyMIQp5fynU"
-            }
-        }).then(function (response) {
-           x = response.data.auth_token;
-           consultCountries(x);
-        });
+        // //    info : L6HkSxDySdCLf8NsKYB64pLX5rE4XJVQvG0ROvYXBwYXZ7e0kRlU7gwVgo49xcFX6FI
+        // let x = null;
+        // await axios.get('https://www.universal-tutorial.com/api/getaccesstoken', {
+        //     headers: {
+        //         "Accept": "application/json",
+        //         "user-email": "blink.interlageducativo@gmail.com",
+        //         "api-token": "RjWHZOlhuvyH-x1rkLxxrp0hlbNSSXnSoa7DcnV-OIvJoZigJDOXcg71IyMIQp5fynU"
+        //     }
+        // }).then(function (response) {
+        //    x = response.data.auth_token;
+        //    consultCountries(x);
+        // });
         axios.get('https://api-sepomex.hckdrk.mx/query/get_estados', {
             // headers: {
             //     Authorization: 'Bearer ' + x,
             //     Accept: "application/json"
             // }
         }).then(function (response) {
-            console.log('responsexxx',response.data.response.estado);
             setStates(response.data.response.estado);
         });
     }

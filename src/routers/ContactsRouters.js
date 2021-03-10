@@ -38,7 +38,7 @@ function ContactsRouters(props) {
     useEffect(() => {
         consultContact(id);
         if(id){
-            dispatch(starLoadingRemindersC(id))
+            // dispatch(starLoadingRemindersC(id))
         }
     }, [dispatch])
     // if(notificationAlert.current != undefined && name){

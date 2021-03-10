@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { constaApi } from "constants/constants";
+import * as FIIcons from "react-icons/fi";
 import {
   Button,
   Modal,
@@ -14,22 +15,26 @@ import {
   FormControl,
 } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import moment from 'moment'
 import Skeleton from 'react-loading-skeleton';
 import Reminders from '../../contactComponents/RemindersComponents/Reminders';
 import { starLoadingProspectRemindersC } from "actions/contacts/remindersContacts/remindersContact";
 import { setRemindersC } from "actions/contacts/remindersContacts/remindersContact";
 import Bio from "components/bioComponents/Bio";
 import { starLoadingProspect } from "actions/contacts/bioContact/bioContact";
+import Proposals from "components/proposals/Proposals";
+import moment from 'moment';
 
 export default function Prospection() {
  const dispatch = useDispatch();
+  const [aux,setAux] = useState({id:"",story:"",status:"Evaluacion",name_prospection:"",last_modification:""});
   const [activeProspect,setActiveProspect] = useState({id:"",story:"",status:"Evaluacion",name_prospection:"",last_modification:""});
   const [load,setLoad] = useState(false);
   const [prospections, SetProspections] = useState(null);
   const [selection, SetSelection] = useState(0);
   let { active } = useSelector((state) => state.contacts);
   const [modalProspection, setModalProspection] = useState(false);
+  const [modalStatus, setModalStatus] = useState(false);
+  const [modalStory, setModalStory] = useState(false);
   const [program, SetProgram] = useState();
   const [objAux, setObjAux] = useState({ program: "", year: "" });
   const programs = [
@@ -74,13 +79,19 @@ export default function Prospection() {
   if(!active){
     active = JSON.parse(localStorage.getItem('ActiveContact'));
   }
+
   useEffect(() => {
     consultAllProspections(active.id);
     if(active){
       localStorage.setItem('ActiveContact', JSON.stringify(active));
+      if(activeProspect){
+        dispatch( starLoadingProspect(active.id,activeProspect.id));
+      }
     }
   }, []);
+  
   const consultAllProspections = async (id) => {
+    changeLoad(true);
     await axios
       .get(constaApi + "getProspection/" + id, {
         headers: {
@@ -91,10 +102,13 @@ export default function Prospection() {
           if(response.data[0]){
               firstTime(response.data[0]);
               SetProspections(response.data);
+
           } else {
-            dispatch( starLoadingProspectRemindersC(active.id,0,'Prospeccion'));
+            SetProspections(null);
+            // dispatch( starLoadingProspectRemindersC(active.id,0,'Prospeccion'));
 
           }
+          changeLoad(false);
       });
   };
   
@@ -127,8 +141,23 @@ export default function Prospection() {
   const changeModal = () => {
     setModalProspection(!modalProspection);
   };
-  const closeModal = () => {
+  
+  const changeModalStatus = () => {
+    setAux({...activeProspect});
+    setModalStatus(!modalStatus);
+  }
+  
+  const changeModalStory = () => {
+    setAux({...activeProspect});
+    setModalStory(!modalStory);
+  }
+  const closeModal = async () => {
+    setActiveProspect({...aux});
     setModalProspection(false);
+    setModalStory(false);
+    setModalStatus(false);
+
+
   };
   const changeStatus = (e) => {
     setActiveProspect({...activeProspect,status:e.target.value});
@@ -137,8 +166,18 @@ export default function Prospection() {
     setActiveProspect({...activeProspect,story:e.target.value});
 
   }
+  const deleteProspection = () => {
+    changeLoad(true);
+     axios.get(constaApi + "deleteProspection/"+activeProspect.id)
+    .then(function (response) {
+      consultAllProspections(active.id);
+      changeLoad(false);
+    });
+  }
+
   const saveChanges = () => {
     changeLoad(true);
+    console.log('activeProspect',activeProspect);
     moment.locale("es-mx");
     let newObj ={
         id:activeProspect.id,
@@ -152,13 +191,27 @@ export default function Prospection() {
      axios.post(constaApi + "updatedProspection",newObj)
     .then(function (response) {
       consultAllProspections(active.id);
+      closeModal();
       changeLoad(false);
     });
+  }
+  const formatDate = (date) => {
+    moment.locale('es-mx')
+    let datef = '';
+    if(date){
+    datef = moment(date).locale('es-mx').format("DD/MMM/YYYY ");
+    }else {
+      datef = '';
+    }
+    return datef;
+  }
+  const updateReminders = () =>{
+    dispatch( starLoadingProspectRemindersC(active.id,activeProspect.id,'Prospeccion'));
   }
   const onSubmit = (data) => {
     moment.locale("es-mx");
       let newObj ={
-          name_prospection: objAux.program + objAux.year,
+          name_prospection: objAux.program + " " + objAux.year,
           status: 'Evaluacion',
           story: null,
           last_modification : moment().format("YYYY-MM-DD HH:mm")          ,
@@ -181,9 +234,12 @@ export default function Prospection() {
               key={pros.id}
               class={[
                 selection === pros.id
-                  ? " mt-n5 btn btn-sm btn-danger"
-                  : " mt-n5 btn btn-sm ",
+                  ? "mt-n5 mr-1 btn btn-sm btn-info"
+                  : "mt-n5 mr-1 btn btn-sm btn-primary",
               ]}
+              style={{
+                backgroundColor:[selection === pros.id ?  '#0062cc' : '#51cbce']
+              }}
             >
               {pros.name_prospection}
             </button>
@@ -197,13 +253,22 @@ export default function Prospection() {
       >
         +
       </button>
-      <button
+      {/* <button
         onClick={(e) => saveChanges()}
         type="button"
         class="mt-n5 float-right Inter btn btn-success btn-sm"
       >
         Guardar cambios
+      </button> */}
+      {prospections &&
+      <button
+        onClick={(e) => deleteProspection()}
+        type="button"
+        class="mt-n5 float-right Inter btn btn-danger btn-sm"
+      >
+        Eliminar Prospeccion
       </button>
+      }
       {load === true ?
                       <Skeleton width="60rem"  height={30} count={10} />
 
@@ -211,13 +276,21 @@ export default function Prospection() {
     <>
     <div class="row">
     <div class="content col-4">
-  <Form.Label className="formGray">Estatus</Form.Label>
-  <Form.Control
+  <Form.Label className="formGray">Status</Form.Label>
+  <Form.Control  name="status"
+disabled
+ autoComplete="off" className="formGray" type="text"
+ value={activeProspect.status}
+ />
+ <button
+ class=" mt-1 float-right Inter btn-primary  btn-sm"
+ onClick={(e) => changeModalStatus()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
+  {/* <Form.Control
     onChange={(e) => changeStatus(e)}
     autoComplete="off"
     name="year"
     value={activeProspect.status}
-    as="select"
+    // as="select"
     size="sm"
     custom
     >
@@ -229,35 +302,45 @@ export default function Prospection() {
         {st}
       </option>
     ))}
-  </Form.Control>
+  </Form.Control> */}
 </div>
 <div class="content col-4">
 <Form.Label className="formGray">Story</Form.Label>
 <Form.Control
   onChange={(e) => changeStory(e)}
+  disabled
   value={activeProspect.story}
-                as="textarea"
-                placeholder="Escriba sus notas..."
-                rows={8}
-              />
+  as="textarea"
+  placeholder="Escriba sus notas..."
+  rows={8}
+ />
+ <button
+ class=" mt-1 float-right Inter btn-primary  btn-sm"
+ onClick={(e) => changeModalStory()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
 </div>
 <div>
 <Form.Label className="formGray">Ultimo contacto</Form.Label>
 <Form.Control  name="last_modification"
 disabled
  autoComplete="off" className="formGray" type="text"
- value={activeProspect.last_modification}
+ placeholder="Ultima fecha"
+ value={formatDate(activeProspect.last_modification)}
  />
 </div>
 </div>
+<div class="row">
+<div class="mr-5 mb-4 col-12">
+    <Proposals updateReminders={updateReminders} activeProspect={activeProspect}/>
+</div>
+</div>
 <div class="mt-5 row">
-<div class="col-12">
+<div class="mt-5 col-12">
     <Reminders activeProspect={activeProspect} prospection={true}/>
 </div>
 </div>
 <div class="mt-5 row">
 <div class="mr-5 mt-5 col-12">
-    <Bio noBar={true}/>
+    <Bio activeProspect={activeProspect}/>
 </div>
 </div>
 </>
@@ -361,6 +444,143 @@ disabled
       </Modal>
 
       {/* End Modal prospection*/}
+
+
+
+      {/* Modal Status */}
+      <Modal
+        show={modalStatus}
+        dialogClassName="modalMax"
+        onHide={closeModal}
+        dialogClassName="modal-90w"
+      >
+        <Modal.Header style={{ height: "60px" }} closeButton>
+          <Modal.Title
+            style={{
+              fontFamily: "Inter",
+              marginTop: "5px",
+              fontWeight: "600",
+              fontSize: "18px",
+            }}
+          >
+            Modificar Status
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ background: "#F4F5F6", border: "0px" }}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="container-fluid">
+              <Row>
+                <Col className="col-4">
+                <Form.Control
+                onChange={(e) => changeStatus(e)}
+                autoComplete="off"
+                name="year"
+                value={activeProspect.status}
+                as="select"
+                size="sm"
+                custom
+                >
+                <option value="Evaluacion" selected>
+                  Evaluacion
+                </option>
+                {status.map((st) => (
+                    <option key={st} value={st}>
+                    {st}
+                  </option>
+                ))}
+              </Form.Control> 
+                </Col>
+              </Row>
+            </div>
+            <Row>
+              <Col>
+                <Button
+                  className="float-right mb-3 mr-2"
+                  type="button"
+                  onClick={(e) => saveChanges()}
+                  variant="primary"
+                >
+                  Guardar
+                </Button>
+                <Button
+                  onClick={closeModal}
+                  style={{ fontFamily: "Inter", fontWeight: "500" }}
+                  className="float-right mb-3 mr-2"
+                  variant="danger"
+                >
+                  Cancelar
+                </Button>
+              </Col>
+            </Row>
+          </form>
+        </Modal.Body>
+      </Modal>
+
+      {/* End modal Status */}
+
+
+      {/* Modal Status */}
+      <Modal
+        show={modalStory}
+        dialogClassName="modalMax"
+        onHide={closeModal}
+        dialogClassName="modal-90w"
+      >
+        <Modal.Header style={{ height: "60px" }} closeButton>
+          <Modal.Title
+            style={{
+              fontFamily: "Inter",
+              marginTop: "5px",
+              fontWeight: "600",
+              fontSize: "18px",
+            }}
+          >
+            Modificar Story
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ background: "#F4F5F6", border: "0px" }}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="container-fluid">
+              <Row>
+                <Col className="col-8">
+                <Form.Label className="formGray">Story</Form.Label>
+                <Form.Control
+                  onChange={(e) => changeStory(e)}
+                  value={activeProspect.story}
+                  as="textarea"
+                  placeholder="Escriba sus notas..."
+                  rows={12}
+                  cols={12}
+                />
+                </Col>
+              </Row>
+            </div>
+            <Row>
+              <Col>
+                <Button
+                  className="float-right mb-3 mr-2"
+                  type="button"
+                  onClick={(e) => saveChanges()}
+                  variant="primary"
+                >
+                  Guardar
+                </Button>
+                <Button
+                  onClick={closeModal}
+                  style={{ fontFamily: "Inter", fontWeight: "500" }}
+                  className="float-right mb-3 mr-2"
+                  variant="danger"
+                >
+                  Cancelar
+                </Button>
+              </Col>
+            </Row>
+          </form>
+        </Modal.Body>
+      </Modal>
+
+      {/* End modal Story */}
+
     </div>
   );
 }

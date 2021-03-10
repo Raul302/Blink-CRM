@@ -66,10 +66,12 @@ export const starLoadingBioC = (id) => {
 }
 
 export const starLoadingProspect = (id,id_type_prospection) => {
+    console.log('me ejecute');
     return async (dispatch) => {
         dispatch( startLoading() );
+        await dispatch( setBiosC([]) );
         const biosC = await loadBiosProspect(id,id_type_prospection);
-        await dispatch( setBiosC(biosC) );
+         dispatch( setBiosC(biosC) );
         dispatch( finishLoading() );
     }
 }

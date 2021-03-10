@@ -5,6 +5,8 @@ import *  as FAIcons from "react-icons/fa";
 import *  as HIcons from "react-icons/hi";
 import *  as Ioicons from "react-icons/io";
 import * as BIicons from "react-icons/bi";
+import * as VsIcons from "react-icons/vsc";
+
 import { useDispatch, useSelector } from 'react-redux';
 import { Popover,OverlayTrigger } from "react-bootstrap";
 import Skeleton from 'react-loading-skeleton';
@@ -46,7 +48,11 @@ export const slotType = function SlotName(props) {
                     tag = <span  onClick={(e) => showModal(props.data)} class=" Inter600B">
                         <HIcons.HiOutlineMail color={"#3B83BD"} size={16} />&nbsp;&nbsp;
                {subject}</span>
-            } else {
+            } else if(type.includes('Video llamada')) {
+                tag = <span  onClick={(e) => showModal(props.data)} class=" Inter600B">
+                <VsIcons.VscDeviceCameraVideo color={"#3B83BD"} size={16} />&nbsp;&nbsp;
+               {subject}</span>
+            }  else {
                   tag = 
                  <span  class=" Inter600B">
                  <BIicons.BiMessageDetail color={"#3B83BD"} size={16}/>&nbsp; &nbsp;
@@ -199,7 +205,9 @@ export default function TableBio(props) {
     const [columnApi, setColumnApi] = useState();
 
     useEffect(() => {
-     dispatch( starLoadingBioC(id) );
+      if(!props.noBar){
+        dispatch( starLoadingBioC(id) );
+      }
     }, [])
     // Methods
 

@@ -201,7 +201,7 @@ constructed stylesheet
     background-color: rgb(68, 121, 255);
 }
 /* constructed stylesheet */
-input, textarea, button, select {
+ textarea, button, select {
     appearance: none;
     background: none;
     border-color: currentcolor;
@@ -516,6 +516,9 @@ input[type="checkbox"] {
     user-select: none;
   }
   
+  .d-inline-block dx-g-bs4-cursor-pointer {
+      background-color: red !important;
+  }
   
   input[type="checkbox"]:checked + label {
     -webkit-transition: all 500ms ease;
@@ -544,6 +547,15 @@ div.ag-theme-balham  div.ag-header-cell{
     color:#182739;
     font-family: 'Inter' ;
     
+}
+.btn:hover,btn:focus {
+    background-color: '#0062cc'!important;
+}
+.selection{
+background-color: '#0062cc';
+}
+.noselection{
+background-color: '#51cbce';
 }
 .inputinvisible{
     background-color: white;

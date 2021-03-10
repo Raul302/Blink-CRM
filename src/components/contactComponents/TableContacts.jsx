@@ -84,6 +84,7 @@ function TableContacts(props) {
         setGridApi(objx);
     }
     async function consultRow() {
+        console.log('consultRow');
         await axios.get(constaApi + 'contacts', {
             headers: {
                 "Accept": "application/json"

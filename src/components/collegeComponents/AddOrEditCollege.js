@@ -111,37 +111,37 @@ function AddOrEditCollege() {
         if (e) {
             changeObj(e);
         }
-        axios.get('https://www.universal-tutorial.com/api/cities/' + val, {
-            headers: {
-                Authorization: 'Bearer ' + auth,
-                Accept: "application/json"
-            }
-        }).then(function (response) {
-            setCities(response.data);
-        });
+        // axios.get('https://www.universal-tutorial.com/api/cities/' + val, {
+        //     headers: {
+        //         Authorization: 'Bearer ' + auth,
+        //         Accept: "application/json"
+        //     }
+        // }).then(function (response) {
+        //     setCities(response.data);
+        // });
     }
     // Api to states
     async function consultStates() {
         //    info : L6HkSxDySdCLf8NsKYB64pLX5rE4XJVQvG0ROvYXBwYXZ7e0kRlU7gwVgo49xcFX6FI
         let x = null;
-        await axios.get('https://www.universal-tutorial.com/api/getaccesstoken', {
-            headers: {
-                "Accept": "application/json",
-                "user-email": "blink.interlageducativo@gmail.com",
-                "api-token": "RjWHZOlhuvyH-x1rkLxxrp0hlbNSSXnSoa7DcnV-OIvJoZigJDOXcg71IyMIQp5fynU"
-            }
-        }).then(function (response) {
-            x = response.data.auth_token;
-        });
-        axios.get('https://www.universal-tutorial.com/api/states/Mexico', {
-            headers: {
-                Authorization: 'Bearer ' + x,
-                Accept: "application/json"
-            }
-        }).then(function (response) {
-            setStates(response.data);
-            setAth(x);
-        });
+        // await axios.get('https://www.universal-tutorial.com/api/getaccesstoken', {
+        //     headers: {
+        //         "Accept": "application/json",
+        //         "user-email": "blink.interlageducativo@gmail.com",
+        //         "api-token": "RjWHZOlhuvyH-x1rkLxxrp0hlbNSSXnSoa7DcnV-OIvJoZigJDOXcg71IyMIQp5fynU"
+        //     }
+        // }).then(function (response) {
+        //     x = response.data.auth_token;
+        // });
+        // axios.get('https://www.universal-tutorial.com/api/states/Mexico', {
+        //     headers: {
+        //         Authorization: 'Bearer ' + x,
+        //         Accept: "application/json"
+        //     }
+        // }).then(function (response) {
+        //     setStates(response.data);
+        //     setAth(x);
+        // });
     }
     function handleSports(e) {
         if (e) {

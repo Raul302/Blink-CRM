@@ -39,8 +39,8 @@ function Bio(props) {
     return (
         <>
         <div class="mt-n2 content">
-        <AddEditBio noBar={ props.noBar ? true :false} setFlag={setFlag} row={row} flag={show}/>
-        <TableBio bridge={(e) => method(e)}/>
+        <AddEditBio activeProspect={props.activeProspect ?? null} noBar={ props.noBar ? true :false} setFlag={setFlag} row={row} flag={show}/>
+        <TableBio {...props} bridge={(e) => method(e)}/>
         </div>
         </>
     )

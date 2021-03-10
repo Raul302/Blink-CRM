@@ -193,42 +193,42 @@ function PersonalData(props) {
                 handleInputChange(e, i);
             }
         }
-        await axios.get('https://www.universal-tutorial.com/api/cities/' + val, {
-            headers: {
-                Authorization: 'Bearer ' + props.token,
-                Accept: "application/json"
-            }
-        }).then(function (response) {
-            setCities(response.data);
-        });
+        // await axios.get('https://www.universal-tutorial.com/api/cities/' + val, {
+        //     headers: {
+        //         Authorization: 'Bearer ' + props.token,
+        //         Accept: "application/json"
+        //     }
+        // }).then(function (response) {
+        //     setCities(response.data);
+        // });
 
     }
     // Api to states
     async function consultStates() {
-        await axios.get('https://www.universal-tutorial.com/api/states/Mexico', {
-            headers: {
-                Authorization: 'Bearer ' + props.token,
-                Accept: "application/json"
-            }
-        }).then(function (response) {
-            setStates(response.data);
-            let obj = {
-                target: {
-                    value: state
-                }
-            };
-            changeCities(obj);
-        });
+        // await axios.get('https://www.universal-tutorial.com/api/states/Mexico', {
+        //     headers: {
+        //         Authorization: 'Bearer ' + props.token,
+        //         Accept: "application/json"
+        //     }
+        // }).then(function (response) {
+        //     setStates(response.data);
+        //     let obj = {
+        //         target: {
+        //             value: state
+        //         }
+        //     };
+        //     changeCities(obj);
+        // });
     }
     async function consultCountries() {
-        await axios.get('https://www.universal-tutorial.com/api/countries/', {
-            headers: {
-                Authorization: 'Bearer ' + props.token,
-                Accept: "application/json"
-            }
-        }).then(function (response) {
-            setCountries(response.data);
-        });
+        // await axios.get('https://www.universal-tutorial.com/api/countries/', {
+        //     headers: {
+        //         Authorization: 'Bearer ' + props.token,
+        //         Accept: "application/json"
+        //     }
+        // }).then(function (response) {
+        //     setCountries(response.data);
+        // });
     }
     function setFilterValues(props) {
         setBirthday(props.birthday);
