@@ -22,6 +22,7 @@ import { AgGridReact, AgGridColumn } from 'ag-grid-react';
 // Component SLotName
 export const slotType = function SlotName(props) {
     const showModal = (obj) => {
+      console.log('CLICK');
         props.context.showModal(obj);
     }
     const showSubject = (type = '',subject) => {
@@ -54,7 +55,7 @@ export const slotType = function SlotName(props) {
                {subject}</span>
             }  else {
                   tag = 
-                 <span  class=" Inter600B">
+                 <span  onClick={(e) => showModal(props.data)} class=" Inter600B">
                  <BIicons.BiMessageDetail color={"#3B83BD"} size={16}/>&nbsp; &nbsp;
                  {subject}</span>
             }
@@ -64,7 +65,7 @@ export const slotType = function SlotName(props) {
     }
     return (
         <>
-          <span onClick={(e)=> showModal(props.data)}>{showSubject(props.data.type,props.data.subject)}</span>
+          <span >{showSubject(props.data.type,props.data.subject)}</span>
         </>
     )
 }

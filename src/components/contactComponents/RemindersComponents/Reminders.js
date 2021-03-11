@@ -20,7 +20,7 @@ function Reminders(props) {
         <div class="mt-n5 row">
             <div class="col-12">
             <div class="col d-flex justify-content-end">
-            {/* <AddEditReminders {...props}/> */}
+            <AddEditReminders {...props}/>
             </div>
             <TableReminders openModal={open}{...props}/>
             </div>

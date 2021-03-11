@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { AgGridReact, AgGridColumn } from 'ag-grid-react';
 import {
   SelectionState,
   GroupingState,
   IntegratedGrouping,
 } from '@devexpress/dx-react-grid';
+import NotificationAlert from "react-notification-alert";
 
 import {
   Grid,
@@ -32,8 +33,41 @@ import {
 import { constaApi } from "constants/constants";
 import axios from "axios";
 import { starLoadingProspect } from "actions/contacts/bioContact/bioContact";
+import * as FAIcons from "react-icons/fa";
+import swal from "sweetalert";
 
+export const SlotActions = function SlotActions(props){
+  const {data} = props;
+  const deleteReminder = (obj) => {
+    swal({
+      title: "Estas seguro?",
+      text: "Una vez eliminado,no podras recuperar este registro!",
+      icon: "warning",
+      dangerMode: true,
+      buttons: ["No", "Si"],
+    }).then(async (willDelete) => {
+      if (willDelete) {
+        await axios.get(constaApi + "removeProposal/"+obj.id)
+        .then(function (response) {
+            props.context.loadProposals(response.data.message,'success');
+        }).catch(error => {
+          props.context.loadProposals('Ocurrio un error','danger');
+        });
+      } else {
+        swal("Operacion cancelada!");
+      }
+    });
+  }
+  return (
+  <>
+  <span>
+  <FAIcons.FaTrashAlt title="Eliminar" style={{ color: '#DC3545' }} size={18} onClick={(e) => { deleteReminder(data) }} />
+  </span>
+  </>  
+  )
+}
 export default function Proposals(props) {
+  const notificationAlert = useRef();
   const dispatch = useDispatch();
   const [columns] = useState([
     { name: 'name', title: 'Nombre' },
@@ -53,7 +87,7 @@ export default function Proposals(props) {
   const [records, setRecords] = useState();
   const [gridApi, setGridApi] = useState();
   const [columnApi, setColumnApi] = useState();
-  const [frameworkComponents, setFramwrokw] = useState({});
+  const [frameworkComponents, setFramwrokw] = useState({slotActions:SlotActions});
   const [modal,setModal] = useState(false);
   const [obj,setObj] = useState({})
   const {
@@ -67,8 +101,10 @@ export default function Proposals(props) {
   useEffect(() => {
     loadProposals();
   }, [])
-  const loadProposals = async () => {
-    console.log('HELLO');
+  const loadProposals = async (message=null,type=null) => {
+    if(message && type){
+      notification(type,message);
+    }
       let idx = active.id;
     await axios.get(constaApi + "getProposal/"+idx)
     .then(function (response) {
@@ -85,16 +121,16 @@ export default function Proposals(props) {
     }
     // let aux =  await colleges.filter(col => col.id == e.target.value);
     let aux2 = await {
-        contact:active.name,
-        id_contact:active.id,
-        // type:aux[0].type,
-        // name:aux[0].name,
-        // country:aux[0].country,
-        email: auth.email,
-        name_user : auth.name,
-        type_user : auth.type,
-        id_user : auth.id,
-        id_type : props.activeProspect ? props.activeProspect.id : 0,
+         contact:active.name,
+         id_contact:active.id,
+          // type:aux[0].type,
+          // name:aux[0].name,
+          // country:aux[0].country,
+         email: auth.email,
+         name_user : auth.name,
+         type_user : auth.type,
+         id_user : auth.id,
+         id_type : props.activeProspect ? props.activeProspect.id : 0,
     };
      aux2 = {...aux2,selection:col}
     // setObj({...aux2,selection:col});
@@ -104,11 +140,15 @@ export default function Proposals(props) {
          loadProposals();
          if(props.activeProspect){
           dispatch( starLoadingProspect(active.id,props.activeProspect.id));
-
          }
+         notification('success',response.data.message);
          props.updateReminders();
          closeModal();
          setSelection([]);
+       }).catch(function( error) {
+        notification('danger',error.response.data.message);
+        closeModal();
+        props.updateReminders();
        });
   }
   const onChangeSelection = (selection) => {
@@ -120,6 +160,9 @@ export default function Proposals(props) {
   };
   const closeModal = () => {
     setModal(!modal)
+  }
+  const updatedUpLevel = () => {
+    props.updateReminders();
   }
   const changeProposal = async (e) => {
     console.log('auth',auth);
@@ -139,8 +182,26 @@ export default function Proposals(props) {
     console.log(aux2);
   setObj({...aux2});
   }
+  function notification(type, message) {
+    let place = "tc";
+    var options = {};
+    options = {
+      place: place,
+      message: (
+        <div>
+          <div>{message}</div>
+        </div>
+      ),
+      type: type,
+      icon: "nc-icon nc-bell-55",
+      autoDismiss: 7,
+    };
+    notificationAlert.current.notificationAlert(options);
+  }
   return (
     <div className="content" style={{ width: "100%", height: "100%" }}>
+      <NotificationAlert ref={notificationAlert} />
+
         <div class="col d-flex justify-content-end">
              <button  onClick={(e) => setModal(!modal)}className="btn btn-primary">
                 <span className="Inter"
@@ -151,9 +212,9 @@ export default function Proposals(props) {
         style={{ marginLeft:'31%' ,height: "100%", width: "70%" }}
       >
         <AgGridReact
-          // context={{
-          //   showModal,
-          // }}
+           context={{
+             loadProposals,
+           }}
           defaultColDef={{ resizable: true }}
           rowData={records}
           rowHeight={40}
@@ -179,6 +240,7 @@ export default function Proposals(props) {
            <AgGridColumn
             headerName="Acciones"
             width="230"
+            cellRenderer="slotActions"
           />
         </AgGridReact>
 
@@ -203,8 +265,7 @@ export default function Proposals(props) {
         </Modal.Header>
         <Modal.Body style={{ background: "#F4F5F6", border: "0px" }}>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="container-fluid">
-            <div className="card">
+            <div>
             <Grid
               rows={colleges}
               columns={columns}
@@ -222,7 +283,6 @@ export default function Proposals(props) {
               <TableSelection /> 
               <TableGroupRow />
             </Grid>
-          </div>
                 {/* <Col className="col-7">
                   <Form.Label className="formGray">Colegios</Form.Label>
                   <Form.Control

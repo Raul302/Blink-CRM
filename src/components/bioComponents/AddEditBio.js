@@ -42,6 +42,7 @@ export default function AddEditBio(props) {
   const notificationAlert = useRef();
   const { username: email } = useSelector((state) => state.auth);
   useEffect(() => {
+    console.log('USEFFECT',props);
       consult();
     if (props.flagTwo) {
       showModalLog("Recordatorio");
@@ -49,7 +50,7 @@ export default function AddEditBio(props) {
     if (props.flag) {
       showModal(props.row);
     }
-  }, []);
+  }, [props]);
   const [prefixSubject, setPrefix] = useState();
   const [twopart, setTwoPart] = useState(false);
   const { handleSubmit } = useForm({});
@@ -129,6 +130,7 @@ export default function AddEditBio(props) {
       });
   };
   const showModal = function showModal(row) {
+    console.log('SHOW MODAL');
     setModal(true);
     setParam(row);
     setTempParam(row.text);
