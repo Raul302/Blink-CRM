@@ -258,7 +258,6 @@ export default function TableReminders(props) {
 
     const fromBio = () =>{
       if(objAux){
-        console.log(objAux);
         if(objAux.id){
           dispatch(deleteReminderC(objAux.id, contact ? contact.id : props.activeProspect.id));
         } else {

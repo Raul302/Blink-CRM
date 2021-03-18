@@ -267,7 +267,6 @@ export default function TableReminders(props) {
   };
   
   function editReminder(obj) {
-    console.log('obj',obj);
     dispatch(activeReminderColleges(obj.id, obj));
   }
   function deleteReminder(id) {

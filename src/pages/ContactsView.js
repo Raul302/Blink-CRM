@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Switch,
 export default function ContactsView(props) {
     let { id } = useParams();
     const { pathname } = useLocation();
-    const [fullName,setFullName] = useState(`${props.contact.name} ${props.contact.father_lastname}`);
+    const [fullName,setFullName] = useState(`${props.contact.name} ${props.contact.father_lastname} ${props.contact.mother_lastname ?? " "}`);
     return (
         <>
          <div style={{minHeight:'0px'}} className="pb-0 content">

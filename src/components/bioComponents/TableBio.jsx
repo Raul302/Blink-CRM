@@ -19,10 +19,41 @@ import { AgGridReact, AgGridColumn } from 'ag-grid-react';
 
 
 // ---------------------SLOTS
+
+export const slotTypeProspection = function slotTypeProspection(props){
+  const {value} = props;
+  const showProspection = (obj) => {
+    let tag = '';
+    if(obj){
+      tag = <span style={{color:'#cb6d51'}}>{obj.name_prospection}</span>
+    } else {
+      tag = <span style={{color:'#3B83BD'}}>S/N</span>
+
+    }
+    // switch (type) {
+    //   case 'General':
+    //     tag = <span style={{color:'#3B83BD'}}>
+    //       {type}
+    //       </span>
+    //     break;
+    //   default:
+    //     tag = <span style={{color:'#3B83BD'}}>
+    //     {type}
+    //     </span>
+    //     break;
+    // }
+    return tag;
+  }
+  return (
+  <>
+  <div>
+    {showProspection(value)}</div>
+  </>  
+  )
+}
 // Component SLotName
 export const slotType = function SlotName(props) {
     const showModal = (obj) => {
-      console.log('CLICK');
         props.context.showModal(obj);
     }
     const showSubject = (type = '',subject) => {
@@ -201,7 +232,7 @@ export default function TableBio(props) {
     const { loading } = useSelector(state => state.ui);
     let { id } = useParams();
     const notificationAlert = useRef();
-    const [frameworkComponents, setFramwrokw] = useState({stotProspection:SlotProspection, slotType: slotType, slotDate: SlotDate,slotParticipants: SlotParticipants,slotDetalle: SlotDetalle});
+    const [frameworkComponents, setFramwrokw] = useState({slotTypeProspection:slotTypeProspection,stotProspection:SlotProspection, slotType: slotType, slotDate: SlotDate,slotParticipants: SlotParticipants,slotDetalle: SlotDetalle});
     const [gridApi, setGridApi] = useState();
     const [columnApi, setColumnApi] = useState();
 
@@ -319,6 +350,12 @@ export default function TableBio(props) {
                   field="text"
                   width="200"
                   cellRenderer="slotDetalle"
+                />
+                 <AgGridColumn
+                  headerName="Nombre Prospeccion"
+                  field="programs"
+                  width="230"
+                  cellRenderer="slotTypeProspection"
                 />
                  <AgGridColumn
                   headerName="Tipo"

@@ -15,7 +15,6 @@ import Loader from '../components/loaderComponents/Loader';
 import { setColleges, starLoadingColleges,activeCollege } from '../actions/colleges/colleges';
 export const AppRouter = (props) => {
     const dispatch = useDispatch();
-
     const [ checking, setChecking ] = useState(true);
     const [ isLoggedIn, setIsLoggedIn ] = useState(false);
     // // const {token:authToken} = useSelector( state => state.auth,shallowEqual);
@@ -23,8 +22,13 @@ export const AppRouter = (props) => {
     // const[flag,setFlag] = useState(false);
     // const [user,setUser] = useState();
     useEffect(() => {
+        console.log('AppRouter montado');
         if(JSON.parse(localStorage.getItem('user'))){
             const {email,id,name,token,type} = JSON.parse(localStorage.getItem('user'));
+            if(!email || !id || !name || !token || !type){
+                localStorage.removeItem('user');
+                // window.location.reload(false);
+            }
             dispatch( login(email,id,name,token,type));
             dispatch ( starLoadingColleges() );
             if(JSON.parse(localStorage.getItem('collegeActive'))){
@@ -33,7 +37,6 @@ export const AppRouter = (props) => {
                     dispatch( activeCollege( json[0].id,json[0]));
                 }
             }
-
             setIsLoggedIn(true);
         }else {
             setIsLoggedIn(false);

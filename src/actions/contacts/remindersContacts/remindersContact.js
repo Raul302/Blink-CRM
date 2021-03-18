@@ -62,17 +62,16 @@ export const starLoadingRemindersC = (id) => {
     }
 }
 
-export const starLoadingAllRemindersC = () => {
+export const starLoadingAllRemindersC = (id=null) => {
     return async (dispatch) => {
         dispatch( startLoading() );
-        const reminders = await loadAllReminders();
+        const reminders = await loadAllReminders(id);
         await dispatch( setRemindersC(reminders) );
         dispatch( finishLoading() );
     }
 }
 
 export const starLoadingProspectRemindersC = (idContact,id_type,type='Prospeccion') => {
-    console.log('CONST',id_type);
     return async (dispatch) => {
         dispatch( startLoading() );
         const reminders = await loadProspectReminders(idContact,id_type,type);

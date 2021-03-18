@@ -62,10 +62,10 @@ export const starLoadingRemindersColleges = (id) => {
     }
 }
 
-export const starLoadingAllRemindersColleges = () => {
+export const starLoadingAllRemindersColleges = (id = null) => {
     return async (dispatch) => {
         dispatch( startLoading() );
-        const reminders = await loadAllRemindersColleges();
+        const reminders = await loadAllRemindersColleges(id);
         await dispatch( setRemindersColleges(reminders) );
         dispatch( finishLoading() );
     }

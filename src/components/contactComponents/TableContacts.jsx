@@ -84,7 +84,6 @@ function TableContacts(props) {
         setGridApi(objx);
     }
     async function consultRow() {
-        console.log('consultRow');
         await axios.get(constaApi + 'contacts', {
             headers: {
                 "Accept": "application/json"
@@ -169,7 +168,7 @@ function TableContacts(props) {
                     >
                         <AgGridColumn
                             cellRenderer="slotName"
-                            headerName="Nombre" field="fullname" width="250" />
+                            headerName="Nombre" field="fullname" width="300" />
                         <AgGridColumn headerName="Ciudad" field="ciy" width="200" cellRenderer="slotOrigin" />
                         <AgGridColumn headerName="Programa" field="id_program" width="200" cellRenderer="slotProgram" />
                         <AgGridColumn 

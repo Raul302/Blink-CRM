@@ -64,7 +64,6 @@ function MultipleModals(props) {
             //     Accept: "application/json"
             // }
         }).then(function (response) {
-            console.log('response',response.data);
             setCountries(response.data);
         });
     }
@@ -79,7 +78,6 @@ function MultipleModals(props) {
             //     Accept: "application/json"
             // }
         }).then(function (response) {
-            console.log('EX',response.data.response.municipios);
             setCities(response.data.response.municipios);
         });
     }

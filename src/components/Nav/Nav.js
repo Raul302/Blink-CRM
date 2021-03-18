@@ -1,4 +1,5 @@
 
+import { startLogout } from "actions/auth/auth";
 import React from "react";
 import { Link } from "react-router-dom";
 import {
@@ -19,6 +20,7 @@ import {
   Input,
 } from "reactstrap";
 import routes from '../../routes';
+import { createStore } from 'redux';
 
 
 class Header extends React.Component {
@@ -32,6 +34,12 @@ class Header extends React.Component {
     this.toggle = this.toggle.bind(this);
     this.dropdownToggle = this.dropdownToggle.bind(this);
     this.sidebarToggle = React.createRef();
+  }
+  closeSession() {
+     const { history } = this.props;  
+    // this.props.store.dispatch(sendMessage(message))
+      localStorage.removeItem('user');
+      window.location.reload(false);
   }
   toggle() {
     if (this.state.isOpen) {
@@ -155,9 +163,9 @@ class Header extends React.Component {
                   </p>
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem tag="a">Action</DropdownItem>
-                  <DropdownItem tag="a">Another Action</DropdownItem>
-                  <DropdownItem tag="a">Something else here</DropdownItem>
+                  <DropdownItem onClick={(e) => this.closeSession()}tag="a">Cerrar sesión</DropdownItem>
+                  {/* <DropdownItem tag="a">Another Action</DropdownItem>
+                  <DropdownItem tag="a">Something else here</DropdownItem> */}
                 </DropdownMenu>
               </Dropdown>
               <NavItem>

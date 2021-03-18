@@ -11,7 +11,11 @@ function Reminders(props) {
     let { id } = useParams();
 
     useEffect(() => {
-        dispatch(starLoadingRemindersC(id))
+        if(props.prospection){
+
+        } else {
+            dispatch(starLoadingRemindersC(id))
+        }
     }, [])
     function open(){
     }

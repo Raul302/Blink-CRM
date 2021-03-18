@@ -35,7 +35,124 @@ import axios from "axios";
 import { starLoadingProspect } from "actions/contacts/bioContact/bioContact";
 import * as FAIcons from "react-icons/fa";
 import swal from "sweetalert";
+import moment from 'moment'
+import 'moment/locale/es'  // without this line it didn't work
+import *  as Ioicons from "react-icons/io";
+import * as IOIcons from "react-icons/io";
 
+// Slots
+export const SlotCollege = function SlotCollege(props){
+  const {data} = props;
+  const showSeconModal = (proposal) => {
+    // props.context.openSecondModal(proposal);
+  }
+  const PopoverComponent = (proposals) => {
+    const showProposals = (proposal) => {
+      let aux = '';
+      let auxTwo = null;
+      if(proposals.length){
+        var hash = {};
+        auxTwo = proposals.filter(function(current) {
+        var exists = !hash[current.name];
+        hash[current.name] = true;
+        return exists;
+      });
+        auxTwo.map(pro => {
+          aux += pro.name + ',';
+        })
+      } else {
+        for (let prop in proposal){
+          aux += proposal[prop].name + ',';
+        }
+  
+      }
+      return aux;
+    }
+    return (<Popover id="popover-basic">
+        <Popover.Content>
+            <strong>{showProposals(proposals)}</strong>
+        </Popover.Content>
+    </Popover>)
+  }
+    return (
+      <>
+      {data.proposal &&
+       <OverlayTrigger trigger={["hover", "hover"]} placement="top"
+       overlay={PopoverComponent(data.proposal)}>
+       <a onClick={(e) => showSeconModal(data.proposal)}>
+       <IOIcons.IoIosSchool />
+       </a>
+   </OverlayTrigger>
+    }
+      </>
+      )
+  }
+  
+export const SlotCountry = function SlotCountry(props){
+  const {data} = props;
+  const [rows,setRows] = useState([]);
+  useEffect(() => {
+    let auxTwo = null;
+    var hash = {};
+    auxTwo = data.proposal.filter(function(current) {
+    var exists = !hash[current.country];
+    hash[current.country] = true;
+    return exists;
+  });
+  setRows(auxTwo);
+  }, [])
+  const PopoverComponent = (proposals,data) => {
+  const showProposals = (proposal,data) => {
+    let auxTwo = [];
+    let auxFirst = '';
+    let aux =  data.filter(d => d.country == proposal.country);
+    aux.map(pro => {
+      auxFirst += pro.name + ',';
+    })
+    return auxFirst;
+  }
+  return (<Popover id="popover-basic">
+      <Popover.Content>
+          <strong>{showProposals(proposals,data)}</strong>
+      </Popover.Content>
+  </Popover>)
+}
+  return (
+    <>
+    {data.proposal &&
+     [rows.map(d => {
+       return (
+         <>
+      <OverlayTrigger trigger={["hover", "hover"]} placement="top"
+       overlay={PopoverComponent(d,data.proposal)}>
+       <span>{d.country + ' '}</span>
+       </OverlayTrigger>
+       </>
+       )
+     })]
+  }
+    </>
+    )
+}
+
+export const SlotDates = function SlotDates(props){
+  const {data} = props;
+  const showDate = (dateBD) => {
+    let datef = moment(dateBD).locale('es-mx').format("ddd D MMMM, YYYY ");
+    let timef = moment(dateBD).locale('es-mx').format("h:mm A");
+    datef = datef[0].toUpperCase() + datef.slice(1);
+    datef = datef.replace(".","");
+    let tag = <span class="Inter">{datef} <Ioicons.IoMdTime /></span>
+    return tag;
+}
+  return (
+    <>
+    <>
+      {showDate(data.created_at)}
+    </>
+    </>  
+    )
+}
 export const SlotActions = function SlotActions(props){
   const {data} = props;
   const deleteReminder = (obj) => {
@@ -67,6 +184,7 @@ export const SlotActions = function SlotActions(props){
   )
 }
 export default function Proposals(props) {
+  const [theProposal,setTheProposal] = useState();
   const notificationAlert = useRef();
   const dispatch = useDispatch();
   const [columns] = useState([
@@ -81,13 +199,13 @@ export default function Proposals(props) {
         active = JSON.parse(localStorage.getItem('ActiveContact'));
       }
   const {colleges} = useSelector( state => state.colleges);
-  // console.log('SET',selection);
-  //  console.log('colleges',colleges);
+  const [secondModal,setSecondModal] = useState(false);
+  const [auxSelection,setAuxSelection] = useState([0]);
   const auth = useSelector(state => state.auth);
   const [records, setRecords] = useState();
   const [gridApi, setGridApi] = useState();
   const [columnApi, setColumnApi] = useState();
-  const [frameworkComponents, setFramwrokw] = useState({slotActions:SlotActions});
+  const [frameworkComponents, setFramwrokw] = useState({slotActions:SlotActions,slotDates:SlotDates,slotCountry:SlotCountry,slotCollege:SlotCollege});
   const [modal,setModal] = useState(false);
   const [obj,setObj] = useState({})
   const {
@@ -99,21 +217,26 @@ export default function Proposals(props) {
   } = useForm({});
 
   useEffect(() => {
-    loadProposals();
-  }, [])
+    if(selection.length < 1){
+      loadProposals();
+    }
+    if(colleges && selection){
+      convertSel(selection);
+    }
+  }, [selection])
   const loadProposals = async (message=null,type=null) => {
     if(message && type){
       notification(type,message);
     }
       let idx = active.id;
-    await axios.get(constaApi + "getProposal/"+idx)
+      let idxTwo = props.activeProspect.id ?? 0;
+    await axios.get(constaApi + "getProposal/"+idx+'/separate/'+idxTwo)
     .then(function (response) {
         setRecords(response.data);
     });
   }
   const onSubmit = async(data)=> {
     let col = []
-    console.log('selection',selection);
     if(selection){
       col = selection.map(se => {
         return  colleges[se];
@@ -134,7 +257,6 @@ export default function Proposals(props) {
     };
      aux2 = {...aux2,selection:col}
     // setObj({...aux2,selection:col});
-    console.log('OBJ',aux2);
       axios.post(constaApi + "saveProposal",aux2)
        .then(function (response) {
          loadProposals();
@@ -151,21 +273,33 @@ export default function Proposals(props) {
         props.updateReminders();
        });
   }
+ 
   const onChangeSelection = (selection) => {
-    console.log('selection',selection);
   }
   const onGridReady = (params) => {
     setGridApi(params);
     setColumnApi(params);
   };
+  const closeTwoModal = () => {
+    setSecondModal(false);
+  }
   const closeModal = () => {
     setModal(!modal)
+    setAuxSelection([]);
   }
   const updatedUpLevel = () => {
     props.updateReminders();
   }
+  const convertSel = (seleccion) => {
+    let col = []
+    if(selection){
+      col = selection.map(se => {
+        return  colleges[se];
+      })
+    }
+    setAuxSelection(col);
+  }
   const changeProposal = async (e) => {
-    console.log('auth',auth);
     let aux =  await colleges.filter(col => col.id == e.target.value);
     let aux2 = {
         contact:active.name,
@@ -179,7 +313,6 @@ export default function Proposals(props) {
         id_user : auth.id,
         id_type : props.activeProspect ? props.activeProspect.id : 0,
     };
-    console.log(aux2);
   setObj({...aux2});
   }
   function notification(type, message) {
@@ -198,6 +331,10 @@ export default function Proposals(props) {
     };
     notificationAlert.current.notificationAlert(options);
   }
+  function openSecondModal(proposal){
+    setTheProposal(proposal);
+    setSecondModal(!secondModal);
+  }
   return (
     <div className="content" style={{ width: "100%", height: "100%" }}>
       <NotificationAlert ref={notificationAlert} />
@@ -211,9 +348,11 @@ export default function Proposals(props) {
         className="ag-theme-alpine"
         style={{ marginLeft:'31%' ,height: "100%", width: "70%" }}
       >
+        
         <AgGridReact
            context={{
              loadProposals,
+             openSecondModal,
            }}
           defaultColDef={{ resizable: true }}
           rowData={records}
@@ -229,14 +368,17 @@ export default function Proposals(props) {
           }}
           rowSelection="multiple"
         >
-          <AgGridColumn headerName="Colegio" field="name" width="150" />
-          <AgGridColumn headerName="Tipo" field="type" width="200" />
           <AgGridColumn
-            headerName="País"
+                      cellRenderer="slotDates"
+                      headerName="Fecha" field="created_at" width="150" />
+          <AgGridColumn
+            headerName="Paises"
             field="country"
             width="230"
-            cellRenderer="stotProspection"
+            cellRenderer="slotCountry"
           />
+          <AgGridColumn cellRenderer="slotCollege" headerName="Colegio" field="name" width="150" />
+          
            <AgGridColumn
             headerName="Acciones"
             width="230"
@@ -244,6 +386,37 @@ export default function Proposals(props) {
           />
         </AgGridReact>
 
+
+        {/* Second Modal  */}
+        <Modal
+        show={secondModal}
+        dialogClassName="modalMax"
+        onHide={closeTwoModal}
+        dialogClassName="modal-60w"
+      >
+        <Modal.Header style={{ height: "60px" }} closeButton>
+          <Modal.Title
+            style={{
+              fontFamily: "Inter",
+              marginTop: "5px",
+              fontWeight: "600",
+              fontSize: "18px",
+            }}
+          >
+            Detalle
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ background: "#F4F5F6", border: "0px" }}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Row>
+            <Col>
+              Eu
+            </Col>
+          </Row>
+            </form>
+        </Modal.Body>
+      </Modal>
+      
         {/* Modal prospeccion */}
       <Modal
         show={modal}
@@ -264,9 +437,16 @@ export default function Proposals(props) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ background: "#F4F5F6", border: "0px" }}>
-          <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+         {auxSelection.length > 0 &&
+          auxSelection.map(sel => {
+           return(
+           <button disabled className="btn btn-success btn-sm">{sel.name ?? " "}</button>
+           );
+          })}
             <div>
             <Grid
+              style={{marginTop:'30px'}}
               rows={colleges}
               columns={columns}
             >
@@ -325,7 +505,7 @@ export default function Proposals(props) {
                 </Button>
               </Col>
             </Row>
-          </form>
+            </form>
         </Modal.Body>
       </Modal>
 

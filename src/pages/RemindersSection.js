@@ -16,10 +16,11 @@ export default function RemindersSection(props) {
     const { remindersCollege } = useSelector(state => state.remindersColleges);
     const { remindersC } = useSelector(state => state.remindersC);
     const [init] = useState(JSON.parse(localStorage.getItem('user')) || { logged: false });
-
     useEffect(() => {
-        dispatch(starLoadingAllRemindersC());
-        dispatch(starLoadingAllRemindersColleges());
+        if(init){
+            dispatch(starLoadingAllRemindersC(init.id));
+            dispatch(starLoadingAllRemindersColleges(init.id));
+        }
     }, [dispatch])
     function open(){}
     return (

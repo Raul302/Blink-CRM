@@ -91,7 +91,6 @@ export default function AddEditReminders(props) {
             setFlagImportant({...flagImportant,isChecked:activeReminder.urgent == "0" ? false : true});
             setnameCollege(activeReminder.college);
             // if(activeReminder.contact){
-            //     console.log('HERE');
             //     setnameCollege(activeReminder.contact);
             // }
             setSubject(activeReminder.subject ?? null);

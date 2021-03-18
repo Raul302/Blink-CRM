@@ -312,25 +312,29 @@ function Bio(props) {
       .post(constaApi + "defaultCollegeBio", data)
       .then(function (response) {
         let { college, user, staff, users, contacts } = response.data;
-        let result = user.map((col) => {
-          return {
-            value: col.name,
-            label:
-              col.name + " " + col.father_lastname + " " + col.mother_lastname,
-            fullname:
-              col.name + " " + col.father_lastname + " " + col.mother_lastname,
-            type: "user",
-          };
-        });
-
-        college.map((u) => {
-          result.push({
-            value: u.name,
-            label: u.name,
-            fullname: u.name,
-            type: "colegio",
+        let result = null;
+        if(user){
+          result = user.map((col) => {
+           return {
+             value: col.name,
+             label:
+               col.name + " " + col.father_lastname + " " + col.mother_lastname,
+             fullname:
+               col.name + " " + col.father_lastname + " " + col.mother_lastname,
+             type: "user",
+           };
+         });
+        }
+        if(college){
+          college.map((u) => {
+            result.push({
+              value: u.name,
+              label: u.name,
+              fullname: u.name,
+              type: "colegio",
+            });
           });
-        });
+        }
         users.forEach((us) => {
           if (result[0]) {
             if (us.name === result[0].value) {
@@ -346,14 +350,16 @@ function Bio(props) {
             }
           }
         });
-        staff.map((s) => {
-          result.push({
-            value: s.name,
-            label: s.name + " " + s.fname + " " + s.mname,
-            fullname: s.name + " " + s.fname + " " + s.mname,
-            type: "staff",
+        if(staff){
+          staff.map((s) => {
+            result.push({
+              value: s.name,
+              label: s.name + " " + s.fname + " " + s.mname,
+              fullname: s.name + " " + s.fname + " " + s.mname,
+              type: "staff",
+            });
           });
-        });
+        }
         // contacts.map(c => {
         //     result.push(
         //         {

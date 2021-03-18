@@ -120,6 +120,7 @@ export default function Prospection() {
 
   }
   const changeButton = async(id) => {
+    dispatch (setRemindersC([]));
       changeLoad(true);
     await axios.post(constaApi + "showProspection",{id:id})
     .then(function (response) {
@@ -177,7 +178,6 @@ export default function Prospection() {
 
   const saveChanges = () => {
     changeLoad(true);
-    console.log('activeProspect',activeProspect);
     moment.locale("es-mx");
     let newObj ={
         id:activeProspect.id,
@@ -232,14 +232,15 @@ export default function Prospection() {
             <button
               onClick={(e) => changeButton(pros.id)}
               key={pros.id}
+              // active={{backgroundColor:'#FF0000'}}
               class={[
                 selection === pros.id
                   ? "mt-n5 mr-1 btn btn-sm btn-info"
                   : "mt-n5 mr-1 btn btn-sm btn-primary",
               ]}
-              style={{
-                backgroundColor:[selection === pros.id ?  '#0062cc' : '#51cbce']
-              }}
+              // style={{
+              //   backgroundColor:[selection === pros.id ?  '#0062cc' : '#51cbce']
+              // }}
             >
               {pros.name_prospection}
             </button>
