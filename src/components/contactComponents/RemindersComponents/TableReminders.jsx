@@ -155,6 +155,22 @@ export const SlotDate = function (props) {
   return <>{showDate(props.data.dateReminder)}</>;
 };
 
+export const SlotDateCreated = function (props) {
+  function showDate(dateBD, time) {
+    let datef = moment(dateBD).locale("es-mx").format("ddd D MMMM, YYYY ");
+    let timef = moment(dateBD).locale("es-mx").format("h:mm A");
+    datef = datef[0].toUpperCase() + datef.slice(1);
+    datef = datef.replace(".", "");
+    let tag = (
+      <p class="Inter">
+        {datef}
+        {timef}
+      </p>
+    );
+    return dateBD ? tag : "";
+  }
+  return <>{showDate(props.data.created_at)}</>;
+};
 export const SlotDescription = function (props) {
     const PopoverComponent = (text) => {
         return (
@@ -208,13 +224,15 @@ export default function TableReminders(props) {
     const { remindersC: reminders } = useSelector(state => state.remindersC);
     const { loading } = useSelector(state => state.ui);
     const { contact } = props;
+    const { activeProspect:activeP} = props;
     const [objAux,setAux] = useState(null);
     const [frameworkComponents, setFramwrokw] = useState({
         slotUrgent: SlotUrgent,
         slotDate: SlotDate,
         slotDescription: SlotDescription,
         slotUsers:SlotUsers,
-        slotActions:SlotActions
+        slotActions:SlotActions,
+        slotCreated:SlotDateCreated
       });
       const [gridApi, setGridApi] = useState();
       const [columnApi, setColumnApi] = useState();
@@ -359,7 +377,8 @@ export default function TableReminders(props) {
                  context={{
                     completeReminder,
                     editReminder,
-                    deleteReminder
+                    deleteReminder,
+                    activeP,
                  }}
                 rowData={reminders}
                 rowHeight={40}
@@ -385,10 +404,17 @@ export default function TableReminders(props) {
                   field="subject"
                   width="200"
                 />
+                 <AgGridColumn
+                  headerName="Fecha creación"
+                  field="created_at"
+                  width="250"
+                  cellRenderer="slotCreated"
+                  hide={activeP ? false : true}
+                />
                 <AgGridColumn
                   headerName="Fecha"
                   field="ciy"
-                  width="200"
+                  width="250"
                   cellRenderer="slotDate"
                 />
                 <AgGridColumn

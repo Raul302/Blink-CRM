@@ -224,15 +224,31 @@ export const SlotProspection = function SlotProspection(props){
   </>  
   )
 }
-
+export const SlotCreated = function (props) {
+  function showDate(dateBD, time) {
+    let datef = moment(dateBD).locale("es-mx").format("ddd D MMMM, YYYY ");
+    let timef = moment(dateBD).locale("es-mx").format("h:mm A");
+    datef = datef[0].toUpperCase() + datef.slice(1);
+    datef = datef.replace(".", "");
+    let tag = (
+      <p class="Inter">
+        {datef}
+        {timef}
+      </p>
+    );
+    return dateBD ? tag : "";
+  }
+  return <>{showDate(props.data.created_at)}</>;
+};
 // -----------end SLOTS
 export default function TableBio(props) {
+    const {activeProspect} = props;
     const dispatch = useDispatch();
     const {biosC:bioRecords} = useSelector( state => state.bioContact);
     const { loading } = useSelector(state => state.ui);
     let { id } = useParams();
     const notificationAlert = useRef();
-    const [frameworkComponents, setFramwrokw] = useState({slotTypeProspection:slotTypeProspection,stotProspection:SlotProspection, slotType: slotType, slotDate: SlotDate,slotParticipants: SlotParticipants,slotDetalle: SlotDetalle});
+    const [frameworkComponents, setFramwrokw] = useState({slotCreated:SlotCreated,slotTypeProspection:slotTypeProspection,stotProspection:SlotProspection, slotType: slotType, slotDate: SlotDate,slotParticipants: SlotParticipants,slotDetalle: SlotDetalle});
     const [gridApi, setGridApi] = useState();
     const [columnApi, setColumnApi] = useState();
 
@@ -339,6 +355,13 @@ export default function TableBio(props) {
                   field="name"
                   width="350"
                 />
+                 {/* <AgGridColumn
+                  headerName="Fecha creación"
+                  field="created_at"
+                  width="250"
+                  cellRenderer="slotCreated"
+                  hide={activeProspect ? false : true}
+                /> */}
                 <AgGridColumn
                   headerName="Fecha"
                   field="type"
@@ -358,7 +381,7 @@ export default function TableBio(props) {
                   cellRenderer="slotTypeProspection"
                 />
                  <AgGridColumn
-                  headerName="Tipo"
+                  headerName="Area"
                   field="type_prospection"
                   width="230"
                   cellRenderer="stotProspection"

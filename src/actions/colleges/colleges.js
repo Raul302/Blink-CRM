@@ -1,7 +1,7 @@
 import { types } from "../../types/types";
 import axios from 'axios';
 import { setError,removeError, startLoading, finishLoading } from "../uiNotificactions/ui";
-import { loadColleges } from '../../helpers/collegesHelpers/loadColleges';       
+import { loadColleges, loadCollegesByProspeccion } from '../../helpers/collegesHelpers/loadColleges';       
 import { constaApi } from "../../constants/constants";
 
 export const newCollege = (data) =>{
@@ -36,8 +36,20 @@ export const deleteCollege = (id) =>{
 }
 export const starLoadingColleges = () => {
     return async (dispatch) => {
+        dispatch( startLoading() );
         const colleges = await loadColleges();
         dispatch( setColleges(colleges) );
+        dispatch( finishLoading() );
+
+    }
+}
+
+export const starLoadingCollegesByProspeccion = (type = null) => {
+    return async (dispatch) => {
+        dispatch( startLoading() );
+        const colleges = await loadCollegesByProspeccion(type);
+        dispatch( setColleges(colleges) );
+        dispatch( finishLoading() );
     }
 }
 

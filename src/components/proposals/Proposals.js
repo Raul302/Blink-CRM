@@ -39,6 +39,8 @@ import moment from 'moment'
 import 'moment/locale/es'  // without this line it didn't work
 import *  as Ioicons from "react-icons/io";
 import * as IOIcons from "react-icons/io";
+import { starLoadingCollegesByProspeccion } from "actions/colleges/colleges";
+import Skeleton from 'react-loading-skeleton';
 
 // Slots
 export const SlotCollege = function SlotCollege(props){
@@ -142,7 +144,7 @@ export const SlotDates = function SlotDates(props){
     let timef = moment(dateBD).locale('es-mx').format("h:mm A");
     datef = datef[0].toUpperCase() + datef.slice(1);
     datef = datef.replace(".","");
-    let tag = <span class="Inter">{datef} <Ioicons.IoMdTime /></span>
+    let tag = <span class="Inter">{datef}{timef} <Ioicons.IoMdTime /></span>
     return tag;
 }
   return (
@@ -184,6 +186,9 @@ export const SlotActions = function SlotActions(props){
   )
 }
 export default function Proposals(props) {
+  const { loading } = useSelector(state => state.ui);
+
+  const [nowTime, setNowTime] = useState();
   const [theProposal,setTheProposal] = useState();
   const notificationAlert = useRef();
   const dispatch = useDispatch();
@@ -216,6 +221,9 @@ export default function Proposals(props) {
     reset: reset,
   } = useForm({});
 
+  useEffect (() => {
+    setNowTime(moment().format("YYYY-MM-DD HH:mm"));
+  },[])
   useEffect(() => {
     if(selection.length < 1){
       loadProposals();
@@ -230,7 +238,7 @@ export default function Proposals(props) {
     }
       let idx = active.id;
       let idxTwo = props.activeProspect.id ?? 0;
-    await axios.get(constaApi + "getProposal/"+idx+'/separate/'+idxTwo)
+    await axios.get(constaApi + "getProposal/"+idx+"/separate/"+idxTwo ?? 1)
     .then(function (response) {
         setRecords(response.data);
     });
@@ -244,6 +252,7 @@ export default function Proposals(props) {
     }
     // let aux =  await colleges.filter(col => col.id == e.target.value);
     let aux2 = await {
+         created_at: nowTime,
          contact:active.name,
          id_contact:active.id,
           // type:aux[0].type,
@@ -370,14 +379,14 @@ export default function Proposals(props) {
         >
           <AgGridColumn
                       cellRenderer="slotDates"
-                      headerName="Fecha" field="created_at" width="150" />
+                      headerName="Fecha" field="created_at" width="280" />
           <AgGridColumn
             headerName="Paises"
             field="country"
             width="230"
             cellRenderer="slotCountry"
           />
-          <AgGridColumn cellRenderer="slotCollege" headerName="Colegio" field="name" width="150" />
+          {/* <AgGridColumn cellRenderer="slotCollege" headerName="Colegio" field="name" width="150" /> */}
           
            <AgGridColumn
             headerName="Acciones"
@@ -444,6 +453,13 @@ export default function Proposals(props) {
            <button disabled className="btn btn-success btn-sm">{sel.name ?? " "}</button>
            );
           })}
+          <>
+          {loading ?
+            <div class="row mt-2">
+                       <NotificationAlert ref={notificationAlert} />
+                <Skeleton  style={{backgroundColor:'#888C8D'}}width="10rem"  height={10} count={10} />
+            </div>
+            :
             <div>
             <Grid
               style={{marginTop:'30px'}}
@@ -485,6 +501,8 @@ export default function Proposals(props) {
                   </Form.Control>
                 </Col> */}
             </div>
+            }
+            </>
             <Row>
               <Col>
                 <Button

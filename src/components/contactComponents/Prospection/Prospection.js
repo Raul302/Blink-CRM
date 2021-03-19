@@ -23,6 +23,8 @@ import Bio from "components/bioComponents/Bio";
 import { starLoadingProspect } from "actions/contacts/bioContact/bioContact";
 import Proposals from "components/proposals/Proposals";
 import moment from 'moment';
+import { starLoadingCollegesByProspeccion } from "actions/colleges/colleges";
+import { setColleges } from "actions/colleges/colleges";
 
 export default function Prospection() {
  const dispatch = useDispatch();
@@ -37,9 +39,12 @@ export default function Prospection() {
   const [modalStory, setModalStory] = useState(false);
   const [program, SetProgram] = useState();
   const [objAux, setObjAux] = useState({ program: "", year: "" });
+
   const programs = [
     "Boarding Schools",
-    "Año Escolar",
+    "School District",
+    "Language School",
+    "Work&Travel",
     "Summer Camps",
     "Cursos de Idiomas",
     "Carreras & Maestrias",
@@ -80,7 +85,7 @@ export default function Prospection() {
     active = JSON.parse(localStorage.getItem('ActiveContact'));
   }
 
-  useEffect(() => {
+  useEffect(() => { 
     consultAllProspections(active.id);
     if(active){
       localStorage.setItem('ActiveContact', JSON.stringify(active));
@@ -100,6 +105,9 @@ export default function Prospection() {
       })
       .then(function (response) {
           if(response.data[0]){
+            dispatch ( setColleges([]) );   
+            let newcadena = response.data[0].name_prospection.replace(/\d/g,"");
+              dispatch(starLoadingCollegesByProspeccion(newcadena));
               firstTime(response.data[0]);
               SetProspections(response.data);
 
@@ -117,13 +125,15 @@ export default function Prospection() {
     SetSelection(data.id);
     dispatch( starLoadingProspectRemindersC(active.id,data.id,'Prospeccion'));
     dispatch( starLoadingProspect(active.id,data.id));
-
   }
   const changeButton = async(id) => {
     dispatch (setRemindersC([]));
+    dispatch ( setColleges([]) );   
       changeLoad(true);
     await axios.post(constaApi + "showProspection",{id:id})
     .then(function (response) {
+    let newcadena = response.data.name_prospection.replace(/\d/g,"");
+    dispatch(starLoadingCollegesByProspeccion(newcadena)); 
         SetSelection(id);
         setActiveProspect(response.data);
         dispatch( starLoadingProspectRemindersC(active.id,response.data.id,'Prospeccion'));
@@ -335,11 +345,13 @@ disabled
 </div>
 </div>
 <div class="mt-5 row">
+  <h6>Recordatorios</h6>
 <div class="mt-5 col-12">
     <Reminders activeProspect={activeProspect} prospection={true}/>
 </div>
 </div>
 <div class="mt-5 row">
+<h6>Bitacora</h6>
 <div class="mr-5 mt-5 col-12">
     <Bio activeProspect={activeProspect}/>
 </div>

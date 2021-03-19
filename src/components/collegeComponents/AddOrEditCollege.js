@@ -9,7 +9,7 @@ import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
 import { starLoadingColleges,newCollege } from '../../actions/colleges/colleges';
 import NotificationAlert from "react-notification-alert"; 
-
+import  '../../styles/RBCheckboxFormStyles.css';
 export const Checkbox = function Checkbox(props) {
     function changeCheck(e) {
         props.changeCheck(e);
@@ -56,7 +56,7 @@ function AddOrEditCollege() {
     const [modalThree, setModalThree] = useState(false);
     const [modalFour, setModalFour] = useState(false);
     const { register, handleSubmit, errors, formState, reset } = useForm({ mode: 'onChange' });
-    const types = ['Boarding School', 'School District', 'Summer Camp', 'Language School', 'University/College', 'Work&Travel'];
+    const types = ['Boarding Schools', 'School District', 'Summer Camps', 'Language School', 'University/College', 'Work&Travel'];
     const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     const [sports, setArrSport] = useState([
         { id: 'sport', value: 'Football', isChecked: false, label: 'Football' }, { id: 'sport', value: 'Basketball', isChecked: false, label: 'Basketball' }, { id: 'sport', value: 'Volleyball', isChecked: false, label: 'Volleyball' },
@@ -236,7 +236,7 @@ function AddOrEditCollege() {
     function onSubmit(data) {
         if (modal) {
             setJson(obj);
-            if (obj.type === 'Boarding School') {
+            if (obj.type === 'Boarding Schools') {
                 showModalTwo();
             } else {
                 showModalFour();
@@ -540,7 +540,7 @@ function AddOrEditCollege() {
                                     <Row>
                                         <Form.Label className="formGray">SportsX</Form.Label>
                                     </Row>
-                                    <div class="checkbox">
+                                    <div class="col-xs-12 col-md-12 input-group input-group-sm">
                                         {sports.map((sport, index) => {
                                             return (
                                                 <Checkbox  {...sport} changeCheck={changeCheckSport} index={index} />
@@ -554,7 +554,7 @@ function AddOrEditCollege() {
                                     <Row>
                                         <Form.Label className="formGray">Arts</Form.Label>
                                     </Row>
-                                    <div class="checkbox">
+                                    <div class="col-xs-12 col-md-12 input-group input-group-sm">
                                         {arts.map((art, index) => {
                                             return (
                                                 <Checkbox  {...art} changeCheck={changeCheckArts} index={index} />
@@ -568,7 +568,7 @@ function AddOrEditCollege() {
                                     <Row>
                                         <Form.Label className="formGray">Special Clinics</Form.Label>
                                     </Row>
-                                    <div class="checkbox">
+                                    <div class="col-xs-12 col-md-12 input-group input-group-sm">
                                         {special_clinic.map((spe, index) => {
                                             return (
                                                 <Checkbox  {...spe} changeCheck={changeCheckSpecial} index={index} />

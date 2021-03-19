@@ -107,7 +107,7 @@ function TableColleges() {
     const [gridApi, setGridApi] = useState();
     const [columnApi, setColumnApi] = useState();
     useEffect(()=>{
-        dispatch( finishLoading());
+        // dispatch( finishLoading());
     },[dispatch])
     const notificationAlert = useRef();
     const {colleges} = useSelector( state => state.colleges);
