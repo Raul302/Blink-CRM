@@ -355,18 +355,20 @@ export default function TableBio(props) {
                   field="name"
                   width="350"
                 />
-                 {/* <AgGridColumn
+                 <AgGridColumn
                   headerName="Fecha creación"
                   field="created_at"
                   width="250"
                   cellRenderer="slotCreated"
                   hide={activeProspect ? false : true}
-                /> */}
+                />
                 <AgGridColumn
                   headerName="Fecha"
                   field="type"
                   width="300"
                   cellRenderer="slotDate"
+                  hide={activeProspect ? true : false}
+
                 />
                 <AgGridColumn
                   headerName="Detalle"

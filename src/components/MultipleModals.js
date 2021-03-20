@@ -29,12 +29,13 @@ function MultipleModals(props) {
     const [states, setStates] = useState([]);
     const [auth, setAth] = useState([]);
     const [idContact,setIDContact] = useState(null);
-    const [program, setProgram] = useState(["Boarding Schools",
-    "Año Escolar",
-    "Summer Camps",
-    "Cursos de Idiomas",
-    "Carreras & Maestrias",
-    "Au Pair"]);
+
+    const [program, setProgram] = useState(["Boarding School",
+    "School District",
+    "Summer Camp",
+    "Language School",
+    "University/College",
+    "Work & Travel"]);
     const years = [
         2019,
         2020,

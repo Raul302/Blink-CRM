@@ -56,7 +56,13 @@ function AddOrEditCollege() {
     const [modalThree, setModalThree] = useState(false);
     const [modalFour, setModalFour] = useState(false);
     const { register, handleSubmit, errors, formState, reset } = useForm({ mode: 'onChange' });
-    const types = ['Boarding Schools', 'School District', 'Summer Camps', 'Language School', 'University/College', 'Work&Travel'];
+//     Boarding School
+// School District
+// Summer Camp
+// Language School
+// University/College
+// Work & Travel
+    const types = ['Boarding School', 'School District', 'Summer Camp', 'Language School', 'University/College', 'Work & Travel'];
     const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     const [sports, setArrSport] = useState([
         { id: 'sport', value: 'Football', isChecked: false, label: 'Football' }, { id: 'sport', value: 'Basketball', isChecked: false, label: 'Basketball' }, { id: 'sport', value: 'Volleyball', isChecked: false, label: 'Volleyball' },

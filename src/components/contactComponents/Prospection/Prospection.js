@@ -40,15 +40,14 @@ export default function Prospection() {
   const [program, SetProgram] = useState();
   const [objAux, setObjAux] = useState({ program: "", year: "" });
 
+
   const programs = [
-    "Boarding Schools",
+    "Boarding School",
     "School District",
+    "Summer Camp",
     "Language School",
-    "Work&Travel",
-    "Summer Camps",
-    "Cursos de Idiomas",
-    "Carreras & Maestrias",
-    "Au Pair",
+    "University/College",
+    "Work & Travel"
   ];
   const status = [
     "Contacto Previo",
