@@ -26,8 +26,8 @@ export default function AddEditReminders(props) {
     let { active: contact } = useSelector(state => state.contacts);
     if(!contact){
         contact = JSON.parse(localStorage.getItem('contactsACtive'));
-
     }
+    const [init] = useState(JSON.parse(localStorage.getItem('user')) || { logged: false });
     const { register, handleSubmit, errors, reset, watch } = useForm({ mode: "onChange" });
     const [modal, setModal] = useState(false);
     const [nameContact, setNameContact] = useState(contact ? contact.name + ' ' + (contact.father_lastname ?? '') + ' ' + (contact.mother_lastname ?? '') : null);
@@ -205,8 +205,8 @@ export default function AddEditReminders(props) {
 
             });
         dispatch(activeReminderC(null, null));
-        if(props.openContacts){
-            dispatch(starLoadingAllRemindersC());
+        if(init){
+        dispatch(starLoadingAllRemindersC(init.id));
         }
         handleClose();
     }

@@ -29,8 +29,9 @@ export default function AddEditReminders(props) {
     let { active: college } = useSelector(state => state.colleges);
     if(!college){
         college = JSON.parse(localStorage.getItem('collegeActive'));
-
     }
+    const [init] = useState(JSON.parse(localStorage.getItem('user')) || { logged: false });
+
     const { register, handleSubmit, errors, reset, watch } = useForm({ mode: "onChange" });
     const [modal, setModal] = useState(false);
     const [nameCollege, setnameCollege] = useState(college ? college.name : null);
@@ -195,13 +196,12 @@ export default function AddEditReminders(props) {
         };
         await axios.post(constaApi + url, obj)
             .then(function (response) {
-                dispatch( starLoadingRemindersColleges(college.id));
+                if(init){
+                    dispatch(starLoadingAllRemindersColleges(init.id));
+                }
             }).catch(error => {
 
             });
-            if(props.openContacts){
-                dispatch( starLoadingAllRemindersColleges() );
-            }
         dispatch( activeReminderColleges(null, null));
         handleClose();
     }

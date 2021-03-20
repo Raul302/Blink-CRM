@@ -400,6 +400,13 @@ export default function TableReminders(props) {
                   width="50"
                 ></AgGridColumn>
                 <AgGridColumn
+                headerName="Contacto"
+                field="fullname"
+                width="250"
+                hide={props.fromRemindersSection ? false : true}
+                >
+                </AgGridColumn>
+                <AgGridColumn
                   headerName="Asunto"
                   field="subject"
                   width="200"

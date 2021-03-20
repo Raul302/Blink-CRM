@@ -31,7 +31,7 @@ export default function RemindersSection(props) {
             <AddEditContacts openContacts={true} {...props}/>
             </div>
             <h6>Contactos</h6>
-            <TableContacts  openModal={open}{...props}/>
+            <TableContacts  fromRemindersSection={true} openModal={open}{...props}/>
             </div>
            </div>
            {init.type === 'Administrador' ? 
@@ -41,7 +41,7 @@ export default function RemindersSection(props) {
             <AddEditReminders  openContacts={true} {...props}/>
             </div>
             <h6>Colegios</h6>
-            <TableColleges openModal={open}{...props}/>
+            <TableColleges fromRemindersSection={true} openModal={open}{...props}/>
             </div>
            </div>
            :
