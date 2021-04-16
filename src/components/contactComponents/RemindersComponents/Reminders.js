@@ -13,7 +13,10 @@ function Reminders(props) {
     useEffect(() => {
         if(props.prospection){
 
-        } else {
+        }else if(props.applications){
+
+        }
+         else {
             dispatch(starLoadingRemindersC(id))
         }
     }, [])

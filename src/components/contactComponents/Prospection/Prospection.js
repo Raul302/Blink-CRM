@@ -13,6 +13,8 @@ import {
   Popover,
   OverlayTrigger,
   FormControl,
+  Tabs,
+  Tab,
 } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import Skeleton from 'react-loading-skeleton';
@@ -25,12 +27,55 @@ import Proposals from "components/proposals/Proposals";
 import moment from 'moment';
 import { starLoadingCollegesByProspeccion } from "actions/colleges/colleges";
 import { setColleges } from "actions/colleges/colleges";
+import {
+  SelectionState,
+  GroupingState,
+  IntegratedGrouping,
+} from '@devexpress/dx-react-grid';
+import {
+  Grid,
+  Table,
+  TableHeaderRow,
+  TableGroupRow,
+  TableSelection,
+} from '@devexpress/dx-react-grid-bootstrap4';
+var _ = require('lodash');
+
+export  function CustomComponent(props){
+  const {obj} = props;
+  const [columns] = useState([
+    { name: 'name', title: 'Nombre' },
+  ]);
+  const [selection, setSelection] = useState([]);
+
+  function changeSelection(e){
+    setSelection(e); 
+    let aux = obj[e];
+    props.theSelection(aux);
+  }
+  return(
+    <div>
+       <Grid
+              style={{marginTop:'30px'}}
+              rows={obj}
+              columns={columns}
+            >
+              <SelectionState
+                selection={selection}
+                onSelectionChange={(e) => {changeSelection(e)}}
+              />
+              <Table />
+              <TableSelection /> 
+            </Grid>
+    </div>
+  );
+}
 
 export default function Prospection() {
- const dispatch = useDispatch();
-  const [aux,setAux] = useState({id:"",story:"",status:"Evaluacion",name_prospection:"",last_modification:""});
-  const [activeProspect,setActiveProspect] = useState({id:"",story:"",status:"Evaluacion",name_prospection:"",last_modification:""});
-  const [load,setLoad] = useState(false);
+  const dispatch = useDispatch();
+  const [aux, setAux] = useState({ id: "", story: "", status: "Evaluacion", name_prospection: "", last_modification: "" });
+  const [activeProspect, setActiveProspect] = useState({ id: "", story: "", status: "Evaluacion", name_prospection: "", last_modification: "" });
+  const [load, setLoad] = useState(false);
   const [prospections, SetProspections] = useState(null);
   const [selection, SetSelection] = useState(0);
   let { active } = useSelector((state) => state.contacts);
@@ -39,8 +84,10 @@ export default function Prospection() {
   const [modalStory, setModalStory] = useState(false);
   const [program, SetProgram] = useState();
   const [objAux, setObjAux] = useState({ program: "", year: "" });
-
-
+  const [modalGrouped, setModalGrouped] = useState(false);
+  const {colleges} = useSelector( state => state.colleges);
+  const [filterColleges,setFilterColleges] = useState();
+  const [auxobj,setAuxObj] = useState();
   const programs = [
     "Boarding School",
     "School District",
@@ -80,20 +127,27 @@ export default function Prospection() {
     formState,
     reset: reset,
   } = useForm({});
-  if(!active){
+  
+  if (!active) {
     active = JSON.parse(localStorage.getItem('ActiveContact'));
-  }
-
-  useEffect(() => { 
-    consultAllProspections(active.id);
-    if(active){
+  } 
+  useEffect(() => {
+    const result = _.groupBy(colleges,"country")
+    setFilterColleges(result);
+  },[colleges]);
+  useEffect(() => {
+      consultAllProspections(active.id);
+    if (active) {
       localStorage.setItem('ActiveContact', JSON.stringify(active));
-      if(activeProspect){
-        dispatch( starLoadingProspect(active.id,activeProspect.id));
+      if (activeProspect) {
+        dispatch(starLoadingProspect(active.id, activeProspect.id));
       }
     }
   }, []);
-  
+
+  const theSelection = (obj) => {
+    setAuxObj(obj);
+  }
   const consultAllProspections = async (id) => {
     changeLoad(true);
     await axios
@@ -103,42 +157,41 @@ export default function Prospection() {
         },
       })
       .then(function (response) {
-          if(response.data[0]){
-            dispatch ( setColleges([]) );   
-            let newcadena = response.data[0].name_prospection.replace(/\d/g,"");
-              dispatch(starLoadingCollegesByProspeccion(newcadena));
-              firstTime(response.data[0]);
-              SetProspections(response.data);
+        if (response.data[0]) {
+          dispatch(setColleges([]));
+          let newcadena = response.data[0].name_prospection.replace(/\d/g, "");
+          dispatch(starLoadingCollegesByProspeccion(newcadena));
+          firstTime(response.data[0]);
+          SetProspections(response.data);
+        } else {
+          SetProspections(null);
+          // dispatch( starLoadingProspectRemindersC(active.id,0,'Prospeccion'));
 
-          } else {
-            SetProspections(null);
-            // dispatch( starLoadingProspectRemindersC(active.id,0,'Prospeccion'));
-
-          }
-          changeLoad(false);
+        }
+        changeLoad(false);
       });
   };
-  
+
   const firstTime = (data) => {
     setActiveProspect(data);
     SetSelection(data.id);
-    dispatch( starLoadingProspectRemindersC(active.id,data.id,'Prospeccion'));
-    dispatch( starLoadingProspect(active.id,data.id));
+    dispatch(starLoadingProspectRemindersC(active.id, data.id, 'Prospeccion'));
+    dispatch(starLoadingProspect(active.id, data.id));
   }
-  const changeButton = async(id) => {
-    dispatch (setRemindersC([]));
-    dispatch ( setColleges([]) );   
-      changeLoad(true);
-    await axios.post(constaApi + "showProspection",{id:id})
-    .then(function (response) {
-    let newcadena = response.data.name_prospection.replace(/\d/g,"");
-    dispatch(starLoadingCollegesByProspeccion(newcadena)); 
+  const changeButton = async (id) => {
+    dispatch(setRemindersC([]));
+    dispatch(setColleges([]));
+    changeLoad(true);
+    await axios.post(constaApi + "showProspection", { id: id })
+      .then(function (response) {
+        let newcadena = response.data.name_prospection.replace(/\d/g, "");
+        dispatch(starLoadingCollegesByProspeccion(newcadena));
         SetSelection(id);
         setActiveProspect(response.data);
-        dispatch( starLoadingProspectRemindersC(active.id,response.data.id,'Prospeccion'));
-        dispatch( starLoadingProspect(active.id,response.data.id));
+        dispatch(starLoadingProspectRemindersC(active.id, response.data.id, 'Prospeccion'));
+        dispatch(starLoadingProspect(active.id, response.data.id));
         changeLoad(false);
-    });
+      });
     // SetSelection(id);
     // let auxxx = prospections.filter(prospect => prospect.id === id );
     //  setActiveProspect(auxxx);
@@ -146,91 +199,97 @@ export default function Prospection() {
 
   };
   const changeLoad = (val) => {
-      setLoad(val);
+    setLoad(val);
   }
   const changeModal = () => {
     setModalProspection(!modalProspection);
   };
-  
+
   const changeModalStatus = () => {
-    setAux({...activeProspect});
+    setAux({ ...activeProspect });
     setModalStatus(!modalStatus);
   }
-  
+
   const changeModalStory = () => {
-    setAux({...activeProspect});
+    setAux({ ...activeProspect });
     setModalStory(!modalStory);
   }
   const closeModal = async () => {
-    setActiveProspect({...aux});
+    setActiveProspect({ ...aux });
     setModalProspection(false);
     setModalStory(false);
     setModalStatus(false);
-
-
+    setModalGrouped(false);
   };
   const changeStatus = (e) => {
-    setActiveProspect({...activeProspect,status:e.target.value});
+    setActiveProspect({ ...activeProspect, status: e.target.value });
+    if (e.target.value == 'Aplicar') {
+      setModalGrouped(true);
+    }
   }
   const changeStory = (e) => {
-    setActiveProspect({...activeProspect,story:e.target.value});
+    setActiveProspect({ ...activeProspect, story: e.target.value });
 
   }
   const deleteProspection = () => {
     changeLoad(true);
-     axios.get(constaApi + "deleteProspection/"+activeProspect.id)
-    .then(function (response) {
-      consultAllProspections(active.id);
-      changeLoad(false);
-    });
+    axios.get(constaApi + "deleteProspection/" + activeProspect.id)
+      .then(function (response) {
+        consultAllProspections(active.id);
+        changeLoad(false);
+      });
   }
 
   const saveChanges = () => {
     changeLoad(true);
     moment.locale("es-mx");
-    let newObj ={
-        id:activeProspect.id,
-        name_prospection: activeProspect.name_prospection,
-        status: activeProspect.status,
-        story: activeProspect.story,
-        last_modification : moment().format("YYYY-MM-DD HH:mm")          ,
-        id_last_contact : active.id,
-        last_contact : active.name,
+    let newObj = {
+      id: activeProspect.id,
+      name_prospection: activeProspect.name_prospection,
+      status: activeProspect.status,
+      story: activeProspect.story,
+      last_modification: moment().format("YYYY-MM-DD HH:mm"),
+      id_last_contact: active.id,
+      last_contact: active.name,
+      name: auxobj ? auxobj.name : null,
+      id_application : auxobj ? auxobj.id : null
     };
-     axios.post(constaApi + "updatedProspection",newObj)
-    .then(function (response) {
-      consultAllProspections(active.id);
-      closeModal();
-      changeLoad(false);
-    });
+    axios.post(constaApi + "updatedProspection", newObj)
+      .then(function (response) {
+        consultAllProspections(active.id);
+        closeModal();
+        changeLoad(false);
+      });
   }
   const formatDate = (date) => {
     moment.locale('es-mx')
     let datef = '';
-    if(date){
-    datef = moment(date).locale('es-mx').format("DD/MMM/YYYY ");
-    }else {
+    if (date) {
+      datef = moment(date).locale('es-mx').format("DD/MMM/YYYY ");
+    } else {
       datef = '';
     }
     return datef;
   }
-  const updateReminders = () =>{
-    dispatch( starLoadingProspectRemindersC(active.id,activeProspect.id,'Prospeccion'));
+  const updateReminders = () => {
+    dispatch(starLoadingProspectRemindersC(active.id, activeProspect.id, 'Prospeccion'));
   }
   const onSubmit = (data) => {
     moment.locale("es-mx");
-      let newObj ={
-          name_prospection: objAux.program + " " + objAux.year,
-          status: 'Evaluacion',
-          story: null,
-          last_modification : moment().format("YYYY-MM-DD HH:mm")          ,
-          id_last_contact : active.id,
-          last_contact : active.name,
-      };
-       axios.post(constaApi + "saveProspection",newObj)
+    let newObj = {
+      name_prospection: objAux.program + " " + objAux.year,
+      status: 'Evaluacion',
+      story: null,
+      last_modification: moment().format("YYYY-MM-DD HH:mm"),
+      id_last_contact: active.id,
+      last_contact: active.name,
+    };
+    axios.post(constaApi + "saveProspection", newObj)
       .then(function (response) {
+        changeButton(response.data.id);
         consultAllProspections(active.id);
         closeModal();
+
       });
   };
   return (
@@ -243,13 +302,15 @@ export default function Prospection() {
               key={pros.id}
               // active={{backgroundColor:'#FF0000'}}
               class={[
-                selection === pros.id
+               pros.status === "Aplicar" ? 
+               "mt-n5 mr-1 btn btn-sm btn-light"
+               : selection === pros.id
                   ? "mt-n5 mr-1 btn btn-sm btn-info"
                   : "mt-n5 mr-1 btn btn-sm btn-primary",
               ]}
-              // style={{
-              //   backgroundColor:[selection === pros.id ?  '#0062cc' : '#51cbce']
-              // }}
+            // style={{
+            //   backgroundColor:[selection === pros.id ?  '#0062cc' : '#51cbce']
+            // }}
             >
               {pros.name_prospection}
             </button>
@@ -271,31 +332,31 @@ export default function Prospection() {
         Guardar cambios
       </button> */}
       {prospections &&
-      <button
-        onClick={(e) => deleteProspection()}
-        type="button"
-        class="mt-n5 float-right Inter btn btn-danger btn-sm"
-      >
-        Eliminar Prospeccion
+        <button
+          onClick={(e) => deleteProspection()}
+          type="button"
+          class="mt-n5 float-right Inter btn btn-danger btn-sm"
+        >
+          Eliminar Prospeccion
       </button>
       }
       {load === true ?
-                      <Skeleton width="60rem"  height={30} count={10} />
+        <Skeleton width="60rem" height={30} count={10} />
 
-    :
-    <>
-    <div class="row">
-    <div class="content col-4">
-  <Form.Label className="formGray">Status</Form.Label>
-  <Form.Control  name="status"
-disabled
- autoComplete="off" className="formGray" type="text"
- value={activeProspect.status}
- />
- <button
- class=" mt-1 float-right Inter btn-primary  btn-sm"
- onClick={(e) => changeModalStatus()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
-  {/* <Form.Control
+        :
+        <>
+          <div class="row">
+            <div class="content col-4">
+              <Form.Label className="formGray">Status</Form.Label>
+              <Form.Control name="status"
+                disabled
+                autoComplete="off" className="formGray" type="text"
+                value={activeProspect.status}
+              />
+              <button
+                class=" mt-1 float-right Inter btn-primary  btn-sm"
+                onClick={(e) => changeModalStatus()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
+              {/* <Form.Control
     onChange={(e) => changeStatus(e)}
     autoComplete="off"
     name="year"
@@ -313,52 +374,59 @@ disabled
       </option>
     ))}
   </Form.Control> */}
-</div>
-<div class="content col-4">
-<Form.Label className="formGray">Story</Form.Label>
-<Form.Control
-  onChange={(e) => changeStory(e)}
-  disabled
-  value={activeProspect.story}
-  as="textarea"
-  placeholder="Escriba sus notas..."
-  rows={8}
- />
- <button
- class=" mt-1 float-right Inter btn-primary  btn-sm"
- onClick={(e) => changeModalStory()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
-</div>
-<div>
-<Form.Label className="formGray">Ultimo contacto</Form.Label>
-<Form.Control  name="last_modification"
-disabled
- autoComplete="off" className="formGray" type="text"
- placeholder="Ultima fecha"
- value={formatDate(activeProspect.last_modification)}
- />
-</div>
-</div>
-<div class="row">
-<div class="mr-5 mb-4 col-12">
-    <Proposals updateReminders={updateReminders} activeProspect={activeProspect}/>
-</div>
-</div>
-<div class="mt-5 row">
-  <h6>Recordatorios</h6>
-<div class="mt-5 col-12">
-    <Reminders activeProspect={activeProspect} prospection={true}/>
-</div>
-</div>
-<div class="mt-5 row">
-<h6>Bitacora</h6>
-<div class="mr-5 mt-5 col-12">
-    <Bio activeProspect={activeProspect}/>
-</div>
-</div>
-</>
- }
-     
-   
+            </div>
+            <div class="content col-4">
+              <Form.Label className="formGray">Story</Form.Label>
+              <Form.Control
+                onChange={(e) => changeStory(e)}
+                disabled
+                value={activeProspect.story}
+                as="textarea"
+                placeholder="Escriba sus notas..."
+                rows={8}
+              />
+              <button
+                class=" mt-1 float-right Inter btn-primary  btn-sm"
+                onClick={(e) => changeModalStory()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
+            </div>
+            <div>
+              <Form.Label className="formGray">Ultimo contacto</Form.Label>
+              <Form.Control name="last_modification"
+                disabled
+                autoComplete="off" className="formGray" type="text"
+                placeholder="Ultima fecha"
+                value={formatDate(activeProspect.last_modification)}
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="mr-5 mb-4 col-12">
+              <Proposals
+                blocked={activeProspect.status == "Aplicar" ? true : activeProspect.status == "Cancelar" ? true : false}
+                updateReminders={updateReminders} activeProspect={activeProspect} />
+            </div>
+          </div>
+          <div class="mt-5 row">
+            <h6>Recordatorios</h6>
+            <div class="mt-5 col-12">
+              <Reminders
+                blocked={activeProspect.status == "Aplicar" ? true : activeProspect.status == "Cancelar" ? true : false}
+                activeProspect={activeProspect} prospection={true} />
+            </div>
+          </div>
+          <div class="mt-5 row">
+            <h6>Bitacora</h6>
+            <div class="mr-5 mt-5 col-12">
+              <Bio
+                extern={true}
+                blocked={activeProspect.status == "Aplicar" ? true : activeProspect.status == "Cancelar" ? true : false}
+                activeProspect={activeProspect} />
+            </div>
+          </div>
+        </>
+      }
+
+
 
       {/* Modal prospeccion */}
       <Modal
@@ -483,24 +551,24 @@ disabled
             <div className="container-fluid">
               <Row>
                 <Col className="col-4">
-                <Form.Control
-                onChange={(e) => changeStatus(e)}
-                autoComplete="off"
-                name="year"
-                value={activeProspect.status}
-                as="select"
-                size="sm"
-                custom
-                >
-                <option value="Evaluacion" selected>
-                  Evaluacion
+                  <Form.Control
+                    onChange={(e) => changeStatus(e)}
+                    autoComplete="off"
+                    name="year"
+                    value={activeProspect.status}
+                    as="select"
+                    size="sm"
+                    custom
+                  >
+                    <option value="Evaluacion" selected>
+                      Evaluacion
                 </option>
-                {status.map((st) => (
-                    <option key={st} value={st}>
-                    {st}
-                  </option>
-                ))}
-              </Form.Control> 
+                    {status.map((st) => (
+                      <option key={st} value={st}>
+                        {st}
+                      </option>
+                    ))}
+                  </Form.Control>
                 </Col>
               </Row>
             </div>
@@ -530,6 +598,69 @@ disabled
 
       {/* End modal Status */}
 
+      {/* Modal Grouped */}
+      <Modal
+        show={modalGrouped}
+        dialogClassName="modalMax"
+        onHide={closeModal}
+        dialogClassName="modal-90w"
+      >
+        <Modal.Header style={{ height: "60px" }} closeButton>
+          <Modal.Title
+            style={{
+              fontFamily: "Inter",
+              marginTop: "5px",
+              fontWeight: "600",
+              fontSize: "18px",
+            }}
+          >
+            Seleccionar Colegio
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ background: "#F4F5F6", border: "0px" }}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="container-fluid">
+              <Row>
+                <Col className="tabpanel col-12">
+                  <Tabs >
+                    {filterColleges &&
+                    [ Object.keys(filterColleges).map((oneKey,i)=>{
+                      return(
+                      <Tab eventKey={oneKey} title={oneKey}>
+                      <CustomComponent theSelection={theSelection} obj={filterColleges[oneKey]} />
+                    </Tab>
+                      )
+                    })]}
+                  </Tabs>
+                </Col>
+              </Row>
+            </div>
+            <Row>
+              <Col>
+                <Button
+                  className="float-right mb-3 mr-2"
+                  type="button"
+                  onClick={(e) => saveChanges()}
+                  variant="primary"
+                >
+                  Crear
+                </Button>
+                <Button
+                  onClick={closeModal}
+                  style={{ fontFamily: "Inter", fontWeight: "500" }}
+                  className="float-right mb-3 mr-2"
+                  variant="danger"
+                >
+                  Cancelar
+                </Button>
+              </Col>
+            </Row>
+          </form>
+        </Modal.Body>
+      </Modal>
+
+      {/* End modal modalGrouped */}
+
 
       {/* Modal Status */}
       <Modal
@@ -555,15 +686,15 @@ disabled
             <div className="container-fluid">
               <Row>
                 <Col className="col-8">
-                <Form.Label className="formGray">Story</Form.Label>
-                <Form.Control
-                  onChange={(e) => changeStory(e)}
-                  value={activeProspect.story}
-                  as="textarea"
-                  placeholder="Escriba sus notas..."
-                  rows={12}
-                  cols={12}
-                />
+                  <Form.Label className="formGray">Story</Form.Label>
+                  <Form.Control
+                    onChange={(e) => changeStory(e)}
+                    value={activeProspect.story}
+                    as="textarea"
+                    placeholder="Escriba sus notas..."
+                    rows={12}
+                    cols={12}
+                  />
                 </Col>
               </Row>
             </div>

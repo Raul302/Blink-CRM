@@ -1,23 +1,29 @@
 import React, { useState, useEffect,useRef } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/GlobalStyles.css';
-import { Row, Col, Button, Modal, Form } from 'react-bootstrap';
+import { Row, Col, Button, Modal, Form,InputGroup } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import NotificationAlert from "react-notification-alert";
 import { constaApi } from '../constants/constants';
+import moment from 'moment'
+import swal from 'sweetalert';
 
 
 
 function MultipleModals(props) {
     // Refs
     const notificationAlert = useRef();
+    moment.locale("es-mx");
     // states
+    const [notificationReminder, setNotificationReminder] = useState();
     const [blocked,setBlocked] = useState(false);
     const [modal1, setModal1] = useState(false);
     const [modal2, setModal2] = useState(false);
     const [modal3, setModal3] = useState(false);
     const [modal4, setModal4] = useState(false);
+    const [modal5, setModal5] = useState(false);
+    const [aux,setAux] = useState();
     const [extra, setExtra] = useState(false);
     const [validField, setvalidField] = useState(true);
     const [validFieldTwo, setvalidFieldTwo] = useState(true);
@@ -29,6 +35,11 @@ function MultipleModals(props) {
     const [states, setStates] = useState([]);
     const [auth, setAth] = useState([]);
     const [idContact,setIDContact] = useState(null);
+    const [notes, setNotes] = useState("");
+    const [timeReminder, setTimeReminder] = useState("");
+    const [dateReminder, setDateReminder] = useState("");
+    const [now, setNow] = useState();
+    const [nowTime, setNowTime] = useState();
 
     const [program, setProgram] = useState(["Boarding School",
     "School District",
@@ -54,10 +65,89 @@ function MultipleModals(props) {
     const [countries, setCountries] = useState([]);
 
     useEffect(() => {
+        thisDay();
+        present();
         consultStates();
         setExtra(false);
-
+        consultCountries();
     }, []);
+    function confirmClose(){
+        swal({
+            title: "¿Desea cancelar el registro?",
+            text:"Esto evitara que el contacto sea guardado",
+            icon: "info",
+            dangerMode: false,
+            buttons: ["No", "Si"],
+          }).then(async (willDelete) => {
+            if (willDelete) {
+                setModal5(false);
+                setNotes();
+            } else {
+              swal("Operacion cancelada!");
+            }
+          });
+    }
+    function thisDay(){
+        let date2 = new Date();
+        date2.setDate(date2.getDate() + 1);
+        setTimeReminder("09:00:00");
+        setNotificationReminder("-0 hour");
+        setDateReminder(date2.toISOString().substr(0, 10).replace('T', ' '));
+    }
+    function present() {
+        setNow(moment().format("YYYY-MM-DD"));
+        setNowTime(moment().format("HH:mm"));
+    }
+    function changeTimeReminder(e) {
+        let currendate = moment(dateReminder + " "+ timeReminder).format("YYYY-MM-DD HH:mm");
+        let nowDatecomparison = moment(now + " "+ nowTime).format("YYYY-MM-DD HH:mm");
+        let strings = e.target.value;
+        strings = strings.charAt(1)  + strings.charAt(2);
+        let nowDate = moment(currendate).subtract(parseInt(strings), 'hour').format("YYYY-MM-DD HH:mm");
+        if(nowDate < nowDatecomparison){
+            notification('warning','Cuidado,estas ingresando un rango de valor no permitido');
+            setNotificationReminder("");
+        } else {
+            setNotificationReminder(e.target.value);
+        }
+
+    }
+    // function changeDate(e) {
+    //     console.log('e',e.target.value)
+    //     if(e.target.value < now){
+    //         notification('warning','Cuidado,estas ingresando una Fecha menor a la permitida');
+    //     } else {
+    //         setDateReminder(e.target.value)
+    //     }
+    // }
+
+    function notification(type, message) {
+        let place = "tc";
+        var options = {};
+        options = {
+            place: place,
+            message: (
+                <div>
+                    <div>
+                        {message}
+                    </div>
+                </div>
+            ),
+            type: type,
+            icon: "nc-icon nc-bell-55",
+            autoDismiss: 7,
+        }
+        notificationAlert.current.notificationAlert(options);
+    }
+    function changeNotes(e) {
+        setNotes(e.target.value);
+    }
+    function changeDate(e) {
+        setDateReminder(e.target.value)
+    }
+    function changeTime(e) {
+        setTimeReminder(e.target.value);
+    }
     async function consultCountries(auth) {
         await axios.get('https://restcountries.eu/rest/v2/all', {
             // headers: {
@@ -205,6 +295,7 @@ function MultipleModals(props) {
         setModal2(false);
         setModal3(false);
         setModal4(false);
+        setModal5(false);
     }
     const handleExtra = function ekis() {
         setExtra(state => !state);
@@ -247,12 +338,39 @@ function MultipleModals(props) {
     async function onSubmit(data) {
         setBlocked(true);
         if(modal1 === true){
-           await axios.post(constaApi+'contacts/save',data)
-              .then(function (response) {
-                setIDContact(response.data.id);
-              });
-            showModal2();
+            setAux({...data});
+            setModal1(false);
+            setModal5(true);
             setBlocked(false);
+        }
+        if(modal5 === true){
+            setModal5(false);
+            const {email,id,name,token,type} = JSON.parse(localStorage.getItem('user'));
+            let selectValue = [{
+                id:id,
+                type:type,
+                fullname:name,
+                email:email
+            }];
+            let datex = dateReminder + " " + timeReminder;
+            let obj = {
+                id:  null,
+                id_college: null,
+                college:  null,
+                subject: 'Recordatorio automatico',
+                emailTo: selectValue ?? null,
+                dateReminder: datex ?? null,
+                timenotification: notificationReminder ?? null,
+                notes: notes ?? null,
+                departament: null,
+                urgent:  0,
+            };
+            let auxTwo = {...aux,reminder:{...obj}};
+             axios.post(constaApi+'contacts/save',auxTwo)
+            .then(function (response) {
+              setIDContact(response.data.id);
+            });
+          showModal2();
         }
         if(modal3 === true){
             data.idContact = idContact;
@@ -671,6 +789,70 @@ function MultipleModals(props) {
                     <div className="row mb-5"></div>
                     <div className="row mb-5"></div>
                     <div className="row mb-5"></div>
+                </Modal.Body>
+
+            </Modal>
+
+
+            {/* Modal Five */}
+              {/* Four Modal */}
+              <Modal
+                show={modal5}
+                onHide={(e) => confirmClose()}
+                dialogClassName="modal-90w"
+                style={{marginTop:'50px', height: '500px', maxHeight: '604px' }}
+                >
+                <Modal.Header style={{height:'60px'}} closeButton>
+                <Modal.Title style={{ fontFamily: 'Inter', marginTop:'5px', fontWeight: '600', fontSize: '18px' }}>Agregar Recordatorio</Modal.Title>
+                </Modal.Header>
+                <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
+                <NotificationAlert ref={notificationAlert} />
+                <form onSubmit={handleSubmit(onSubmit)}>
+                <Row className="mt-3">
+                                <Col>
+                                    <Form.Label className="formGray">Notas</Form.Label>
+                                    <InputGroup style={{ borderTop: '0', width: '100%', marginTop: '0px' }}>
+                                        <Form.Control
+                                            onChange={(e) => changeNotes(e)}
+                                            value={notes} as="textarea" placeholder="Escriba su mensaje..." rows={8} />
+                                    </InputGroup>
+                                </Col>
+                            </Row>
+                            <Row className="mt-3">
+                                <Col >
+                                    <Form.Control style={{ height: '100px', width: '180px' }}
+                                        onChange={(e) => changeDate(e)}
+                                         disabled
+                                        value={dateReminder} autoComplete="off" name="date"
+                                        className="formGray" type="date" placeholder="Ingrese su Fecha" />
+                                </Col>
+                                <Col className="mt-4">
+                                    <Form.Control style={{ height: '30px', width: '150px' }}
+                                        onChange={(e) => changeTime(e)}
+                                         disabled
+                                        value={timeReminder} autoComplete="off" name="date"
+                                        className="formGray" type="time" placeholder="Ingrese su Fecha" />
+                                </Col>
+                                <Col className="col-5">
+                                    <Form.Label className="formGray">Notificación</Form.Label>
+                                    <Form.Control onChange={(e) => changeTimeReminder(e)}
+                                        autoComplete="off"
+                                         disabled
+                                        value={notificationReminder} name="type" as="select" size="sm" custom>
+                                        <option disabled selected value=""></option>
+                                        <option value="-0 hour">Misma hora</option>
+                                        <option value="-1 hour">1 Hora Antes</option>
+                                        <option value="-24 hour">1 Dia Antes</option>
+                                        <option value="-48 hour">2 Dias Antes</option>
+                                        <option value="-168 hour">1 Semana Antes</option>
+                                    </Form.Control>
+                                </Col>
+                            </Row>
+                            <Button 
+                             disabled ={!notes}
+                             onSubmit={handleSubmit(onSubmit)}
+                             className="float-right mb-3 mr-2" type="submit" variant="primary">Guardar</Button>
+                             </form>
                 </Modal.Body>
 
             </Modal>

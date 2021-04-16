@@ -367,7 +367,7 @@ export default function TableReminders(props) {
                 <NotificationAlert ref={notificationAlert} />
                 {!loading ?
                     <Row>
-                        <AddEditBio activeProspect={props.activeProspect ?? null} fromBio={fromBio} noBar={true} closeAll={closeAll} flagTwo={show} />
+                        <AddEditBio extraPetition={true} activeProspect={props.activeProspect ?? null} fromBio={fromBio} noBar={true} closeAll={closeAll} flagTwo={show} />
                         {/* <AddEditBio setFlag={setFlag} row={row} flag={show}/> */}
                         <div
               className="ag-theme-alpine"

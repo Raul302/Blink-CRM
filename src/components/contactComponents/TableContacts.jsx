@@ -162,7 +162,7 @@ function TableContacts(props) {
                         pagination={true}
                         paginationPageSize={10}
                         paginationNumberFormatter={function (params) {
-                            return '[' + params.value.toLocaleString() + ']';
+                            return params.value.toLocaleString();
                         }}
                         rowSelection="multiple"
                     >

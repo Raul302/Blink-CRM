@@ -12,6 +12,7 @@ import '../../../styles/RBCheckboxFormStyles.css';
 import { Checkbox } from '../../collegeComponents/AddOrEditCollege';
 import { starLoadingAllRemindersC } from 'actions/contacts/remindersContacts/remindersContact';
 import { starLoadingProspectRemindersC } from 'actions/contacts/remindersContacts/remindersContact';
+import { starLoadingApplicationRemindersC } from 'actions/contacts/remindersContacts/remindersContact';
 
 
 export default function AddEditReminders(props) {
@@ -189,15 +190,17 @@ export default function AddEditReminders(props) {
             dateReminder: datex ?? null,
             timenotification: notificationReminder ?? null,
             notes: notes ?? null,
-            departament: departament ?? null,
+            departament: props.prospection ? 'prospeccion' : props.applications ? 'aplicacion' : departament ?? null,
             urgent: flagImportant ? flagImportant.isChecked : null,
-            type: props.prospection ? 'Prospeccion' : 'General',
-            id_type: props.activeProspect ? props.activeProspect.id : 0
+            type: props.prospection ? 'Prospeccion' : props.activeApplication ? 'Aplicacion' : 'General',
+            id_type: props.activeProspect ? props.activeProspect.id : props.activeApplication ? props.activeApplication.id : 0
         };
         await axios.post(constaApi + url, obj)
             .then(function (response) {
                 if(props.prospection){
                     dispatch( starLoadingProspectRemindersC(contact.id,props.activeProspect.id,'Prospeccion'));
+                }else if(props.applications){
+                    dispatch( starLoadingApplicationRemindersC(contact.id,props.activeApplication.id,'Aplicaciones'));
                 }else {
                     dispatch(starLoadingRemindersC(contact.id));
                 }
@@ -256,7 +259,9 @@ export default function AddEditReminders(props) {
     return (
         <div className="mt-n5">
                             <NotificationAlert ref={notificationAlert} />
-            <button onClick={(e) => showModal()} className="btn btn-primary">
+            <button 
+             disabled={props.blocked ? true:false}
+            onClick={(e) => showModal()} className="btn btn-primary">
                 <span className="Inter"
                     style={{ fontSize: "18px" }}>+</span> Recordatorio</button>
 
@@ -333,7 +338,7 @@ export default function AddEditReminders(props) {
                                     <Form.Control style={{ height: '100px', width: '180px' }}
                                         onChange={(e) => changeDate(e)}
                                         value={dateReminder} autoComplete="off" name="date"
-                                        className="formGray" min={now} type="date" placeholder="Ingrese su Fecha" />
+                                        className="formGray" type="date" placeholder="Ingrese su Fecha" />
                                 </Col>
                                 {/* <DatePicker 
                                 selected={dateReminder}
@@ -344,7 +349,7 @@ export default function AddEditReminders(props) {
                                     <Form.Control style={{ height: '30px', width: '120px' }}
                                         onChange={(e) => changeTime(e)}
                                         value={timeReminder} autoComplete="off" name="date"
-                                        className="formGray" min={nowTime} type="time" placeholder="Ingrese su Fecha" />
+                                        className="formGray"  type="time" placeholder="Ingrese su Fecha" />
                                 </Col>
                                 <Col className="col-5">
                                     <Form.Label className="formGray">Notificación</Form.Label>
@@ -371,17 +376,25 @@ export default function AddEditReminders(props) {
                                 </Col>
                             </Row>
                             <Row>
+                            {!props.prospection
+                            ?
+                            [!props.applications ?
                                 <Col className="col-6">
-                                    <Form.Label className="formGray">Departamento</Form.Label>
-                                    <Form.Control onChange={(e) => changeDepartament(e)}
-                                        autoComplete="off"
-                                        value={departament} name="type" as="select" size="sm" custom>
-                                        <option disabled value="" selected></option>
-                                        <option value="prospeccion">Prospección</option>
-                                        <option value="aplicacion">Aplicación</option>
-                                        <option value="general">General</option>
-                                    </Form.Control>
-                                </Col>
+                                <Form.Label className="formGray">Departamento</Form.Label>
+                                <Form.Control onChange={(e) => changeDepartament(e)}
+                                    autoComplete="off"
+                                    value={departament} name="type" as="select" size="sm" custom>
+                                    <option disabled value="" selected></option>
+                                    <option value="prospeccion">Prospección</option>
+                                    <option value="aplicacion">Aplicación</option>
+                                    <option value="general">General</option>
+                                </Form.Control>
+                            </Col>
+                            :
+                            <></>
+                            ]
+                            :<></>
+                            }
                                 <Col className="mt-4 col-6">
                                 <label class="custom-radio-checkbox">
                                 <input class="custom-radio-checkbox__input" 

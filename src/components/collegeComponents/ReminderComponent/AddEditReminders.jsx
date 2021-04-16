@@ -126,18 +126,10 @@ export default function AddEditReminders(props) {
 
     }
     function changeDate(e) {
-        if(e.target.value < now){
-            notification('warning','Cuidado,estas ingresando una Fecha menor a la permitida');
-        } else {
-            setDateReminder(e.target.value)
-        }
+        setDateReminder(e.target.value)
     }
     function changeTime(e) {
-        if(e.target.value < nowTime){
-            notification('warning','Cuidado,estas ingresando una Hora menor a la permitida');
-        } else {
-            setTimeReminder(e.target.value);
-        }
+        setTimeReminder(e.target.value);
     }
     const handleChange = (e) => {
         setSelectValue(e);
@@ -329,13 +321,13 @@ export default function AddEditReminders(props) {
                                     <Form.Control style={{ height: '100px', width: '180px' }}
                                         onChange={(e) => changeDate(e)}
                                         value={dateReminder} autoComplete="off" name="date"
-                                        className="formGray" min={now} type="date" placeholder="Ingrese su Fecha" />
+                                        className="formGray" type="date" placeholder="Ingrese su Fecha" />
                                 </Col>
                                 <Col className="mt-4">
                                     <Form.Control style={{ height: '30px', width: '120px' }}
                                         onChange={(e) => changeTime(e)}
                                         value={timeReminder} autoComplete="off" name="date"
-                                        className="formGray" min={nowTime} type="time" placeholder="Ingrese su Fecha" />
+                                        className="formGray" type="time" placeholder="Ingrese su Fecha" />
                                 </Col>
                                 <Col className="col-5">
                                     <Form.Label className="formGray">Notificación</Form.Label>

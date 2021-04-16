@@ -222,12 +222,12 @@ export default function Proposals(props) {
   } = useForm({});
 
   useEffect (() => {
+    setRecords([]);
+    loadProposals();
     setNowTime(moment().format("YYYY-MM-DD HH:mm"));
-  },[])
+  },[props.activeProspect])
   useEffect(() => {
-    if(selection.length < 1){
-      loadProposals();
-    }
+    setRecords([]);
     if(colleges && selection){
       convertSel(selection);
     }
@@ -347,9 +347,14 @@ export default function Proposals(props) {
   return (
     <div className="content" style={{ width: "100%", height: "100%" }}>
       <NotificationAlert ref={notificationAlert} />
-
+      {loading ?
+                  <Skeleton width="60rem" height={30} count={10} />
+      :
+      <>
         <div class="col d-flex justify-content-end">
-             <button  onClick={(e) => setModal(!modal)}className="btn btn-primary">
+             <button  
+             disabled={props.blocked ? true:false}
+             onClick={(e) => setModal(!modal)}className="btn btn-primary">
                 <span className="Inter"
                     style={{ fontSize: "18px" }}>+</span> Propuesta</button>
         </div>
@@ -528,6 +533,8 @@ export default function Proposals(props) {
       </Modal>
 
       </div>
+      </>
+      }
     </div>
   );
 }

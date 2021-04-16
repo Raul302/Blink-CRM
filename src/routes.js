@@ -8,6 +8,8 @@ import * as TiIcons from "react-icons/ti";
 import * as MDicons from "react-icons/md";
 import * as FAIcons from "react-icons/fa";
 import * as BIicons from  "react-icons/bi";
+import * as GIIcons from  "react-icons/gi";
+import * as AIIcons from  "react-icons/ai";
 import RemindersSection from 'pages/RemindersSection';
 
 var routes = [
@@ -51,6 +53,22 @@ var routes = [
     path: "/SectionReminders",
     name: "Recordatorios",
     icon: <BIicons.BiTime/>,
+    component: RemindersSection,
+    layout: "/admin",
+  },
+
+  {
+    path: "/SectionReminders",
+    name: "Prospecciones",
+    icon: <GIIcons.GiMagnifyingGlass/>,
+    component: RemindersSection,
+    layout: "/admin",
+  },
+
+  {
+    path: "/SectionReminders",
+    name: "Aplicaciones",
+    icon: <AIIcons.AiOutlineAppstoreAdd/>,
     component: RemindersSection,
     layout: "/admin",
   },

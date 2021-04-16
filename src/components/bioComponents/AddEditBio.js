@@ -27,6 +27,8 @@ import Select from "react-select";
 import { newBioC } from "actions/contacts/bioContact/bioContact";
 import { updatedBioC } from "actions/contacts/bioContact/bioContact";
 import { deleteBioC } from "actions/contacts/bioContact/bioContact";
+import { starLoadingProspect } from "actions/contacts/bioContact/bioContact";
+import { starLoadingApplications } from "actions/contacts/bioContact/bioContact";
 
 export default function AddEditBio(props) {
   let contador = 0;
@@ -171,10 +173,16 @@ export default function AddEditBio(props) {
         text: textBio ? textBio : null,
         id_college: null,
         type: prefixSubject,
-        type_prospection: props.activeProspect  ? 'Prospeccion' : 'General',
-        id_type_prospection : props.activeProspect ? props.activeProspect.id : 0
+        type_prospection: props.activeProspect  ? 'Prospeccion' : props.activeApplications ? 'aplicacion' : 'General',
+        id_type_prospection : props.activeProspect ? props.activeProspect.id : props.activeApplication ? props.activeApplication.id : 0
       };
       dispatch(updatedBioC(datax));
+      if(props.activeProspect){
+        dispatch(starLoadingProspect(id,props.activeProspect.id));
+
+      } else if(props.activeApplication){
+        dispatch( starLoadingApplications(id,props.activeApplication.id));
+      }
     } else {
       let datax = {
         id_contact: id,
@@ -184,10 +192,22 @@ export default function AddEditBio(props) {
         date: dateBio ? datex : null,
         text: textBio ? textBio : null,
         type: prefixSubject,
-        type_prospection: props.activeProspect  ? 'Prospeccion' : 'General',
-        id_type_prospection : props.activeProspect ? props.activeProspect.id : 0
+        type_prospection: props.activeProspect  ? 'Prospeccion' : props.activeApplications ? 'aplicacion' : 'General',
+        id_type_prospection : props.activeProspect ? props.activeProspect.id : props.activeApplication ? props.activeApplication.id : 0
       };
-      dispatch(newBioC(datax));
+      let indicator = props.activeProspect ? 1 : props.activeApplication ? 2 : 0;
+      let params = indicator == 1 ? {id:id,id_type_prospection:props.activeProspect.id} : indicator == 2 ? 
+      {id:id,id_type_prospection:props.activeApplication.id} : null;
+      dispatch(newBioC(datax,indicator,params));
+
+      // PENDIENTE CAMBIAR CUANDO SE ACTUALIZE UNA ENTRADA DE BITACORA
+      // if(props.activeProspect){
+      //   dispatch(starLoadingProspect(id,props.activeProspect.id));
+
+      // } else if(props.activeApplication){
+      //   dispatch( starLoadingApplications(id,props.activeApplication.id));
+
+      // }
       if (props.fromBio) {
         props.fromBio();
       }
@@ -390,7 +410,8 @@ export default function AddEditBio(props) {
           <div style={{ borderRadius: "0px" }} class="card">
             <div class="card-body">
               <div class="row">
-                <span onClick={() => showModalLog("Llamada")} class="Inter600B">
+                <span 
+                onClick={() => props.blocked ? true:showModalLog("Llamada") } class="Inter600B">
                   <svg width="16" height="16" viewBox="0 0 24 24">
                     <path
                       fill="currentColor"
@@ -401,21 +422,21 @@ export default function AddEditBio(props) {
                   &nbsp;LLamada
                 </span>
                 <span
-                  onClick={() => showModalLog("Whatssap")}
+                  onClick={() => props.blocked ? true:showModalLog("Whatssap")}
                   class="ml-4 Inter600B"
                 >
                   <FAIcons.FaWhatsapp />
                   &nbsp; Whatssap
                 </span>
                 <span
-                  onClick={() => showModalLog("Cita")}
+                  onClick={() => props.blocked ? true:showModalLog("Cita")}
                   class="ml-4 Inter600B"
                 >
                   <FIcons.FiCalendar />
                   &nbsp; Cita
                 </span>
                 <span
-                  onClick={() => showModalLog("Email")}
+                  onClick={() => props.blocked ? true:showModalLog("Email")}
                   class="ml-4 Inter600B"
                 >
                   <HIcons.HiOutlineMail size={16} />
@@ -423,7 +444,7 @@ export default function AddEditBio(props) {
                 </span>
 
                 <span
-                  onClick={() => showModalLog("Video llamada")}
+                  onClick={() => props.blocked ? true:showModalLog("Video llamada")}
                   class="ml-4 Inter600B"
                 >
                   <VsIcons.VscDeviceCameraVideo size={16} />

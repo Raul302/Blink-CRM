@@ -202,25 +202,20 @@ export const slotApplicaciones = function slotApplicaciones(props){
 
 export const SlotProspection = function SlotProspection(props){
   const {value} = props;
-  const showProspection = (type) => {
+  const showProspection = (obj) => {
     let tag = '';
-    switch (type) {
-      case 'General':
-        tag = <span style={{color:'#3B83BD'}}>
-          {type}
-          </span>
-        break;
-      default:
-        tag = <span style={{color:'#cb6d51'}}>
-        {type}
-        </span>
-        break;
+    if(obj.type_prospection == 'aplicacion') {
+      tag = <span style={{color:'#FBC658'}}>Aplicacion</span>
+    } else if(obj.type_prospection != 'aplicacion' && obj.programs){
+      tag = <span style={{color:'#cb6d51'}}>{obj.name_prospection}</span>
+    } else {
+      tag = <span style={{color:'#3B83BD'}}>General</span>
     }
     return tag;
   }
   return (
   <>
-  <div>{showProspection(value)}</div>
+  <div>{showProspection(props.data)}</div>
   </>  
   )
 }
@@ -253,9 +248,10 @@ export default function TableBio(props) {
     const [columnApi, setColumnApi] = useState();
 
     useEffect(() => {
-      if(!props.noBar){
+      if(!props.extern){
         dispatch( starLoadingBioC(id) );
       }
+     
     }, [])
     // Methods
 
@@ -377,14 +373,8 @@ export default function TableBio(props) {
                   cellRenderer="slotDetalle"
                 />
                  <AgGridColumn
-                  headerName="Nombre Prospeccion"
-                  field="programs"
-                  width="230"
-                  cellRenderer="slotTypeProspection"
-                />
-                 <AgGridColumn
                   headerName="Area"
-                  field="type_prospection"
+                  field="programs"
                   width="230"
                   cellRenderer="stotProspection"
                 />

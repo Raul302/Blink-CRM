@@ -10,6 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { starLoadingColleges,newCollege } from '../../actions/colleges/colleges';
 import NotificationAlert from "react-notification-alert"; 
 import  '../../styles/RBCheckboxFormStyles.css';
+import { countriesBoardingSchools } from 'MyJson\'s/countriesCollegesJson';
+import { countriesSchoolD } from 'MyJson\'s/countriesCollegesJson';
+import { countriesSummer } from 'MyJson\'s/countriesCollegesJson';
 export const Checkbox = function Checkbox(props) {
     function changeCheck(e) {
         props.changeCheck(e);
@@ -227,6 +230,22 @@ function AddOrEditCollege() {
     }
     function changeObj(e) {
         const { name, value } = e.target;
+        if(name === 'type'){
+            switch (value) {
+                case 'Boarding School':
+                    setCountries(countriesBoardingSchools)
+                    break;
+                case 'School District':
+                    setCountries(countriesSchoolD)
+                    break;
+                case 'Summer Camp':
+                    setCountries(countriesSummer);
+                    break;
+                default:
+                    consultCountries();
+                    break;
+            }
+        }
         const list = { ...obj };
         list[name] = value;
         setObj(list);
@@ -492,7 +511,8 @@ function AddOrEditCollege() {
                                 <Col className="col-4">
                                     <Form.Label className="formGray">Total day students</Form.Label>
                                     <Form.Control name="total_day_students"
-                                        onChange={(e) => changeObj(e)}
+                                        onChange={(e) => 
+                                            (e)}
                                         value={obj.total_day_students}
                                         className="form-control" type="number" min="0"  >
                                     </Form.Control>
