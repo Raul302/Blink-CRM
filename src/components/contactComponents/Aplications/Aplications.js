@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { constaApi } from "constants/constants";
 import * as FIIcons from "react-icons/fi";
 import * as AIicons from "react-icons/ai";
-
+import {
+  Grid,
+  Table,
+  TableHeaderRow,
+  TableGroupRow,
+  TableSelection,
+} from '@devexpress/dx-react-grid-bootstrap4';
 
 import {
   Button,
@@ -30,17 +36,32 @@ import { starLoadingCollegesByProspeccion } from "actions/colleges/colleges";
 import { setColleges } from "actions/colleges/colleges";
 import PieHooks from "./PieHooks";
 import * as d3 from "d3";
+import NotificationAlert from "react-notification-alert";
+import {
+  SelectionState,
+  GroupingState,
+  IntegratedGrouping,
+} from '@devexpress/dx-react-grid';
 var _ = require('lodash');
 
 
 export default function Aplications() {
+  const { loading } = useSelector(state => state.ui);
+  const notificationAlert = useRef();
+  const {colleges} = useSelector( state => state.colleges);
+  const [columns] = useState([
+    { name: 'name', title: 'Nombre' },
+    { name: 'country', title: 'Pais' },
+  ]);
     const dispatch = useDispatch();
     const [aux,setAux] = useState({id:"",story:"",status:"Evaluacion",name_prospection:"",last_modification:""});
     const [activeApplication,setactiveApplication] = useState({id:"",story:"",status:"Evaluacion",name_prospection:"",last_modification:""});
     const [load,setLoad] = useState(false);
     const [applications, Setapplications] = useState(null);
-    const [selection, SetSelection] = useState(0);
-    const [auxSelection, SetAuxSelection] = useState(0);
+    const [selection, SetSelection] = useState([]);
+    const [selectionTwo, SetSelectionTwo] = useState(0);
+    const [auxSelection, SetAuxSelection] = useState([0]);
+    const [auxSelectionTwo, SetAuxSelectionTwo] = useState([]);
     const [prospectionSelected, setProspectionSelected] = useState(0);
     let { active } = useSelector((state) => state.contacts);
     const [modalProspection, setModalProspection] = useState(false);
@@ -48,6 +69,7 @@ export default function Aplications() {
     const [modalStory, setModalStory] = useState(false);
     const [program, SetProgram] = useState();
     const [objAux, setObjAux] = useState({ program: "", year: "" });
+    const [modal,setModal] = useState(false);
     // const generateData = (value, length = 2) =>
     //     d3.range(length).map((item, index) => ({
     //       date: index,
@@ -86,7 +108,6 @@ export default function Aplications() {
       {name:"Pago de aplicacion",isChecked:false,value:1},
       {name:"N/A Pago.",isChecked:false,value:-1},
     ]);
-    // console.log('valuesOfchecklist',valuesOfchecklist);
     const programs = [
       "Boarding School",
       "School District",
@@ -131,7 +152,11 @@ export default function Aplications() {
     if(!active){
       active = JSON.parse(localStorage.getItem('ActiveContact'));
     }
-  
+    useEffect(() => {
+      if(colleges && selection){
+        convertSel(selection);
+      }
+    },[selection])
     useEffect(() => { 
         consultAllApplications(active.id);
         // console.log('APLICATIONS',applications);
@@ -143,7 +168,15 @@ export default function Aplications() {
         }
       }
     }, []);
-    
+    const convertSel = (seleccion) => {
+      let col = []
+      if(selection){
+        col = selection.map(se => {
+          return  colleges[se];
+        })
+      }
+      SetAuxSelectionTwo(col);
+    }
     const consultAllApplications = async (id) => {
       changeLoad(true);
       await axios
@@ -161,15 +194,14 @@ export default function Aplications() {
                 Object.keys(result).map((oneKey,i) => {
                   if(i === 0){
                     setProspectionSelected(oneKey);
-                    console.log('EPA',result[oneKey]);
                     SetAuxSelection(result[oneKey]);
                   }
                 })
                 setResults(result);
-                console.log('PROSP',prospectionSelected);
-                console.log('Auxselection',auxSelection);
             } else {
               Setapplications(null);
+              setResults([]);
+              SetAuxSelection([])
               // dispatch( starLoadingApplicationRemindersC(active.id,0,'Prospeccion'));
   
             }
@@ -179,9 +211,11 @@ export default function Aplications() {
     
     const firstTime = (data) => {
       setactiveApplication(data);
-      SetSelection(data.id);
+      SetSelectionTwo(data.id);
       dispatch( starLoadingApplicationRemindersC(active.id,data.id,'Prospeccion'));
       dispatch( starLoadingApplications(active.id,data.id));
+      let newcadena = data.name_prospection.replace(/\d/g, "");
+          dispatch(starLoadingCollegesByProspeccion(newcadena));
     }
     const resetCheckList = () => {
      let result =  valuesOfchecklist.map(val => {
@@ -198,17 +232,19 @@ export default function Aplications() {
     }
     const changeButton = async(id) => {
       dispatch (setRemindersC([]));
-      dispatch ( setColleges([]) );   
+      dispatch(setColleges([]));
         changeLoad(true);
       await axios.post(constaApi + "showApplication",{id:id})
       .then(function (response) {
       // let newcadena = response.data.name_prospection.replace(/\d/g,"");
       // dispatch(starLoadingCollegesByProspeccion(newcadena)); 
-          SetSelection(id);
+          SetSelectionTwo(id);
           setactiveApplication(response.data);
           resetCheckList();
           dispatch( starLoadingApplicationRemindersC(active.id,response.data.id,'Prospeccion'));
           dispatch( starLoadingApplications(active.id,response.data.id));
+          let newcadena = response.data.name_prospection.replace(/\d/g, "");
+          dispatch(starLoadingCollegesByProspeccion(newcadena));
           changeLoad(false);
       });
       // SetSelection(id);
@@ -238,15 +274,14 @@ export default function Aplications() {
       setModalProspection(false);
       setModalStory(false);
       setModalStatus(false);
-  
-  
+      setModal(false);
+      SetAuxSelectionTwo([]);
     };
     const changeStatus = (e) => {
       setactiveApplication({...activeApplication,status:e.target.value});
     }
     const changeStory = (e) => {
       setactiveApplication({...activeApplication,story:e.target.value});
-  
     }
     const deleteProspection = () => {
       changeLoad(true);
@@ -258,10 +293,13 @@ export default function Aplications() {
     }
   
     const saveChanges = () => {
+      let resp = auxSelection.filter(aux => aux.id === selectionTwo);
+      console.log('EQUIS',activeApplication);
+      console.log('resp',resp);
       changeLoad(true);
       moment.locale("es-mx");
       let newObj ={
-          id:activeApplication.id,
+          id: activeApplication.id,
           name_prospection: activeApplication.name_prospection,
           status: activeApplication.status,
           story: activeApplication.story,
@@ -269,7 +307,7 @@ export default function Aplications() {
           id_last_contact : active.id,
           last_contact : active.name,
       };
-       axios.post(constaApi + "updatedProspection",newObj)
+       axios.post(constaApi + "updateApplication",newObj)
       .then(function (response) {
         consultAllApplications(active.id);
         closeModal();
@@ -314,11 +352,9 @@ export default function Aplications() {
       sumNo = sumNo + 1 ;
     }
    })
-   console.log('SumPos',sumPos);
-   console.log('SumNeg',sumNeg);
    setData(
      [
-       {date:"SI  " +  (sumPos-sumNeg)+'/'+(sumPos+sumNo -sumNeg),value:((sumPos-sumNeg + 1)*10)},
+       {date:"SI  " +  (sumPos-sumNeg)+'/'+(sumPos+sumNo -sumNeg),value:((sumPos-sumNeg + sumPos-sumNeg == 0 ? 0 : 1)*10)},
        {date:sumPos + sumNeg != 9 ? "NO  " + (sumNo)+'/'+(sumPos+sumNo -sumNeg): "",value:(100-((sumPos-sumNeg + 1)*10))}
       ]
    )
@@ -342,17 +378,31 @@ export default function Aplications() {
     const updateReminders = () =>{
       dispatch( starLoadingApplicationRemindersC(active.id,activeApplication.id,'Prospeccion'));
     }
+    function deleteCollege(id){
+      changeLoad(true);
+      axios.get(constaApi + "deleteApplications/" +id)
+        .then(function (response) {
+          consultAllApplications(active.id);
+          changeLoad(false);
+        });
+    }
     const onSubmit = (data) => {
-      moment.locale("es-mx");
+      moment.locale("es-mx");     
+      let val = auxSelectionTwo[0];
         let newObj ={
-            name_prospection: objAux.program + " " + objAux.year,
+            name_prospection: prospectionSelected,
             status: 'Evaluacion',
             story: null,
+            name: val.name,
+            id_application: val.id,
             last_modification : moment().format("YYYY-MM-DD HH:mm")          ,
             id_last_contact : active.id,
             last_contact : active.name,
         };
-         axios.post(constaApi + "saveProspection",newObj)
+        console.log('val',val)
+        console.log('setProspectionSelected',prospectionSelected);
+
+         axios.post(constaApi + "saveApplication",newObj)
         .then(function (response) {
           changeButton(response.data.id);
           consultAllApplications(active.id);
@@ -363,16 +413,12 @@ export default function Aplications() {
     async function randomColor(i) {
       const array = ['btn-primary','btn-secondary','btn-success','btn-danger','btn-warning','btn-info','btn-light','btn-dark','btn-white'];
       const number = Math.floor(Math.random() * 9);
-      console.log('array',array[number]);
       return await array[i];
     }
     function changeProspection(name,obj){
-      console.log('NAME',name,'OBJ,',obj);
       Object.keys(obj).map((oneKey,i) => {
         if(i === 0){
           changeButton(obj[oneKey].id)
-          console.log('ERRRE',applications.filter(fil => fil.id === obj[oneKey].id));
-          console.log('Selection',selection);
           // setProspectionSelected(oneKey);
           // console.log('EPA',result[oneKey]);
           // SetAuxSelection(result[oneKey]);
@@ -389,7 +435,7 @@ export default function Aplications() {
                 key={objAux.id}
                 // active={{backgroundColor:'#FF0000'}}
                 class={[
-                  selection === o.id
+                  selectionTwo === o.id
                     ? "btn btn-sm btn-info"
                     : "btn btn-sm btn-primary",
                 ]}
@@ -426,17 +472,28 @@ export default function Aplications() {
           {auxSelection &&
            [Object.keys(auxSelection).map((oneKey,i)=>{
             return(
-              <button                 onClick={(e) => changeButton(auxSelection[oneKey].id)}
+              <button
+              onClick={(e) => changeButton(auxSelection[oneKey].id)}
               eventKey={oneKey} title={oneKey}
             class={[ i > 0 ? "ml-1" : "ml-0" 
             ]}
-            class={[selection === auxSelection[oneKey].id  ?"btn btn-sm btn-info" : "btn btn-sm btn-primary" ]}
+            class={[selectionTwo === auxSelection[oneKey].id  ?"btn btn-sm btn-info" : "btn btn-sm btn-primary" ]}
             >
               {auxSelection[oneKey].name}
           </button>
             )
           })]}
+            <button
+            onClick={(e) => setModal(!modal)}
+            type="button"
+            class="ml-1 btn btn-secondary btn-sm"
+          >
+            +
+          </button>
           </div>
+          <div class="mt-n5 d-flex justify-content-end">
+        <button onClick={(e) => deleteCollege(selectionTwo)}class="mt-1 btn btn-danger btn-sm">Borrar Colegio</button>
+        </div>
 
           {/* ? "mt-n5 mr-1 btn btn-sm btn-info"
                   : "mt-n5 mr-1 btn btn-sm btn-primary", */}
@@ -500,7 +557,6 @@ export default function Aplications() {
    value={activeApplication.status}
    />
    <button
-   disabled
    class=" mt-1 float-right Inter btn-primary  btn-sm"
    onClick={(e) => changeModalStatus()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
     {/* <Form.Control
@@ -533,7 +589,7 @@ export default function Aplications() {
     rows={8}
    />
    <button
-   disabled
+   
    class=" mt-1 float-right Inter btn-primary  btn-sm"
    onClick={(e) => changeModalStory()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
   </div>
@@ -547,7 +603,8 @@ export default function Aplications() {
    />
   </div>
   </div>
-   <div class="mt-3 row">
+   <div class="mt-3 row"
+   style={{padding:'5px',boxShadow:'2px 2px 2px 2px #888888'}}>
   <div class="col-6">
   <div class="container">
     <div class="row">
@@ -599,7 +656,7 @@ export default function Aplications() {
   </div>
    
   </div>
-  <div class="col-6">
+  <div class="mt-4 col-6">
   <PieHooks
           data={data}
           width={200}
@@ -865,6 +922,111 @@ export default function Aplications() {
         </Modal>
   
         {/* End modal Story */}
+
+
+          {/* Modal prospeccion */}
+      <Modal
+        show={modal}
+        dialogClassName="modalMax"
+        onHide={closeModal}
+        dialogClassName="modal-60w"
+      >
+        <Modal.Header style={{ height: "60px" }} closeButton>
+          <Modal.Title
+            style={{
+              fontFamily: "Inter",
+              marginTop: "5px",
+              fontWeight: "600",
+              fontSize: "18px",
+            }}
+          >
+            Agregar Colegio
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ background: "#F4F5F6", border: "0px" }}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+         {auxSelectionTwo.length > 0 &&
+          auxSelectionTwo.map(sel => {
+           return(
+           <button disabled className="btn btn-success btn-sm">{sel.name ?? " "}</button>
+           );
+          })}
+          <>
+          {loading ?
+            <div class="row mt-2">
+                       <NotificationAlert ref={notificationAlert} />
+                <Skeleton  style={{backgroundColor:'#888C8D'}}width="10rem"  height={10} count={10} />
+            </div>
+            :
+            <div>
+            <Grid
+              style={{marginTop:'30px'}}
+              rows={colleges}
+              columns={columns}
+            >
+               <GroupingState
+                grouping={[{ columnName: 'country' }]}
+              />
+              <SelectionState
+                selection={selection}
+                onSelectionChange={SetSelection}
+              />
+               <IntegratedGrouping />
+              <Table />
+              <TableHeaderRow />
+              <TableSelection /> 
+              <TableGroupRow />
+            </Grid>
+                {/* <Col className="col-7">
+                  <Form.Label className="formGray">Colegios</Form.Label>
+                  <Form.Control
+                  onChange ={(e) => changeProposal(e)}
+                    autoComplete="off"
+                    name="program"
+                    ref={student({
+                      required: true,
+                    })}
+                    as="select"
+                    size="sm"
+                    custom
+                  >
+                    <option disabled value="" selected></option>
+                     {colleges.map((col) => (
+                      <option key={col.id} value={col.id}>
+                        {col.name}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Col> */}
+            </div>
+            }
+            </>
+            <Row>
+              <Col>
+                <Button
+                  className="float-right mb-3 mr-2"
+                  type="submit"
+                  onSubmit={handleSubmit(onSubmit)}
+                  variant="primary"
+                >
+                  Agregar
+                </Button>
+                <Button
+                  onClick={closeModal}
+                  style={{ fontFamily: "Inter", fontWeight: "500" }}
+                  className="float-right mb-3 mr-2"
+                  variant="danger"
+                >
+                  Cancelar
+                </Button>
+              </Col>
+            </Row>
+            </form>
+        </Modal.Body>
+      </Modal>
+
+
+{/* End modal Proposal */}
   
       </div>
     );
