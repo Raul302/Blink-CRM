@@ -86,27 +86,24 @@ export default function Aplications() {
 
   
     const [valuesOfchecklist,setValueOfChecklist] = useState([
-      {name:"Formas de aplicacion",isChecked:false,value:1},
-      {name:"N/A Formas de Apl.",isChecked:false,value:-1},
-      {name:"Calificaciones",isChecked:false,value:1},
-      {name:"N/A Calif.",isChecked:false,value:-1},
-      {name:"Referencias Acade.",isChecked:false,value:1},
-      {name:"N/A Ref. Acade.",isChecked:false,value:-1},
-      {name:"Pasaporte",isChecked:false,value:1},
-      {name:"N/A Pasaporte",isChecked:false,value:-1},
-      {name:"Pasaporte papas",isChecked:false,value:1},
-      {name:"N/A Pasaporte papas",isChecked:false,value:-1},
-    ]);
-    const [twoPartValuesofChecklist,setTwoPartValuesofCheckList] = useState([
-    
-      {name:"Acta de nacimiento",isChecked:false,value:1},
-      {name:"N/A Acta",isChecked:false,value:-1},
-      {name:"Fotografia",isChecked:false,value:1},
-      {name:"N/A Fotog.",isChecked:false,value:-1},
-      {name:"Entrevista",isChecked:false,value:1},
-      {name:"N/A Entrev.",isChecked:false,value:-1},
-      {name:"Pago de aplicacion",isChecked:false,value:1},
-      {name:"N/A Pago.",isChecked:false,value:-1},
+      {name:"Formas de aplicacion",isChecked:false,value:1,identifier:"FA",position:1,realPosition:0},
+      {name:"",isChecked:false,value:-1,identifier:"NFA",position:0,realPosition:1},
+      {name:"Calificaciones",isChecked:false,value:1,identifier:"CAL",position:3,realPosition:2},
+      {name:"",isChecked:false,value:-1,identifier:"NCAL",position:2,realPosition:3},
+      {name:"Referencias Acade.",isChecked:false,value:1,identifier:"RA",position:5,realPosition:4},
+      {name:"",isChecked:false,value:-1,identifier:"NRA",position:4,realPosition:5},
+      {name:"Pasaporte",isChecked:false,value:1,identifier:"PAS",position:7,realPosition:6},
+      {name:"",isChecked:false,value:-1,identifier:"NPAS",position:6,realPosition:7},
+      {name:"Pasaporte papas",isChecked:false,value:1,identifier:"PASP",position:9,realPosition:8},
+      {name:"",isChecked:false,value:-1,identifier:"NPASP",position:8,realPosition:9},
+      {name:"Acta de nacimiento",isChecked:false,value:1,identifier:"ACN",position:11,realPosition:10},
+      {name:"",isChecked:false,value:-1,identifier:"NACN",position:10,realPosition:11},
+      {name:"Fotografia",isChecked:false,value:1,identifier:"FOT",position:13,realPosition:12},
+      {name:"",isChecked:false,value:-1,identifier:"NFOT",position:12,realPosition:13},
+      {name:"Entrevista",isChecked:false,value:1,identifier:"ENT",position:15,realPosition:14},
+      {name:"",isChecked:false,value:-1,identifier:"NENT",position:14,realPosition:15},
+      {name:"Pago de aplicacion",isChecked:false,value:1,identifier:"PAG",position:17,realPosition:16},
+      {name:"",isChecked:false,value:-1,identifier:"NPAG",position:16,realPosition:17},
     ]);
     const programs = [
       "Boarding School",
@@ -118,14 +115,12 @@ export default function Aplications() {
     ];
     const array = ['btn-primary','btn-secondary','btn-success','btn-danger','btn-warning','btn-info','btn-light','btn-dark','btn-white'];
     const status = [
-      "Contacto Previo",
-      "Contacto Formal",
-      "Presentacion",
-      "Aclaración de dudas",
-      "Decision",
-      "Aplicado",
-      "Cancelar",
-    ];
+      "Admision",
+      "Tramites",
+      "Espera",
+      "Llegada",
+      "Cancelado",
+      ];
     const [results,setResults] = useState();
     const years = [
       2019,
@@ -216,16 +211,19 @@ export default function Aplications() {
       dispatch( starLoadingApplications(active.id,data.id));
       let newcadena = data.name_prospection.replace(/\d/g, "");
           dispatch(starLoadingCollegesByProspeccion(newcadena));
+          if(data.checklist){
+            fillCheckList(data.checkList);
+          }
     }
     const resetCheckList = () => {
      let result =  valuesOfchecklist.map(val => {
         return {...val,isChecked:false}
       });
-      let resultTwo = twoPartValuesofChecklist.map(val => {
-        return {...val,isChecked:false}
-      })
+      // let resultTwo = twoPartValuesofChecklist.map(val => {
+      //   return {...val,isChecked:false}
+      // })
       setValueOfChecklist([...result]);
-      setTwoPartValuesofCheckList([...resultTwo]);
+      // setTwoPartValuesofCheckList([...resultTwo]);
       setData([{date:18+'/'+18,value:0},
       {date:0+'/'+0,value:100},
     ]);
@@ -240,7 +238,11 @@ export default function Aplications() {
       // dispatch(starLoadingCollegesByProspeccion(newcadena)); 
           SetSelectionTwo(id);
           setactiveApplication(response.data);
-          resetCheckList();
+          if(response.data.checklist){
+            fillCheckList(response.data.checklist);
+          } else {
+            resetCheckList();
+          }
           dispatch( starLoadingApplicationRemindersC(active.id,response.data.id,'Prospeccion'));
           dispatch( starLoadingApplications(active.id,response.data.id));
           let newcadena = response.data.name_prospection.replace(/\d/g, "");
@@ -294,8 +296,6 @@ export default function Aplications() {
   
     const saveChanges = () => {
       let resp = auxSelection.filter(aux => aux.id === selectionTwo);
-      console.log('EQUIS',activeApplication);
-      console.log('resp',resp);
       changeLoad(true);
       moment.locale("es-mx");
       let newObj ={
@@ -314,55 +314,77 @@ export default function Aplications() {
         changeLoad(false);
       });
     }
+
+    // {name:"Formas de aplicacion",isChecked:false,value:1,identifier:"FA"},
+    //   {name:"",isChecked:false,value:-1,identifier:"NFA"},
+    //   {name:"Calificaciones",isChecked:false,value:1,identifier:"CAL"},
+    //   {name:"",isChecked:false,value:-1,identifier:"NCAL"},
+    //   {name:"Referencias Acade.",isChecked:false,value:1,identifier:"RA"},
+    //   {name:"",isChecked:false,value:-1,identifier:"NRA"},
+    //   {name:"Pasaporte",isChecked:false,value:1,identifier:"PAS"},
+    //   {name:"",isChecked:false,value:-1,identifier:"NPAS"},
+    //   {name:"Pasaporte papas",isChecked:false,value:1,identifier:"PASP"},
+    //   {name:"",isChecked:false,value:-1,identifier:"NPASP"},
+    //   {name:"Acta de nacimiento",isChecked:false,value:1,identifier:"ACN"},
+    //   {name:"",isChecked:false,value:-1,identifier:"NACN"},
+    //   {name:"Fotografia",isChecked:false,value:1,identifier:"FOT"},
+    //   {name:"",isChecked:false,value:-1,identifier:"NFOT"},
+    //   {name:"Entrevista",isChecked:false,value:1,identifier:"ENT"},
+    //   {name:"",isChecked:false,value:-1,identifier:"NENT"},
+    //   {name:"Pago de aplicacion",isChecked:false,value:1,identifier:"PAG"},
+    //   {name:"",isChecked:false,value:-1,identifier:"NPAG"},
+
+
     function changeChecked(e){
-      let resultOne = valuesOfchecklist.map(val => {
-        if(val.name === e.target.name){
+      let resultOne = valuesOfchecklist.map((val,index) => {
+        if(val.identifier === e.target.name){
           return {...val,isChecked:!val.isChecked}
         } else {
           return val;
         }
       })
-     setValueOfChecklist([...resultOne]);
-      let resultTwo = twoPartValuesofChecklist.map(val => {
-      if(val.name === e.target.name){
-        return {...val,isChecked:!val.isChecked}
-      } else {
-        return val;
+      let sumPos = 0;
+      let sumNeg = 0;
+      let sumNo = 0;
+        resultOne.map(r => {
+        if(r.value === 1 && r.isChecked === true){
+         sumPos = sumPos + 1;
+        } else if(r.value === -1 && r.isChecked === true) {
+         sumNeg = sumNeg + 1;
+        } else if(r.value === 1 && r.isChecked === false){
+          sumNo = sumNo + 1 ;
+        }
+      })
+      setData(
+        [
+          {date:sumPos > 0 ?"SI  " +  (sumPos-sumNeg)+'/'+(sumPos+sumNo -sumNeg) : "",value:((sumPos-sumNeg + (sumPos > 0  ? 1 : 0))*10)},
+          {date:(sumNeg > 0 || sumPos != 9)  ? "NO  " + (sumNeg)+'/'+(sumPos+sumNo -sumNeg): "",value:(100-((sumPos-sumNeg + 1)*10))}
+         ]
+      )
+      let specificSearch = resultOne.filter(res => res.identifier === e.target.name );
+      if(specificSearch[0].isChecked){
+        let position = specificSearch[0].position;
+        let realPosition = specificSearch[0].realPosition;
+        console.log('xx',resultOne[position],);
+        console.log('Ex',resultOne[realPosition].value);
+        // console.log();
+        resultOne[position] = {...resultOne[realPosition],
+          name:resultOne[position].name,
+          identifier:resultOne[position].identifier,
+          value:resultOne[position].value ,
+          isChecked:false,
+          position:resultOne[realPosition].realPosition,
+          realPosition:resultOne[realPosition].position}
       }
-    })
-   setTwoPartValuesofCheckList([...resultTwo]);
-   let sumPos = 0;
-   let sumNeg = 0;
-   let sumNo = 0;
-     resultOne.map(r => {
-     if(r.value === 1 && r.isChecked === true){
-      sumPos = sumPos + 1;
-     } else if(r.value === -1 && r.isChecked === true) {
-      sumNeg = sumNeg + 1;
-     } else if(r.value === 1 && r.isChecked === false){
-       sumNo = sumNo + 1 ;
-     }
-   })
-   resultTwo.map(re => {
-     if(re.value ===1 && re.isChecked === true){
-      sumPos = sumPos +1 ;
-     } else if(re.value === -1 && re.isChecked === true) {
-      sumNeg = sumNeg + 1;
-    } else if(re.value === 1 && re.isChecked === false){
-      sumNo = sumNo + 1 ;
-    }
-   })
-   setData(
-     [
-       {date:"SI  " +  (sumPos-sumNeg)+'/'+(sumPos+sumNo -sumNeg),value:((sumPos-sumNeg + sumPos-sumNeg == 0 ? 0 : 1)*10)},
-       {date:sumPos + sumNeg != 9 ? "NO  " + (sumNo)+'/'+(sumPos+sumNo -sumNeg): "",value:(100-((sumPos-sumNeg + 1)*10))}
-      ]
-   )
-//    setData()
-//    const [data, setData] = useState([{date:18+'/'+18,value:0},
-//    {date:0+'/'+0,value:100},
-//  ]
-// );
+     setValueOfChecklist([...resultOne]);
+     
+
+      resultOne[resultOne.length] ={identifier:"id_application",isChecked :activeApplication.id};
+      let newArray = resultOne;
+       axios.post(constaApi + "saveOrUpdateChecklist",newArray)
+      .then(function (response) {
+
+      });
 
     }
     const formatDate = (date) => {
@@ -391,7 +413,7 @@ export default function Aplications() {
       let val = auxSelectionTwo[0];
         let newObj ={
             name_prospection: prospectionSelected,
-            status: 'Evaluacion',
+            status: 'Aplicación',
             story: null,
             name: val.name,
             id_application: val.id,
@@ -399,8 +421,6 @@ export default function Aplications() {
             id_last_contact : active.id,
             last_contact : active.name,
         };
-        console.log('val',val)
-        console.log('setProspectionSelected',prospectionSelected);
 
          axios.post(constaApi + "saveApplication",newObj)
         .then(function (response) {
@@ -449,6 +469,13 @@ export default function Aplications() {
       })
       
       return tag;
+    }
+    function fillCheckList(data){
+      console.log('FILLCHECKLIST',data);
+      Object.keys(data).map((oneKey,i)=>{
+        console.log('DSDSD',oneKey);
+      })
+
     }
     return (
       <div class="content">
@@ -608,51 +635,285 @@ export default function Aplications() {
   <div class="col-6">
   <div class="container">
     <div class="row">
-      <div class="col">
-      {valuesOfchecklist.map(val => {
-       return(
-         <>
-       <Row>
-        <Col className="col-12">
+      <div class="col-8">
+        <div class="row">
+        <div class="col-6">
+        </div>
+        <div class="col">
+        ✓
+        </div>
+        <div class="col">
+        N/A
+        </div>
+        </div>
+        {/* END 0 */}
+        <div class="row">
+        <div class="col-6">
+        <span class="custom-radio-checkbox__text">{valuesOfchecklist[0].name}</span>
+        </div>
+        <div class="col">
         <label class="custom-radio-checkbox">
-       <input class="custom-radio-checkbox__input" 
-       name={val.name}
-       value={val.isChecked}
-       checked={val.isChecked} type="checkbox"
-        onChange={(e) => changeChecked(e)} 
-        />
-       <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
-       <span class="custom-radio-checkbox__text">{val.name}</span>
-      </label>
-      </Col>
-      </Row>
-      </>
-       )
-      })}
-      </div>
-      <div class="col">
-      {twoPartValuesofChecklist.map(val => {
-           return(
-            <>
-          <Row>
-           <Col className="col-12">
-           <label class="custom-radio-checkbox">
-          <input class="custom-radio-checkbox__input" 
-          name={val.name}
-          value={val.isChecked}
-          checked={val.isChecked} type="checkbox"
-          onChange={(e) => changeChecked(e)} 
-           />
-          <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
-          <span class="custom-radio-checkbox__text">{val.name}</span>
-         </label>
-         </Col>
-         </Row>
-         </>
-          )
-        })}
-      </div>
-    </div>
+        <input class="custom-radio-checkbox__input" 
+       name={valuesOfchecklist[0].identifier}
+       value={valuesOfchecklist[0].isChecked}
+       checked={valuesOfchecklist[0].isChecked} type="checkbox"
+       onChange={(e) => changeChecked(e)} 
+       />
+        <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+       </label>
+        </div>
+        <div class="col">
+        <label class="custom-radio-checkbox">
+        <input class="custom-radio-checkbox__input" 
+       name={valuesOfchecklist[1].identifier}
+       value={valuesOfchecklist[1].isChecked}
+       checked={valuesOfchecklist[1].isChecked} type="checkbox"
+       onChange={(e) => changeChecked(e)} 
+       />
+        <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+       </label>
+        </div>
+        </div>
+        {/* End 1 */}
+        <div class="row">
+        <div class="col-6">
+        <span class="custom-radio-checkbox__text">{valuesOfchecklist[2].name}</span>
+        </div>
+        <div class="col">
+        <label class="custom-radio-checkbox">
+        <input class="custom-radio-checkbox__input" 
+       name={valuesOfchecklist[2].identifier}
+       value={valuesOfchecklist[2].isChecked}
+       checked={valuesOfchecklist[2].isChecked} type="checkbox"
+       onChange={(e) => changeChecked(e)} 
+       />
+        <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+       </label>
+        </div>
+        <div class="col">
+        <label class="custom-radio-checkbox">
+        <input class="custom-radio-checkbox__input" 
+       name={valuesOfchecklist[3].identifier}
+       value={valuesOfchecklist[3].isChecked}
+       checked={valuesOfchecklist[3].isChecked} type="checkbox"
+       onChange={(e) => changeChecked(e)} 
+       />
+        <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+       </label>
+        </div>
+        </div>
+
+        {/* END 2 */}
+         <div class="row">
+        <div class="col-6">
+        <span class="custom-radio-checkbox__text">{valuesOfchecklist[4].name}</span>
+        </div>
+        <div class="col">
+        <label class="custom-radio-checkbox">
+        <input class="custom-radio-checkbox__input" 
+       name={valuesOfchecklist[4].identifier}
+       value={valuesOfchecklist[4].isChecked}
+       checked={valuesOfchecklist[4].isChecked} type="checkbox"
+       onChange={(e) => changeChecked(e)} 
+       />
+        <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+       </label>
+        </div>
+        <div class="col">
+        <label class="custom-radio-checkbox">
+        <input class="custom-radio-checkbox__input" 
+       name={valuesOfchecklist[5].identifier}
+       value={valuesOfchecklist[5].isChecked}
+       checked={valuesOfchecklist[5].isChecked} type="checkbox"
+       onChange={(e) => changeChecked(e)} 
+       />
+        <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+       </label>
+        </div>
+        </div>
+
+        {/* END 3 */}
+        <div class="row">
+        <div class="col-6">
+        <span class="custom-radio-checkbox__text">{valuesOfchecklist[6].name}</span>
+        </div>
+        <div class="col">
+        <label class="custom-radio-checkbox">
+        <input class="custom-radio-checkbox__input" 
+       name={valuesOfchecklist[6].identifier}
+       value={valuesOfchecklist[6].isChecked}
+       checked={valuesOfchecklist[6].isChecked} type="checkbox"
+       onChange={(e) => changeChecked(e)} 
+       />
+        <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+       </label>
+        </div>
+        <div class="col">
+        <label class="custom-radio-checkbox">
+        <input class="custom-radio-checkbox__input" 
+       name={valuesOfchecklist[7].identifier}
+       value={valuesOfchecklist[7].isChecked}
+       checked={valuesOfchecklist[7].isChecked} type="checkbox"
+       onChange={(e) => changeChecked(e)} 
+       />
+        <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+       </label>
+        </div>
+        </div>
+
+        
+        {/* END 4 */}
+        <div class="row">
+        <div class="col-6">
+        <span class="custom-radio-checkbox__text">{valuesOfchecklist[8].name}</span>
+        </div>
+        <div class="col">
+        <label class="custom-radio-checkbox">
+        <input class="custom-radio-checkbox__input" 
+       name={valuesOfchecklist[8].identifier}
+       value={valuesOfchecklist[8].isChecked}
+       checked={valuesOfchecklist[8].isChecked} type="checkbox"
+       onChange={(e) => changeChecked(e)} 
+       />
+        <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+       </label>
+        </div>
+        <div class="col">
+        <label class="custom-radio-checkbox">
+        <input class="custom-radio-checkbox__input" 
+       name={valuesOfchecklist[9].identifier}
+       value={valuesOfchecklist[9].isChecked}
+       checked={valuesOfchecklist[9].isChecked} type="checkbox"
+       onChange={(e) => changeChecked(e)} 
+       />
+        <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+       </label>
+        </div>
+        </div>
+
+
+        {/* END 3 */}
+        <div class="row">
+        <div class="col-6">
+        <span class="custom-radio-checkbox__text">{valuesOfchecklist[10].name}</span>
+        </div>
+        <div class="col">
+        <label class="custom-radio-checkbox">
+        <input class="custom-radio-checkbox__input" 
+       name={valuesOfchecklist[10].identifier}
+       value={valuesOfchecklist[10].isChecked}
+       checked={valuesOfchecklist[10].isChecked} type="checkbox"
+       onChange={(e) => changeChecked(e)} 
+       />
+        <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+       </label>
+        </div>
+        <div class="col">
+        <label class="custom-radio-checkbox">
+        <input class="custom-radio-checkbox__input" 
+       name={valuesOfchecklist[11].identifier}
+       value={valuesOfchecklist[11].isChecked}
+       checked={valuesOfchecklist[11].isChecked} type="checkbox"
+       onChange={(e) => changeChecked(e)} 
+       />
+        <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+       </label>
+        </div>
+        </div>
+
+
+        {/* END 3 */}
+        <div class="row">
+        <div class="col-6">
+        <span class="custom-radio-checkbox__text">{valuesOfchecklist[12].name}</span>
+        </div>
+        <div class="col">
+        <label class="custom-radio-checkbox">
+        <input class="custom-radio-checkbox__input" 
+       name={valuesOfchecklist[12].identifier}
+       value={valuesOfchecklist[12].isChecked}
+       checked={valuesOfchecklist[12].isChecked} type="checkbox"
+       onChange={(e) => changeChecked(e)} 
+       />
+        <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+       </label>
+        </div>
+        <div class="col">
+        <label class="custom-radio-checkbox">
+        <input class="custom-radio-checkbox__input" 
+       name={valuesOfchecklist[13].identifier}
+       value={valuesOfchecklist[13].isChecked}
+       checked={valuesOfchecklist[13].isChecked} type="checkbox"
+       onChange={(e) => changeChecked(e)} 
+       />
+        <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+       </label>
+        </div>
+        </div>
+
+
+        {/* END 3 */}
+        <div class="row">
+        <div class="col-6">
+        <span class="custom-radio-checkbox__text">{valuesOfchecklist[14].name}</span>
+        </div>
+        <div class="col">
+        <label class="custom-radio-checkbox">
+        <input class="custom-radio-checkbox__input" 
+       name={valuesOfchecklist[14].identifier}
+       value={valuesOfchecklist[14].isChecked}
+       checked={valuesOfchecklist[14].isChecked} type="checkbox"
+       onChange={(e) => changeChecked(e)} 
+       />
+        <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+       </label>
+        </div>
+        <div class="col">
+        <label class="custom-radio-checkbox">
+        <input class="custom-radio-checkbox__input" 
+       name={valuesOfchecklist[15].identifier}
+       value={valuesOfchecklist[15].isChecked}
+       checked={valuesOfchecklist[15].isChecked} type="checkbox"
+       onChange={(e) => changeChecked(e)} 
+       />
+        <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+       </label>
+        </div>
+        </div>
+
+
+
+        {/* END 3 */}
+        <div class="row">
+        <div class="col-6">
+        <span class="custom-radio-checkbox__text">{valuesOfchecklist[16].name}</span>
+        </div>
+        <div class="col">
+        <label class="custom-radio-checkbox">
+        <input class="custom-radio-checkbox__input" 
+       name={valuesOfchecklist[16].identifier}
+       value={valuesOfchecklist[16].isChecked}
+       checked={valuesOfchecklist[16].isChecked} type="checkbox"
+       onChange={(e) => changeChecked(e)} 
+       />
+        <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+       </label>
+        </div>
+        <div class="col">
+        <label class="custom-radio-checkbox">
+        <input class="custom-radio-checkbox__input" 
+       name={valuesOfchecklist[17].identifier}
+       value={valuesOfchecklist[17].isChecked}
+       checked={valuesOfchecklist[17].isChecked} type="checkbox"
+       onChange={(e) => changeChecked(e)} 
+       />
+        <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
+       </label>
+        </div>
+        </div>
+
+        </div>
+       </div>
   </div>
    
   </div>
@@ -822,8 +1083,8 @@ export default function Aplications() {
                   size="sm"
                   custom
                   >
-                  <option value="Evaluacion" selected>
-                    Evaluacion
+                  <option value="Aplicación" selected>
+                    Aplicación
                   </option>
                   {status.map((st) => (
                       <option key={st} value={st}>
