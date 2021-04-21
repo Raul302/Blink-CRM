@@ -154,8 +154,8 @@ export default function Aplications() {
     },[selection])
     useEffect(() => { 
         consultAllApplications(active.id);
-        // console.log('APLICATIONS',applications);
-     
+
+        
       if(active){
         localStorage.setItem('ActiveContact', JSON.stringify(active));
         if(activeApplication){
@@ -365,8 +365,8 @@ export default function Aplications() {
       if(specificSearch[0].isChecked){
         let position = specificSearch[0].position;
         let realPosition = specificSearch[0].realPosition;
-        console.log('xx',resultOne[position],);
-        console.log('Ex',resultOne[realPosition].value);
+
+
         // console.log();
         resultOne[position] = {...resultOne[realPosition],
           name:resultOne[position].name,
@@ -440,7 +440,6 @@ export default function Aplications() {
         if(i === 0){
           changeButton(obj[oneKey].id)
           // setProspectionSelected(oneKey);
-          // console.log('EPA',result[oneKey]);
           // SetAuxSelection(result[oneKey]);
         }
       })
