@@ -42,6 +42,7 @@ import {
   GroupingState,
   IntegratedGrouping,
 } from '@devexpress/dx-react-grid';
+import Colleges from "pages/Colleges";
 var _ = require('lodash');
 
 
@@ -49,6 +50,7 @@ export default function Aplications() {
   const { loading } = useSelector(state => state.ui);
   const notificationAlert = useRef();
   const {colleges} = useSelector( state => state.colleges);
+  const [collegesFiltering,setCollegesFiltering] = useState([]);
   const [columns] = useState([
     { name: 'name', title: 'Nombre' },
     { name: 'country', title: 'Pais' },
@@ -154,8 +156,6 @@ export default function Aplications() {
     },[selection])
     useEffect(() => { 
         consultAllApplications(active.id);
-
-        
       if(active){
         localStorage.setItem('ActiveContact', JSON.stringify(active));
         if(activeApplication){
@@ -212,7 +212,7 @@ export default function Aplications() {
       let newcadena = data.name_prospection.replace(/\d/g, "");
           dispatch(starLoadingCollegesByProspeccion(newcadena));
           if(data.checklist){
-            fillCheckList(data.checkList);
+            fillCheckList(data.checklist);
           }
     }
     const resetCheckList = () => {
@@ -446,6 +446,27 @@ export default function Aplications() {
       setProspectionSelected(name);
       SetAuxSelection(obj);
     }
+    function openModalProp(){
+      let auxColleges = [...colleges];
+      let exist = [];
+      auxColleges.forEach((element,index) => {
+        auxSelection.forEach((el,i) => {
+          if(element.name == el.name){
+            auxColleges[index] = null;
+          }
+        })
+      });
+        auxColleges.forEach(aux => {
+        if(aux != null){
+          exist.push(aux);
+        }
+      })
+      console.log('EXIST',exist);
+       setCollegesFiltering([...exist]);
+       
+       setModal(true);
+       console.log('Colleges',auxColleges);
+    }
     function showApplications(obj){
       let tag = obj.map(o => {
         return (
@@ -470,10 +491,37 @@ export default function Aplications() {
       return tag;
     }
     function fillCheckList(data){
-      console.log('FILLCHECKLIST',data);
+      let array = [];
+      let vale = null;
       Object.keys(data).map((oneKey,i)=>{
-        console.log('DSDSD',oneKey);
+        valuesOfchecklist.map((val,index) => {
+          if(oneKey === val.identifier){
+            let res = {...val,isChecked:(data[oneKey] == "1" ? true : false)};
+            array.push(res);
+          }
+        })
       })
+      setValueOfChecklist(array);
+      let sumPos = 0;
+      let sumNeg = 0;
+      let sumNo = 0;
+      valuesOfchecklist.map(r => {
+        if(r.value === 1 && r.isChecked === true){
+         sumPos = sumPos + 1;
+        } else if(r.value === -1 && r.isChecked === true) {
+         sumNeg = sumNeg + 1;
+        } else if(r.value === 1 && r.isChecked === false){
+          sumNo = sumNo + 1 ;
+        }
+      })
+      setData(
+        [
+          {date:sumPos > 0 ?"SI  " +  (sumPos-sumNeg)+'/'+(sumPos+sumNo -sumNeg) : "",value:((sumPos-sumNeg + (sumPos > 0  ? 1 : 0))*10)},
+          {date:(sumNeg > 0 || sumPos != 9)  ? "NO  " + (sumNeg)+'/'+(sumPos+sumNo -sumNeg): "",value:(100-((sumPos-sumNeg + 1)*10))}
+         ]
+      )
+      console.log('DATA',data);
+      console.log('ARRAY',array);
 
     }
     return (
@@ -510,7 +558,7 @@ export default function Aplications() {
             )
           })]}
             <button
-            onClick={(e) => setModal(!modal)}
+            onClick={(e) => openModalProp()}
             type="button"
             class="ml-1 btn btn-secondary btn-sm"
           >
@@ -1221,7 +1269,7 @@ export default function Aplications() {
             <div>
             <Grid
               style={{marginTop:'30px'}}
-              rows={colleges}
+              rows={collegesFiltering}
               columns={columns}
             >
                <GroupingState
