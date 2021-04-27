@@ -354,7 +354,7 @@ export default function Proposals(props) {
         <div class="col d-flex justify-content-end">
              <button  
              disabled={props.blocked ? true:false}
-             onClick={(e) => setModal(!modal)}className="btn btn-primary">
+             onClick={(e) => setModal(!modal)}className="btn btn-info">
                 <span className="Inter"
                     style={{ fontSize: "18px" }}>+</span> Propuesta</button>
         </div>
@@ -514,7 +514,7 @@ export default function Proposals(props) {
                   className="float-right mb-3 mr-2"
                   type="submit"
                   onSubmit={handleSubmit(onSubmit)}
-                  variant="primary"
+                  variant="info"
                 >
                   Agregar
                 </Button>

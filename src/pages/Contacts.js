@@ -41,7 +41,7 @@ function Contacts() {
         });
     }
     return (
-        <div className="content animate__animated animate__fadeIn">
+        <div style={{backgroundColor:'#f9fafb'}}className="content animate__animated animate__fadeIn">
         <div class="row">
             <div class="col-12">
             <div class="col d-flex justify-content-end">

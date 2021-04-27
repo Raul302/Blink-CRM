@@ -1,6 +1,7 @@
 
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
+import { color } from "d3";
 
 const Pie = props => {
   const ref = useRef(null);
@@ -14,10 +15,8 @@ const Pie = props => {
     .outerRadius(props.outerRadius);
   const colors = d3.scaleOrdinal(d3.schemeCategory10);
   const format = d3.format(".2f");
-
   useEffect(
     () => {
-      console.log('PROPS',props.data);
       const data = createPie(props.data);
       const group = d3.select(ref.current);
       const groupWithData = group.selectAll("g.arc").data(data);
@@ -36,7 +35,7 @@ const Pie = props => {
       path
         .attr("class", "arc")
         .attr("d", createArc)
-        .attr("fill", (d, i) => colors(i));
+        .attr("fill", (d, i) => i == 0 ? "#ff0000" : "#497cff");
 
       const text = groupWithUpdate
         .append("text")

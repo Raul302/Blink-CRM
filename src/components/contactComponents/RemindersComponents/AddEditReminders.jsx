@@ -261,7 +261,7 @@ export default function AddEditReminders(props) {
                             <NotificationAlert ref={notificationAlert} />
             <button 
              disabled={props.blocked ? true:false}
-            onClick={(e) => showModal()} className="btn btn-primary">
+            onClick={(e) => showModal()} className="btn btn-info">
                 <span className="Inter"
                     style={{ fontSize: "18px" }}>+</span> Recordatorio</button>
 
@@ -414,7 +414,7 @@ export default function AddEditReminders(props) {
                                     disabled={!subject ? true : !dateReminder ? true : !timeReminder ? true : !notificationReminder ? true : !departament ? true : false}
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
-                                    variant="primary">{flagEdit ? 'Actualizar' : 'Guardar'}</Button>
+                                    variant="info">{flagEdit ? 'Actualizar' : 'Guardar'}</Button>
                                 <Button onClick={handleClose} style={{ fontFamily: "Inter", fontWeight: "500" }} className="float-right mb-3 mr-2" variant="danger" >
                                     Cancelar
                 </Button>

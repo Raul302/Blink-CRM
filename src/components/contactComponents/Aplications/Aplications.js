@@ -92,7 +92,7 @@ export default function Aplications() {
       {name:"",isChecked:false,value:-1,identifier:"NFA",position:0,realPosition:1},
       {name:"Calificaciones",isChecked:false,value:1,identifier:"CAL",position:3,realPosition:2},
       {name:"",isChecked:false,value:-1,identifier:"NCAL",position:2,realPosition:3},
-      {name:"Referencias Acade.",isChecked:false,value:1,identifier:"RA",position:5,realPosition:4},
+      {name:"Referencias Acade",isChecked:false,value:1,identifier:"RA",position:5,realPosition:4},
       {name:"",isChecked:false,value:-1,identifier:"NRA",position:4,realPosition:5},
       {name:"Pasaporte",isChecked:false,value:1,identifier:"PAS",position:7,realPosition:6},
       {name:"",isChecked:false,value:-1,identifier:"NPAS",position:6,realPosition:7},
@@ -115,7 +115,7 @@ export default function Aplications() {
       "University/College",
       "Work & Travel"
     ];
-    const array = ['btn-primary','btn-secondary','btn-success','btn-danger','btn-warning','btn-info','btn-light','btn-dark','btn-white'];
+    const array = ['btn-info','btn-secondary','btn-success','btn-danger','btn-warning','btn-info','btn-light','btn-dark','btn-white'];
     const status = [
       "Admision",
       "Tramites",
@@ -431,7 +431,7 @@ export default function Aplications() {
         });
     };
     async function randomColor(i) {
-      const array = ['btn-primary','btn-secondary','btn-success','btn-danger','btn-warning','btn-info','btn-light','btn-dark','btn-white'];
+      const array = ['btn-info','btn-secondary','btn-success','btn-danger','btn-warning','btn-info','btn-light','btn-dark','btn-white'];
       const number = Math.floor(Math.random() * 9);
       return await array[i];
     }
@@ -622,53 +622,32 @@ export default function Aplications() {
   
       :
       <>
-      <div class="row">
+      <div class="mt-2 row">
       <div class="content col-4">
-    <Form.Label className="formGray">Status</Form.Label>
+    <Form.Label className="formGray montseInter">Status</Form.Label>
     <Form.Control  name="status"
     disabled
    autoComplete="off" className="formGray" type="text"
    value={activeApplication.status}
    />
    <button
-   class=" mt-1 float-right Inter btn-primary  btn-sm"
+   class=" mt-1 float-right Inter btn-info  btn-sm"
    onClick={(e) => changeModalStatus()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
-    {/* <Form.Control
-      onChange={(e) => changeStatus(e)}
-      autoComplete="off"
-      name="year"
-      value={activeApplication.status}
-      // as="select"
-      size="sm"
-      custom
-      >
-      <option value="Evaluacion" selected>
-        Evaluacion
-      </option>
-      {status.map((st) => (
-          <option key={st} value={st}>
-          {st}
-        </option>
-      ))}
-    </Form.Control> */}
   </div>
   <div class="content col-4">
-  <Form.Label className="formGray">Story</Form.Label>
-  <Form.Control
-    onChange={(e) => changeStory(e)}
-    disabled
-    value={activeApplication.story}
-    as="textarea"
-    placeholder="Escriba sus notas..."
-    rows={8}
+  <Form.Label className="formGray montseInter">Story</Form.Label>
+  <Form.Control  style={{height:'80%'}}name="last_modification"
+  disabled
+   autoComplete="off" className="formGray" type="text"
+   placeholder="Escriba sus notas..."
+   value={activeApplication.story}
    />
    <button
-   
-   class=" mt-1 float-right Inter btn-primary  btn-sm"
+   class="mt-1 float-right montseInter btn-info  btn-sm"
    onClick={(e) => changeModalStory()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
   </div>
   <div>
-  <Form.Label className="formGray">Ultimo contacto</Form.Label>
+  <Form.Label className="formGray montseInter">Ultimo contacto</Form.Label>
   <Form.Control  name="last_modification"
   disabled
    autoComplete="off" className="formGray" type="text"
@@ -677,7 +656,7 @@ export default function Aplications() {
    />
   </div>
   </div>
-   <div class="mt-3 row"
+   <div class="mt-5 row"
    style={{padding:'5px',boxShadow:'2px 2px 2px 2px #888888'}}>
   <div class="col-6">
   <div class="container">
@@ -696,7 +675,7 @@ export default function Aplications() {
         {/* END 0 */}
         <div class="row">
         <div class="col-6">
-        <span class="custom-radio-checkbox__text">{valuesOfchecklist[0].name}</span>
+        <span class="custom-radio-checkbox__text montseInter">{valuesOfchecklist[0].name}</span>
         </div>
         <div class="col">
         <label class="custom-radio-checkbox">
@@ -1075,7 +1054,7 @@ export default function Aplications() {
                     className="float-right mb-3 mr-2"
                     type="submit"
                     onSubmit={handleSubmit(onSubmit)}
-                    variant="primary"
+                    variant="info"
                   >
                     Guardar
                   </Button>
@@ -1148,7 +1127,7 @@ export default function Aplications() {
                     className="float-right mb-3 mr-2"
                     type="button"
                     onClick={(e) => saveChanges()}
-                    variant="primary"
+                    variant="info"
                   >
                     Guardar
                   </Button>
@@ -1211,7 +1190,7 @@ export default function Aplications() {
                     className="float-right mb-3 mr-2"
                     type="button"
                     onClick={(e) => saveChanges()}
-                    variant="primary"
+                    variant="info"
                   >
                     Guardar
                   </Button>
@@ -1315,7 +1294,7 @@ export default function Aplications() {
                   className="float-right mb-3 mr-2"
                   type="submit"
                   onSubmit={handleSubmit(onSubmit)}
-                  variant="primary"
+                  variant="info"
                 >
                   Agregar
                 </Button>

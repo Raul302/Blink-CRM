@@ -11,12 +11,13 @@ import * as BIicons from  "react-icons/bi";
 import * as GIIcons from  "react-icons/gi";
 import * as AIIcons from  "react-icons/ai";
 import RemindersSection from 'pages/RemindersSection';
+import ProspectionSection from 'pages/ProspectionSection';
 
 var routes = [
   {
     path: "/dashboard",
     name: "Dashboard",
-    icon: <MDicons.MdDashboard/>,
+    icon: <MDicons.MdDashboard size={20}/>,
     component: Dashboard,
     layout: "/admin",
   },
@@ -24,14 +25,14 @@ var routes = [
   {
     path: "/users",
     name: "Usuarios",
-    icon: <FAIcons.FaUser/>,
+    icon: <FAIcons.FaUser size={20}/>,
     component: Users,
     layout: "/admin",
   },
   {
     path: "/contacts",
     name: "Contactos",
-    icon: <TiIcons.TiContacts />,
+    icon: <TiIcons.TiContacts size={20}/>,
      component: Contacts,
     layout: "/admin",
   },
@@ -45,30 +46,30 @@ var routes = [
   {
     path: "/colleges",
     name: "Colegios",
-    icon: <MDicons.MdSchool/>,
+    icon: <MDicons.MdSchool size={20}/>,
     component: Colleges,
     layout: "/admin",
   },
   {
     path: "/SectionReminders",
     name: "Recordatorios",
-    icon: <BIicons.BiTime/>,
+    icon: <BIicons.BiTime size={20}/>,
     component: RemindersSection,
     layout: "/admin",
   },
 
   {
-    path: "/SectionReminders",
+    path: "/SectionProspections",
     name: "Prospecciones",
-    icon: <GIIcons.GiMagnifyingGlass/>,
-    component: RemindersSection,
+    icon: <GIIcons.GiMagnifyingGlass size={20}/>,
+    component: ProspectionSection,
     layout: "/admin",
   },
 
   {
-    path: "/SectionReminders",
+    path: "/SectionApplications",
     name: "Aplicaciones",
-    icon: <AIIcons.AiOutlineAppstoreAdd/>,
+    icon: <AIIcons.AiOutlineAppstoreAdd size={20}/>,
     component: RemindersSection,
     layout: "/admin",
   },

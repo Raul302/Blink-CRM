@@ -319,7 +319,7 @@ function AddEdit(props) {
                                     disabled={!formState.isValid}
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
-                                    variant="primary">Guardar</Button>
+                                    variant="info">Guardar</Button>
                                 <Button onClick={handleClose} style={{  fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                     Cancelar
                 </Button>
@@ -432,7 +432,7 @@ function AddEdit(props) {
                                     disabled={errorsPassword}
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
-                                    variant="primary">Guardar</Button>
+                                    variant="info">Guardar</Button>
                                 <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                     Cancelar
                 </Button>

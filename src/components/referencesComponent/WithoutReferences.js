@@ -92,7 +92,7 @@ function handlevalidFour(e) {
     return (
         <>
         <div class="d-flex justify-content-end">
-        <button onClick={(e) => showModal3()} class="btn btn-primary"><span style={{fontSize:'16px'}} >+</span> Referencia</button>
+    <button onClick={(e) => showModal3()} class="btn btn-info"><span style={{fontFamily:'Montserrat,sans-serif',fontSize:'16px'}} >+</span> Referencia</button>
         </div>
             {/* MODAL */}
 
@@ -171,7 +171,7 @@ function handlevalidFour(e) {
                             <Col>
                                 <Button 
                                 disabled={validFieldThree || validFieldFour}
-                                className="float-right mb-3 mr-2" type="submit" variant="primary">Guardar</Button>
+                                className="float-right mb-3 mr-2" type="submit" variant="info">Guardar</Button>
                                 <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                     Cancelar
 </Button>
@@ -212,7 +212,7 @@ function handlevalidFour(e) {
                     </div>
                     <div className="row mt-2">
                         <div className="mx-auto">
-                            <button className="btn btn-primary Inter600" onClick={showModal3}>Agregar una referencia</button>
+                            <button className="btn btn-info Inter600" onClick={showModal3}>Agregar una referencia</button>
 
                         </div>
                     </div>

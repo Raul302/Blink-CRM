@@ -354,7 +354,7 @@ export default function Prospection() {
                 value={activeProspect.status}
               />
               <button
-                class=" mt-1 float-right Inter btn-primary  btn-sm"
+                class=" mt-1 float-right Inter btn-info  btn-sm"
                 onClick={(e) => changeModalStatus()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
               {/* <Form.Control
     onChange={(e) => changeStatus(e)}
@@ -386,7 +386,7 @@ export default function Prospection() {
                 rows={8}
               />
               <button
-                class=" mt-1 float-right Inter btn-primary  btn-sm"
+                class=" mt-1 float-right Inter btn-info  btn-sm"
                 onClick={(e) => changeModalStory()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
             </div>
             <div>
@@ -505,7 +505,7 @@ export default function Prospection() {
                   className="float-right mb-3 mr-2"
                   type="submit"
                   onSubmit={handleSubmit(onSubmit)}
-                  variant="primary"
+                  variant="info"
                 >
                   Guardar
                 </Button>
@@ -578,7 +578,7 @@ export default function Prospection() {
                   className="float-right mb-3 mr-2"
                   type="button"
                   onClick={(e) => saveChanges()}
-                  variant="primary"
+                  variant="info"
                 >
                   Guardar
                 </Button>
@@ -641,7 +641,7 @@ export default function Prospection() {
                   className="float-right mb-3 mr-2"
                   type="button"
                   onClick={(e) => saveChanges()}
-                  variant="primary"
+                  variant="info"
                 >
                   Crear
                 </Button>
@@ -704,7 +704,7 @@ export default function Prospection() {
                   className="float-right mb-3 mr-2"
                   type="button"
                   onClick={(e) => saveChanges()}
-                  variant="primary"
+                  variant="info"
                 >
                   Guardar
                 </Button>

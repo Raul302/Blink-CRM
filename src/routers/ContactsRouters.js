@@ -91,12 +91,12 @@ function ContactsRouters(props) {
                 bgColor={backgroundColor}
                 activeColor={activeColor}
             />
-            <div className="main-panel" ref={mainPanel}>
+            <div  style={{backgroundColor:'#f9fafb'}}className="main-panel" ref={mainPanel}>
                 <Nav {...props} />
                 <NotificationAlert ref={notificationAlert} />
                 { loading === true ?
                 <div className="content">
-                    <Spinner animation="border" variant="primary" />
+                    <Spinner animation="border" variant="info" />
                 </div>
                 :
                 <>

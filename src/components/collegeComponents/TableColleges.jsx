@@ -39,7 +39,7 @@ import {
         tag =  
         <>
         <Link  onClick={(e) => click(props.data)} to={"colleges/" + (props.data.id) + "/bio"}>
-        <span class="mt-1 mr-1 sc-caSCKo fXbvQO styles__Company-sc-103gogw-0 jdbeFR">{n}</span>
+        <span class="mt-1 mr-2 sc-caSCKo fXbvQO styles__Company-sc-103gogw-0 jdbeFR">{n}</span>
         <span>{name} {fname} {mname}</span>
         </Link>
         </>;
@@ -101,14 +101,16 @@ export const slotApplicaciones = function slotApplicaciones(props){
 }
 
 
-function TableColleges() {
+function TableColleges(props) {
     const dispatch = useDispatch();
     const [frameworkComponents, setFramwrokw] = useState({ slotName: SlotName, slotActions: SlotActions,slotApplicaciones:slotApplicaciones,slotProspecciones:slotProspecciones});
     const [gridApi, setGridApi] = useState();
     const [columnApi, setColumnApi] = useState();
     useEffect(()=>{
-        // dispatch( finishLoading());
-    },[dispatch])
+      if (props.param) {
+        quickSearch(props.param);
+    }
+    },[props])
     const notificationAlert = useRef();
     const {colleges} = useSelector( state => state.colleges);
     const { loading } = useSelector(state => state.ui);
@@ -117,6 +119,11 @@ function TableColleges() {
         dispatch( activeCollege( obj.id,obj) );
         history.replace("colleges/"+ obj.id + "/bio");
     }
+    function quickSearch(value) {
+      let objx = gridApi;
+      value === 'keyWordSeccret302' ? objx.api.setQuickFilter("") : objx.api.setQuickFilter(value);
+      setGridApi(objx);
+  }
     const dropCollege =  (id) => {
       swal({
         title: "Estas seguro?",

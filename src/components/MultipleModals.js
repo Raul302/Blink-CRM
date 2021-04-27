@@ -389,7 +389,7 @@ function MultipleModals(props) {
     return (
         <>
             <Button style={{ color: '#182739', marginRight: '10px', backgroundColor: '#FFFFFF', boxShadow: 'rgb(209, 221, 235) 0px 0px 0px 1px inset' }} className=" Inter600" variant="light">Import</Button>
-            <Button style={{}} className="Inter600 " variant="primary" onClick={showModal1}>Crear contacto</Button>
+            <button type="button" className="btn btn-info  Inter600" onClick={showModal1}>Crear contacto </button>
 
             {/* FirstModal */}
             <Modal
@@ -596,7 +596,7 @@ function MultipleModals(props) {
                                     disabled={valid() || validTwo() || validFieldFive || validFieldSix || blocked}
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
-                                    variant="primary">Guardar</Button>
+                                    variant="info">Guardar</Button>
                                 <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                     Cancel
                 </Button>
@@ -635,13 +635,13 @@ function MultipleModals(props) {
                     </div>
                     <div className="row">
                         <div className="mx-auto">
-                            <button className="btn btn-primary Inter600" onClick={showModal3}>Agregar una referencia</button>
+                            <button className="btn btn-info Inter600" onClick={showModal3}>Agregar una referencia</button>
 
                         </div>
                     </div>
                     <div className="row ">
                         <div className="mx-auto">
-                            <button  onClick={showModal1} className="btn btn-primary Inter600">Agregar un contacto</button>
+                            <button  onClick={showModal1} className="btn btn-info Inter600">Agregar un contacto</button>
                         </div>
                     </div>
                     <div className="row">
@@ -731,7 +731,7 @@ function MultipleModals(props) {
                             <Col>
                                 <Button 
                                 disabled={validFieldThree || validFieldFour}
-                                className="float-right mb-3 mr-2" type="submit" variant="primary">Guardar</Button>
+                                className="float-right mb-3 mr-2" type="submit" variant="info">Guardar</Button>
                                 <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                     Cancel
 </Button>
@@ -771,13 +771,13 @@ function MultipleModals(props) {
                     </div>
                     <div className="row">
                         <div className="mx-auto">
-                            <button className="btn btn-primary Inter600" onClick={showModal3}>Agregar una referencia</button>
+                            <button className="btn btn-info Inter600" onClick={showModal3}>Agregar una referencia</button>
 
                         </div>
                     </div>
                     <div className="row">
                         <div className="mx-auto">
-                            <button onClick={showModal1} className="btn btn-primary Inter600">Agregar un contacto</button>
+                            <button onClick={showModal1} className="btn btn-info Inter600">Agregar un contacto</button>
 
                         </div>
                     </div>
@@ -851,7 +851,7 @@ function MultipleModals(props) {
                             <Button 
                              disabled ={!notes}
                              onSubmit={handleSubmit(onSubmit)}
-                             className="float-right mb-3 mr-2" type="submit" variant="primary">Guardar</Button>
+                             className="float-right mb-3 mr-2" type="submit" variant="info">Guardar</Button>
                              </form>
                 </Modal.Body>
 

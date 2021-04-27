@@ -951,7 +951,7 @@ function Bio(props) {
                       onSubmit={handleSubmit(onSubmit)}
                       className="float-right"
                       type="submit"
-                      variant="primary"
+                      variant="info"
                     >
                       Guardar
                     </Button>

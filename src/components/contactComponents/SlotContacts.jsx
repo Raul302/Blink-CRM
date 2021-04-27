@@ -15,7 +15,7 @@ export const SlotName = function SlotName(props) {
         n = n ? n[0].charAt(0) + n[1].charAt(0) : null;
         tag = <>
             <Link  onClick={(e) => click(props.data)} to={"contacts/" + (id) + "/bio"}>
-                <span class="mt-1 mr-1 sc-caSCKo fXbvQO styles__Company-sc-103gogw-0 jdbeFR">{n}</span>
+                <span class="mt-1 mr-2 sc-caSCKo fXbvQO styles__Company-sc-103gogw-0 jdbeFR">{n}</span>
                 <span>{fullname} </span>
             </Link>
         </>;

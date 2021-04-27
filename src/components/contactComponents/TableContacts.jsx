@@ -27,7 +27,7 @@ export const SlotReferences = function SlotReferences(props) {
     }
     return (
         <>
-            <a> <RIcons.RiEyeFill onClick={(e) => showModalS(props.data.id)} style={{ color: '#79B9E1' }} size={18} /></a>
+            <a> <RIcons.RiEyeFill onClick={(e) => showModalS(props.data.id)} style={{ color: '#497cff' }} size={18} /></a>
         </>
     )
 }
@@ -156,6 +156,7 @@ function TableContacts(props) {
                         }}
                         rowData={rowData}
                         rowHeight={40}
+                        cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
                         domLayout="autoHeight"
                         onGridReady={onGridReady}
                         frameworkComponents={frameworkComponents}
@@ -167,10 +168,15 @@ function TableContacts(props) {
                         rowSelection="multiple"
                     >
                         <AgGridColumn
+                            cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
                             cellRenderer="slotName"
                             headerName="Nombre" field="fullname" width="300" />
-                        <AgGridColumn headerName="Ciudad" field="ciy" width="200" cellRenderer="slotOrigin" />
-                        <AgGridColumn headerName="Programa" field="id_program" width="200" cellRenderer="slotProgram" />
+                        <AgGridColumn
+                            cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
+                        headerName="Ciudad" field="ciy" width="200" cellRenderer="slotOrigin" />
+                        <AgGridColumn 
+                             cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
+                        headerName="Programa" field="id_program" width="200" cellRenderer="slotProgram" />
                         <AgGridColumn 
                         headerName="Referencia" cellRenderer="slotReferences" width="200" />
                         <AgGridColumn
@@ -187,7 +193,7 @@ function TableContacts(props) {
                     onHide={handleClose}
                     dialogClassName="modal-90w">
                     <Modal.Header style={{ height: '60px' }} closeButton>
-                        <Modal.Title style={{ fontFamily: 'Inter', marginTop: '5px', fontWeight: '600', fontSize: '18px' }}>Referencias </Modal.Title>
+                        <Modal.Title style={{ fontFamily:'Montserrat,sans-serif',color:'#000000', marginTop: '5px', fontWeight: '600', fontSize: '18px' }}>Referencias </Modal.Title>
                     </Modal.Header>
                     <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
                         <div className="container-fluid">
@@ -201,7 +207,7 @@ function TableContacts(props) {
                         <Row>
 
                             <Col>
-                                <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
+                                <Button onClick={handleClose} style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                     Cerrar
                                     </Button>
                             </Col>

@@ -291,9 +291,9 @@ function AddOrEditCollege() {
     }
     return (
         <>
-            <button class="btn btn-primary"
+            <button class="btn btn-info"
                 onClick={(e) => handleShow()}>
-                <BIIcons.BiPlus /><IOIcons.IoIosSchool /></button>
+                <BIIcons.BiPlus />Colegios</button>
 
             {/* FirstModal */}
             <Modal
@@ -383,7 +383,7 @@ function AddOrEditCollege() {
                                     disabled={!obj.name || !obj.type || !obj.country || !obj.website}
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
-                                    variant="primary">Siguiente</Button>
+                                    variant="info">Siguiente</Button>
                                 <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                     Cancelar
                                 </Button>
@@ -534,7 +534,7 @@ function AddOrEditCollege() {
                                 <Button
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={(e) => handleShow()}
-                                    variant="primary">Siguiente</Button>
+                                    variant="info">Siguiente</Button>
                                 <Button onClick={(e) => handleShow()} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                     Atras
                                 </Button>
@@ -609,7 +609,7 @@ function AddOrEditCollege() {
                                 <Button
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
-                                    variant="primary">Siguiente</Button>
+                                    variant="info">Siguiente</Button>
                                 <Button onClick={(e) => showModalTwo()} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                     Atras
                                 </Button>
@@ -702,7 +702,7 @@ function AddOrEditCollege() {
                                 <Button
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
-                                    variant="primary">Guardar</Button>
+                                    variant="info">Guardar</Button>
                                 <Button onClick={
                                     obj.type === 'Boarding School' ?
                                         (e) => showModalThree()

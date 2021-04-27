@@ -117,7 +117,7 @@ uploadFile = ({ target: { files,name } }) =>{
     const {id} = college;
     return (
     <div class="row">
-         <button class="btn btn-primary"
+         <button class="btn btn-info"
                 onClick={this.handleShow}>
                 <BIIcons.BiPlus size={18}/><VCicons.VscNewFile  size={18} />
             </button>

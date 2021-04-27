@@ -14,31 +14,31 @@ export default function ContactsView(props) {
             <h1  style={{marginTop:'-10px'}} className="Inter400">{fullName}</h1>
             <div style={{marginTop:'-20px'}} className=" mt-3sc-bdVaJa styles__Nav-sc-19n49a3-0 gOZeoI">
                <Link className={[ '/contacts/'+id +'/bio'].includes(pathname) ? 
-               'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active Inter600' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl Inter600'} 
+               'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active montse' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl montse'} 
                to={"/contacts/"+id+"/bio"}>Bitacora</Link>
 
                <Link className={[ '/contacts/'+id +'/profile'].includes(pathname) ? 
-               'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active Inter600' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl Inter600'} 
+               'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active montse' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl montse'} 
                to={"/contacts/"+id+"/profile"}>Perfil</Link>
 
              <Link  className={[ '/contacts/'+id +'/references'].includes(pathname) ? 
-               'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active Inter600' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl Inter600'} 
+               'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active montse' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl montse'} 
                to={"/contacts/"+id+"/references"}>Referencias</Link>
 
                 <Link  className={[ '/contacts/'+id +'/docs'].includes(pathname) ? 
-               'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active Inter600' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl Inter600'} 
+               'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active montse' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl montse'} 
                to={"/contacts/"+id+"/docs"}>Doc</Link>
 
                 <Link  className={[ '/contacts/'+id +'/reminders'].includes(pathname) ? 
-               'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active Inter600' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl Inter600'} 
+               'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active montse' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl montse'} 
                to={"/contacts/"+id+"/reminders"}>Recordatorios</Link>
 
                 <Link  className={[ '/contacts/'+id +'/prospection'].includes(pathname) ? 
-               'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active Inter600' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl Inter600'} 
+               'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active montse' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl montse'} 
                to={"/contacts/"+id+"/prospection"}>Prospecciones</Link>
 
 <Link  className={[ '/contacts/'+id +'/applications'].includes(pathname) ? 
-               'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active Inter600' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl Inter600'} 
+               'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active montse' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl montse'} 
                to={"/contacts/"+id+"/applications"}>Aplicaciones</Link>
         </div>
         </div>

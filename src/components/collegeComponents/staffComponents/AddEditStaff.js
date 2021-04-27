@@ -98,7 +98,7 @@ export default function AddEditStaff(props) {
 
     return (
         <div className="mt-n5">
-            <button onClick={(e) => showModal()} className="btn btn-primary">
+            <button onClick={(e) => showModal()} className="btn btn-info">
                 <span className="Inter"
                     style={{ fontSize: "18px" }}>+</span> Staff</button>
 
@@ -196,7 +196,7 @@ export default function AddEditStaff(props) {
                                 <Button
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
-                                    variant="primary">{flagEdit ? 'Actualizar' : 'Guardar'}</Button>
+                                    variant="info">{flagEdit ? 'Actualizar' : 'Guardar'}</Button>
                                 <Button onClick={handleClose} style={{ fontFamily: "Inter", fontWeight: "500" }} className="float-right mb-3 mr-2" variant="danger" >
                                     Cancelar
                         </Button>

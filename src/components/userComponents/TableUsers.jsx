@@ -27,7 +27,7 @@ export const SlotName = function SlotName(props) {
       let tag = '';
       n = n ? n[0].charAt(0) + n[1].charAt(0) : null;
       tag = <>
-              <span class="mt-1 mr-1 sc-caSCKo fXbvQO styles__Company-sc-103gogw-0 jdbeFR">{n}</span>
+              <span class="mt-1 mr-2 sc-caSCKo fXbvQO styles__Company-sc-103gogw-0 jdbeFR">{n}</span>
               <span>{fullname} </span>
       </>;
       return tag;
@@ -87,6 +87,9 @@ function TableUsers(props) {
 
     // ComponenDidMount && ComponentDidUpdate
     useEffect(() => {
+      if (props.param) {
+        quickSearch(props.param);
+      }
         setUser(props.rowData);
         return () => {
           setState({}); // This worked for me
@@ -95,6 +98,11 @@ function TableUsers(props) {
 
 
     // functions
+    function quickSearch(value) {
+      let objx = gridApi;
+      value === 'keyWordSeccret302' ? objx.api.setQuickFilter("") : objx.api.setQuickFilter(value);
+      setGridApi(objx);
+  }
     function alertCustom(message,type){
         alert.show(message ,{
             timeout: 2000, 

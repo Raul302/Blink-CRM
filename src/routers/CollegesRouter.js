@@ -38,7 +38,7 @@ function CollegesRouter(props) {
           bgColor={backgroundColor}
           activeColor={activeColor}
         />
-        <div className="main-panel" ref={mainPanel}>
+        <div style={{backgroundColor:'#f9fafb'}}className="main-panel" ref={mainPanel}>
             <Nav {...props} />
           <CollegesView  />
           <Switch>

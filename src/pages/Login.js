@@ -64,7 +64,7 @@ function Login() {
                                 <Row className="justify-content-md-center mt-1">
                                     <Button
                                         disabled={ loading }
-                                        variant="primary" 
+                                        variant="info" 
                                         type="submit" >Login
                                             </Button>
                                 </Row>

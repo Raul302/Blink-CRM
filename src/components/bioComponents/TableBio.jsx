@@ -24,6 +24,7 @@ export const slotTypeProspection = function slotTypeProspection(props){
   const {value} = props;
   const showProspection = (obj) => {
     let tag = '';
+    console.log('obj',obj);
     if(obj){
       tag = <span style={{color:'#cb6d51'}}>{obj.name_prospection}</span>
     } else {
@@ -59,35 +60,35 @@ export const slotType = function SlotName(props) {
     const showSubject = (type = '',subject) => {
         let tag = '';
         if(!type || type === '' || type === null){
-            tag = <span class="Inter600B">
+            tag = <span >
             {subject}</span>
             }
             else {
                 if (type.includes('Llamada')) {
-                    tag = <span onClick={(e) => showModal(props.data)} class="Inter600B">
-                        <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#3B83BD" fillRule="nonzero" d="M21 16.92v-.025a.998.998 0 0 0-.85-1.014 13.845 13.845 0 0 1-3.032-.755.998.998 0 0 0-1.05.221l-1.27 1.27a1 1 0 0 1-1.202.162 17 17 0 0 1-6.375-6.375 1 1 0 0 1 .162-1.201l1.266-1.266a1 1 0 0 0 .224-1.057 13.817 13.817 0 0 1-.753-3.02A1.003 1.003 0 0 0 7.11 3h-3a1 1 0 0 0-.996 1.074 18.8 18.8 0 0 0 2.92 8.24 18.511 18.511 0 0 0 5.7 5.697 18.774 18.774 0 0 0 8.176 2.913A1 1 0 0 0 21 19.92v-3zm2 2.996a3 3 0 0 1-3.288 2.998 20.78 20.78 0 0 1-9.058-3.22 20.49 20.49 0 0 1-6.303-6.3A20.805 20.805 0 0 1 1.124 4.27 3 3 0 0 1 4.11 1H7.1a3.002 3.002 0 0 1 3.001 2.59c.117.885.334 1.754.645 2.588a3.002 3.002 0 0 1-.679 3.17l-.717.716a15 15 0 0 0 4.586 4.586l.72-.721a3 3 0 0 1 3.164-.676c.836.312 1.705.529 2.6.647A3 3 0 0 1 23 16.93v2.985z"></path></svg>
+                    tag = <span onClick={(e) => showModal(props.data)} >
+                        <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#497cff" fillRule="nonzero" d="M21 16.92v-.025a.998.998 0 0 0-.85-1.014 13.845 13.845 0 0 1-3.032-.755.998.998 0 0 0-1.05.221l-1.27 1.27a1 1 0 0 1-1.202.162 17 17 0 0 1-6.375-6.375 1 1 0 0 1 .162-1.201l1.266-1.266a1 1 0 0 0 .224-1.057 13.817 13.817 0 0 1-.753-3.02A1.003 1.003 0 0 0 7.11 3h-3a1 1 0 0 0-.996 1.074 18.8 18.8 0 0 0 2.92 8.24 18.511 18.511 0 0 0 5.7 5.697 18.774 18.774 0 0 0 8.176 2.913A1 1 0 0 0 21 19.92v-3zm2 2.996a3 3 0 0 1-3.288 2.998 20.78 20.78 0 0 1-9.058-3.22 20.49 20.49 0 0 1-6.303-6.3A20.805 20.805 0 0 1 1.124 4.27 3 3 0 0 1 4.11 1H7.1a3.002 3.002 0 0 1 3.001 2.59c.117.885.334 1.754.645 2.588a3.002 3.002 0 0 1-.679 3.17l-.717.716a15 15 0 0 0 4.586 4.586l.72-.721a3 3 0 0 1 3.164-.676c.836.312 1.705.529 2.6.647A3 3 0 0 1 23 16.93v2.985z"></path></svg>
         &nbsp;&nbsp;{subject}</span>;
                 }
                 else if (type.includes('Whatssap')) {
-                    tag = <span  onClick={(e) => showModal(props.data)} class="Inter600B"><FAIcons.FaWhatsapp color={"#3B83BD"}/>&nbsp; &nbsp;{subject}</span>
+                    tag = <span  onClick={(e) => showModal(props.data)} ><FAIcons.FaWhatsapp color={"#497cff"}/>&nbsp; &nbsp;{subject}</span>
                 }
                 else if (type.includes('Cita')) {
-                    tag = <span  onClick={(e) => showModal(props.data)} class="Inter600B">
-                        <FIcons.FiCalendar  color={"#3B83BD"}/>&nbsp;&nbsp;
+                    tag = <span  onClick={(e) => showModal(props.data)} >
+                        <FIcons.FiCalendar  color={"#497cff"}/>&nbsp;&nbsp;
                     {subject}</span>
                 }
                 else if (type.includes('Email')) {
-                    tag = <span  onClick={(e) => showModal(props.data)} class=" Inter600B">
-                        <HIcons.HiOutlineMail color={"#3B83BD"} size={16} />&nbsp;&nbsp;
+                    tag = <span  onClick={(e) => showModal(props.data)} >
+                        <HIcons.HiOutlineMail color={"#497cff"} size={16} />&nbsp;&nbsp;
                {subject}</span>
             } else if(type.includes('Video llamada')) {
-                tag = <span  onClick={(e) => showModal(props.data)} class=" Inter600B">
-                <VsIcons.VscDeviceCameraVideo color={"#3B83BD"} size={16} />&nbsp;&nbsp;
+                tag = <span  onClick={(e) => showModal(props.data)} >
+                <VsIcons.VscDeviceCameraVideo color={"#497cff"} size={16} />&nbsp;&nbsp;
                {subject}</span>
             }  else {
                   tag = 
-                 <span  onClick={(e) => showModal(props.data)} class=" Inter600B">
-                 <BIicons.BiMessageDetail color={"#3B83BD"} size={16}/>&nbsp; &nbsp;
+                 <span  onClick={(e) => showModal(props.data)} >
+                 <BIicons.BiMessageDetail color={"#497cff"} size={16}/>&nbsp; &nbsp;
                  {subject}</span>
             }
             return tag
@@ -155,7 +156,7 @@ export const SlotDate = function SlotDate(props) {
     let timef = moment(dateBD).locale('es-mx').format("h:mm A");
     datef = datef[0].toUpperCase() + datef.slice(1);
     datef = datef.replace(".","");
-    let tag = <span class="Inter">{datef} <Ioicons.IoMdTime /> {timef}</span>
+    let tag = <span class="Inter">{datef} <Ioicons.IoMdTime  /> {timef}</span>
     return tag;
 }
   return (
@@ -204,12 +205,13 @@ export const SlotProspection = function SlotProspection(props){
   const {value} = props;
   const showProspection = (obj) => {
     let tag = '';
+    console.log('obj',obj);
     if(obj.type_prospection == 'aplicacion') {
       tag = <span style={{color:'#FBC658'}}>Aplicacion</span>
     } else if(obj.type_prospection != 'aplicacion' && obj.programs){
-      tag = <span style={{color:'#cb6d51'}}>{obj.name_prospection}</span>
+      tag = <span style={{color:'#cb6d51'}}>{obj.programs.name_prospection}</span>
     } else {
-      tag = <span style={{color:'#3B83BD'}}>General</span>
+      tag = <span style={{color:'#497cff'}}>General</span>
     }
     return tag;
   }
