@@ -245,7 +245,7 @@ export default function AddEditBio(props) {
     let tag = "";
     if (type.includes("Llamada")) {
       tag = (
-        <span class="Inter600B">
+        <span class="montse">
           <svg width="16" height="16" viewBox="0 0 24 24">
             <path
               fill="currentColor"
@@ -257,9 +257,9 @@ export default function AddEditBio(props) {
         </span>
       );
     }
-    if (type.includes("Whatssap")) {
+    if (type.includes("Whatsapp")) {
       tag = (
-        <span class="Inter600B">
+        <span class="montse">
           <FAIcons.FaWhatsapp />
           &nbsp; {subject}
         </span>
@@ -267,7 +267,7 @@ export default function AddEditBio(props) {
     }
     if (type.includes("Cita")) {
       tag = (
-        <span class="Inter600B">
+        <span class="montse">
           <FIcons.FiCalendar />
           &nbsp;
           {subject}
@@ -276,7 +276,7 @@ export default function AddEditBio(props) {
     }
     if (type.includes("Email")) {
       tag = (
-        <span class=" Inter600B">
+        <span class=" montse">
           <HIcons.HiOutlineMail size={16} />
           &nbsp;
           {subject}
@@ -285,7 +285,7 @@ export default function AddEditBio(props) {
     }
     if(type.includes('Video llamada')){
       tag = (
-        <span class=" Inter600B">
+        <span class=" montse">
       <VsIcons.VscDeviceCameraVideo size={16} />
           &nbsp;
           {subject}
@@ -411,7 +411,7 @@ export default function AddEditBio(props) {
             <div class="card-body">
               <div class="row">
                 <span 
-                onClick={() => props.blocked ? true:showModalLog("Llamada") } class="Inter600B">
+                onClick={() => props.blocked ? true:showModalLog("Llamada") } class="ml-2 montse">
                   <svg width="16" height="16" viewBox="0 0 24 24">
                     <path
                       fill="currentColor"
@@ -422,33 +422,33 @@ export default function AddEditBio(props) {
                   &nbsp;LLamada
                 </span>
                 <span
-                  onClick={() => props.blocked ? true:showModalLog("Whatssap")}
-                  class="ml-4 Inter600B"
+                  onClick={() => props.blocked ? true:showModalLog("Whatsapp")}
+                  class="ml-4 montse"
                 >
                   <FAIcons.FaWhatsapp />
-                  &nbsp; Whatssap
+                  &nbsp;Whatsapp
                 </span>
                 <span
                   onClick={() => props.blocked ? true:showModalLog("Cita")}
-                  class="ml-4 Inter600B"
+                  class="ml-4 montse"
                 >
                   <FIcons.FiCalendar />
-                  &nbsp; Cita
+                  &nbsp;Cita
                 </span>
                 <span
                   onClick={() => props.blocked ? true:showModalLog("Email")}
-                  class="ml-4 Inter600B"
+                  class="ml-4 montse"
                 >
                   <HIcons.HiOutlineMail size={16} />
-                  Email
+                  &nbsp;Email
                 </span>
 
                 <span
                   onClick={() => props.blocked ? true:showModalLog("Video llamada")}
-                  class="ml-4 Inter600B"
+                  class="ml-4 montse"
                 >
                   <VsIcons.VscDeviceCameraVideo size={16} />
-                  &nbsp; Videollamada
+                  &nbsp;Videollamada
                 </span>
               </div>
             </div>
@@ -465,7 +465,7 @@ export default function AddEditBio(props) {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div class="container">
                 <Row>
-                  <div style={{ fontSize: "18px" }} class="col Inter600B">
+                  <div style={{ fontSize: "18px" }} class="col montse">
                     {param.subject}
                   </div>
                   <div class="justify-content-end">
@@ -477,6 +477,7 @@ export default function AddEditBio(props) {
                       />
                     </a>
                     <FAIcons.FaTrashAlt
+                      class="ml-1"
                       style={{ color: "#DC3545" }}
                       size={18}
                       onClick={(e) => {
@@ -486,7 +487,7 @@ export default function AddEditBio(props) {
                   </div>
                 </Row>
                 <Row className="mt-2">
-                  <div style={{ fontSize: "14px" }} class="col Inter">
+                  <div style={{ fontSize: "14px" }} class="col montse ">
                     <svg
                       width="18"
                       height="20"
@@ -511,12 +512,12 @@ export default function AddEditBio(props) {
                 </Row>
                 {param.participants && (
                   <Row className="mt-3">
-                    <div style={{ fontSize: "14px" }} class="col Inter600B">
+                    <div style={{ fontSize: "14px" }} class="col montse">
                       Participantes:
                       {param.participants.map((part) => (
                         <Row key={part.id} className="mt-2">
                           {showParticipant(part.type, part.name, part.fullname)}
-                          <span>{part.fullname}</span>
+                          <span class="ml-2">{part.fullname}</span>
                         </Row>
                       ))}
                     </div>
@@ -554,7 +555,7 @@ export default function AddEditBio(props) {
                           <div class="row">
                             <span
                               onClick={() => showModalLog("Llamada")}
-                              class="Inter600B"
+                              class="montse"
                             >
                               <svg width="16" height="16" viewBox="0 0 24 24">
                                 <path
@@ -566,22 +567,22 @@ export default function AddEditBio(props) {
                               &nbsp;LLamada
                             </span>
                             <span
-                              onClick={() => showModalLog("Whatssap")}
-                              class="ml-4 Inter600B"
+                              onClick={() => showModalLog("Whatsapp")}
+                              class="ml-4 montse"
                             >
                               <FAIcons.FaWhatsapp />
-                              &nbsp; Whatssap
+                              &nbsp;Whatsapp
                             </span>
                             <span
                               onClick={() => showModalLog("Cita")}
-                              class="ml-4 Inter600B"
+                              class="ml-4 montse"
                             >
                               <FIcons.FiCalendar />
-                              &nbsp; Cita
+                              &nbsp;Cita
                             </span>
                             <span
                               onClick={() => showModalLog("Email")}
-                              class="ml-4 Inter600B"
+                              class="ml-4 montse"
                             >
                               <HIcons.HiOutlineMail size={16} />
                               Email
@@ -642,7 +643,7 @@ export default function AddEditBio(props) {
                   <InputGroup className="">
                     <InputGroup.Prepend>
                       <InputGroup.Text
-                        className="ml-3 Inter600B"
+                        className="ml-3 montse"
                         style={{ backgroundColor: "#FFFFFF", borderRight: "0" }}
                       >
                         Asunto:

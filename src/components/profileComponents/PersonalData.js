@@ -53,15 +53,15 @@ function PersonalData(props) {
     // Methods
     const tagMun = (mun) => {
         let tag = '';
-        return tag = <span><strong class="Inter">Municipio: </strong>{mun}</span>;
+        return tag = <span><strong class="montse">Municipio: </strong>{mun}</span>;
     }
     const tagCOL = (col) => {
         let tag = '';
-        return tag = <span><strong class="Inter">Colonia: </strong>{col}     </span>;
+        return tag = <span><strong class="montse">Colonia: </strong>{col}     </span>;
     }
     const tagSpan = (num) => {
         let tag = '';
-        return tag = <span><strong class="Inter">Interior: </strong>{num}</span>;
+        return tag = <span><strong class="montse">montseior: </strong>{num}</span>;
     }
     const callCP = async (index, val) => {
         await await axios.get(constzipCodeApi + val, {
@@ -304,7 +304,7 @@ function PersonalData(props) {
         await axios.post(constaApi + 'contact/update', datax)
             .then(function (response) {
                 if (response.status === 200) {
-                    notification('success', 'Datos actualizados correctamente');
+                    notification('info', 'Datos actualizados correctamente');
                 } else {
                     notification('danger', 'Ocurrio un error,por favor contacta a soporte');
                 }
@@ -360,7 +360,7 @@ function PersonalData(props) {
                     <div class="card-body">
                         <div class="row">
                             <div class="col-11">
-                                <h5 style={{ fontWeight: '600' }} class="Inter card-title">Informacion</h5>
+                                <h5 style={{ fontWeight: '600' }} class="montse card-title">Información</h5>
                             </div>
                             <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
                                 <a>
@@ -370,33 +370,33 @@ function PersonalData(props) {
                         </div>
                         <div class="row mt-2 ">
                             <div class="col-3">
-                                <h6 class="Inter card-subtitle mb-2 text-muted">Nombre</h6>
+                                <h6 class="montse card-subtitle mb-2 text-muted">Nombre</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                    class="Inter card-subtitle mb-2 ">
+                                    class="montse card-subtitle mb-2 ">
                                     {props.contact.name}
                                 </h6>
                             </div>
                         </div>
                         <div class="row mt-3 ">
                             <div class="col-3">
-                                <h6 class="Inter card-subtitle mb-2 text-muted">Apellido paterno</h6>
+                                <h6 class="montse card-subtitle mb-2 text-muted">Apellido paterno</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                    class="Inter card-subtitle mb-2 ">
+                                    class="montse card-subtitle mb-2 ">
                                     {props.contact.father_lastname}
                                 </h6>
                             </div>
                         </div>
                         <div class="row mt-3 ">
                             <div class="col-3">
-                                <h6 class="Inter card-subtitle mb-2 text-muted">Apellido materno</h6>
+                                <h6 class="montse card-subtitle mb-2 text-muted">Apellido materno</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                    class="Inter card-subtitle mb-2 ">
+                                    class="montse card-subtitle mb-2 ">
                                     {props.contact.mother_lastname}
                                 </h6>
                             </div>
@@ -404,22 +404,22 @@ function PersonalData(props) {
 
                         <div class="row mt-3 ">
                             <div class="col-3">
-                                <h6 class="Inter card-subtitle mb-2 text-muted">Fecha</h6>
+                                <h6 class="montse card-subtitle mb-2 text-muted">Fecha</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '##243243', fontWeight: '600' }}
-                                    class="Inter card-subtitle mb-2">
+                                    class="montse card-subtitle mb-2">
                                     {props.contact.birthday}
                                 </h6>
                             </div>
                         </div>
                         <div class="row mt-3 ">
                             <div class="col-3">
-                                <h6 class="Inter card-subtitle mb-2 text-muted">Dirección</h6>
+                                <h6 class="montse card-subtitle mb-2 text-muted">Dirección</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '##243243', fontWeight: '600' }}
-                                    class="Inter card-subtitle mb-2">
+                                    class="montse card-subtitle mb-2">
                                     {props.contact.country ? props.contact.country : ''}
                                     {props.contact.state ? ',' + props.contact.state : ''}
                                     {props.contact.state ? ',' + props.contact.city : ''}
@@ -434,17 +434,17 @@ function PersonalData(props) {
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div class="row">
                                 <div class="col-11">
-                                    <h5 style={{ fontWeight: '600' }} class="Inter card-title">Informacion</h5>
+                                    <h5 style={{ fontWeight: '600' }} class="montse card-title">Informacion</h5>
                                 </div>
                                 <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
-                                    <button onClick={(e) => edit()} type="button" class="Inter btn btn-danger">Cancelar</button>
+                                    <button onClick={(e) => edit()} type="button" class="montse btn btn-danger">Cancelar</button>
                                     <button onSubmit={handleSubmit(onSubmit)}
-                                        type="submit" class="Inter ml-1 btn btn-success">Guardar</button>
+                                        type="submit" class="montse ml-1 btn btn-info">Guardar</button>
                                 </div>
                             </div>
                             <div class="row mt-3 ">
                                 <div class="col-3">
-                                    <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Nombre</Form.Label>
+                                    <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Nombre</Form.Label>
                                 </div>
                                 <div class="col">
                                     <Form.Control autoComplete="off"
@@ -455,7 +455,7 @@ function PersonalData(props) {
                             </div>
                             <div class="row mt-3 ">
                                 <div class="col-3">
-                                    <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Apellido paterno</Form.Label>
+                                    <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Apellido paterno</Form.Label>
                                 </div>
                                 <div class="col">
                                     <Form.Control autoComplete="off"
@@ -466,7 +466,7 @@ function PersonalData(props) {
                             </div>
                             <div class="row mt-3 ">
                                 <div class="col-3">
-                                    <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Apellido materno</Form.Label>
+                                    <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Apellido materno</Form.Label>
                                 </div>
                                 <div class="col">
                                     <Form.Control autoComplete="off"
@@ -478,7 +478,7 @@ function PersonalData(props) {
 
                             <div class="row mt-3 ">
                                 <div class="col-3">
-                                    <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Fecha</Form.Label>
+                                    <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Fecha</Form.Label>
                                 </div>
                                 <div class="col">
                                     <Form.Control autoComplete="off"
@@ -551,7 +551,7 @@ function PersonalData(props) {
                     <div class="card-body">
                         <div class="row">
                             <div class="col-11">
-                                <h5 style={{ fontWeight: '600' }} class="Inter card-title">Perfil academico</h5>
+                                <h5 style={{ fontWeight: '600' }} class="montse card-title">Perfil académico</h5>
                             </div>
                             <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
                                 <a>
@@ -561,33 +561,33 @@ function PersonalData(props) {
                         </div>
                         <div class="row mt-2 ">
                             <div class="col-3">
-                                <h6 class="Inter card-subtitle mb-2 text-muted">Grado</h6>
+                                <h6 class="montse card-subtitle mb-2 text-muted">Grado</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                    class="Inter card-subtitle mb-2 ">
+                                    class="montse card-subtitle mb-2 ">
                                     {props.contact.grade}
                                 </h6>
                             </div>
                         </div>
                         <div class="row mt-3 ">
                             <div class="col-3">
-                                <h6 class="Inter card-subtitle mb-2 text-muted">Ciclo escolar</h6>
+                                <h6 class="montse card-subtitle mb-2 text-muted">Ciclo escolar</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                    class="Inter card-subtitle mb-2 ">
+                                    class="montse card-subtitle mb-2 ">
                                     {props.contact.cicly}
                                 </h6>
                             </div>
                         </div>
                         <div class="row mt-3 ">
                             <div class="col-3">
-                                <h6 class="Inter card-subtitle mb-2 text-muted">Colegio</h6>
+                                <h6 class="montse card-subtitle mb-2 text-muted">Colegio</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                    class="Inter card-subtitle mb-2 ">
+                                    class="montse card-subtitle mb-2 ">
                                     {props.contact.schoool}
                                 </h6>
                             </div>
@@ -601,17 +601,17 @@ function PersonalData(props) {
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div class="row">
                                 <div class="col-11">
-                                    <h5 style={{ fontWeight: '600' }} class="Inter card-title">Perfil academico</h5>
+                                    <h5 style={{ fontWeight: '600' }} class="montse card-title">Perfil academico</h5>
                                 </div>
                                 <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
-                                    <button onClick={(e) => editAcademicP()} type="button" class="Inter btn btn-danger">Cancelar</button>
+                                    <button onClick={(e) => editAcademicP()} type="button" class="montse btn btn-danger">Cancelar</button>
                                     <button onSubmit={handleSubmit(onSubmit)}
-                                        type="submit" class="Inter ml-1 btn btn-success">Guardar</button>
+                                        type="submit" class="montse ml-1 btn btn-info">Guardar</button>
                                 </div>
                             </div>
                             <div class="row mt-3 ">
                                 <div class="col-3">
-                                    <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Grado</Form.Label>
+                                    <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Grado</Form.Label>
                                 </div>
                                 <div class="col">
                                     <Form.Control
@@ -635,7 +635,7 @@ function PersonalData(props) {
                             </div>
                             <div class="row mt-3 ">
                                 <div class="col-3">
-                                    <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciclo escolar</Form.Label>
+                                    <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Ciclo escolar</Form.Label>
                                 </div>
                                 <div class="col">
                                     <Form.Control
@@ -663,7 +663,7 @@ function PersonalData(props) {
                             </div>
                             <div class="row mt-3 ">
                                 <div class="col-3">
-                                    <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Colegio</Form.Label>
+                                    <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Colegio</Form.Label>
                                 </div>
                                 <div class="col">
                                     <Form.Control autoComplete="off"
@@ -682,7 +682,7 @@ function PersonalData(props) {
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
-                                <h5 style={{ fontWeight: '600' }} class="Inter card-title">Detalles de contacto</h5>
+                                <h5 style={{ fontWeight: '600' }} class="montse card-title">Detalles de contacto</h5>
                             </div>
                             <div class="col-1 d-flex justify-content-end">
                                 <a>
@@ -694,11 +694,11 @@ function PersonalData(props) {
                             return (
                                 <div class="row mt-2 ">
                                     <div class="col-3">
-                                        <h6 class="Inter card-subtitle mb-2 text-muted">Email {x.typeEmail}</h6>
+                                        <h6 class="montse card-subtitle mb-2 text-muted">Email {x.typeEmail}</h6>
                                     </div>
                                     <div class="col">
                                         <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                            class="Inter card-subtitle mb-2 ">
+                                            class="montse card-subtitle mb-2 ">
                                             {x.email}
                                         </h6>
                                     </div>
@@ -709,11 +709,11 @@ function PersonalData(props) {
                             return (
                                 <div class="row mt-3 ">
                                     <div class="col-3">
-                                        <h6 class="Inter card-subtitle mb-2 text-muted">Telefono {x.typePhone}</h6>
+                                        <h6 class="montse card-subtitle mb-2 text-muted">Telefono {x.typePhone}</h6>
                                     </div>
                                     <div class="col">
                                         <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                            class="Inter card-subtitle mb-2 ">
+                                            class="montse card-subtitle mb-2 ">
                                             {x.phone}
                                         </h6>
                                     </div>
@@ -728,12 +728,12 @@ function PersonalData(props) {
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div class="row">
                                 <div class="col">
-                                    <h5 style={{ fontWeight: '600' }} class="Inter card-title">Detalles de contacto</h5>
+                                    <h5 style={{ fontWeight: '600' }} class="montse card-title">Detalles de contacto</h5>
                                 </div>
                                 <div class="col-1 d-flex justify-content-end">
-                                    <button onClick={(e) => editCDetails()} type="button" class="Inter btn btn-danger">Cancelar</button>
+                                    <button onClick={(e) => editCDetails()} type="button" class="montse btn btn-danger">Cancelar</button>
                                     <button onSubmit={handleSubmit(onSubmit)}
-                                        type="submit" class="Inter ml-1 btn btn-success">Guardar</button>
+                                        type="submit" class="montse ml-1 btn btn-info">Guardar</button>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-left">
@@ -746,7 +746,7 @@ function PersonalData(props) {
                                     <div className="box">
                                         <div class="row mt-3 ">
                                             <div class="col-3">
-                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Tipo</Form.Label>
+                                                <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Tipo</Form.Label>
                                             </div>
                                             <div class="col">
                                                 <Form.Control
@@ -775,7 +775,7 @@ function PersonalData(props) {
                                         </div>
                                         <div class="row mt-3 ">
                                             <div class="col-3">
-                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Email</Form.Label>
+                                                <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Email</Form.Label>
                                             </div>
                                             <div class="col">
                                                 <Form.Control autoComplete="off"
@@ -788,12 +788,12 @@ function PersonalData(props) {
                                         <div class="row">
                                             <div class="col-4 ">
                                                 {inputEmail.length !== 0 &&
-                                                 <button type="button" onClick={() => handleRemoveClickEmail(i)} class="Inter ml-1 btn btn-danger btn-sm">
+                                                 <button type="button" onClick={() => handleRemoveClickEmail(i)} class="montse ml-1 btn btn-danger btn-sm">
                                                      <FAIcons.FaTrashAlt  style={{ color: 'white' }} size={18} />
                                                 </button>
                                                 }
                                                 {inputEmail.length - 1 === i && <button onClick={handleAddClickEmail}
-                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm"><span style={{ fontSize: '16px' }} class="Inter">+</span></button>
+                                                    type="submit" class="montse ml-1 btn btn-info btn-sm"><span style={{ fontSize: '16px' }} class="montse">+</span></button>
                                                 }
                                             </div>
                                         </div>
@@ -814,7 +814,7 @@ function PersonalData(props) {
 
                                         <div class="row mt-3">
                                             <div class="col-3">
-                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Tipo</Form.Label>
+                                                <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Tipo</Form.Label>
                                             </div>
                                             <div class="col">
                                                 <Form.Control
@@ -843,7 +843,7 @@ function PersonalData(props) {
                                         </div>
                                         <div class="row mt-3 ">
                                             <div class="col-3">
-                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Telefono</Form.Label>
+                                                <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Teléfono</Form.Label>
                                             </div>
                                             <div class="col">
                                                 <Form.Control autoComplete="off"
@@ -856,12 +856,12 @@ function PersonalData(props) {
                                         <div class="row">
                                             <div class="col-4 ">
                                                 {inputPhone.length !== 0 &&
-                                                  <button type="button" onClick={() => handleRemoveClickPhone(i)} class="Inter ml-1 btn btn-danger btn-sm">
+                                                  <button type="button" onClick={() => handleRemoveClickPhone(i)} class="montse ml-1 btn btn-danger btn-sm">
                                                   <FAIcons.FaTrashAlt  style={{ color: 'white' }} size={18} />
                                              </button>
                                                 }
                                                 {inputPhone.length - 1 === i && <button onClick={handleAddClickPhone}
-                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm"><span style={{ fontSize: '16px' }} class="Inter">+</span></button>
+                                                    type="submit" class="montse ml-1 btn btn-info btn-sm"><span style={{ fontSize: '16px' }} class="montse">+</span></button>
                                                 }
                                             </div>
                                         </div>
@@ -877,7 +877,7 @@ function PersonalData(props) {
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
-                                <h5 style={{ fontWeight: '600' }} class="Inter card-title">Direccion</h5>
+                                <h5 style={{ fontWeight: '600' }} class="montse card-title">Direccion</h5>
                             </div>
                             <div class="col-1 d-flex justify-content-end">
                                 <a>
@@ -890,10 +890,10 @@ function PersonalData(props) {
                                 <>
                                     <div class="row mt-3 ">
                                         <div class="col-3">
-                                            <h6 class="Inter card-subtitle mb-2 text-muted">Direcciòn {x.typeAddress}</h6>
+                                            <h6 class="montse card-subtitle mb-2 text-muted">Direcciòn {x.typeAddress}</h6>
                                         </div>
                                         <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                            class="Inter card-subtitle mb-2 ">
+                                            class="montse card-subtitle mb-2 ">
                                             {x.street} &nbsp;&nbsp;
                                             {x.intNum &&
                                                 tagSpan(x.intNum)
@@ -906,7 +906,7 @@ function PersonalData(props) {
                                         </div>
                                         <div class="col">
                                             <h6 class="mt-2" style={{ color: '#243243', fontWeight: '600' }}
-                                                class="Inter card-subtitle mb-2 ">
+                                                class="montse card-subtitle mb-2 ">
                                                 {x.col &&
                                                     tagCOL(x.col)
                                                 }
@@ -922,7 +922,7 @@ function PersonalData(props) {
                                         </div>
                                         <div class="col">
                                             <h6 class="mt-2" style={{ color: '#243243', fontWeight: '600' }}
-                                                class="Inter card-subtitle mb-2 ">
+                                                class="montse card-subtitle mb-2 ">
                                                     {/* {props.contact.country ? props.contact.country : ''}
                                     {props.contact.state ? ',' + props.contact.state : ''}
                                     {props.contact.state ? ',' + props.contact.city : ''} */}
@@ -937,7 +937,7 @@ function PersonalData(props) {
                                         </div>
                                         <div class="col">
                                             <h6 class="mt-2" style={{ color: '#243243', fontWeight: '600' }}
-                                                class="Inter card-subtitle mb-2 ">
+                                                class="montse card-subtitle mb-2 ">
                                                 {x.cp}
                                             </h6>
                                         </div>
@@ -953,12 +953,12 @@ function PersonalData(props) {
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div class="row">
                                 <div class="col">
-                                    <h5 style={{ fontWeight: '600' }} class="Inter card-title">Direcciòn</h5>
+                                    <h5 style={{ fontWeight: '600' }} class="montse card-title">Direcciòn</h5>
                                 </div>
                                 <div class="col-1 d-flex justify-content-end">
-                                    <button onClick={(e) => editD()} type="button" class="Inter btn btn-danger">Cancelar</button>
+                                    <button onClick={(e) => editD()} type="button" class="montse btn btn-danger">Cancelar</button>
                                     <button onSubmit={handleSubmit(onSubmit)}
-                                        type="submit" class="Inter ml-1 btn btn-success">Guardar</button>
+                                        type="submit" class="montse ml-1 btn btn-info">Guardar</button>
                                 </div>
                             </div>
                             {inputList.map((x, i) => {
@@ -966,7 +966,7 @@ function PersonalData(props) {
                                     <div className="box">
                                         <div class="row mt-3">
                                             <div class="col-3">
-                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Tipo</Form.Label>
+                                                <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Tipo</Form.Label>
                                             </div>
                                             <div class="col">
                                                 <Form.Control autoComplete="off"
@@ -995,7 +995,7 @@ function PersonalData(props) {
                                         </div>
                                         <div class="row mt-3 ">
                                             <div class="col-8">
-                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Calle</Form.Label>
+                                                <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Calle</Form.Label>
                                                 <InputGroup>
                                                     <Form.Control autoComplete="off"
                                                         onChange={e => handleInputChange(e, i)}
@@ -1008,7 +1008,7 @@ function PersonalData(props) {
                                                 </InputGroup>
                                             </div>
                                             <div class="col-2">
-                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Numero exterior</Form.Label>
+                                                <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Numero exterior</Form.Label>
                                                 <InputGroup>
                                                     <Form.Control autoComplete="off"
                                                         onChange={e => handleInputChange(e, i)}
@@ -1021,7 +1021,7 @@ function PersonalData(props) {
                                                 </InputGroup>
                                             </div>
                                             <div class="col-2">
-                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Numero Interior</Form.Label>
+                                                <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Numero montseior</Form.Label>
                                                 <InputGroup>
                                                     <Form.Control autoComplete="off"
                                                         onChange={e => handleInputChange(e, i)}
@@ -1036,7 +1036,7 @@ function PersonalData(props) {
                                         </div>
                                         <div class="row mt-3">
                                             <div class="col">
-                                                <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Codigo postal</Form.Label>
+                                                <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Codigo postal</Form.Label>
                                                 <InputGroup>
                                                     <Form.Control autoComplete="off"
                                                         onChange={e => handleInputChange(e, i)}
@@ -1053,7 +1053,7 @@ function PersonalData(props) {
                                             {x.country === "Mexico" &&
                                                 <>
                                                     <div class="col">
-                                                        <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Colonia</Form.Label>
+                                                        <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Colonia</Form.Label>
                                                         <InputGroup>
                                                             <Form.Control onChange={e => handleInputChange(e, i)} autoComplete="off"
                                                                 name="col"
@@ -1069,7 +1069,7 @@ function PersonalData(props) {
                                                         </InputGroup>
                                                     </div>
                                                     <div class="col">
-                                                        <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Delegacion o Municipio</Form.Label>
+                                                        <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Delegacion o Municipio</Form.Label>
                                                         <InputGroup>
                                                             <Form.Control autoComplete="off"
                                                                 onChange={e => handleInputChange(e, i)}
@@ -1099,7 +1099,7 @@ function PersonalData(props) {
                                                         />
                                                     </div>
                                                     <div class="col">
-                                                        <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciudad</Form.Label>
+                                                        <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Ciudad</Form.Label>
                                                         <Form.Control
                                                             className="informGray"
                                                             onChange={e => handleInputChange(e, i)}
@@ -1115,7 +1115,7 @@ function PersonalData(props) {
                                             <>
                                                 <div class="row mt-3 ">
                                                     <div class="col">
-                                                        <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Ciudad</Form.Label>
+                                                        <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Ciudad</Form.Label>
                                                         <InputGroup>
                                                             <Form.Control
                                                                 className="informGray"
@@ -1178,12 +1178,12 @@ function PersonalData(props) {
                                         <div class="row">
                                             <div class="col-4 ">
                                                 {inputList.length !== 0 &&
-                                                  <button type="button" onClick={() => handleRemoveClick(i)} class="Inter ml-1 btn btn-danger btn-sm">
+                                                  <button type="button" onClick={() => handleRemoveClick(i)} class="montse ml-1 btn btn-danger btn-sm">
                                                   <FAIcons.FaTrashAlt  style={{ color: 'white' }} size={18} />
                                              </button>
                                                 }
                                                 {inputList.length - 1 === i && <button onClick={handleAddClick}
-                                                    type="submit" class="Inter ml-1 btn btn-success btn-sm"><span style={{ fontSize: '16px' }} class="Inter">+</span></button>
+                                                    type="submit" class="montse ml-1 btn btn-info btn-sm"><span style={{ fontSize: '16px' }} class="montse">+</span></button>
                                                 }
                                             </div>
                                         </div>

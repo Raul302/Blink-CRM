@@ -359,8 +359,8 @@ export default function AddEditReminders(props) {
                                         <option disabled selected value=""></option>
                                         <option value="-0 hour">Misma hora</option>
                                         <option value="-1 hour">1 Hora Antes</option>
-                                        <option value="-24 hour">1 Dia Antes</option>
-                                        <option value="-48 hour">2 Dias Antes</option>
+                                        <option value="-24 hour">1 Día Antes</option>
+                                        <option value="-48 hour">2 Días Antes</option>
                                         <option value="-168 hour">1 Semana Antes</option>
                                     </Form.Control>
                                 </Col>
@@ -412,10 +412,10 @@ export default function AddEditReminders(props) {
                             <Col>
                                 <Button
                                     disabled={!subject ? true : !dateReminder ? true : !timeReminder ? true : !notificationReminder ? true : !departament ? true : false}
-                                    className="float-right mb-3 mr-2" type="submit"
+                                    className="float-right mb-3 mr-2 montse" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="info">{flagEdit ? 'Actualizar' : 'Guardar'}</Button>
-                                <Button onClick={handleClose} style={{ fontFamily: "Inter", fontWeight: "500" }} className="float-right mb-3 mr-2" variant="danger" >
+                                <Button onClick={handleClose}  className="float-right mb-3 mr-2 montse" variant="danger" >
                                     Cancelar
                 </Button>
 

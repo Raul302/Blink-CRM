@@ -28,7 +28,7 @@ function WithoutReferences(props) {
            width: "100%",
        },
    };
-   const [addrtype, setAddrtype] = useState(["Papa", "Mama", "Hermano/Hermana", "Otro"])
+   const [addrtype, setAddrtype] = useState(["Papá", "Mamá", "Hermano/Hermana", "Otro"])
    const Add = addrtype.map(Add => Add
    )
    // function showReference (e){
@@ -105,7 +105,7 @@ function handlevalidFour(e) {
                 onHide={handleClose}
             >
                  <Modal.Header style={{height:'60px'}} closeButton>
-                    <Modal.Title style={{ marginTop:'5px',fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}>Agregar referencia</Modal.Title>
+                    <Modal.Title style={{ marginTop:'5px',fontFamily: 'montse', fontWeight: '600', fontSize: '18px' }}>Agregar referencia</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
                 <form onSubmit={handleSubmitReference(onSubmit)}>
@@ -172,7 +172,7 @@ function handlevalidFour(e) {
                                 <Button 
                                 disabled={validFieldThree || validFieldFour}
                                 className="float-right mb-3 mr-2" type="submit" variant="info">Guardar</Button>
-                                <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
+                                <Button onClick={handleClose} style={{ fontFamily: 'montse', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
                                     Cancelar
 </Button>
 
@@ -192,7 +192,7 @@ function handlevalidFour(e) {
                 onHide={handleClose}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: '18px' }}>Agregar Referencia</Modal.Title>
+                    <Modal.Title style={{ fontFamily: 'montse', fontWeight: '600', fontSize: '18px' }}>Agregar Referencia</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
                     <div className="row mt-5"></div>
@@ -201,24 +201,24 @@ function handlevalidFour(e) {
                     <div className="container">
                         <div className="row">
                             <div className="mx-auto">
-                                <h1 className="Inter600B">Referencia Guardada!</h1>
+                                <h1 className="montse600B">Referencia Guardada!</h1>
                             </div>
                         </div>
                         <div className="row">
                             <div className="mx-auto">
-                                <span className="Inter500" > ¿Te gustaria agregar otra referencia?</span>
+                                <span className="montse500" > ¿Te gustaria agregar otra referencia?</span>
                             </div>
                         </div>
                     </div>
                     <div className="row mt-2">
                         <div className="mx-auto">
-                            <button className="btn btn-info Inter600" onClick={showModal3}>Agregar una referencia</button>
+                            <button className="btn btn-info montse600" onClick={showModal3}>Agregar una referencia</button>
 
                         </div>
                     </div>
                     <div className="row mt-2">
                         <div className="mx-auto">
-                            <a className="Inter500B" onClick={handleClose}>Terminar</a>
+                            <a className="montse500B" onClick={handleClose}>Terminar</a>
                         </div>
                     </div>
                     <div className="row mb-5"></div>

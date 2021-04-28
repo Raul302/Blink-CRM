@@ -400,7 +400,7 @@ export default function Prospection() {
             </div>
           </div>
           <div class="row">
-            <div class="mr-5 mb-4 col-12">
+            <div class="mb-4 col-12">
               <Proposals
                 blocked={activeProspect.status == "Aplicar" ? true : activeProspect.status == "Cancelar" ? true : false}
                 updateReminders={updateReminders} activeProspect={activeProspect} />
@@ -415,8 +415,8 @@ export default function Prospection() {
             </div>
           </div>
           <div class="mt-5 row">
-            <h6>Bitacora</h6>
-            <div class="mr-5 mt-5 col-12">
+            <h6>Bitácora</h6>
+            <div class="ml-n4 mt-5 col-12">
               <Bio
                 extern={true}
                 blocked={activeProspect.status == "Aplicar" ? true : activeProspect.status == "Cancelar" ? true : false}

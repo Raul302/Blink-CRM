@@ -207,9 +207,9 @@ export const SlotProspection = function SlotProspection(props){
     let tag = '';
     console.log('obj',obj);
     if(obj.type_prospection == 'aplicacion') {
-      tag = <span style={{color:'#FBC658'}}>Aplicacion</span>
+      tag = <span style={{color:'#ff0000'}}>Aplicacion</span>
     } else if(obj.type_prospection != 'aplicacion' && obj.programs){
-      tag = <span style={{color:'#cb6d51'}}>{obj.programs.name_prospection}</span>
+      tag = <span style={{color:'#01dfc2'}}>{obj.programs.name_prospection}</span>
     } else {
       tag = <span style={{color:'#497cff'}}>General</span>
     }
@@ -375,7 +375,7 @@ export default function TableBio(props) {
                   cellRenderer="slotDetalle"
                 />
                  <AgGridColumn
-                  headerName="Area"
+                  headerName="Área"
                   field="programs"
                   width="230"
                   cellRenderer="stotProspection"

@@ -345,7 +345,7 @@ export default function Proposals(props) {
     setSecondModal(!secondModal);
   }
   return (
-    <div className="content" style={{ width: "100%", height: "100%" }}>
+    <div className="ml-n3 content" style={{ width: "100%", height: "100%" }}>
       <NotificationAlert ref={notificationAlert} />
       {loading ?
                   <Skeleton width="60rem" height={30} count={10} />
@@ -360,9 +360,8 @@ export default function Proposals(props) {
         </div>
       <div
         className="ag-theme-alpine"
-        style={{ marginLeft:'31%' ,height: "100%", width: "70%" }}
+        style={{height: "100%", width: "100%" }}
       >
-        
         <AgGridReact
            context={{
              loadProposals,

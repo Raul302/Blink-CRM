@@ -12,6 +12,7 @@ import * as GIIcons from  "react-icons/gi";
 import * as AIIcons from  "react-icons/ai";
 import RemindersSection from 'pages/RemindersSection';
 import ProspectionSection from 'pages/ProspectionSection';
+import ApplicationSection from 'pages/ApplicationSection';
 
 var routes = [
   {
@@ -70,7 +71,7 @@ var routes = [
     path: "/SectionApplications",
     name: "Aplicaciones",
     icon: <AIIcons.AiOutlineAppstoreAdd size={20}/>,
-    component: RemindersSection,
+    component: ApplicationSection,
     layout: "/admin",
   },
  

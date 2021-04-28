@@ -45,7 +45,7 @@ export const SlotActions = function (props) {
           <AIcons.AiFillCheckCircle
           onClick={(e) => completeReminder(props.data)}
           title="Completar"
-          style={{ color: 'green' }}
+          style={{ color: '#0054a3' }}
           size={20} />
            </a>
           :
@@ -57,8 +57,8 @@ export const SlotActions = function (props) {
            size={20} />
              </a>
             }
-            <a>
-            <FIIcons.FiEdit title="Editar" onClick={(e) => editReminder(props.data)} size={18} style={{ color: '#386CEF' }} />
+            <a class="ml-1">
+            <FIIcons.FiEdit  title="Editar" onClick={(e) => editReminder(props.data)} size={18} style={{ color: '#386CEF' }} />
             </a>
             <a className="ml-1">
             <FAIcons.FaTrashAlt title="Eliminar" style={{ color: '#DC3545' }} size={18} onClick={(e) => { deleteReminder(props.data.id) }} />
@@ -435,7 +435,7 @@ export default function TableReminders(props) {
                   cellRenderer="slotUsers"
                   width="200"
                 />
-                <AgGridColumn headerName="departamento" field="departament"width={220} />
+                <AgGridColumn headerName="Departamento" field="departament"width={220} />
                 <AgGridColumn headerName="Acciones" cellRenderer="slotActions" width={220} />
               </AgGridReact>
             </div>

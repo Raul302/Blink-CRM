@@ -15,7 +15,7 @@ export default function ContactsView(props) {
             <div style={{marginTop:'-20px'}} className=" mt-3sc-bdVaJa styles__Nav-sc-19n49a3-0 gOZeoI">
                <Link className={[ '/contacts/'+id +'/bio'].includes(pathname) ? 
                'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active montse' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl montse'} 
-               to={"/contacts/"+id+"/bio"}>Bitacora</Link>
+               to={"/contacts/"+id+"/bio"}>Bitácora</Link>
 
                <Link className={[ '/contacts/'+id +'/profile'].includes(pathname) ? 
                'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active montse' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl montse'} 

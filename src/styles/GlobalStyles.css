@@ -338,8 +338,18 @@ constructed stylesheet
     color:#497cff;
     border-bottom: 2px solid #497cff;
 }
+a:hover, a:focus{
+    color:#497cff !important;
+}
+.iGbtBl.hover {
+    color:#497cff;
+    border-bottom: 2px solid #497cff;
+}
 .iGbtBl:first-child {
     margin-left: 0px;
+}
+.alert.alert-success {
+    background-color:#0054a3 !important;
 }
 .iGbtBl {
     font-weight: 600;
@@ -395,9 +405,17 @@ constructed stylesheet
     line-height: normal;
     font-weight: 500;
     color: rgb(255, 255, 255);
-    background-color: rgb(24, 39, 57);
+    background-color: #0054a3;
     box-shadow: 0px 0px 0px 1px;
 }
+.Inside{
+text-align: right;
+}
+ .insideIn {
+    /* text-align: right;
+    float: center; */
+
+  }
 .gBkpnP {
     width: 30px;
     height: 30px;
@@ -413,7 +431,7 @@ constructed stylesheet
     line-height: normal;
     font-weight: 500;
     color: rgb(255, 255, 255);
-    background-color: rgb(14, 255, 175);
+    background-color: #9cff00;
     box-shadow: 0px 0px 0px 1px;
 }
 .gBkpnX {

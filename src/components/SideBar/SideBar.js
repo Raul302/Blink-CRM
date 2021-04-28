@@ -88,7 +88,7 @@ class SideBar extends React.Component {
             {routes.map((prop,key) => {
               return(
                 <li
-                style={{color:this.activeRoute(prop.path) == 0 ? 'white' : '#45A1A3'}}
+                style={{color:this.activeRoute(prop.path) == 0 ? 'white' : '#497cff'}}
                 className={
                   this.activeRoute(prop.path) +
                   (prop.pro ? "Inter" : "")
@@ -100,6 +100,7 @@ class SideBar extends React.Component {
               to={prop.path}
               className="Inter nav-link"
               activeClassName="active"
+              style={{color:this.activeRoute(prop.path) == 0 ? 'white' : '#497cff'}}
               >
               <OverlayTrigger  trigger={["hover", "hover"]} placement="right"
               overlay={this.PopoverComponent(prop.name)}>
