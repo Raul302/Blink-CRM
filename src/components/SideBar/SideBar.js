@@ -7,7 +7,7 @@ import { Nav } from "reactstrap";
 import {store} from '../../store/store';
 import { NavLink } from "react-router-dom";
 import PerfectScrollbar from "perfect-scrollbar";
-
+import logo from 'resources/images/blinkLogo.png';
 
 import { Popover,OverlayTrigger } from "react-bootstrap";
 var ps;
@@ -52,7 +52,6 @@ class SideBar extends React.Component {
         }
     }
    activeRoute(routeName) {
-     console.log('ACTIVE', this.props.location.pathname.indexOf(routeName));
      return this.props.location.pathname.indexOf(routeName) > -1 ? 1 : 0;
    }
    componentDidMount() {
@@ -79,19 +78,24 @@ class SideBar extends React.Component {
     onItemClick = (path) => {
         this.setState({ activePath: path });
     }
+    // // Cuenta hsbc
+    // 021180550300001161 IPF México 
+    // 10665966734
+    // hola@CredentialsContainer.mx
 
     render() {
         const { items, activePath } = this.state;
         return(
             <StyledSideBar>
               <Nav>
+                <img class="mb-5" style={{width:"40px",marginLeft:"10%", display:'flex',alignItems:'center',justifyContent:'center'}} src={logo} alt="Logo"></img>
             {routes.map((prop,key) => {
               return(
                 <li
                 style={{color:this.activeRoute(prop.path) == 0 ? 'white' : '#497cff'}}
                 className={
                   this.activeRoute(prop.path) +
-                  (prop.pro ? "Inter" : "")
+                  (prop.pro ? "montse" : "")
                 }
                 key={key}
                 >

@@ -22,7 +22,6 @@ export const AppRouter = (props) => {
     // const[flag,setFlag] = useState(false);
     // const [user,setUser] = useState();
     useEffect(() => {
-        console.log('AppRouter montado');
         if(JSON.parse(localStorage.getItem('user'))){
             const {email,id,name,token,type} = JSON.parse(localStorage.getItem('user'));
             if(!email || !id || !name || !token || !type){

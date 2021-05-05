@@ -42,6 +42,9 @@ export const SlotProgram = function SlotProgram(props) {
     return (
         <>
             <span>{program} {year}</span>
+            <span>{program} {year}</span>
+            <span>{program} {year}</span>
+            <span>{program} {year}</span>
         </>
     )
 }

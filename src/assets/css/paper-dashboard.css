@@ -271,7 +271,7 @@
   font-weight: 600;
   font-size: 0.8571em;
   line-height: 1.35em;
-  text-transform: uppercase;
+  text-transform: capitalize;
   border: none;
   margin: 10px 1px;
   border-radius: 3px;
@@ -1422,7 +1422,7 @@ h1, .h1 {
   margin-bottom: 30px; }
   h1 small, .h1 small {
     font-weight: 700;
-    text-transform: uppercase;
+    text-transform: capitalize;
     opacity: .8; }
 
 h2, .h2 {
@@ -1452,7 +1452,7 @@ h5, .h5 {
 h6, .h6 {
   font-size: 1em;
   font-weight: 700;
-  text-transform: uppercase; }
+  text-transform: capitalize; }
 
 p.description {
   font-size: 1.14em; }
@@ -1460,7 +1460,7 @@ p.description {
 .title {
   font-weight: 700; }
   .title.title-up {
-    text-transform: uppercase; }
+    text-transform: capitalize; }
     .title.title-up a {
       color: #2c2c2c;
       text-decoration: none; }
@@ -1517,7 +1517,7 @@ a.text-gray:focus, a.text-gray:hover {
   .blockquote small {
     color: #66615B;
     font-size: 0.8571em;
-    text-transform: uppercase; }
+    text-transform: capitalize; }
   .blockquote.blockquote-primary {
     border-color: #51cbce;
     color: #51cbce; }
@@ -1893,7 +1893,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
     .navbar .navbar-nav .nav-link.btn.btn-sm {
       padding: 5px 15px; }
   .navbar .navbar-nav .nav-link {
-    text-transform: uppercase;
+    text-transform: capitalize;
     font-size: 0.7142em;
     padding: 0.5rem 0.7rem;
     line-height: 1.625rem;
@@ -3009,7 +3009,7 @@ License - nucleoapp.com/license/
   font-size: 14px;
   font-weight: 700;
   padding-bottom: 0;
-  text-transform: uppercase;
+  text-transform: capitalize;
   border: 0; }
 
 .table .radio,
@@ -3061,7 +3061,7 @@ License - nucleoapp.com/license/
 
 .table-shopping > thead > tr > th {
   font-size: 1em;
-  text-transform: uppercase; }
+  text-transform: capitalize; }
 
 .table-shopping > tbody > tr > td {
   font-size: 1em; }
@@ -3178,7 +3178,7 @@ License - nucleoapp.com/license/
       display: block;
       text-decoration: none;
       position: relative;
-      text-transform: uppercase;
+      text-transform: capitalize;
       cursor: pointer;
       font-size: 12px;
       padding: 10px 8px;
@@ -3278,7 +3278,7 @@ License - nucleoapp.com/license/
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
     .sidebar .logo .simple-text,
     .off-canvas-sidebar .logo .simple-text {
-      text-transform: uppercase;
+      text-transform: capitalize;
       padding: 0.5rem 0;
       display: block;
       white-space: nowrap;
@@ -3515,7 +3515,7 @@ License - nucleoapp.com/license/
         color: inherit;
         padding: 0.5rem;
         font-size: 0.8571em;
-        text-transform: uppercase;
+        text-transform: capitalize;
         text-decoration: none; }
         .footer ul li a:hover {
           text-decoration: none; }
@@ -3633,7 +3633,7 @@ License - nucleoapp.com/license/
     font-size: 12px;
     font-weight: 600;
     text-align: center;
-    text-transform: uppercase; }
+    text-transform: capitalize; }
   .fixed-plugin .adjustments-line p {
     float: left;
     display: inline-block;
@@ -3896,7 +3896,7 @@ License - nucleoapp.com/license/
 
 .card-user .author {
   text-align: center;
-  text-transform: none;
+  text-transform: capitalize;
   margin-top: -77px; }
   .card-user .author a + p.description {
     margin-top: -7px; }

@@ -4,6 +4,7 @@ import axios from "axios";
 import { constaApi } from "constants/constants";
 import * as FIIcons from "react-icons/fi";
 import * as AIicons from "react-icons/ai";
+import * as MDICONS from "react-icons/md";
 import {
   Grid,
   Table,
@@ -72,14 +73,15 @@ export default function Aplications() {
     const [program, SetProgram] = useState();
     const [objAux, setObjAux] = useState({ program: "", year: "" });
     const [modal,setModal] = useState(false);
+    const [id_prospection,set_ID_Prospection] = useState(0);
     // const generateData = (value, length = 2) =>
     //     d3.range(length).map((item, index) => ({
     //       date: index,
     //       value: value === null || value === undefined ? Math.random() * 10 : value
     //     }));
 
-      const [data, setData] = useState([{date:18+'/'+18,value:0},
-          {date:0+'/'+0,value:100},
+      const [data, setData] = useState([{date:9+'/'+9,value:0},
+          {date:0+'/'+9,value:100},
         ]
       );
       const changeData = () => {
@@ -163,6 +165,7 @@ export default function Aplications() {
         }
       }
     }, []);
+    console.log('prospectionSelected',auxSelection);
     const convertSel = (seleccion) => {
       let col = []
       if(selection){
@@ -189,6 +192,8 @@ export default function Aplications() {
                 Object.keys(result).map((oneKey,i) => {
                   if(i === 0){
                     setProspectionSelected(oneKey);
+                    let id = response.data.filter(s => s.name_prospection == oneKey);
+                    set_ID_Prospection(id[0]);
                     SetAuxSelection(result[oneKey]);
                   }
                 })
@@ -224,8 +229,8 @@ export default function Aplications() {
       // })
       setValueOfChecklist([...result]);
       // setTwoPartValuesofCheckList([...resultTwo]);
-      setData([{date:18+'/'+18,value:0},
-      {date:0+'/'+0,value:100},
+      setData([{date:9+'/'+9,value:0},
+      {date:0+'/'+9,value:100},
     ]);
     }
     const changeButton = async(id) => {
@@ -238,6 +243,7 @@ export default function Aplications() {
       // dispatch(starLoadingCollegesByProspeccion(newcadena)); 
           SetSelectionTwo(id);
           setactiveApplication(response.data);
+          set_ID_Prospection(response.data.id_prospection ?? 0);
           if(response.data.checklist){
             fillCheckList(response.data.checklist);
           } else {
@@ -343,24 +349,30 @@ export default function Aplications() {
           return val;
         }
       })
-      let sumPos = 0;
-      let sumNeg = 0;
-      let sumNo = 0;
+      let seleccionados = 0;
+      let deshabilitados = 0;
+      let noSeleccionados = 0;
         resultOne.map(r => {
         if(r.value === 1 && r.isChecked === true){
-         sumPos = sumPos + 1;
+         seleccionados = seleccionados + 1;
         } else if(r.value === -1 && r.isChecked === true) {
-         sumNeg = sumNeg + 1;
+         deshabilitados = deshabilitados + 1;
         } else if(r.value === 1 && r.isChecked === false){
-          sumNo = sumNo + 1 ;
+          noSeleccionados = noSeleccionados + 1 ;
         }
       })
       setData(
         [
-          {date:sumPos > 0 ?"SI  " +  (sumPos-sumNeg)+'/'+(sumPos+sumNo -sumNeg) : "",value:((sumPos-sumNeg + (sumPos > 0  ? 1 : 0))*10)},
-          {date:(sumNeg > 0 || sumPos != 9)  ? "NO  " + (sumNeg)+'/'+(sumPos+sumNo -sumNeg): "",value:(100-((sumPos-sumNeg + 1)*10))}
+          {date: "SI "+ (seleccionados)+"/"+(seleccionados+noSeleccionados-deshabilitados),value:((seleccionados/(seleccionados+noSeleccionados-deshabilitados))*10)},
+          // {date:seleccionados > 0 ?"SI  " +  (seleccionados-deshabilitados)+'/'+(seleccionados+noSeleccionados -deshabilitados) : "",value:((seleccionados-deshabilitados + (seleccionados > 0  ? 1 : 0))*10)},
+          {date:(noSeleccionados-deshabilitados) > 0 ? ("NO "+ (noSeleccionados-deshabilitados)+"/"+seleccionados) : " ",value:(((noSeleccionados-deshabilitados)/seleccionados)*10)}
          ]
       )
+      if((seleccionados + deshabilitados) == 0){
+        console.log('Here');
+        setData([{date:9+'/'+9,value:0},
+          {date:0+'/'+9,value:100}])
+      }
       let specificSearch = resultOne.filter(res => res.identifier === e.target.name );
       if(specificSearch[0].isChecked){
         let position = specificSearch[0].position;
@@ -420,6 +432,7 @@ export default function Aplications() {
             last_modification : moment().format("YYYY-MM-DD HH:mm")          ,
             id_last_contact : active.id,
             last_contact : active.name,
+            id_prospection: id_prospection
         };
 
          axios.post(constaApi + "saveApplication",newObj)
@@ -444,6 +457,8 @@ export default function Aplications() {
         }
       })
       setProspectionSelected(name);
+      let id = applications.filter(s => s.name_prospection == name);
+      set_ID_Prospection(id[0]);
       SetAuxSelection(obj);
     }
     function openModalProp(){
@@ -461,11 +476,9 @@ export default function Aplications() {
           exist.push(aux);
         }
       })
-      console.log('EXIST',exist);
        setCollegesFiltering([...exist]);
        
        setModal(true);
-       console.log('Colleges',auxColleges);
     }
     function showApplications(obj){
       let tag = obj.map(o => {
@@ -502,27 +515,46 @@ export default function Aplications() {
         })
       })
       setValueOfChecklist(array);
-      let sumPos = 0;
-      let sumNeg = 0;
-      let sumNo = 0;
+      let seleccionados = 0;
+      let deshabilitados = 0;
+      let noSeleccionados = 0;
       valuesOfchecklist.map(r => {
         if(r.value === 1 && r.isChecked === true){
-         sumPos = sumPos + 1;
+         seleccionados = seleccionados + 1;
         } else if(r.value === -1 && r.isChecked === true) {
-         sumNeg = sumNeg + 1;
+         deshabilitados = deshabilitados + 1;
         } else if(r.value === 1 && r.isChecked === false){
-          sumNo = sumNo + 1 ;
+          noSeleccionados = noSeleccionados + 1 ;
         }
       })
       setData(
         [
-          {date:sumPos > 0 ?"SI  " +  (sumPos-sumNeg)+'/'+(sumPos+sumNo -sumNeg) : "",value:((sumPos-sumNeg + (sumPos > 0  ? 1 : 0))*10)},
-          {date:(sumNeg > 0 || sumPos != 9)  ? "NO  " + (sumNeg)+'/'+(sumPos+sumNo -sumNeg): "",value:(100-((sumPos-sumNeg + 1)*10))}
+          {date: "SI "+ (seleccionados)+"/"+(seleccionados+noSeleccionados-deshabilitados),value:((seleccionados/(seleccionados+noSeleccionados-deshabilitados))*10)},
+          // {date:seleccionados > 0 ?"SI  " +  (seleccionados-deshabilitados)+'/'+(seleccionados+noSeleccionados -deshabilitados) : "",value:((seleccionados-deshabilitados + (seleccionados > 0  ? 1 : 0))*10)},
+          {date:(noSeleccionados-deshabilitados) > 0 ? ("NO "+ (noSeleccionados-deshabilitados)+"/"+seleccionados) : " ",value:(((noSeleccionados-deshabilitados)/seleccionados)*10)}
          ]
       )
-      console.log('DATA',data);
-      console.log('ARRAY',array);
+      if((seleccionados + deshabilitados) == 0){
+        console.log('Here');
+        setData([{date:9+'/'+9,value:0},
+          {date:0+'/'+9,value:100}])
+      }
 
+    }
+    const checkButton = (obj) => {
+      console.log('OBJ',obj);
+      let params = "";
+      if (obj.id == selectionTwo && obj.status != 'Cancelado' && obj.status !='Llegada'){
+       params = "btn btn-sm btn-yellow"
+      } else if (obj.status == "Cancelado"){
+        params = "btn btn-sm btn-disabled"
+      } else if(obj.status == "Llegada"){
+        params = "btn btn-sm btn-success"
+      } else {
+        params = "btn btn-sm btn-yellow"
+      }
+  
+      return params;
     }
     return (
       <div class="content">
@@ -534,14 +566,18 @@ export default function Aplications() {
           {results &&
                     [Object.keys(results).map((oneKey,i)=>{
                       return(
+                        <>
                         <button onClick={(e) => changeProspection(oneKey,results[oneKey])}eventKey={oneKey} title={oneKey}
-                      class={[ i> 0 ?  "ml-1 mt-n5 btn btn-sm btn-success" : "opacity-2 ml-1 mt-n5 btn btn-sm btn-success" 
-                      ]}
+                      class={"ml-1 mt-n5 btn btn-sm btn-yellow"}
+                      style={{marginBottom:'20px', borderBottom:[oneKey == prospectionSelected ? '2px solid black'  : '0px'], opacity: [oneKey == prospectionSelected ? '2'  : '0.5']}}
                       >
                         {oneKey}
                     </button>
+                      </>
                       )
-                    })]}
+                     
+                    })
+                    ]}
           <div>
           {auxSelection &&
            [Object.keys(auxSelection).map((oneKey,i)=>{
@@ -551,14 +587,15 @@ export default function Aplications() {
               eventKey={oneKey} title={oneKey}
             class={[ i > 0 ? "ml-1" : "ml-0" 
             ]}
-            class={[selectionTwo === auxSelection[oneKey].id  ?"btn btn-sm btn-info" : "btn btn-sm btn-primary" ]}
+            style={{ opacity: [auxSelection[oneKey].id == selectionTwo ? '2'  : '0.5'], borderBottom:[auxSelection[oneKey].id == selectionTwo ? '2px solid black'  : '0px']}}
+            class={checkButton(auxSelection[oneKey])}
             >
               {auxSelection[oneKey].name}
           </button>
             )
           })]}
             <button
-            onClick={(e) => openModalProp()}
+                        onClick={(e) => openModalProp()}
             type="button"
             class="ml-1 btn btn-secondary btn-sm"
           >
@@ -636,12 +673,16 @@ export default function Aplications() {
   </div>
   <div class="content col-4">
   <Form.Label className="formGray montseInter">Story</Form.Label>
-  <Form.Control  style={{height:'80%'}}name="last_modification"
-  disabled
-   autoComplete="off" className="formGray" type="text"
-   placeholder="Escriba sus notas..."
-   value={activeApplication.story}
-   />
+  <Form.Control
+                    onChange={(e) => changeStory(e)}
+                    value={activeApplication.story}
+                    as="textarea"
+                    style={{paddingLeft:'10px'}}
+                    placeholder="Escriba sus notas..."
+                    rows={10}
+                    disabled
+                    cols={20}
+                  />
    <button
    class="mt-1 float-right montseInter btn-info  btn-sm"
    onClick={(e) => changeModalStory()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
@@ -962,8 +1003,8 @@ export default function Aplications() {
   </div>
   </div>
   <div class="mt-5 row">
-  <h6>Bitacora</h6>
-  <div class="mr-5 mt-5 col-12">
+  <h6>Bitácora</h6>
+  <div class="ml-n4 mt-5 col-12">
      {activeApplication &&
       <Bio
       extern={true}
@@ -1177,9 +1218,10 @@ export default function Aplications() {
                     onChange={(e) => changeStory(e)}
                     value={activeApplication.story}
                     as="textarea"
+                    style={{paddingLeft:'10px'}}
                     placeholder="Escriba sus notas..."
-                    rows={12}
-                    cols={12}
+                    rows={10}
+                    cols={20}
                   />
                   </Col>
                 </Row>

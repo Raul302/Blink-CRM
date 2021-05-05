@@ -23,7 +23,7 @@ h1, .h1 {
 
     small{
         font-weight: $font-weight-bold;
-        text-transform: uppercase;
+        text-transform: capitalize;
         opacity: .8;
     }
 }
@@ -55,7 +55,7 @@ h5, .h5 {
 h6, .h6{
     font-size: $font-size-h6;
     font-weight: $font-weight-bold;
-    text-transform: uppercase;
+    text-transform: capitalize;
 }
 p{
     &.description{
@@ -73,7 +73,7 @@ p{
     font-weight: $font-weight-bold;
 
     &.title-up{
-        text-transform: uppercase;
+        text-transform: capitalize;
 
         a{
             color: $black-color;
@@ -141,7 +141,7 @@ a.text-gray:focus, a.text-gray:hover{
     small{
         color: $default-color;
         font-size: $font-size-small;
-        text-transform: uppercase;
+        text-transform: capitalize;
     }
 
     &.blockquote-primary{

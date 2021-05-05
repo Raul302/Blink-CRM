@@ -24,7 +24,6 @@ export const slotTypeProspection = function slotTypeProspection(props){
   const {value} = props;
   const showProspection = (obj) => {
     let tag = '';
-    console.log('obj',obj);
     if(obj){
       tag = <span style={{color:'#cb6d51'}}>{obj.name_prospection}</span>
     } else {
@@ -205,13 +204,12 @@ export const SlotProspection = function SlotProspection(props){
   const {value} = props;
   const showProspection = (obj) => {
     let tag = '';
-    console.log('obj',obj);
     if(obj.type_prospection == 'aplicacion') {
-      tag = <span style={{color:'#ff0000'}}>Aplicacion</span>
+      tag = <span style={{color:'#e0142e'}}>Aplicacion</span>
     } else if(obj.type_prospection != 'aplicacion' && obj.programs){
-      tag = <span style={{color:'#01dfc2'}}>{obj.programs.name_prospection}</span>
+      tag = <span style={{color:'#497cff'}}>{obj.programs.name_prospection}</span>
     } else {
-      tag = <span style={{color:'#497cff'}}>General</span>
+      tag = <span style={{color:'#3ad88f'}}>General</span>
     }
     return tag;
   }

@@ -81,7 +81,7 @@
                 display: block;
                 text-decoration: none;
                 position: relative;
-                text-transform: uppercase;
+                text-transform: capitalize;
                 cursor: pointer;
                 font-size: 12px;
                 padding: 10px 8px;
@@ -197,7 +197,7 @@
         }
 
         .simple-text{
-            text-transform: uppercase;
+            text-transform: capitalize;
             padding: $padding-base-vertical 0;
             display: block;
             white-space: nowrap;

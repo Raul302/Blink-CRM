@@ -39,6 +39,7 @@ import {
   TableGroupRow,
   TableSelection,
 } from '@devexpress/dx-react-grid-bootstrap4';
+import { select } from "d3-selection";
 var _ = require('lodash');
 
 export  function CustomComponent(props){
@@ -292,26 +293,41 @@ export default function Prospection() {
 
       });
   };
+  const checkButton = (obj) => {
+    let params = "";
+    if(obj.id == selection && obj.status != "Aplicar" && obj.status != 'Cancelar'){
+      params = "mr-1 btn btn-sm btn-info";
+    } else if (obj.id != selection && obj.status != "Aplicar" && obj.status != 'Cancelar'){
+      params = "mr-1 btn btn-sm btn-infoDisabled";
+    } else if (obj.status == "Aplicar" && obj.id == selection){
+      params = "mr-1 btn btn-sm btn-yellow";
+    } else if(obj.status == "Aplicar" && obj.id != select){
+      params = "mr-1 btn btn-sm btn-yellowDisabled";
+    } else if(obj.status == "Cancelar" && obj.id == selection) {
+      params = "mr-1 btn btn-sm btn-disabled";
+    } else if(obj.status == "Cancelar" && obj.id != selection){
+      params = "mr-1 btn btn-sm btn-disabledForce";
+
+    }
+
+    return params;
+  }
   return (
     <div class="content">
+      <div class="row mt-n5">
+      <div class="col-10">
       {prospections && [
         prospections.map((pros) => {
           return (
             <button
-              onClick={(e) => changeButton(pros.id)}
-              key={pros.id}
-              // active={{backgroundColor:'#FF0000'}}
-              class={[
-               pros.status === "Aplicar" ? 
-               "mt-n5 mr-1 btn btn-sm btn-light"
-               : selection === pros.id
-                  ? "mt-n5 mr-1 btn btn-sm btn-info"
-                  : "mt-n5 mr-1 btn btn-sm btn-primary",
-              ]}
+            onClick={(e) => changeButton(pros.id)}
+            key={pros.id}
+            // active={{backgroundColor:'#FF0000'}}
+            class={checkButton(pros)}
             // style={{
-            //   backgroundColor:[selection === pros.id ?  '#0062cc' : '#51cbce']
-            // }}
-            >
+              //   backgroundColor:[selection === pros.id ?  '#0062cc' : '#51cbce']
+              // }}
+              >
               {pros.name_prospection}
             </button>
           );
@@ -320,26 +336,23 @@ export default function Prospection() {
       <button
         onClick={(e) => changeModal()}
         type="button"
-        class="mt-n5  Inter ml-1 btn btn-success btn-sm"
-      >
+        class="montse ml-1 btn btn-success btn-sm"
+        >
         +
       </button>
-      {/* <button
-        onClick={(e) => saveChanges()}
-        type="button"
-        class="mt-n5 float-right Inter btn btn-success btn-sm"
-      >
-        Guardar cambios
-      </button> */}
+      </div>
+      <div class="col">
       {prospections &&
         <button
-          onClick={(e) => deleteProspection()}
-          type="button"
-          class="mt-n5 float-right Inter btn btn-danger btn-sm"
+        onClick={(e) => deleteProspection()}
+        type="button"
+        class="float-right Inter btn btn-danger btn-sm"
         >
           Eliminar Prospeccion
       </button>
       }
+      </div>
+      </div>
       {load === true ?
         <Skeleton width="60rem" height={30} count={10} />
 

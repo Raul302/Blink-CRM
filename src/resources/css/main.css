@@ -355,7 +355,7 @@ td{
   font-size: 15px;
   color: #00ad5f;
   line-height: 1.4;
-  text-transform: uppercase;
+  text-transform: capitalize;
   background-color: #393939;
 }
 
@@ -466,7 +466,7 @@ td{
   font-size: 14px;
   color: #555555;
   line-height: 1.4;
-  text-transform: uppercase;
+  text-transform: capitalize;
 
   background-color: transparent;
 }

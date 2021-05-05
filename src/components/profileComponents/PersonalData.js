@@ -356,11 +356,11 @@ function PersonalData(props) {
         <>
             <NotificationAlert ref={notificationAlert} />
             {!editInfo ?
-                <div class="card">
+                <div style={{boxShadow:'none',borderColor:'#717d95'}}class="border mt-5 card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-11">
-                                <h5 style={{ fontWeight: '600' }} class="montse card-title">Información</h5>
+                                <h5 style={{ fontWeight: '600',fontSize:'20px' }} class="montse card-title">Información</h5>
                             </div>
                             <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
                                 <a>
@@ -370,7 +370,7 @@ function PersonalData(props) {
                         </div>
                         <div class="row mt-2 ">
                             <div class="col-3">
-                                <h6 class="montse card-subtitle mb-2 text-muted">Nombre</h6>
+                                <h6  class="montse card-subtitle mb-2 formGrayTwo">Nombre</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
@@ -381,7 +381,7 @@ function PersonalData(props) {
                         </div>
                         <div class="row mt-3 ">
                             <div class="col-3">
-                                <h6 class="montse card-subtitle mb-2 text-muted">Apellido paterno</h6>
+                                <h6 class="montse card-subtitle mb-2 formGrayTwo">Apellido paterno</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
@@ -392,7 +392,7 @@ function PersonalData(props) {
                         </div>
                         <div class="row mt-3 ">
                             <div class="col-3">
-                                <h6 class="montse card-subtitle mb-2 text-muted">Apellido materno</h6>
+                                <h6 class="montse card-subtitle mb-2 formGrayTwo">Apellido materno</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
@@ -404,7 +404,7 @@ function PersonalData(props) {
 
                         <div class="row mt-3 ">
                             <div class="col-3">
-                                <h6 class="montse card-subtitle mb-2 text-muted">Fecha</h6>
+                                <h6 class="montse card-subtitle mb-2 formGrayTwo">Fecha</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '##243243', fontWeight: '600' }}
@@ -415,7 +415,7 @@ function PersonalData(props) {
                         </div>
                         <div class="row mt-3 ">
                             <div class="col-3">
-                                <h6 class="montse card-subtitle mb-2 text-muted">Dirección</h6>
+                                <h6 class="montse card-subtitle mb-2 formGrayTwo">Dirección</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '##243243', fontWeight: '600' }}
@@ -429,12 +429,12 @@ function PersonalData(props) {
                     </div>
                 </div>
                 :
-                <div class="card">
+                <div style={{boxShadow:'none',borderColor:'#717d95'}}class="border mt-5 card">
                     <div class="card-body">
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div class="row">
                                 <div class="col-11">
-                                    <h5 style={{ fontWeight: '600' }} class="montse card-title">Informacion</h5>
+                                    <h5 style={{ fontWeight: '600',fontSize:'20px' }} class="montse card-title">Información</h5>
                                 </div>
                                 <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
                                     <button onClick={(e) => edit()} type="button" class="montse btn btn-danger">Cancelar</button>
@@ -547,11 +547,11 @@ function PersonalData(props) {
             }
 
             {!editAcademicProfile ?
-                <div class="card mt-3">
+                <div  style={{boxShadow:'none',borderColor:'#717d95'}} class="border card mt-3">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-11">
-                                <h5 style={{ fontWeight: '600' }} class="montse card-title">Perfil académico</h5>
+                                <h5 style={{ fontWeight: '600',fontSize:'20px' }} class="montse card-title">Perfil académico</h5>
                             </div>
                             <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
                                 <a>
@@ -561,7 +561,7 @@ function PersonalData(props) {
                         </div>
                         <div class="row mt-2 ">
                             <div class="col-3">
-                                <h6 class="montse card-subtitle mb-2 text-muted">Grado</h6>
+                                <h6 class="montse card-subtitle mb-2 formGrayTwo">Grado</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
@@ -572,7 +572,7 @@ function PersonalData(props) {
                         </div>
                         <div class="row mt-3 ">
                             <div class="col-3">
-                                <h6 class="montse card-subtitle mb-2 text-muted">Ciclo escolar</h6>
+                                <h6 class="montse card-subtitle mb-2 formGrayTwo">Ciclo escolar</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
@@ -583,7 +583,7 @@ function PersonalData(props) {
                         </div>
                         <div class="row mt-3 ">
                             <div class="col-3">
-                                <h6 class="montse card-subtitle mb-2 text-muted">Colegio</h6>
+                                <h6 class="montse card-subtitle mb-2 formGrayTwo">Colegio</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
@@ -597,11 +597,11 @@ function PersonalData(props) {
                 </div>
                 :
                 <div class="card">
-                    <div class="card-body">
+                    <div  style={{boxShadow:'none',borderColor:'#717d95'}}class="border card-body">
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div class="row">
                                 <div class="col-11">
-                                    <h5 style={{ fontWeight: '600' }} class="montse card-title">Perfil academico</h5>
+                                    <h5 style={{ fontWeight: '600',fontSize:'20px' }} class="montse card-title">Perfil académico</h5>
                                 </div>
                                 <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
                                     <button onClick={(e) => editAcademicP()} type="button" class="montse btn btn-danger">Cancelar</button>
@@ -678,11 +678,11 @@ function PersonalData(props) {
             }
 
             {!editDetails ?
-                <div class="mt-3 card">
+                <div  style={{boxShadow:'none',borderColor:'#717d95'}}class="border mt-3 card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
-                                <h5 style={{ fontWeight: '600' }} class="montse card-title">Detalles de contacto</h5>
+                                <h5 style={{ fontWeight: '600',fontSize:'20px' }} class="montse card-title">Detalles de contacto</h5>
                             </div>
                             <div class="col-1 d-flex justify-content-end">
                                 <a>
@@ -694,7 +694,7 @@ function PersonalData(props) {
                             return (
                                 <div class="row mt-2 ">
                                     <div class="col-3">
-                                        <h6 class="montse card-subtitle mb-2 text-muted">Email {x.typeEmail}</h6>
+                                        <h6 class="montse card-subtitle mb-2 formGrayTwo">Email {x.typeEmail}</h6>
                                     </div>
                                     <div class="col">
                                         <h6 style={{ color: '#243243', fontWeight: '600' }}
@@ -709,7 +709,7 @@ function PersonalData(props) {
                             return (
                                 <div class="row mt-3 ">
                                     <div class="col-3">
-                                        <h6 class="montse card-subtitle mb-2 text-muted">Telefono {x.typePhone}</h6>
+                                        <h6 class="montse card-subtitle mb-2 formGrayTwo">Teléfono {x.typePhone}</h6>
                                     </div>
                                     <div class="col">
                                         <h6 style={{ color: '#243243', fontWeight: '600' }}
@@ -723,12 +723,12 @@ function PersonalData(props) {
                     </div>
                 </div>
                 :
-                <div class="mt-3 card">
+                <div style={{boxShadow:'none',borderColor:'#717d95'}}class="border mt-3 card">
                     <div class="card-body">
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div class="row">
                                 <div class="col">
-                                    <h5 style={{ fontWeight: '600' }} class="montse card-title">Detalles de contacto</h5>
+                                    <h5 style={{ fontWeight: '600',fontSize:'20px' }} class="montse card-title">Detalles de contacto</h5>
                                 </div>
                                 <div class="col-1 d-flex justify-content-end">
                                     <button onClick={(e) => editCDetails()} type="button" class="montse btn btn-danger">Cancelar</button>
@@ -804,7 +804,7 @@ function PersonalData(props) {
                                 <Col>
                                     <hr></hr>
                                     <h6 >
-                                        Telefono
+                                        Teléfono
                             </h6>
                                 </Col>
                             </Row>
@@ -825,7 +825,7 @@ function PersonalData(props) {
                                                     className="formGray" type="text"
                                                     as="select" size="sm" custom>
                                                     <option disabled value="" selected></option>
-                                                    <option>Movil</option>
+                                                    <option>Móvil</option>
                                                     <option>Personal</option>
                                                     <option>Trabajo</option>
                                                     <option>Otro</option>
@@ -837,7 +837,7 @@ function PersonalData(props) {
                                                         onChange={e => handleInputChangePhone(e, i)}
                                                         value={x.otherPhone}
                                                         name="otherPhone"
-                                                        className="formGray" type="text" placeholder="Ingrese su tipo de telefono" />
+                                                        className="formGray" type="text" placeholder="Ingrese su tipo de teléfono" />
                                                 </div>
                                             }
                                         </div>
@@ -873,11 +873,11 @@ function PersonalData(props) {
                 </div>
             }
             {!editDirection ?
-                <div class="mt-3 card">
+                <div  style={{boxShadow:'none',borderColor:'#717d95'}}class="border mt-3 card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
-                                <h5 style={{ fontWeight: '600' }} class="montse card-title">Direccion</h5>
+                                <h5 style={{ fontWeight: '600',fontSize:'20px' }} class="montse card-title">Dirección</h5>
                             </div>
                             <div class="col-1 d-flex justify-content-end">
                                 <a>
@@ -890,7 +890,7 @@ function PersonalData(props) {
                                 <>
                                     <div class="row mt-3 ">
                                         <div class="col-3">
-                                            <h6 class="montse card-subtitle mb-2 text-muted">Direcciòn {x.typeAddress}</h6>
+                                            <h6 class="montse card-subtitle mb-2 formGrayTwo">Dirección {x.typeAddress}</h6>
                                         </div>
                                         <h6 style={{ color: '#243243', fontWeight: '600' }}
                                             class="montse card-subtitle mb-2 ">
@@ -948,12 +948,12 @@ function PersonalData(props) {
                     </div>
                 </div>
                 :
-                <div class="mt-3 card">
+                <div  style={{boxShadow:'none',borderColor:'#717d95'}}class="border mt-3 card">
                     <div class="card-body">
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div class="row">
                                 <div class="col">
-                                    <h5 style={{ fontWeight: '600' }} class="montse card-title">Direcciòn</h5>
+                                    <h5 style={{ fontWeight: '600',fontSize:'20px' }} class="montse card-title">Dirección</h5>
                                 </div>
                                 <div class="col-1 d-flex justify-content-end">
                                     <button onClick={(e) => editD()} type="button" class="montse btn btn-danger">Cancelar</button>

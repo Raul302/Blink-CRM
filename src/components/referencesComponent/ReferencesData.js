@@ -39,7 +39,7 @@ function ReferencesData(props) {
     const [stateX, setStateX] = useState();
     const [cities, setCities] = useState([]);
     const [states, setStates] = useState([]);
-    const [addrtype, setAddrtype] = useState(["Papa", "Mama", "Hermano/Hermana", "Otro"])
+    const [addrtype, setAddrtype] = useState(["Papá", "Mamá", "Hermano/Hermana", "Otro"])
     const Add = addrtype.map(Add => Add)
     const [token, setToken] = useState(props.token ?? JSON.parse(localStorage.getItem('tokenStates')));
     const [state, setState] = useState({});
@@ -292,7 +292,7 @@ function ReferencesData(props) {
                                 props.handlerUpdate();
                                 alert.show('Referencia Eliminada correctamente', {
                                     timeout: 2000, // custom timeout just for this one alert
-                                    type: 'success'
+                                    type: 'info'
                                 })
                             } else {
                                 alert.show('Ocurrio un error por favor intentar mas tarde');
@@ -351,7 +351,7 @@ function ReferencesData(props) {
                     props.handlerUpdate();
                     alert.show('Datos actualizados correctamente', {
                         timeout: 2000, // custom timeout just for this one alert
-                        type: 'success'
+                        type: 'info'
                     })
                 } else {
                     alert.show('Ocurrio un error por favor intentar mas tarde');
@@ -362,11 +362,11 @@ function ReferencesData(props) {
     return (
         <>
             {!edit ?
-                <div class="mt-2 card">
+                <div style={{boxShadow:'none',borderColor:'#717d95'}}class="border mt-2 card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-11">
-                                <h5 style={{ fontWeight: '600' }} class="montse card-title">{type_ref}</h5>
+                                <h5 style={{ fontWeight: '600',fontSize:'20px' }} class="montse card-title">{type_ref}</h5>
                             </div>
                             <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
                                 <a>
@@ -383,7 +383,7 @@ function ReferencesData(props) {
                         </div>
                         <div class="row mt-2 ">
                             <div class="col-3">
-                                <h6 class="montse card-subtitle mb-2 text-muted">Nombre</h6>
+                                <h6 class="montse card-subtitle mb-2 formGrayTwo">Nombre</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
@@ -395,7 +395,7 @@ function ReferencesData(props) {
 
                         {/* <div class="row mt-2 ">
                             <div class="col-3">
-                                <h6 class="montse card-subtitle mb-2 text-muted">Tipo</h6>
+                                <h6 class="montse card-subtitle mb-2 formGrayTwo">Tipo</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
@@ -405,9 +405,9 @@ function ReferencesData(props) {
                             </div>
                         </div> */}
 
-                        <div class="row mt-2 ">
+                        <div class="row mt-3 ">
                             <div class="col-3">
-                                <h6 class="montse card-subtitle mb-2 text-muted">Apellido Paterno</h6>
+                                <h6 class="montse card-subtitle mb-2 formGrayTwo">Apellido Paterno</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
@@ -417,9 +417,9 @@ function ReferencesData(props) {
                             </div>
                         </div>
 
-                        <div class="row mt-2 ">
+                        <div class="row mt-3 ">
                             <div class="col-3">
-                                <h6 class="montse card-subtitle mb-2 text-muted">Apellido Materno</h6>
+                                <h6 class="montse card-subtitle mb-2 formGrayTwo">Apellido Materno</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
@@ -431,9 +431,9 @@ function ReferencesData(props) {
 
                         {inputEmail.map((x, i) => {
                             return (
-                                <div class="row mt-2 ">
+                                <div class="row mt-3 ">
                                     <div class="col-3">
-                                        <h6 class="montse card-subtitle mb-2 text-muted">Email {x.typeEmail}</h6>
+                                        <h6 class="montse card-subtitle mb-2 formGrayTwo">Email {x.typeEmail}</h6>
                                     </div>
                                     <div class="col">
                                         <h6 style={{ color: '#243243', fontWeight: '600' }}
@@ -448,7 +448,7 @@ function ReferencesData(props) {
                             return (
                                 <div class="row mt-3 ">
                                     <div class="col-3">
-                                        <h6 class="montse card-subtitle mb-2 text-muted">Telefono {x.typePhone}</h6>
+                                        <h6 class="montse card-subtitle mb-2 formGrayTwo">Teléfono {x.typePhone}</h6>
                                     </div>
                                     <div class="col">
                                         <h6 style={{ color: '#243243', fontWeight: '600' }}
@@ -464,10 +464,10 @@ function ReferencesData(props) {
                                 <>
                                 <div class="row mt-3 ">
                                     <div class="col-3">
-                                        <h6 class="montse card-subtitle mb-2 text-muted">Direcciòn {x.typeAddress}</h6>
+                                        <h6 class="montse card-subtitle mb-2 formGrayTwo">Direcciòn {x.typeAddress}</h6>
                                     </div>
                                     <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                            class="montse card-subtitle mb-2 ">
+                                            class="montse card-subtitle">
                                             {x.street} &nbsp;&nbsp;
                                             {x.intNum &&
                                             tagSpan(x.intNum)
@@ -476,7 +476,6 @@ function ReferencesData(props) {
                                 </div>
                                 <div class="row mr-5">
                                     <div class="col-3">
-
                                     </div>
                                     <div class="col">
                                     <h6 class="mt-2"style={{ color: '#243243', fontWeight: '600' }}
@@ -492,7 +491,6 @@ function ReferencesData(props) {
                                 </div>
                                 <div class="row mr-5">
                                     <div class="col-3">
-
                                     </div>
                                     <div class="col">
                                     <h6 class="mt-2"style={{ color: '#243243', fontWeight: '600' }}
@@ -520,12 +518,12 @@ function ReferencesData(props) {
                     </div>
                 </div>
                 :
-                <div class="card mt-2">
+                <div style={{boxShadow:'none',borderColor:'#717d95'}}class="border card mt-2">
                     <div class="card-body">
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div class="row">
                                 <div class="col-11">
-                                    <h5 style={{ fontWeight: '600' }} class="montse card-title">{type_ref}</h5>
+                                    <h5 style={{ fontWeight: '600',fontSize:'20px' }} class="montse card-title">{type_ref}</h5>
                                 </div>
 
                                 <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
@@ -533,7 +531,7 @@ function ReferencesData(props) {
                                         type="button"
                                         class="montse btn btn-danger">Cancelar</button>
                                     <button onSubmit={handleSubmit(onSubmit)}
-                                        type="submit" class="montse ml-1 btn btn-success">Guardar</button>
+                                        type="submit" class="montse ml-1 btn btn-info">Guardar</button>
                                 </div>
                             </div><Row>
                                 <Col>
@@ -551,7 +549,7 @@ function ReferencesData(props) {
                                     <Form.Control autoComplete="off"
                                         onChange={(e) => changeName(e)} value={nameR}
                                         name="name"
-                                        className="formGray" type="text" placeholder="Ingrese su nombre" />
+                                        className="montse formGrayTwo" type="text" placeholder="Ingrese su nombre" />
                                 </div>
                             </div>
                             <div class="row mt-3 ">
@@ -559,11 +557,11 @@ function ReferencesData(props) {
                                     <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Tipo</Form.Label>
                                 </div>
                                 <div class="col">
-                                    <Form.Label className="formGray">Tipo de referencia</Form.Label>
+                                    <Form.Label className="montse formGrayTwo">Tipo de referencia</Form.Label>
                                     < select
                                         value={falseTypeR}
                                         onChange={e => showReference(e)}
-                                        className="browser-default custom-select" >
+                                        className="montse formGrayTwo browser-default custom-select" >
                                         {
                                             Add.map((address, key) => <option value={key}>{address}</option>)
                                         }
@@ -580,7 +578,7 @@ function ReferencesData(props) {
                                         <Form.Control autoComplete="off"
                                             onChange={(e) => changeNameRef(e)} value={nameRef}
                                             name="name"
-                                            className="formGray" type="text" placeholder="Especifique" />
+                                            className="montse formGrayTwo" type="text" placeholder="Especifique" />
                                     </div>
                                 </div>
                                 :
@@ -594,7 +592,7 @@ function ReferencesData(props) {
                                     <Form.Control autoComplete="off"
                                         onChange={(e) => changeFname(e)} value={fName}
                                         name="mother_lastname"
-                                        className="formGray" type="text" placeholder="Ingrese su Apellido paterno" />
+                                        className="montse formGrayTwo" type="text" placeholder="Ingrese su Apellido paterno" />
                                 </div>
                             </div>
                             <div class="row mt-3 ">
@@ -605,7 +603,7 @@ function ReferencesData(props) {
                                     <Form.Control autoComplete="off"
                                         onChange={(e) => changeMName(e)} value={mName}
                                         name="mother_lastname"
-                                        className="formGray" type="text" placeholder="Ingrese su Apellido materno" />
+                                        className="montse formGrayTwo" type="text" placeholder="Ingrese su Apellido materno" />
                                 </div>
                             </div>
                             <Row>
@@ -628,7 +626,7 @@ function ReferencesData(props) {
                                                     onChange={e => handleInputChangeEmail(e, i)}
                                                     value={x.typeEmail}
                                                     name="typeEmail"
-                                                    className="formGray" type="text" placeholder="Ejemplo : Personal,Trabajo,Estudiantil" />
+                                                    className="montse formGrayTwo" type="text" placeholder="Ejemplo : Personal,Trabajo,Estudiantil" />
                                             </div>
                                         </div>
                                         <div class="row mt-3 ">
@@ -640,7 +638,7 @@ function ReferencesData(props) {
                                                     onChange={e => handleInputChangeEmail(e, i)}
                                                     value={x.email}
                                                     name="email"
-                                                    className="formGray" type="text" placeholder="Ingrese su Email" />
+                                                    className="montse formGrayTwo" type="text" placeholder="Ingrese su Email" />
                                             </div>
                                         </div>
                                         <div class="row">
@@ -651,7 +649,7 @@ function ReferencesData(props) {
                                                     </button>
                                                 }
                                                 {inputEmail.length - 1 === i && <button onClick={handleAddClickEmail}
-                                                    type="submit" style={{ fontSize: '16px' }} class="montse ml-1 btn btn-success btn-sm">+</button>
+                                                    type="submit" style={{ fontSize: '16px' }} class="montse ml-1 btn btn-info btn-sm">+</button>
 
                                                 }
                                             </div>
@@ -663,7 +661,7 @@ function ReferencesData(props) {
                                 <Col>
                                     <hr></hr>
                                     <h6 >
-                                        Telefono
+                                        Teléfono
                             </h6>
                                 </Col>
                             </Row>
@@ -672,27 +670,29 @@ function ReferencesData(props) {
                                     <div className="box mt-1">
                                         <div class="row mt-3">
                                             <div class="col-3">
-                                                <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Tipo</Form.Label>
+                                                <Form.Label style={{fontSize: '16px' }} className="montse formGray">Tipo</Form.Label>
                                             </div>
                                             <div class="col">
                                                 <Form.Control autoComplete="off"
                                                     onChange={e => handleInputChangePhone(e, i)}
                                                     value={x.typePhone}
+                                                    style={{letterSpacing:'0.2px',}}
                                                     name="typePhone"
-                                                    className="formGray" type="text" placeholder="Ejemplo : Movil,Personal,Trabajo" />
+                                                    className=" montse formGray" type="text" placeholder="Ejemplo : Móvil,Personal,Trabajo" />
                                             </div>
                                         </div>
 
                                         <div class="row mt-3 ">
                                             <div class="col-3">
-                                                <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Telefono</Form.Label>
+                                                <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Teléfono</Form.Label>
                                             </div>
                                             <div class="col">
                                                 <Form.Control autoComplete="off"
                                                     onChange={e => handleInputChangePhone(e, i)}
                                                     value={x.phone}
                                                     name="phone"
-                                                    className="formGray" type="text" placeholder="Ingrese su numero" />
+                                                    style={{letterSpacing:'0.2px'}}
+                                                    className="montse formGrayTwo" type="text" placeholder="Ingrese su numero" />
                                             </div>
                                         </div>
                                         <div class="row">
@@ -703,7 +703,7 @@ function ReferencesData(props) {
                                                 </button>
                                                 }
                                                 {inputPhone.length - 1 === i && <button onClick={handleAddClickPhone}
-                                                    type="submit" style={{ fontSize: '16px' }} class="montse ml-1 btn btn-success btn-sm">+</button>
+                                                    type="submit" style={{ fontSize: '16px' }} class="montse ml-1 btn btn-info btn-sm">+</button>
 
                                                 }
                                             </div>
@@ -731,7 +731,7 @@ function ReferencesData(props) {
                                                     onChange={e => handleInputChange(e, i)}
                                                     value={x.typeAddress}
                                                     name="typeAddress"
-                                                    className="formGray" type="text" placeholder="Ejemplo : Trabajo,Casa,Negocio" />
+                                                    className="montse formGrayTwo" type="text" placeholder="Ejemplo : Trabajo,Casa,Negocio" />
                                             </div>
                                         </div>
                                         <div class="row mt-3 ">
@@ -742,14 +742,15 @@ function ReferencesData(props) {
                                                     onChange={e => handleInputChange(e, i)}
                                                     value={x.street}
                                                     name="street"
-                                                    className="informGray" type="text" placeholder="Ingrese su Calle" />
+                                                    style={{letterSpacing:'0.2px'}}
+                                                    className="montse informGray" type="text" placeholder="Ingrese su Calle" />
                                                 <InputGroup.Append>
                                                 <InputGroup.Text className="informGray" ><TIicons.TiHome /></InputGroup.Text>
                                                 </InputGroup.Append>
                                                 </InputGroup>
                                             </div>
                                             <div class="col-2">
-                                            <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Numero exterior</Form.Label>
+                                            <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Número exterior</Form.Label>
                                             <InputGroup>
                                                 <Form.Control autoComplete="off"
                                                     onChange={e => handleInputChange(e, i)}
@@ -762,7 +763,7 @@ function ReferencesData(props) {
                                                 </InputGroup>
                                             </div>
                                             <div class="col-2">
-                                            <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Numero montseior</Form.Label>
+                                            <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Número interior</Form.Label>
                                                 <InputGroup>
                                                 <Form.Control autoComplete="off"
                                                     onChange={e => handleInputChange(e, i)}
@@ -829,7 +830,7 @@ function ReferencesData(props) {
                                     <>
                                                 <div class="row ">
                                                     <div class="col">
-                                                        <Form.Label style={{ fontSize: '16px' }} className="formGray">Estado</Form.Label>
+                                                        <Form.Label style={{ fontSize: '16px' }} className="montse formGrayTwo">Estado</Form.Label>
                                                         <Form.Control
                                                         className="informGray"
                                                             onChange={e => handleInputChange(e, i)}
@@ -870,7 +871,7 @@ function ReferencesData(props) {
                                                 </InputGroup>
                                                     </div>
                                                     <div class="col">
-                                                        <Form.Label style={{ fontSize: '16px' }} className="formGray">Estado</Form.Label>
+                                                        <Form.Label style={{ fontSize: '16px' }} className="montse formGrayTwo">Estado</Form.Label>
                                                         <InputGroup>
                                                         <Form.Control autoComplete="off"
                                                             onChange={e => handleInputChange(e, i)}
@@ -900,7 +901,7 @@ function ReferencesData(props) {
                                 {flagCountry.isChecked &&
                                         <div class="row mt-3 ">
                                             <div class="col-3">
-                                                <Form.Label style={{ fontSize: '16px' }} className="formGray">Pais</Form.Label>
+                                                <Form.Label style={{ fontSize: '16px' }} className="montse formGrayTwo">Pais</Form.Label>
                                             </div>
                                             <div class="col">
                                                 <Form.Control onChange={e => handleInputChange(e, i)} autoComplete="off"
@@ -924,7 +925,7 @@ function ReferencesData(props) {
                                                      </button>
                                                 }
                                                 {inputList.length - 1 === i && <button onClick={handleAddClick}
-                                                    type="submit" style={{ fontSize: '16px' }} class="montse ml-1 btn btn-success btn-sm">+</button>
+                                                    type="submit" style={{ fontSize: '16px' }} class="montse ml-1 btn btn-info btn-sm">+</button>
 
                                                 }
                                             </div>

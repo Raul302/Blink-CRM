@@ -235,7 +235,7 @@ export default function AddEditBio(props) {
     datef = datef[0].toUpperCase() + datef.slice(1);
     datef = datef.replace(".", "");
     let tag = (
-      <span class="Inter">
+      <span class="montse">
         {datef} <Ioicons.IoMdTime /> {timef}
       </span>
     );
@@ -304,28 +304,28 @@ export default function AddEditBio(props) {
     switch (type) {
       case "user":
         tag = (
-          <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">
+          <span class="ml-3 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">
             {n}
           </span>
         );
         break;
       case "contactos":
         tag = (
-          <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">
+          <span class="ml-3 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">
             {n}
           </span>
         );
         break;
       case "referencias":
         tag = (
-          <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">
+          <span class="ml-3 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">
             {n}
           </span>
         );
         break;
       default:
         tag = (
-          <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ">
+          <span class="ml-3 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ">
             {n}
           </span>
         );
@@ -517,7 +517,7 @@ export default function AddEditBio(props) {
                       {param.participants.map((part) => (
                         <Row key={part.id} className="mt-2">
                           {showParticipant(part.type, part.name, part.fullname)}
-                          <span class="ml-2">{part.fullname}</span>
+                          <span class="ml-2 mt-1">{part.fullname}</span>
                         </Row>
                       ))}
                     </div>
@@ -526,10 +526,10 @@ export default function AddEditBio(props) {
                 <Row>
                   <div
                     onClick={(e) => handleEdit(e)}
-                    style={{ backgroundColor: "white" }}
-                    class="ml-3 mt-3 container"
-                  >
-                    <p style={{ color: "#7A859C" }}> {param.text}</p>
+                    style={{ width:'100%' ,backgroundColor: "white" }}
+                    class="ml-3 mt-3 "
+                    >
+                    <p style={{ color: "#7A859C" }}>{param.text}</p>
                   </div>
                 </Row>
               </div>
@@ -616,17 +616,17 @@ export default function AddEditBio(props) {
                 <Row className="mt-3">
                   <Col className="col-4">
                     <Form.Control
-                      style={{ height: "100px", width: "180px" }}
+                      style={{textTransform:'capitalize',  width: "180px" }}
                       onChange={(e) => changeDate(e)}
                       value={dateBio}
                       autoComplete="off"
                       name="date"
-                      className="formGray"
+                      className="montse formGray"
                       type="date"
                       placeholder="Ingrese su Fecha"
                     />
                   </Col>
-                  <Col className="mt-4">
+                  <Col >
                     <Form.Control
                       style={{ height: "30px", width: "120px" }}
                       onChange={(e) => changeTime(e)}

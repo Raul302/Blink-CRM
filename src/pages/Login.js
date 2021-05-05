@@ -9,7 +9,7 @@ import { AuthContext } from '../auth/AuthContext';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { callLogin, login } from '../actions/auth/auth';
-
+import logo from '../resources/images/logoLogin.png'
 function Login() {
     const alert = useAlert();
     const dispatch = useDispatch();
@@ -19,6 +19,7 @@ function Login() {
     function onSubmit(data) {
         dispatch(callLogin(data));
     }
+    console.log(logo); // /logo.84287d09.png
 
     return (
         <body className="TBody">
@@ -26,7 +27,7 @@ function Login() {
                 <Row className="justify-content-md-center mt-5">
                     <Col className="login" xs={6} md={4}>
                         <Row className="justify-content-md-center mt-5">
-                            <FaIcons.FaUserCircle style={{ fill: 'gray' }} size={86} />
+                            <img width="100" src={logo} alt="Logo"></img>
                         </Row>
                         <Row className="justify-content-md-center mt-5">
                             <Form onSubmit={handleSubmit(onSubmit)}>

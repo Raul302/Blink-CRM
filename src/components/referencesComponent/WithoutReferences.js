@@ -172,7 +172,7 @@ function handlevalidFour(e) {
                                 <Button 
                                 disabled={validFieldThree || validFieldFour}
                                 className="float-right mb-3 mr-2" type="submit" variant="info">Guardar</Button>
-                                <Button onClick={handleClose} style={{ fontFamily: 'montse', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
+                                <Button onClick={handleClose}  className="montse float-right mb-3 mr-2" variant="danger" >
                                     Cancelar
 </Button>
 

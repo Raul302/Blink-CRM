@@ -72,7 +72,14 @@ export const SlotCollege = function SlotCollege(props){
     }
     return (<Popover id="popover-basic">
         <Popover.Content>
-            <strong>{showProposals(proposals)}</strong>
+            <ul>
+            <li>Colegio 1 - Status</li>
+            <li>Colegio 1 - Status</li>
+            <li>Colegio 1 - Status</li>
+            <li>Colegio 1 - Status</li>
+            <li>Colegio 1 - Status</li>
+            <li>Colegio 1 - Status</li>
+            </ul>
         </Popover.Content>
     </Popover>)
   }
@@ -113,9 +120,17 @@ export const SlotCountry = function SlotCountry(props){
     })
     return auxFirst;
   }
+  // 5575207296
   return (<Popover id="popover-basic">
       <Popover.Content>
-          <strong>{showProposals(proposals,data)}</strong>
+      <ul>
+            <li>Colegio 1 - Status</li>
+            <li>Colegio 1 - Status</li>
+            <li>Colegio 1 - Status</li>
+            <li>Colegio 1 - Status</li>
+            <li>Colegio 1 - Status</li>
+            <li>Colegio 1 - Status</li>
+            </ul>
       </Popover.Content>
   </Popover>)
 }

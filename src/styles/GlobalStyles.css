@@ -334,6 +334,12 @@ constructed stylesheet
     min-width: 0px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px -1px 0px 0px inset;
 }
+.colorGrayAG {
+    background-color: #d7d7d7!important;
+  }
+  .colorWhiteAG {
+    background-color: #ffffff !important;
+  }
 .iGbtBl.active {
     color:#497cff;
     border-bottom: 2px solid #497cff;
@@ -351,6 +357,9 @@ a:hover, a:focus{
 .alert.alert-success {
     background-color:#0054a3 !important;
 }
+.formGrayTwo{
+    color:#717d95 !important;
+}
 .iGbtBl {
     font-weight: 600;
     padding: 16px 0px;
@@ -389,6 +398,9 @@ constructed stylesheet
     margin: 0px 15px;
     display: inline-block;
     transition: color 0.3s ease-in-out 0s;
+}
+.ag-theme-alpine .ag-row-odd{
+    background-color: #f9fafb;
 }
 .gBkpnV {
     width: 30px;
@@ -405,7 +417,7 @@ constructed stylesheet
     line-height: normal;
     font-weight: 500;
     color: rgb(255, 255, 255);
-    background-color: #0054a3;
+    background-color: #0154a4;
     box-shadow: 0px 0px 0px 1px;
 }
 .Inside{
@@ -431,7 +443,7 @@ text-align: right;
     line-height: normal;
     font-weight: 500;
     color: rgb(255, 255, 255);
-    background-color: #9cff00;
+    background-color: #ffcc00;
     box-shadow: 0px 0px 0px 1px;
 }
 .gBkpnX {
@@ -467,7 +479,7 @@ text-align: right;
     line-height: normal;
     font-weight: 500;
     color: rgb(255, 255, 255);
-    background-color: rgb(7, 115, 248);
+    background-color: #497cff;
     box-shadow: 0px 0px 0px 1px;
 }
 .hkWfcR {

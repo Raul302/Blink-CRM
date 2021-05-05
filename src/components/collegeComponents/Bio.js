@@ -256,7 +256,6 @@ function Bio(props) {
   }
   const notificationAlert = useRef();
   useEffect(() => {
-    console.log('Yo me ejecuto');
     consult();
     // getBioRecords();
     if (props.flagTwo) {
