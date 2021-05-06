@@ -10,6 +10,8 @@ export default function ProspectionSection() {
     return (
         <div class="content">
         <div class="row">
+
+
         <div class="col-12">
         <SearchBar consult={(e) => consult(e)}/>
             <TableProspection  param={param} />

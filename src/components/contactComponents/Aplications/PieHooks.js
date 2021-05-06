@@ -35,7 +35,7 @@ const Pie = props => {
       path
         .attr("class", "arc")
         .attr("d", createArc)
-        .attr("fill", (d, i) => i == 0 ? "#ff0000" : "#497cff");
+        .attr("fill", (d, i) => i != 0 ? "#ff0000" : "#497cff");
 
       const text = groupWithUpdate
         .append("text")

@@ -327,7 +327,12 @@ constructed stylesheet
     -webkit-box-pack: center;
     justify-content: center;
 }
-
+/* svg{
+    fill:white;
+} */
+svg:hover{
+    fill:#497cff;
+}
 .gOZeoI {
     box-sizing: border-box;
     margin: 10px 0px;
