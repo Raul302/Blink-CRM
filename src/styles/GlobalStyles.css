@@ -327,10 +327,10 @@ constructed stylesheet
     -webkit-box-pack: center;
     justify-content: center;
 }
-/* svg{
+.svgSideBar{
     fill:white;
-} */
-svg:hover{
+}
+.svgSideBar:hover{
     fill:#497cff;
 }
 .gOZeoI {

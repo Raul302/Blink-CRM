@@ -19,7 +19,6 @@ function Login() {
     function onSubmit(data) {
         dispatch(callLogin(data));
     }
-    console.log(logo); // /logo.84287d09.png
 
     return (
         <body className="TBody">

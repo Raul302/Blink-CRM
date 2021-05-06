@@ -64,7 +64,7 @@ var routes = [
     path: "/SectionProspections",
     name: "Prospecciones",
     icon:<svg version="1.0" 
-
+    className="svgSideBar"
     width="22" height="22" viewBox="0 0 512.000000 512.000000"
     preserveAspectRatio="xMidYMid meet">
    
@@ -105,7 +105,7 @@ var routes = [
     name: "Aplicaciones",
     icon:
     <svg version="1.0"
-    className="ml-1"
+    className="ml-1 svgSideBar"
  width="16" height="16" viewBox="0 0 512.000000 512.000000"
  preserveAspectRatio="xMidYMid meet">
 <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"

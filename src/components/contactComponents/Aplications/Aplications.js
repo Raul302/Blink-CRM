@@ -165,7 +165,6 @@ export default function Aplications() {
       }
     }
   }, []);
-  console.log('prospectionSelected', auxSelection);
   const convertSel = (seleccion) => {
     let col = []
     if (selection) {
@@ -363,13 +362,12 @@ export default function Aplications() {
     })
     setData(
       [
-        { date: "SI " + (seleccionados) + "/" + (seleccionados + noSeleccionados - deshabilitados), value: ((seleccionados / (seleccionados + noSeleccionados - deshabilitados)) * 10) },
+        { date: parseInt((seleccionados / (seleccionados + noSeleccionados - deshabilitados)) * 10) * 10 + '%', value: ((seleccionados / (seleccionados + noSeleccionados - deshabilitados)) * 10) },
         // {date:seleccionados > 0 ?"SI  " +  (seleccionados-deshabilitados)+'/'+(seleccionados+noSeleccionados -deshabilitados) : "",value:((seleccionados-deshabilitados + (seleccionados > 0  ? 1 : 0))*10)},
-        { date: (noSeleccionados - deshabilitados) > 0 ? ("NO " + (noSeleccionados - deshabilitados) + "/" + seleccionados) : " ", value: (((noSeleccionados - deshabilitados) / seleccionados) * 10) }
+        { date: (((noSeleccionados - deshabilitados) / seleccionados) * 10) * 10 + '%', value: (((noSeleccionados - deshabilitados) / seleccionados) * 10) }
       ]
     )
     if ((seleccionados + deshabilitados) == 0) {
-      console.log('Here');
       setData([{ date: 9 + '/' + 9, value: 0 },
       { date: 0 + '/' + 9, value: 100 }])
     }
@@ -379,7 +377,6 @@ export default function Aplications() {
       let realPosition = specificSearch[0].realPosition;
 
 
-      // console.log();
       resultOne[position] = {
         ...resultOne[realPosition],
         name: resultOne[position].name,
@@ -531,20 +528,18 @@ export default function Aplications() {
     })
     setData(
       [
-        { date: "SI " + (seleccionados) + "/" + (seleccionados + noSeleccionados - deshabilitados), value: ((seleccionados / (seleccionados + noSeleccionados - deshabilitados)) * 10) },
+        { date: parseInt((seleccionados / (seleccionados + noSeleccionados - deshabilitados)) * 10) * 10 + '%', value: ((seleccionados / (seleccionados + noSeleccionados - deshabilitados)) * 10) },
         // {date:seleccionados > 0 ?"SI  " +  (seleccionados-deshabilitados)+'/'+(seleccionados+noSeleccionados -deshabilitados) : "",value:((seleccionados-deshabilitados + (seleccionados > 0  ? 1 : 0))*10)},
-        { date: (noSeleccionados - deshabilitados) > 0 ? ("NO " + (noSeleccionados - deshabilitados) + "/" + seleccionados) : " ", value: (((noSeleccionados - deshabilitados) / seleccionados) * 10) }
+        { date: (((noSeleccionados - deshabilitados) / seleccionados) * 10) * 10 + '%', value: (((noSeleccionados - deshabilitados) / seleccionados) * 10) }
       ]
     )
     if ((seleccionados + deshabilitados) == 0) {
-      console.log('Here');
       setData([{ date: 9 + '/' + 9, value: 0 },
       { date: 0 + '/' + 9, value: 100 }])
     }
 
   }
   const checkButton = (obj) => {
-    console.log('OBJ', obj);
     let params = "";
     if (obj.id == selectionTwo && obj.status != 'Cancelado' && obj.status != 'Llegada') {
       params = "btn btn-sm btn-yellow"
@@ -1190,7 +1185,6 @@ export default function Aplications() {
 
       {/* End modal Status */}
 
-
       {/* Modal Status */}
       <Modal
         show={modalStory}
@@ -1356,7 +1350,6 @@ export default function Aplications() {
         </Modal.Body>
       </Modal>
       {/* End modal Proposal */}
-
     </div>
   );
 }

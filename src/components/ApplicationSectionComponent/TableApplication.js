@@ -26,7 +26,6 @@ export default function TableApplication() {
         'red', 'blue', 'green', 'gray', 'white'
     ]);
     useEffect(() => {
-        console.log('UseEffect Ejecutandose');
         setRowsAux([...rows]);
         axios.post(constaApi + 'applicationSection')
             .then(function (response) {
@@ -40,10 +39,8 @@ export default function TableApplication() {
       }
     const consult = (e) => {
         let newRow= [...rows];
-        console.log('rows',rows);
         let aux ;
         aux = newRow.filter(r => r.name == e.target.value);
-        console.log('aux',aux);
         setRows(aux);
     }
     return (

@@ -29,7 +29,6 @@ export default function TableProspection(props) {
         checkValues(response.data);
         const result = _.groupBy(response.data,"name")
         setAuxRow(result);
-        console.log('result',result);
       }).catch(error => {
       });
   }, [])
@@ -56,14 +55,11 @@ export default function TableProspection(props) {
       } 
     })
     if(newObj){
-      console.log('NEWOBJ',newObj);
       setRows(newObj);
     }
-    // console.log('new',newObj);
 
   }
   const quickSearch = (value) => {
-    console.log('GRIDAPI',gridApi)
     let objx = gridApi;
     value === 'keyWordSeccret302' ? objx.api.setQuickFilter("") : objx.api.setQuickFilter(value);
     setGridApi(objx);
