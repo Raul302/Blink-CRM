@@ -11,7 +11,7 @@ import References from '../components/referencesComponent/References';
 import { Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector,shallowEqual } from 'react-redux';
 import { useParams } from "react-router";
-import Docs from '../components/docsComponents/Docs';
+import Docs from '../components/contactComponents/docsComponents/Docs';
 import axios from 'axios';
 import Nav from "../components/Nav/Nav";
 import SideBar from '../components/SideBar/SideBar';

@@ -1,99 +1,195 @@
 import React, { useState, useEffect } from 'react';
-import {
-    GroupingState,
-    IntegratedGrouping,
-} from '@devexpress/dx-react-grid';
-import {
-    Grid,
-    Table,
-    TableHeaderRow,
-    TableGroupRow,
-} from '@devexpress/dx-react-grid-bootstrap4';
-import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
+import { AgGridReact, AgGridColumn } from 'ag-grid-react';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import axios from 'axios';
 import { constaApi } from '../../constants/constants';
-import SearchBar from 'components/GeneralComponents/SearchBar';
 
-export default function TableApplication() {
-    const [columns] = useState([
-        { name: 'name', title: 'Nombre' },
-        { name: 'father_lastname', title: 'Prospeccion' },
-        { name: 'prospections', title: 'Prospeccion ' }
-    ]);
-    const [rows, setRows] = useState([]);
-    const [rowsAux,setRowsAux] = useState([]);
-    const [colors] = useState([
-        'red', 'blue', 'green', 'gray', 'white'
-    ]);
-    useEffect(() => {
-        setRowsAux([...rows]);
-        axios.post(constaApi + 'applicationSection')
-            .then(function (response) {
-                setRows(response.data);
-            }).catch(error => {
-            });
-    }, [])
-    const circleName = (name) => {
-        let n = name ? name.substr(0,2).toUpperCase() : " ";
-        return n;
-      }
-    const consult = (e) => {
-        let newRow= [...rows];
-        let aux ;
-        aux = newRow.filter(r => r.name == e.target.value);
-        setRows(aux);
+// import '../../resources/images/icons/favicon.ico';
+// import '../../resources/vendor/bootstrap/css/bootstrap.min.css';
+// import '../../resources/vendor/animate/animate.css';
+// import '../../resources/vendor/select2/select2.min.css';
+// import '../../resources/vendor/perfect-scrollbar/perfect-scrollbar.css';
+// import '../../resources/css/util.css';
+// import '../../resources/css/main.css';
+var _ = require('lodash');
+
+export default function TableApplication(props) {
+  // Execute when the props change
+  useEffect(() => {
+    if (props.param) {
+      quickSearch(props.param);
     }
-    return (
-        <div class="mt-5">
-            <div class="mb-n5">
-            <SearchBar consult={(e) => consult(e)}/>
-            </div>
-            <table class="mb-n5 table">
-             <thead style={{backgroundColor:'#F9FAFB'}}>
-                    <tr>
-                        <th>
-                        <span style={{textTransform:'none'}}>Nombre</span>
+  },[props])
+
+  // Execute when you open this section
+  useEffect(() => {
+    axios.post(constaApi + 'applicationSection')
+      .then(function (response) {
+        checkValues(response.data);
+        const result = _.groupBy(response.data,"name")
+        setAuxRow(result);
+      }).catch(error => {
+      });
+  }, [])
+  const [frameworkComponents, setFramwrokw] = useState({ slotName: SlotName, slotProspection: SlotProspection});
+  const [gridApi, setGridApi] = useState(null);
+  const [gridColumnApi, setGridColumnApi] = useState(null);
+  const [rows, setRows] = useState(null);
+  const [auxRow,setAuxRow] = useState([]);
+  const [colors] = useState([
+    'red', 'blue', 'green', 'gray', 'white'
+  ]);
+  const checkValues = (obj) => {
+    let color = 0;
+    let newObj = obj.map((o,index) => {
+      if(index > 0){
+        if(obj[index - 1 ].name == o.name){
+          return {...o,repeat:true,color:color}
+        } else {
+          color = color == 0 ? -1 : 0;
+          return {...o,origin:true,color:color}
+        }
+      } else {
+        return {...o,origin:true,color:color};
+      } 
+    })
+    // ----------------
+     newObj = newObj.map((o,index) => {
+        if(index > 0){
+          if(newObj[index - 1 ].name == o.name && newObj[index - 1 ].name_prospection == o.name_prospection){
+            return {...o,prospectionRepeat:true}
+          } else {
+            color = color == 2 ? 3 : 2;
+            return {...o,prospectionOrigin:true}
+          }
+        } else {
+          return {...o,prospectionOrigin:true};
+        } 
+      })
+    //   --------------------
+    console.log('newObj',newObj);
+    if(newObj){
+      setRows(newObj);
+    }
+
+  }
+  const quickSearch = (value) => {
+    let objx = gridApi;
+    value === 'keyWordSeccret302' ? objx.api.setQuickFilter("") : objx.api.setQuickFilter(value);
+    setGridApi(objx);
+  }
+  const onGridReady = (params) => {
+    setGridApi(params);
+    setGridColumnApi(params);
+  };
+  return (
+    <div className="content">
+      <div
+        className="ag-theme-alpine"
+        style={{ height: '100%', width: '100%' }}
+      >
+         <AgGridReact
+           rowData={rows}
+           rowHeight={40}
+           cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
+           domLayout="autoHeight"
+           rowClassRules={{
+            'colorGrayAG': function (params) {
+              var backColor = params.data.color;
+              return params.data.color === 0 ;
+            },
+            'colorWhiteAG': 'data.color === -1',
+          
+          }}
+           onGridReady={onGridReady}
+           suppressRowTransform={true}
+           pagination={true}
+           paginationPageSize={10}
+           frameworkComponents={frameworkComponents}
+           paginationNumberFormatter={function (params) {
+               return params.value.toLocaleString();
+           }}
+           rowSelection="multiple"
+        >
+          <AgGridColumn
+            field="name"
+            headerName="Nombre"
+            cellRenderer="slotName"
+            wrapText={true}
+            filter="agTextColumnFilter"
+            width={200}
+          />
+          <AgGridColumn 
+          headerName="Prospeccion"
+          field="name_prospection" width={250}
+          wrapText={true}
+          filter="agTextColumnFilter"
+          cellRenderer="slotProspection"
+          />
+           <AgGridColumn 
+          headerName="Colegio"
+          filter="agTextColumnFilter"
+          field="colName" width={250} />
+           <AgGridColumn 
+          headerName="Pais"
+          filter="agTextColumnFilter"
+          field="colCountry" width={250} />
+           <AgGridColumn 
+          headerName="Status"
+          filter="agTextColumnFilter"
+          field="status" width={250} />
+            {/* <span style={{textTransform:'none'}}>Nombre</span>
                         <span style={{textTransform:'none', paddingLeft:'18%'}}>Prospeccion</span>
                         <span style={{textTransform:'none',paddingLeft:'8%'}}>Colegio</span>
                         <span style={{textTransform:'none',paddingLeft:'8%'}}>Pais</span>
                         <span style={{textTransform:'none',paddingLeft:'12%'}}>Status</span>
                          </th>   
-                    </tr>
-                </thead>
-                </table>
-            <table style={{backgroundColor:'#F9FAFB'}} class="table">
-                <tbody>
-                    {rows.map((r, index) => {
-                        return (
-                            <tr style={{height:'40px'}}>
-                                <td class="montse" style={{fontSize:'13px', height:'38px' ,paddingTop:'0px',paddingBottom:'0px', backgroundColor: index % 2 == 0 ? '#F1F2F3' : '#F8F8F8' }} ><span class="mt-1 mr-2 sc-caSCKo fXbvQO styles__Company-sc-103gogw-0 jdbeFR">{circleName(r.name)}</span>{r.name}</td>
-                                {r.prospections.map(p => {
-                                    return (
-                                        <tr style={{height:'38px'}}>
-                                            <td class="montse" style={{fontSize:'13px',lineHeight:'38px', height:'38px',paddingTop:'0px',paddingBottom:'0px', backgroundColor: index % 2 == 0 ? '#F1F2F3' : '#F8F8F8' }} >
-                                                {p.name_prospection}
-                                                </td>
-                                            <tbody>
-                                                {p.applications.map(ap => {
-                                                    return (
-                                                        <tr class="Inside" >
-                                                            <td class="montse" style={{fontSize:'13px',lineHeight:'38px',height:'38px',paddingTop:'0px',paddingBottom:'0px', width:'200px',backgroundColor: index % 2 == 0 ? '#F1F2F3' : '#F8F8F8' }} >{ap.name}</td>
-                                                            <td class="montse" style={{fontSize:'13px',lineHeight:'38px',height:'38px',paddingTop:'0px',paddingBottom:'0px',textAlign:'left',width:'200px', backgroundColor: index % 2 == 0 ? '#F1F2F3' : '#F8F8F8' }} >{ap.country}</td>
-                                                            <td class="montse" style={{fontSize:'13px',rlineHeight:'38px',height:'38px',paddingTop:'0px',paddingBottom:'0px',minWidth:'200px',width:'50px',maxWidth:'100px', paddingLeft:'100px', backgroundColor: index % 2 == 0 ? '#F1F2F3' : '#F8F8F8' }} >{ap.status}</td>
-                                                        </tr>
-                                                    )
-                                                })}
-                                            </tbody>
+        */}
+        </AgGridReact>
+      </div>
+    </div>
+  )
+}
 
 
-                                        </tr>
-                                    )
-                                })}
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
-        </div>
-    )
+export const SlotName = function SlotName(props) {
+ const {rowIndex,value} = props
+ const array = props.agGridReact.props.rowData;
+  const showName = (obj) => {
+    let text = " ";
+    const {data} = obj;
+    // if(data.origin === true){
+    //     text = value;
+    // } else {
+    //   text = " ";
+    // }
+    text = value;
+
+    return text;
+  }
+  return (
+      <>
+          <span>{showName(props)}</span>
+      </>
+  )
+}
+export const SlotProspection = function SlotProspection(props) {
+    const {rowIndex,value} = props
+    const array = props.agGridReact.props.rowData;
+     const showName = (obj) => {
+       let text = " ";
+       const {data} = obj;
+       if(data.prospectionOrigin === true){
+        text = value;
+       } else {
+         text = " ";
+       }
+       return text;
+     }
+     return (
+         <>
+             <span>{showName(props)}</span>
+         </>
+     )  
 }

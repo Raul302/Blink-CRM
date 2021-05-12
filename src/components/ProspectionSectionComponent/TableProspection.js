@@ -4,6 +4,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import axios from 'axios';
 import { constaApi } from '../../constants/constants';
+import { CSVLink } from "react-csv";
 
 // import '../../resources/images/icons/favicon.ico';
 // import '../../resources/vendor/bootstrap/css/bootstrap.min.css';
@@ -32,14 +33,29 @@ export default function TableProspection(props) {
       }).catch(error => {
       });
   }, [])
-  const [frameworkComponents, setFramwrokw] = useState({ slotName: SlotName});
+  const [frameworkComponents, setFramwrokw] = useState({ slotName: SlotName,slotNumber:SlotNumber});
   const [gridApi, setGridApi] = useState(null);
   const [gridColumnApi, setGridColumnApi] = useState(null);
   const [rows, setRows] = useState(null);
   const [auxRow,setAuxRow] = useState([]);
+  const [newObj,setNewObj] = useState([]);
   const [colors] = useState([
     'red', 'blue', 'green', 'gray', 'white'
   ]);
+  const headers = [
+    { label: "Nombre", key: "name" },
+    { label: "Prospeccion", key: "prospection" },
+    { label: "Colegio", key: "college" },
+    { label: "Grado", key: "grade" },
+    { label: "Ciudad", key: "city" },
+    { label: "Estado", key: "state" },
+    { label: "Status", key: "status" },
+  ];
+  const csvReport =  {
+    data: newObj,
+    headers: headers,
+    filename: 'ProspectionReport.csv'
+  };
   const checkValues = (obj) => {
     let color = 0;
     let newObj = obj.map((o,index) => {
@@ -68,14 +84,55 @@ export default function TableProspection(props) {
     setGridApi(params);
     setGridColumnApi(params);
   };
+  const exporta = () => {
+    let name = Array.prototype.slice.call(document.querySelectorAll("div[col-id=name"));
+    let prospection = Array.prototype.slice.call(document.querySelectorAll("div[col-id=name_prospection"));
+    let college = Array.prototype.slice.call(document.querySelectorAll("div[col-id=schoool"));
+    let grade = Array.prototype.slice.call(document.querySelectorAll("div[col-id=grade"));
+    let city = Array.prototype.slice.call(document.querySelectorAll("div[col-id=city"));
+    let state = Array.prototype.slice.call(document.querySelectorAll("div[col-id=state"));
+    let status = Array.prototype.slice.call(document.querySelectorAll("div[col-id=status"));
+    let newObj = name.map((n,index)=>{
+      if(index > 0){
+        return {
+          name:n.innerText,
+          prospection : prospection[index] ? prospection[index].innerText : "",
+          college: college[index] ? college[index].innerText : "",
+          grade: grade[index] ? grade[index].innerText : "",
+          city: city[index] ? city[index].innerText : "",
+          state: state[index] ? state[index].innerText : "",
+          status: status[index] ? status[index].innerText : "",
+        }
+      }
+    });
+    let otherArray = [];
+    newObj.map(n => {
+      if (n){
+        otherArray.push(n);
+      }
+    })
+    setNewObj(otherArray);
+  }
   return (
     <div className="content">
+      <div>
+      <button
+      style={{float:'right',textDecoration:'white'}}
+      class="mt-n5 btn btn-sm btn-primary" onClick={(e) => exporta(e)}
+      >
+        <CSVLink {...csvReport}><span>Exportar</span>
+        </CSVLink>
+        </button>
+      </div>
       <div
         className="ag-theme-alpine"
         style={{ height: '100%', width: '100%' }}
       >
          <AgGridReact
            rowData={rows}
+           context={{
+             exporta
+           }}
            rowHeight={40}
            cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
            domLayout="autoHeight"
@@ -96,24 +153,49 @@ export default function TableProspection(props) {
            }}
            rowSelection="multiple"
         >
+           <AgGridColumn
+            headerName="#"
+            cellRenderer="slotNumber"
+            wrapText={true}
+            filter="agTextColumnFilter"
+            width={50}
+          />
           <AgGridColumn
             field="name"
             headerName="Nombre"
             cellRenderer="slotName"
             wrapText={true}
+            filter="agTextColumnFilter"
             width={200}
           />
           <AgGridColumn 
           headerName="Prospeccion"
-          field="name_prospection" width={250} />
+          field="name_prospection" width={250}
+          filter="agTextColumnFilter"
+          />
            <AgGridColumn 
+          headerName="Colegio"
+          field="schoool" width={150}
+          filter="agTextColumnFilter"
+          />
+           <AgGridColumn 
+          headerName="Grado"
+          field="grade" width={150}
+          filter="agTextColumnFilter"
+          />
+           <AgGridColumn 
+          headerName="Ciudad"
+          filter="agTextColumnFilter"
+          field="city" width={150} />
+            <AgGridColumn 
+          headerName="Estado"
+          field="state" width={150}
+          filter="agTextColumnFilter"
+          />
+            <AgGridColumn 
           headerName="Status"
-          field="status" width={250} />
-         {/* <AgGridColumn 
-          headerName="Color"
-          field="color" width={250} />
-        */}
-       
+          filter="agTextColumnFilter"
+          field="status" width={150} />
         </AgGridReact>
       </div>
     </div>
@@ -127,11 +209,12 @@ export const SlotName = function SlotName(props) {
   const showName = (obj) => {
     let text = " ";
     const {data} = obj;
-    if(data.origin === true){
-      text = value;
-    } else {
-      text = " ";
-    }
+    // if(data.origin === true){
+    //   text = value;
+    // } else {
+    //   text = " ";
+    // }
+    text = value;
     return text;
   }
   return (
@@ -140,3 +223,17 @@ export const SlotName = function SlotName(props) {
       </>
   )
 }
+
+
+export const SlotNumber = function SlotNumber(props) {
+  const {rowIndex,value} = props
+  const array = props.agGridReact.props.rowData;
+  const getRow = () => {
+    return rowIndex + 1;
+  }
+   return (
+       <>
+           <span>{getRow(rowIndex)}</span>
+       </>
+   )
+ }

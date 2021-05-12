@@ -345,6 +345,12 @@ constructed stylesheet
   .colorWhiteAG {
     background-color: #ffffff !important;
   }
+  .colorBlueAG {
+    background-color:  #add8e6!important;
+  }
+  .colorBlackAG {
+    background-color: black !important;
+  }
 .iGbtBl.active {
     color:#497cff;
     border-bottom: 2px solid #497cff;
