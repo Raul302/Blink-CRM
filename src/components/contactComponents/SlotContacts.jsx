@@ -9,9 +9,10 @@ export const SlotName = function SlotName(props) {
     const showName = (id = null, fullname = "") => {
         const click = () => {
         dispatch( activeContact(props.data) );
-    }
+        }
         let n = fullname ? fullname.split(" ") : " ";
         let tag = '';
+        console.log('props.d',n);
         n = n ? n[0].charAt(0) + n[1].charAt(0) : null;
         tag = <>
             <Link  onClick={(e) => click(props.data)} to={"contacts/" + (id) + "/bio"}>
@@ -23,7 +24,7 @@ export const SlotName = function SlotName(props) {
     }
     return (
         <>
-            <span>{showName(props.data.id, props.data.fullname)}</span>
+            <span>{showName(props.data.id, props.data.fullname ? props.data.fullname : (props.data.name + " " + props.data.father_lastname + " " + props.data.mother_lastname))}</span>
         </>
     )
 }

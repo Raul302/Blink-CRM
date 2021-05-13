@@ -73,7 +73,11 @@ function TableContacts(props) {
     ]);
 
     useEffect(() => {
-        consultRow();
+        if(props.rowData.length > 0 ){
+            setRowData(props.rowData);
+        } else{
+            consultRow();
+        }
         if (props.param) {
             quickSearch(props.param);
         }
