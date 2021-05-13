@@ -151,8 +151,10 @@ export const SlotDate = function SlotDate(props) {
     props.context.showModal(obj);
 }
   const showDate = (dateBD,timeBio) => {
+    console.log(dateBD);
     let datef = moment(dateBD).locale('es-mx').format("ddd D MMMM, YYYY ");
-    let timef = moment(dateBD).locale('es-mx').format("h:mm A");
+    let timef = moment(dateBD).locale('es-mx').add(5, 'hours').format("h:mm A");
+    console.log('date',timef);
     datef = datef[0].toUpperCase() + datef.slice(1);
     datef = datef.replace(".","");
     let tag = <span class="Inter">{datef} <Ioicons.IoMdTime  /> {timef}</span>
@@ -160,7 +162,7 @@ export const SlotDate = function SlotDate(props) {
 }
   return (
       <>
-      <span onClick={(e) => showModal(props.data)} >{showDate(props.data.date,props.data.timeBio)}</span>
+      <span onClick={(e) => showModal(props.data)} >{showDate(props.data.created_at,props.data.timeBio)}</span>
       </>
   )
 }

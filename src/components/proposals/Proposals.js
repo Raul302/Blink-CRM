@@ -123,14 +123,7 @@ export const SlotCountry = function SlotCountry(props){
   // 5575207296
   return (<Popover id="popover-basic">
       <Popover.Content>
-      <ul>
-            <li>Colegio 1 - Status</li>
-            <li>Colegio 1 - Status</li>
-            <li>Colegio 1 - Status</li>
-            <li>Colegio 1 - Status</li>
-            <li>Colegio 1 - Status</li>
-            <li>Colegio 1 - Status</li>
-            </ul>
+      <strong>{showProposals(proposals,data)}</strong>
       </Popover.Content>
   </Popover>)
 }
@@ -181,7 +174,7 @@ export const SlotActions = function SlotActions(props){
       buttons: ["No", "Si"],
     }).then(async (willDelete) => {
       if (willDelete) {
-        await axios.get(constaApi + "removeProposal/"+obj.id)
+        await axios.get(constaApi + "removeProposal/"+obj.proposal[0].id)
         .then(function (response) {
             props.context.loadProposals(response.data.message,'success');
         }).catch(error => {

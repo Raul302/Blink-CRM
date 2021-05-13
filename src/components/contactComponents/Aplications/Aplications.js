@@ -56,6 +56,7 @@ export default function Aplications() {
     { name: 'name', title: 'Nombre' },
     { name: 'country', title: 'Pais' },
   ]);
+  const [exist,setExist] = useState(false);
   const dispatch = useDispatch();
   const [aux, setAux] = useState({ id: "", story: "", status: "Evaluacion", name_prospection: "", last_modification: "" });
   const [activeApplication, setactiveApplication] = useState({ id: "", story: "", status: "Evaluacion", name_prospection: "", last_modification: "" });
@@ -157,6 +158,8 @@ export default function Aplications() {
     }
   }, [selection])
   useEffect(() => {
+    dispatch(setRemindersC([]));
+    dispatch(setColleges([]));
     consultAllApplications(active.id);
     if (active) {
       localStorage.setItem('ActiveContact', JSON.stringify(active));
@@ -184,6 +187,7 @@ export default function Aplications() {
       })
       .then(function (response) {
         if (response.data[0]) {
+          setExist(true);
           dispatch(setColleges([]));
           firstTime(response.data[0]);
           Setapplications(response.data);
@@ -198,6 +202,7 @@ export default function Aplications() {
           })
           setResults(result);
         } else {
+          setExist(false);
           Setapplications(null);
           setResults([]);
           SetAuxSelection([])
@@ -340,43 +345,37 @@ export default function Aplications() {
   //   {name:"",isChecked:false,value:-1,identifier:"NPAG"},
 
 
-  function changeChecked(e) {
-    let resultOne = valuesOfchecklist.map((val, index) => {
+   function changeChecked(e) {
+    let resultOne =  valuesOfchecklist.map((val, index) => {
       if (val.identifier === e.target.name) {
-        return { ...val, isChecked: !val.isChecked }
+        return { ...val, isChecked: !val.isChecked}
       } else {
         return val;
       }
     })
+    let totales = 0;
     let seleccionados = 0;
     let deshabilitados = 0;
-    let noSeleccionados = 0;
     resultOne.map(r => {
-      if (r.value === 1 && r.isChecked === true) {
-        seleccionados = seleccionados + 1;
-      } else if (r.value === -1 && r.isChecked === true) {
-        deshabilitados = deshabilitados + 1;
-      } else if (r.value === 1 && r.isChecked === false) {
-        noSeleccionados = noSeleccionados + 1;
+     if(r.value === -1 && r.isChecked == true){
+        deshabilitados++;
+      } else if(r.value == 1){
+        totales++;
+        if(r.isChecked == true){
+          seleccionados++;
+        }
       }
     })
-    setData(
-      [
-        { date: parseInt((seleccionados / (seleccionados + noSeleccionados - deshabilitados)) * 10) * 10 + '%', value: ((seleccionados / (seleccionados + noSeleccionados - deshabilitados)) * 10) },
-        // {date:seleccionados > 0 ?"SI  " +  (seleccionados-deshabilitados)+'/'+(seleccionados+noSeleccionados -deshabilitados) : "",value:((seleccionados-deshabilitados + (seleccionados > 0  ? 1 : 0))*10)},
-        { date: (((noSeleccionados - deshabilitados) / seleccionados) * 10) * 10 + '%', value: (((noSeleccionados - deshabilitados) / seleccionados) * 10) }
-      ]
-    )
-    if ((seleccionados + deshabilitados) == 0) {
-      setData([{ date: 9 + '/' + 9, value: 0 },
-      { date: 0 + '/' + 9, value: 100 }])
-    }
+     setData(
+       [
+         { date: parseInt((seleccionados * 100) / (totales-deshabilitados)) +  '%', value: ((seleccionados * 100) / (totales-deshabilitados)) },
+         { date: (100 - parseInt(((seleccionados * 100) / (totales-deshabilitados)))) + '%', value: (100 - ((seleccionados * 100) / (totales-deshabilitados))) }
+       ]
+     )
     let specificSearch = resultOne.filter(res => res.identifier === e.target.name);
     if (specificSearch[0].isChecked) {
       let position = specificSearch[0].position;
       let realPosition = specificSearch[0].realPosition;
-
-
       resultOne[position] = {
         ...resultOne[realPosition],
         name: resultOne[position].name,
@@ -514,30 +513,25 @@ export default function Aplications() {
       })
     })
     setValueOfChecklist(array);
+    let totales = 0;
     let seleccionados = 0;
     let deshabilitados = 0;
-    let noSeleccionados = 0;
     valuesOfchecklist.map(r => {
-      if (r.value === 1 && r.isChecked === true) {
-        seleccionados = seleccionados + 1;
-      } else if (r.value === -1 && r.isChecked === true) {
-        deshabilitados = deshabilitados + 1;
-      } else if (r.value === 1 && r.isChecked === false) {
-        noSeleccionados = noSeleccionados + 1;
+     if(r.value === -1 && r.isChecked == true){
+        deshabilitados++;
+      } else if(r.value == 1){
+        totales++;
+        if(r.isChecked == true){
+          seleccionados++;
+        }
       }
     })
-    setData(
-      [
-        { date: parseInt((seleccionados / (seleccionados + noSeleccionados - deshabilitados)) * 10) * 10 + '%', value: ((seleccionados / (seleccionados + noSeleccionados - deshabilitados)) * 10) },
-        // {date:seleccionados > 0 ?"SI  " +  (seleccionados-deshabilitados)+'/'+(seleccionados+noSeleccionados -deshabilitados) : "",value:((seleccionados-deshabilitados + (seleccionados > 0  ? 1 : 0))*10)},
-        { date: (((noSeleccionados - deshabilitados) / seleccionados) * 10) * 10 + '%', value: (((noSeleccionados - deshabilitados) / seleccionados) * 10) }
-      ]
-    )
-    if ((seleccionados + deshabilitados) == 0) {
-      setData([{ date: 9 + '/' + 9, value: 0 },
-      { date: 0 + '/' + 9, value: 100 }])
-    }
-
+     setData(
+       [
+         { date: parseInt((seleccionados * 100) / (totales-deshabilitados)) +  '%', value: ((seleccionados * 100) / (totales-deshabilitados)) },
+         { date: (100 - parseInt(((seleccionados * 100) / (totales-deshabilitados)))) + '%', value: (100 - ((seleccionados * 100) / (totales-deshabilitados))) }
+       ]
+     )
   }
   const checkButton = (obj) => {
     let params = "";
@@ -557,7 +551,7 @@ export default function Aplications() {
     <div class="content">
       <div class="mt-n5 d-flex justify-content-end">
         <span>
-          <AIicons.AiFillQuestionCircle color={'#34B5B8'} size={18} />
+          {/* <AIicons.AiFillQuestionCircle color={'#34B5B8'} size={18} /> */}
         </span>
       </div>
       {results &&
@@ -599,63 +593,16 @@ export default function Aplications() {
           +
           </button>
       </div>
+      {exist &&
       <div class="mt-n5 d-flex justify-content-end">
         <button onClick={(e) => deleteCollege(selectionTwo)} class="mt-1 btn btn-danger btn-sm">Borrar Colegio</button>
       </div>
-
-      {/* ? "mt-n5 mr-1 btn btn-sm btn-info"
-                  : "mt-n5 mr-1 btn btn-sm btn-primary", */}
-      {/* console.log('PROSP',prospectionSelected);
-                console.log('Auxselection',auxSelection); */}
-      {/* {applications && [
-          applications.map((pros) => {
-            return (
-              <button
-                onClick={(e) => changeButton(pros.id)}
-                key={pros.id}
-                // active={{backgroundColor:'#FF0000'}}
-                class={[
-                  selection === pros.id
-                    ? "mt-n5 mr-1 btn btn-sm btn-info"
-                    : "mt-n5 mr-1 btn btn-sm btn-primary",
-                ]}
-                // style={{
-                //   backgroundColor:[selection === pros.id ?  '#0062cc' : '#51cbce']
-                // }}
-              >
-                {pros.name}
-              </button>
-            );
-          }),
-        ]} */}
-      {/* <button
-          onClick={(e) => changeModal()}
-          type="button"
-          class="mt-n5  Inter ml-1 btn btn-success btn-sm"
-        >
-          +
-        </button> */}
-      {/* <button
-          onClick={(e) => saveChanges()}
-          type="button"
-          class="mt-n5 float-right Inter btn btn-success btn-sm"
-        >
-          Guardar cambios
-        </button> */}
-      {/* {applications &&
-        <button
-          onClick={(e) => deleteProspection()}
-          type="button"
-          class="mt-n5 float-right Inter btn btn-danger btn-sm"
-        >
-          Eliminar Prospeccion
-        </button>
-        } */}
+      }
       {load === true ?
         <Skeleton width="60rem" height={30} count={10} />
-
         :
-        <>
+        [exist ?
+          <>
           <div class="mt-2 row">
             <div class="content col-4">
               <Form.Label className="formGray montseInter">Status</Form.Label>
@@ -663,7 +610,7 @@ export default function Aplications() {
                 disabled
                 autoComplete="off" className="formGray" type="text"
                 value={activeApplication.status}
-              />
+                />
               <button
                 class=" mt-1 float-right Inter btn-info  btn-sm"
                 onClick={(e) => changeModalStatus()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
@@ -679,7 +626,7 @@ export default function Aplications() {
                 rows={10}
                 disabled
                 cols={20}
-              />
+                />
               <button
                 class="mt-1 float-right montseInter btn-info  btn-sm"
                 onClick={(e) => changeModalStory()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
@@ -691,7 +638,7 @@ export default function Aplications() {
                 autoComplete="off" className="formGray" type="text"
                 placeholder="Ultima fecha"
                 value={formatDate(activeApplication.last_modification)}
-              />
+                />
             </div>
           </div>
           <div class="mt-5 row"
@@ -722,7 +669,7 @@ export default function Aplications() {
                             value={valuesOfchecklist[0].isChecked}
                             checked={valuesOfchecklist[0].isChecked} type="checkbox"
                             onChange={(e) => changeChecked(e)}
-                          />
+                            />
                           <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
                         </label>
                       </div>
@@ -733,7 +680,7 @@ export default function Aplications() {
                             value={valuesOfchecklist[1].isChecked}
                             checked={valuesOfchecklist[1].isChecked} type="checkbox"
                             onChange={(e) => changeChecked(e)}
-                          />
+                            />
                           <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
                         </label>
                       </div>
@@ -750,7 +697,7 @@ export default function Aplications() {
                             value={valuesOfchecklist[2].isChecked}
                             checked={valuesOfchecklist[2].isChecked} type="checkbox"
                             onChange={(e) => changeChecked(e)}
-                          />
+                            />
                           <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
                         </label>
                       </div>
@@ -761,7 +708,7 @@ export default function Aplications() {
                             value={valuesOfchecklist[3].isChecked}
                             checked={valuesOfchecklist[3].isChecked} type="checkbox"
                             onChange={(e) => changeChecked(e)}
-                          />
+                            />
                           <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
                         </label>
                       </div>
@@ -779,7 +726,7 @@ export default function Aplications() {
                             value={valuesOfchecklist[4].isChecked}
                             checked={valuesOfchecklist[4].isChecked} type="checkbox"
                             onChange={(e) => changeChecked(e)}
-                          />
+                            />
                           <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
                         </label>
                       </div>
@@ -790,7 +737,7 @@ export default function Aplications() {
                             value={valuesOfchecklist[5].isChecked}
                             checked={valuesOfchecklist[5].isChecked} type="checkbox"
                             onChange={(e) => changeChecked(e)}
-                          />
+                            />
                           <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
                         </label>
                       </div>
@@ -808,7 +755,7 @@ export default function Aplications() {
                             value={valuesOfchecklist[6].isChecked}
                             checked={valuesOfchecklist[6].isChecked} type="checkbox"
                             onChange={(e) => changeChecked(e)}
-                          />
+                            />
                           <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
                         </label>
                       </div>
@@ -819,7 +766,7 @@ export default function Aplications() {
                             value={valuesOfchecklist[7].isChecked}
                             checked={valuesOfchecklist[7].isChecked} type="checkbox"
                             onChange={(e) => changeChecked(e)}
-                          />
+                            />
                           <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
                         </label>
                       </div>
@@ -838,7 +785,7 @@ export default function Aplications() {
                             value={valuesOfchecklist[8].isChecked}
                             checked={valuesOfchecklist[8].isChecked} type="checkbox"
                             onChange={(e) => changeChecked(e)}
-                          />
+                            />
                           <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
                         </label>
                       </div>
@@ -849,7 +796,7 @@ export default function Aplications() {
                             value={valuesOfchecklist[9].isChecked}
                             checked={valuesOfchecklist[9].isChecked} type="checkbox"
                             onChange={(e) => changeChecked(e)}
-                          />
+                            />
                           <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
                         </label>
                       </div>
@@ -868,7 +815,7 @@ export default function Aplications() {
                             value={valuesOfchecklist[10].isChecked}
                             checked={valuesOfchecklist[10].isChecked} type="checkbox"
                             onChange={(e) => changeChecked(e)}
-                          />
+                            />
                           <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
                         </label>
                       </div>
@@ -879,7 +826,7 @@ export default function Aplications() {
                             value={valuesOfchecklist[11].isChecked}
                             checked={valuesOfchecklist[11].isChecked} type="checkbox"
                             onChange={(e) => changeChecked(e)}
-                          />
+                            />
                           <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
                         </label>
                       </div>
@@ -898,7 +845,7 @@ export default function Aplications() {
                             value={valuesOfchecklist[12].isChecked}
                             checked={valuesOfchecklist[12].isChecked} type="checkbox"
                             onChange={(e) => changeChecked(e)}
-                          />
+                            />
                           <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
                         </label>
                       </div>
@@ -909,7 +856,7 @@ export default function Aplications() {
                             value={valuesOfchecklist[13].isChecked}
                             checked={valuesOfchecklist[13].isChecked} type="checkbox"
                             onChange={(e) => changeChecked(e)}
-                          />
+                            />
                           <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
                         </label>
                       </div>
@@ -928,7 +875,7 @@ export default function Aplications() {
                             value={valuesOfchecklist[14].isChecked}
                             checked={valuesOfchecklist[14].isChecked} type="checkbox"
                             onChange={(e) => changeChecked(e)}
-                          />
+                            />
                           <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
                         </label>
                       </div>
@@ -939,7 +886,7 @@ export default function Aplications() {
                             value={valuesOfchecklist[15].isChecked}
                             checked={valuesOfchecklist[15].isChecked} type="checkbox"
                             onChange={(e) => changeChecked(e)}
-                          />
+                            />
                           <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
                         </label>
                       </div>
@@ -959,7 +906,7 @@ export default function Aplications() {
                             value={valuesOfchecklist[16].isChecked}
                             checked={valuesOfchecklist[16].isChecked} type="checkbox"
                             onChange={(e) => changeChecked(e)}
-                          />
+                            />
                           <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
                         </label>
                       </div>
@@ -970,7 +917,7 @@ export default function Aplications() {
                             value={valuesOfchecklist[17].isChecked}
                             checked={valuesOfchecklist[17].isChecked} type="checkbox"
                             onChange={(e) => changeChecked(e)}
-                          />
+                            />
                           <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
                         </label>
                       </div>
@@ -988,7 +935,7 @@ export default function Aplications() {
                 height={200}
                 innerRadius={60}
                 outerRadius={100}
-              />
+                />
             </div>
           </div>
           <div class="mt-5 row">
@@ -1004,23 +951,26 @@ export default function Aplications() {
             <div class="ml-n4 mt-5 col-12">
               {activeApplication &&
                 <Bio
-                  extern={true}
-                  applications={true}
-                  activeApplication={activeApplication} />
+                extern={true}
+                applications={true}
+                activeApplication={activeApplication} />
               }
             </div>
           </div>
         </>
-      }
-
-
-
+    :
+    <center>
+      <h5 >No hay ningun programa</h5>
+    </center>
+    ]}
+      
+      
       {/* Modal prospeccion */}
       <Modal
-        show={modalProspection}
-        dialogClassName="modalMax"
-        onHide={closeModal}
-        dialogClassName="modal-90w"
+      show={modalProspection}
+      dialogClassName="modalMax"
+      onHide={closeModal}
+      dialogClassName="modal-90w"
       >
         <Modal.Header style={{ height: "60px" }} closeButton>
           <Modal.Title
@@ -1353,3 +1303,60 @@ export default function Aplications() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+      // // {/* ? "mt-n5 mr-1 btn btn-sm btn-info"
+      // //             : "mt-n5 mr-1 btn btn-sm btn-primary", */}
+      // // {/* console.log('PROSP',prospectionSelected);
+      // //           console.log('Auxselection',auxSelection); */}
+      // // {/* {applications && [
+      // //     applications.map((pros) => {
+      // //       return (
+      // //         <button
+      // //           onClick={(e) => changeButton(pros.id)}
+      // //           key={pros.id}
+      // //           // active={{backgroundColor:'#FF0000'}}
+      // //           class={[
+      // //             selection === pros.id
+      // //               ? "mt-n5 mr-1 btn btn-sm btn-info"
+      // //               : "mt-n5 mr-1 btn btn-sm btn-primary",
+      // //           ]}
+      // //           // style={{
+      // //           //   backgroundColor:[selection === pros.id ?  '#0062cc' : '#51cbce']
+      // //           // }}
+      // //         >
+      // //           {pros.name}
+      // //         </button>
+      // //       );
+      // //     }),
+      // //   ]} */}
+      // // {/* <button
+      // //     onClick={(e) => changeModal()}
+      // //     type="button"
+      // //     class="mt-n5  Inter ml-1 btn btn-success btn-sm"
+      // //   >
+      // //     +
+      // //   </button> */}
+      // // {/* <button
+      // //     onClick={(e) => saveChanges()}
+      // //     type="button"
+      // //     class="mt-n5 float-right Inter btn btn-success btn-sm"
+      // //   >
+      // //     Guardar cambios
+      // //   </button> */}
+      // // {/* {applications &&
+      // //   <button
+      // //     onClick={(e) => deleteProspection()}
+      // //     type="button"
+      // //     class="mt-n5 float-right Inter btn btn-danger btn-sm"
+      // //   >
+      // //     Eliminar Prospeccion
+      // //   </button>
+      // //   } */}

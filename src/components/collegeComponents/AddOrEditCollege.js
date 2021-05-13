@@ -315,7 +315,7 @@ function AddOrEditCollege() {
                                     <Form.Label className="formGray">Nombre</Form.Label>
                                     <Form.Control
                                         name="name"
-                                        autoComplete="off" className="formGray" type="text" placeholder="Ingrese su nombre"
+                                        autoComplete="off" className="formGray" type="text" placeholder="Nombre de el colegio"
                                         onChange={(e) => changeObj(e)}
                                         value={obj.name}
                                     // style={{ ...styles.input, borderColor: errors.name && "red" }}
