@@ -8,6 +8,7 @@ import { constaApi } from "../../../constants/constants";
 import { useParams,} from "react-router";
 
 export default function UploadFiles(props) {
+    const user = JSON.parse(localStorage.getItem('user'));
     const [modalFiles,setModalFiles] = useState(false);
     const { register, handleSubmit, errors,formState, reset,watch } = useForm({ mode: 'onChange' });
     const [preview,setPreview] = useState(null);
@@ -15,16 +16,18 @@ export default function UploadFiles(props) {
     const [typeDoc,setTypeDoc] = useState(null);
     const [cycle,setCycle] = useState(null);
     // Functions
-    let { id:id_contact } = useParams();
+    let { id:id_college } = useParams();
     function onSubmit(data) {
-        console.log('type_doc',typeDoc);
         let datax = new FormData();
-        datax.append('id_contact',id_contact);
+        datax.append('id_college',id_college);
         datax.append('type_doc',typeDoc);
+        datax.append('cicle',cycle);
         datax.append('doc',doc);
+        datax.append('name_colaborator',user.name);
+        datax.append('id_colaborator',user.id);
         axios({
             method:'post',
-            url: constaApi + 'files/contacts/upload',
+            url: constaApi + 'files/colleges/upload',
             data:datax,
             headers: {'Content-Type':'multipart/form-data'}
             }

@@ -16,7 +16,8 @@ import swal from 'sweetalert';
 export default function TableFilesColleges(props) {
      // // variables
      const notificationAlert = useRef();
-     const [rowData,setRowData] = useState([]);
+     const [rowCuotes,setRowCuotes] = useState([]);
+     const [rowCalendars,setRowCalendars] = useState([]);
      const [frameworkComponents, setFramwrokw] = useState({slotType:SlotType,slotPreview:SlotPreview,slotDate:SlotDate,slotActions:SlotActions});
      const [gridApi, setGridApi] = useState();
      const [columnApi, setColumnApi] = useState();
@@ -37,27 +38,40 @@ export default function TableFilesColleges(props) {
          let a = document.querySelector('.imgs').click();
  
      }
-     const dropFile = (id,path_doc,id_contact) => {
+     const dropFile = (id,path_doc,id_college) => {
          let array = [];
          array.push(path_doc);
          array.push(id);
-         array.push(id_contact);
-         axios.post(constaApi + 'files/contacts/delete',array, {
+         array.push(id_college);
+         axios.post(constaApi + 'files/colleges/delete',array, {
              headers: {
                  "Accept": "application/json"
              }
          }).then(function (response) {
-             console.log('Response',response);
-             setRowData(response.data.files);
+            if(response.data){
+                if(response.data.cuote){
+                    setRowCuotes(response.data.cuote);
+                } 
+                if(response.data.calendar){
+                    setRowCalendars(response.data.calendar);
+                }
+            }
          });
      }
      const getFiles = ()=>{
-          axios.get(constaApi + 'files/getcontact/'+id_contact, {
+          axios.get(constaApi + 'files/getCollege/'+id_contact, {
              headers: {
                  "Accept": "application/json"
              }
          }).then(function (response) {
-             setRowData(response.data.files);
+             if(response.data){
+                 if(response.data.cuote){
+                     setRowCuotes(response.data.cuote);
+                 } 
+                 if(response.data.calendar){
+                     setRowCalendars(response.data.calendar);
+                 }
+             }
          });
      }
      return (
@@ -74,12 +88,13 @@ export default function TableFilesColleges(props) {
              />
              </div>
                  <NotificationAlert ref={notificationAlert} />
+                 <h6>Calendario</h6>
                  <div
                      className="ag-theme-alpine"
                      style={{ height: '100%', width: '100%' }}
                  >
                      <AgGridReact
-                         rowData={rowData}
+                         rowData={rowCalendars}
                          rowHeight={60}
                          context={{
                              clickEvent,
@@ -102,12 +117,73 @@ export default function TableFilesColleges(props) {
                              />
                          <AgGridColumn
                          headerName="Nombre Doc." field="name_doc" />
+                          <AgGridColumn headerName="Colaborador" field="name_colaborator" 
+                          />
                          <AgGridColumn headerName="Preview" field="path_doc" 
                           cellRenderer="slotPreview"
                           />
                          <AgGridColumn 
                           headerName="Fecha" 
-                          cellRenderer="slotDate" />
+                          cellRenderer="slotDate"
+                          width={220} />
+                         <AgGridColumn
+                             headerName="Acciones"
+                             cellRenderer="slotActions"
+                             width={220}
+                         />
+                     </AgGridReact>
+                 </div>
+
+                 <div class="mt-5" style={{width:'5px',height:'5px'}}>
+             <ModalImage
+             style={{width:'500px'}}
+             hidde={true}
+             className="imgs"
+             small={fullImg}
+             medium={fullImg }
+             large={fullImg}
+             alt={fullImg}
+             />
+             </div>
+                 <NotificationAlert ref={notificationAlert} />
+                 <h6>Cuotas</h6>
+                 <div
+                     className="ag-theme-alpine"
+                     style={{ height: '100%', width: '100%' }}
+                 >
+                     <AgGridReact
+                         rowData={rowCuotes}
+                         rowHeight={60}
+                         context={{
+                             clickEvent,
+                             dropFile
+                         }}
+                        //  cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
+                         domLayout="autoHeight"
+                         onGridReady={onGridReady}
+                         frameworkComponents={frameworkComponents}
+                         pagination={true}
+                         paginationPageSize={10}
+                         paginationNumberFormatter={function (params) {
+                             return params.value.toLocaleString();
+                         }}
+                         rowSelection="multiple"
+                     >
+                         <AgGridColumn
+                             headerName="Tipo de Doc." field="type_doc"
+                             cellRenderer="slotType"
+                             />
+                         <AgGridColumn
+                         headerName="Nombre Doc." field="name_doc" />
+                         <AgGridColumn headerName="Preview" field="path_doc" 
+                          cellRenderer="slotPreview"
+                          />
+                          <AgGridColumn headerName="Colaborador" field="name_colaborator" 
+                          />
+                         <AgGridColumn 
+                          headerName="Fecha" 
+                          cellRenderer="slotDate"
+                          width={220} />
                          <AgGridColumn
                              headerName="Acciones"
                              cellRenderer="slotActions"
@@ -116,6 +192,8 @@ export default function TableFilesColleges(props) {
                      </AgGridReact>
                  </div>
          </div>
+
+         
      )
  }
  
@@ -174,7 +252,7 @@ export default function TableFilesColleges(props) {
            })
            .then((willDelete) => {
              if (willDelete) {
-                 props.context.dropFile(obj.id,obj.path_doc,obj.id_contact);
+                 props.context.dropFile(obj.id,obj.path_doc,obj.id_college);
              } else {
                swal("Operacion cancelada!");
              }
@@ -199,32 +277,11 @@ export default function TableFilesColleges(props) {
      const showType = (val) => {
          let text = " ";
      switch (val) {
-         case 'foto':
-             text = "Fotografia";
+         case 'cuota':
+             text = "Cuota";
              break;
-         case 'ppE':
-             text = "Pasaporte estudiante";
-             break;
-         case 'ppP':
-             text = "Pasaporte Papá";
-             break;
-         case 'cal1':
-             text = "Calificacion Año 1";
-             break;
-         case 'cal2':
-             text= "Calificacion Año 2";
-             break;
-         case 'calA':
-             text = "Calificaciones Actuales";
-             break;
-         case 'acta':
-             text = "Acta de nacimiento";
-         break;
-         case 'ref':
-             text = "Referencias";
-         break;
-         case 'ens':
-             text = "Ensayo";
+         case 'calendario':
+             text = "Calendario";
              break;
          default:
              text =" ";
