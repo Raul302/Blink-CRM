@@ -13,6 +13,7 @@ export default function UploadFiles(props) {
     const [preview,setPreview] = useState(null);
     const [doc,setDoc] = useState(null);
     const [typeDoc,setTypeDoc] = useState(null);
+    const [cycle,setCycle] = useState(null);
     // Functions
     let { id:id_contact } = useParams();
     function onSubmit(data) {
@@ -40,10 +41,14 @@ export default function UploadFiles(props) {
         setPreview(null);
         setDoc(null);
         setTypeDoc(null);
+        setCycle(null);
         setModalFiles(!modalFiles)
     }
     function selectTypeDoc(e){
         setTypeDoc(e.target.value);
+    }
+    function selectCicle(e){
+        setCycle(e.target.value);
     }
     return (
         <>
@@ -68,22 +73,41 @@ export default function UploadFiles(props) {
                             <label>Tipo de Documento</label>
                             <Form.Control onChange={(e) => selectTypeDoc(e)} autoComplete="off" name="type"  as="select" size="sm" custom>
                                        <option disabled value="" selected></option>
-                                       <option value="foto">Fotografia</option>
-                                       <option value="ppE">Pasaporte Estudiante</option>
-                                       <option value="ppP">Pasaporte Papá</option>
-                                       <option value="cal1">Calificación Año 1</option>
-                                       <option value="cal2">Calificación Año 2</option>
-                                       <option value="calA">Calificaciones Actuales</option>
-                                       <option value="acta">Acta de Nacimiento</option>
-                                       <option value="ref">Referencias</option>
-                                       <option value="ens">Ensayo</option>
+                                       <option value="cuota">Cuota</option>
+                                       <option value="calendario">Calendario</option>
                             </Form.Control>
                         </Col>
                   </Row>
                   <Row>
+                      <Col className="col-4">
+                      <Form.Label className="formGray">Ciclo</Form.Label>
+                                    <Form.Control autoComplete="off" 
+                                    onChange={(e) => selectCicle(e)}
+                                    name="cicly"  as="select" size="sm" custom>
+                                    <option disabled value="" selected></option>
+                                        <option value="2015-2016">2015 - 2016</option>
+                                        <option>2016 - 2017</option>
+                                        <option>2017 - 2018</option>
+                                        <option>2018 - 2019</option>
+                                        <option>2019 - 2020</option>
+                                        <option>2020 - 2021</option>
+                                        <option>2021 - 2022</option>
+                                        <option>2022 - 2023</option>
+                                        <option>2023 - 2024</option>
+                                        <option>2024 - 2025</option>
+                                        <option>2025 - 2026</option>
+                                        <option>2026 - 2027</option>
+                                        <option>2027 - 2028</option>
+                                        <option>2028 - 2029</option>
+                                        <option>2029 - 2030</option>
+                                        <option>2030 - 2031</option>
+                                    </Form.Control>
+                      </Col>
+                  </Row>
+                  <Row className="mt-2">
                       <Col>
                       <label>Documento:</label>
-                      <label class="form-label" for="customFile">Default file input example</label>
+                      <label class="form-label" for="customFile"></label>
                       <input onChange={(e) => changeImg(e)} type="file" class="form-control" id="customFile" />
                       <img style={{width:'150px',height:'150px'}} alt="Documento pdf / docx" src={preview}/>
                       </Col>
@@ -93,7 +117,7 @@ export default function UploadFiles(props) {
                             <Col>
                                 <Button
                                     className="float-right mb-3 mr-2" type="submit"
-                                    disabled={!typeDoc || !doc}
+                                    disabled={!typeDoc || !doc || !cycle}
                                     variant="info">Guardar</Button>
                                 <Button onClick={(e) => CloseModal()} className="float-right mb-3 mr-2" variant="danger" >
                                     Cancelar
