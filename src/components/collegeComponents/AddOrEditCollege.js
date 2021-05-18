@@ -259,9 +259,10 @@ function AddOrEditCollege() {
         reset();
     }
     function onSubmit(data) {
+        console.log('obj',obj);
         if (modal) {
             setJson(obj);
-            if (obj.type === 'Boarding Schools') {
+            if (obj.type === "Boarding School") {
                 showModalTwo();
             } else {
                 showModalFour();
@@ -346,6 +347,7 @@ function AddOrEditCollege() {
                                         ? <>
                                             <Form.Control
                                                 name="country"
+                                                disabled={!obj.type}
                                                 autoComplete="off" className="formGray" type="text" placeholder="Seleccione el país"
                                                 onChange={(e) => changeObj(e)}
                                                 value={obj.country}

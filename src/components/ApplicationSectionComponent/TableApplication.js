@@ -4,7 +4,8 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import axios from 'axios';
 import { constaApi } from '../../constants/constants';
-
+import swal from 'sweetalert';
+import StarRatings from '../../../node_modules/react-star-ratings';
 // import '../../resources/images/icons/favicon.ico';
 // import '../../resources/vendor/bootstrap/css/bootstrap.min.css';
 // import '../../resources/vendor/animate/animate.css';
@@ -24,15 +25,19 @@ export default function TableApplication(props) {
 
   // Execute when you open this section
   useEffect(() => {
-    axios.post(constaApi + 'applicationSection')
-      .then(function (response) {
-        checkValues(response.data);
-        const result = _.groupBy(response.data,"name")
-        setAuxRow(result);
-      }).catch(error => {
-      });
+   loadApplications();
   }, [])
-  const [frameworkComponents, setFramwrokw] = useState({ slotName: SlotName, slotProspection: SlotProspection});
+
+  const loadApplications = () => {
+    axios.post(constaApi + 'applicationSection')
+    .then(function (response) {
+      checkValues(response.data);
+      const result = _.groupBy(response.data,"name")
+      setAuxRow(result);
+    }).catch(error => {
+    });
+  }
+  const [frameworkComponents, setFramwrokw] = useState({slotRating: SlotRating ,slotName: SlotName, slotProspection: SlotProspection});
   const [gridApi, setGridApi] = useState(null);
   const [gridColumnApi, setGridColumnApi] = useState(null);
   const [rows, setRows] = useState(null);
@@ -94,6 +99,9 @@ export default function TableApplication(props) {
            rowHeight={40}
            cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
            domLayout="autoHeight"
+           context={{
+            loadApplications
+           }}
            rowClassRules={{
             'colorGrayAG': function (params) {
               var backColor = params.data.color;
@@ -118,6 +126,13 @@ export default function TableApplication(props) {
             cellRenderer="slotName"
             wrapText={true}
             filter="agTextColumnFilter"
+            width={200}
+          />
+          <AgGridColumn
+            field="rating"
+            headerName="Rating"
+            cellRenderer="slotRating"
+            wrapText={true}
             width={200}
           />
           <AgGridColumn 
@@ -192,4 +207,48 @@ export const SlotProspection = function SlotProspection(props) {
              <span>{showName(props)}</span>
          </>
      )  
+}
+
+export const SlotRating = function SlotRating(props) {
+  const [rating,setRating] = useState(props.value ? parseInt(props.value) : 0);
+  const changeRating = (e) => {
+      let contact = props.data;
+      contact.id = contact.id_last_contact;
+      contact.rating = e;
+      swal({
+          title: "Estas seguro?",
+          text: "Usted modificara la calificacion de este contacto",
+          icon: "info",
+          dangerMode: true,
+          buttons: ["No","Si"],
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+               axios.post(constaApi+'contact/update',contact, {
+                  headers: {
+                      "Accept": "application/json"
+                  }
+              }).then(function (response) {
+                  props.context.loadApplications();
+              //    loadRating();
+              }).catch(error =>{
+              });
+          } else {
+            swal("Operacion cancelada!");
+          }
+        });
+  }
+  return (
+  <>
+   <StarRatings
+    rating={rating}
+    starDimension={'20px'}
+    starEmptyColor={'gray'}
+    starRatedColor={'rgb(230, 67, 47)'}
+    changeRating={(e) => changeRating(e)}
+   numberOfStars={5}
+    name='rating'
+                  />
+  </>
+  )
 }

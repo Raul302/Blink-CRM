@@ -411,13 +411,13 @@ export default function TableReminders(props) {
                   field="subject"
                   width="200"
                 />
-                 <AgGridColumn
+                 {/* <AgGridColumn
                   headerName="Fecha creación"
                   field="created_at"
                   width="250"
                   cellRenderer="slotCreated"
                   hide={activeP ? false : true}
-                />
+                /> */}
                 <AgGridColumn
                   headerName="Fecha"
                   field="ciy"

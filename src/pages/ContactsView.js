@@ -1,17 +1,72 @@
 import React, {useState} from 'react'
 import { useParams,} from "react-router";
+import StarRatings from '../../node_modules/react-star-ratings';
 import { BrowserRouter as Router, Switch, 
     Route, Link, useLocation  } from 'react-router-dom';
+    import swal from 'sweetalert';
+    import axios from 'axios';
+import { constaApi } from 'constants/constants';
+
 
 
 export default function ContactsView(props) {
+    console.log('props',props);
     let { id } = useParams();
     const { pathname } = useLocation();
     const [fullName,setFullName] = useState(`${props.contact.name} ${props.contact.father_lastname} ${props.contact.mother_lastname ?? " "}`);
+    const [rating,setRating] = useState(props.contact.rating ? parseInt(props.contact.rating) : 0);
+    const loadRating = async () => {
+        await axios.get(constaApi+'contacts/'+props.contact.id,{
+            headers: {
+                "Accept": "application/json"
+            }
+        }).then(function (response) {
+            setRating(parseInt(response.data[0].rating));
+        }).catch(error =>{
+        });
+    }
+    const changeRating = (e) => {
+        let {contact} = props;
+        contact.rating = e;
+        swal({
+            title: "Estas seguro?",
+            text: "Usted modificara la calificacion de este contacto",
+            icon: "info",
+            dangerMode: true,
+            buttons: ["No","Si"],
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+                 axios.post(constaApi+'contact/update',contact, {
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                }).then(function (response) {
+                   loadRating();
+                }).catch(error =>{
+                });
+            } else {
+              swal("Operacion cancelada!");
+            }
+          });
+    }
     return (
         <>
          <div style={{minHeight:'0px'}} className="pb-0 content">
-            <h1  style={{marginTop:'-10px'}} className="Inter400">{fullName}</h1>
+             <p>
+                 <span class="Inter400"style={{}}>{fullName}</span> 
+                 <span style={{marginTop:'-50px'}}> <StarRatings
+                    rating={rating}
+                    starDimension={'20px'}
+                    starEmptyColor={'gray'}
+                    starRatedColor={'rgb(230, 67, 47)'}
+                    changeRating={(e) => changeRating(e)}
+                    numberOfStars={5}
+                    name='rating'
+                    /></span>
+                 </p>
+                
+           
             <div style={{marginTop:'-20px'}} className=" mt-3sc-bdVaJa styles__Nav-sc-19n49a3-0 gOZeoI">
                <Link className={[ '/contacts/'+id +'/bio'].includes(pathname) ? 
                'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active montse' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl montse'} 

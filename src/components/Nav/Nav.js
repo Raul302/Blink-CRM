@@ -30,6 +30,7 @@ class Header extends React.Component {
       isOpen: false,
       dropdownOpen: false,
       color: "transparent",
+      user : JSON.parse(localStorage.getItem('user')),
     };
     this.toggle = this.toggle.bind(this);
     this.dropdownToggle = this.dropdownToggle.bind(this);
@@ -99,6 +100,29 @@ class Header extends React.Component {
       this.sidebarToggle.current.classList.toggle("toggled");
     }
   }
+  showParticipant = (type = 'user',name) => {
+    let n = name ? name : " ";
+    let tag = '';
+    if (n) {
+        n = n.charAt(0) + n.charAt(1);
+    }
+    switch (type) {
+        case 'user':
+        tag = <span  class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{n}</span>;
+        break;
+        case 'contactos':
+        tag = <span  class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">{n}</span>;
+            break;
+        case 'colegio':
+          tag = <span  class="sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ">{n}</span>;
+
+            break;
+        default:
+            tag = <span  class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ">{n}</span>;
+        break;
+    }
+    return tag;
+}
   render() {
     return (
       // add or remove classes depending if we are on full-screen-maps page or not
@@ -157,7 +181,8 @@ class Header extends React.Component {
                 toggle={(e) => this.dropdownToggle(e)}
               >
                 <DropdownToggle caret nav>
-                  <i className="nc-icon nc-bell-55" />
+                {this.showParticipant('adm',this.state.user.name)}
+                  {/* <i className="nc-icon nc-bell-55" /> */}
                   <p>
                     <span className="d-lg-none d-md-block">Some Actions</span>
                   </p>

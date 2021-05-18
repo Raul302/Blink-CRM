@@ -19,6 +19,8 @@ import { constaApi } from '../../constants/constants';
 import SearchBar from 'components/GeneralComponents/SearchBar';
 import { SlotName, SlotOrigin, SlotProgram } from './SlotContacts';
 import *  as RIcons from "react-icons/ri";
+import { SlotActions } from './SlotContacts';
+import { SlotRating } from './SlotContacts';
 
 export const SlotReferences = function SlotReferences(props) {
     const showModalS = (id) => {
@@ -34,7 +36,7 @@ export const SlotReferences = function SlotReferences(props) {
 function TableContacts(props) {
     const [rowData, setRowData] = useState(props.rowData);
     const notificationAlert = useRef();
-    const [frameworkComponents, setFramwrokw] = useState({ slotName: SlotName, slotOrigin: SlotOrigin, slotProgram: SlotProgram, slotReferences: SlotReferences });
+    const [frameworkComponents, setFramwrokw] = useState({slotRating:SlotRating,slotActions: SlotActions ,slotName: SlotName, slotOrigin: SlotOrigin, slotProgram: SlotProgram, slotReferences: SlotReferences });
     const [gridApi, setGridApi] = useState();
     const [columnApi, setColumnApi] = useState();
     const [dinamicwidth, setDinamicWidth] = useState('0px');
@@ -146,6 +148,15 @@ function TableContacts(props) {
     function setData(e) {
         setRowData(e);
     }
+    async function dropContact(id){
+        await axios.post(constaApi + 'contacts/delete',{id:id}, {
+            headers: {
+                "Accept": "application/json"
+            }
+        }).then(function (response) {
+            consultRow();
+        });
+    }
     return (
         <>
             <div className="content">
@@ -156,7 +167,8 @@ function TableContacts(props) {
                 >
                     <AgGridReact
                         context={{
-                            showModal
+                            showModal,
+                            dropContact,
                         }}
                         rowData={rowData}
                         rowHeight={40}
@@ -175,6 +187,10 @@ function TableContacts(props) {
                             cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
                             cellRenderer="slotName"
                             headerName="Nombre" field="fullname" width="300" />
+                            <AgGridColumn
+                           cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
+                           cellRenderer="slotRating"
+                           headerName="Rating" field="rating" width="300" />
                         <AgGridColumn
                             cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
                         headerName="Ciudad" field="ciy" width="200" cellRenderer="slotOrigin" />
@@ -185,6 +201,7 @@ function TableContacts(props) {
                         headerName="Referencia" cellRenderer="slotReferences" width="200" />
                         <AgGridColumn
                             headerName="Acciones"
+                            cellRenderer="slotActions"
                             width={220}
                         />
                     </AgGridReact>

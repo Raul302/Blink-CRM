@@ -296,6 +296,8 @@ function MultipleModals(props) {
         setModal3(false);
         setModal4(false);
         setModal5(false);
+        props.consult();
+
     }
     const handleExtra = function ekis() {
         setExtra(state => !state);
@@ -382,7 +384,7 @@ function MultipleModals(props) {
         }
         reset();
         resetReference()
-        props.consult();
+        // props.consult();
     }
 
 

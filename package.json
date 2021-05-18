@@ -60,6 +60,7 @@
     "react-scripts": "^4.0.0",
     "react-select": "^3.1.0",
     "react-spring": "^9.1.1",
+    "react-star-ratings": "^2.3.0",
     "reactstrap": "^8.7.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
