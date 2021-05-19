@@ -27,27 +27,18 @@ function Contacts() {
         isChecked:false
     });
     useEffect(() => {
-        // consultRow();
-    }, []);
+    }, [param]);
     const consult = (e) => {
         e.target.value === "" ?  setParam('keyWordSeccret302') :  setParam(e.target.value);
     }
     const changeChecked = () => {
         setRef({...ref,isChecked:!ref.isChecked});
     }
-    async function consultRow(obj){
-        setLoading(true);
-        await axios.get(constaApi+'search/contact/'+obj.target.value+'/'+true, {
-            headers: {
-                "Accept": "application/json"
-            }
-        }).then(function (response) {
-            console.log('response,data',response);
-            setRowData(response.data);
-            setLoading(false);
-        }).catch(error =>{
-            setLoading(false);
-        });
+    const consultRow = (e) => {
+        // console.log()
+        if(e.target.value == ""){
+            setParam('keyWordSeccret302');
+        }
     }
     return (
         <div style={{backgroundColor:'#f9fafb'}}className="content animate__animated animate__fadeIn">
@@ -57,7 +48,7 @@ function Contacts() {
             <MultipleModals consult={consultRow}/>
             </div>
                 <div class="col">
-            <SearchBar consult={(e) => ref.isChecked ? consultRow(e) : consult(e)}/>
+            <SearchBar consult={(e) => consult(e)}/>
             <div class="col">
 
                         <span class="custom-radio-checkbox__text montseInter">Ref.</span>
@@ -72,7 +63,7 @@ function Contacts() {
                         </label>
                 </div>
                             </div>
-              <TableContacts noexecute={ref.isChecked} param={param} rowData={rowData} />
+              <TableContacts noexecute={ref.isChecked} param={param} refe={ref} />
             </div>
         </div>
         </div>

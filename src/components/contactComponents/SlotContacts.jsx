@@ -43,7 +43,7 @@ export const SlotRating = function SlotRating(props) {
       rating={rating}
       starDimension={'20px'}
       starEmptyColor={'gray'}
-      starRatedColor={'rgb(230, 67, 47)'}
+      starRatedColor={'#ffd200'}
       changeRating={(e) => changeRating(e)}
      numberOfStars={5}
       name='rating'
@@ -61,7 +61,6 @@ export const SlotName = function SlotName(props) {
         }
         let n = fullname ? fullname.split(" ") : " ";
         let tag = '';
-        console.log('props.d',n);
         n = n ? n[0].charAt(0) + n[1].charAt(0) : null;
         tag = <>
             <Link  onClick={(e) => click(props.data)} to={"contacts/" + (id) + "/bio"}>
@@ -91,9 +90,6 @@ export const SlotProgram = function SlotProgram(props) {
     const { id_program: program, year } = props.data;
     return (
         <>
-            <span>{program} {year}</span>
-            <span>{program} {year}</span>
-            <span>{program} {year}</span>
             <span>{program} {year}</span>
         </>
     )

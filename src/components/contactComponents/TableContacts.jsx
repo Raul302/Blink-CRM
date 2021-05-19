@@ -4,6 +4,7 @@ import '../../styles/GlobalStyles.css';
 import { AgGridReact, AgGridColumn } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import Skeleton from 'react-loading-skeleton';
 import {
     Row,
     Col,
@@ -42,6 +43,7 @@ function TableContacts(props) {
     const [dinamicwidth, setDinamicWidth] = useState('0px');
     const [lateralReference, setLateralReference] = useState(null);
     const [modal, setmodal] = useState(false);
+    const [loading,setLoading] = useState(false);
     const { register, handleSubmit, errors, reset, watch } = useForm({ mode: 'onChange' });
     const [theContact, setTheContact] = useState(null);
     const [columnDefs, setColumns] = useState([
@@ -75,12 +77,42 @@ function TableContacts(props) {
     ]);
 
     useEffect(() => {
-        if(props.rowData.length > 0 ){
-            setRowData(props.rowData);
+        if(props.refe.isChecked && props.param != 'keyWordSeccret302'){
+            async function consultRowExtern(obj){
+                setLoading(true);
+                let val = '';
+                if(obj){
+                    if(obj.target){
+                        val = obj.target.value;
+                    } else {
+                        val = obj;
+                    }
+                }
+                setLoading(true);
+                await axios.get(constaApi+'search/contact/'+val+'/'+true, {
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                }).then(function (response) {
+                    setRowData(response.data);
+                }).catch(error =>{
+                    setLoading(false);
+                });
+            }
+            consultRowExtern(props.param);
+            Promise.all([consultRowExtern(props.param)])
+            .then(function (result){
+                setTimeout(() => {  setLoading(false); }, 1000);               
+            })
+
         } else{
+            console.log('ConsultRow');
             consultRow();
         }
-        if (props.param) {
+        if(props.param === 'keyWordSeccret302'){
+            consultRow();
+        }
+        if (!props.refe.isChecked && props.param && props.param != 'keyWordSeccret302') {
             quickSearch(props.param);
         }
     }, [props]);
@@ -161,9 +193,14 @@ function TableContacts(props) {
         <>
             <div className="content">
                 <NotificationAlert ref={notificationAlert} />
+               {loading 
+               ?
+               <Skeleton width="60rem" height={30} count={10} />
+                :
+           
                 <div
-                    className="ag-theme-alpine"
-                    style={{ height: '100%', width: '100%' }}
+                className="ag-theme-alpine"
+                style={{ height: '100%', width: '100%' }}
                 >
                     <AgGridReact
                         context={{
@@ -182,7 +219,7 @@ function TableContacts(props) {
                             return params.value.toLocaleString();
                         }}
                         rowSelection="multiple"
-                    >
+                        >
                         <AgGridColumn
                             cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
                             cellRenderer="slotName"
@@ -193,26 +230,27 @@ function TableContacts(props) {
                            headerName="Rating" field="rating" width="300" />
                         <AgGridColumn
                             cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
-                        headerName="Ciudad" field="ciy" width="200" cellRenderer="slotOrigin" />
+                            headerName="Ciudad" field="ciy" width="200" cellRenderer="slotOrigin" />
                         <AgGridColumn 
                              cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
-                        headerName="Programa" field="id_program" width="200" cellRenderer="slotProgram" />
+                             headerName="Programa" field="id_program" width="200" cellRenderer="slotProgram" />
                         <AgGridColumn 
                         headerName="Referencia" cellRenderer="slotReferences" width="200" />
                         <AgGridColumn
                             headerName="Acciones"
                             cellRenderer="slotActions"
                             width={220}
-                        />
+                            />
                     </AgGridReact>
                 </div>
+                }
 
                 {/* editModal */}
                 <Modal
-                    show={modal}
-                    dialogClassName="modalMax"
-                    onHide={handleClose}
-                    dialogClassName="modal-90w">
+                show={modal}
+                dialogClassName="modalMax"
+                onHide={handleClose}
+                dialogClassName="modal-90w">
                     <Modal.Header style={{ height: '60px' }} closeButton>
                         <Modal.Title style={{ fontFamily:'Montserrat,sans-serif',color:'#000000', marginTop: '5px', fontWeight: '600', fontSize: '18px' }}>Referencias </Modal.Title>
                     </Modal.Header>

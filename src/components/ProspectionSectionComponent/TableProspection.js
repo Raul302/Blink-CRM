@@ -285,7 +285,7 @@ export const SlotNumber = function SlotNumber(props) {
     rating={rating}
     starDimension={'20px'}
     starEmptyColor={'gray'}
-    starRatedColor={'rgb(230, 67, 47)'}
+    starRatedColor={'#ffd200'}
     changeRating={(e) => changeRating(e)}
    numberOfStars={5}
     name='rating'
