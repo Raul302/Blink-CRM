@@ -83,6 +83,9 @@ function TableContacts(props) {
     }, [props.reload]);
 
     useEffect(() => {
+        if(props.param){
+            quickSearch(props.param);
+        }
         if(props.refe.isChecked && props.param != 'keyWordSeccret302'){
             async function consultRowExtern(obj){
                 setLoading(true);
@@ -242,10 +245,39 @@ function TableContacts(props) {
                         }}
                         rowSelection="multiple"
                         >
+                            {/* Column Name */}
                         <AgGridColumn
                             cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
                             cellRenderer="slotName"
                             headerName="Nombre" field="fullname" width="300" />
+                             {/* Column Rating */}
+                             <AgGridColumn
+                           cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
+                           cellRenderer="slotRating"
+                           headerName="Rating" field="rating" width="300" />
+                             {/* Column City */}
+                             <AgGridColumn
+                            cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
+                            headerName="Ciudad" field="ciy" width="200" cellRenderer="slotOrigin" />
+
+                            {/* Column Program */}
+                            <AgGridColumn 
+                             cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
+                             headerName="Programa" field="prospections" width="200" cellRenderer="slotProgram" />
+
+                             {/* Column references */}
+                             <AgGridColumn 
+                             headerName="Referencia" cellRenderer="slotReferences" width="200" />
+                              {/* Column Advisor */}
+                              <AgGridColumn 
+                             headerName="Advisor" field="name_advisor" width="200" />
+                             {/* Column Actions  */}
+                             <AgGridColumn
+                            headerName="Acciones"
+                            cellRenderer="slotActions"
+                            width={220}
+                            />
+                            
                              <AgGridColumn
                             cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
                             // cellRenderer="slotRef1"
@@ -258,23 +290,11 @@ function TableContacts(props) {
                             cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
                             // cellRenderer="slotRef3"
                             headerName="Referencia 3 " field="ref3" width="300" />
-                            <AgGridColumn
-                           cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
-                           cellRenderer="slotRating"
-                           headerName="Rating" field="rating" width="300" />
-                        <AgGridColumn
-                            cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
-                            headerName="Ciudad" field="ciy" width="200" cellRenderer="slotOrigin" />
-                        <AgGridColumn 
-                             cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
-                             headerName="Programa" field="prospections" width="200" cellRenderer="slotProgram" />
-                        <AgGridColumn 
-                        headerName="Referencia" cellRenderer="slotReferences" width="200" />
-                        <AgGridColumn
-                            headerName="Acciones"
-                            cellRenderer="slotActions"
-                            width={220}
-                            />
+                           
+                        
+                       
+                        
+                      
                     </AgGridReact>
                 </div>
                 }

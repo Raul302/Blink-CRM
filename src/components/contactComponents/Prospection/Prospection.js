@@ -80,6 +80,7 @@ export default function Prospection() {
   const [prospections, SetProspections] = useState(null);
   const [selection, SetSelection] = useState(0);
   let { active } = useSelector((state) => state.contacts);
+  console.log('Active',active);
   const [modalProspection, setModalProspection] = useState(false);
   const [modalStatus, setModalStatus] = useState(false);
   const [modalStory, setModalStory] = useState(false);
@@ -369,24 +370,6 @@ export default function Prospection() {
               <button
                 class=" mt-1 float-right Inter btn-info  btn-sm"
                 onClick={(e) => changeModalStatus()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
-              {/* <Form.Control
-    onChange={(e) => changeStatus(e)}
-    autoComplete="off"
-    name="year"
-    value={activeProspect.status}
-    // as="select"
-    size="sm"
-    custom
-    >
-    <option value="Evaluacion" selected>
-      Evaluacion
-    </option>
-    {status.map((st) => (
-        <option key={st} value={st}>
-        {st}
-      </option>
-    ))}
-  </Form.Control> */}
             </div>
             <div class="content col-4">
               <Form.Label className="formGray">Story</Form.Label>
@@ -403,6 +386,20 @@ export default function Prospection() {
                 onClick={(e) => changeModalStory()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
             </div>
             <div>
+              <Form.Label className="formGray">Advisor</Form.Label>
+              <Form.Control name="last_modification"
+                disabled
+                autoComplete="off" className="formGray" type="text"
+                placeholder="Ultima fecha"
+                value={active.name_advisor}
+              />
+              <button
+                class=" mt-1 float-right Inter btn-info  btn-sm"
+                onClick={(e) => changeModalStatus()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
+            </div>
+          </div>
+          <div class="mt-n5 row">
+            <div class="content col-4">
               <Form.Label className="formGray">Ultimo contacto</Form.Label>
               <Form.Control name="last_modification"
                 disabled

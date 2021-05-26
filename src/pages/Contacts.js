@@ -52,9 +52,9 @@ function Contacts() {
             <div class="col d-flex justify-content-end">
             <MultipleModals consult={consultRow}/>
             </div>
-                <div class="col">
+                <div class="col ml-n3">
             <SearchBar consult={(e) => consult(e)}/>
-            <div class="col">
+            {/* <div class="col">
 
                         <span class="custom-radio-checkbox__text montseInter">Ref.</span>
                         <label class="custom-radio-checkbox">
@@ -66,7 +66,7 @@ function Contacts() {
                             />
                           <span class="custom-radio-checkbox__show custom-radio-checkbox__show--checkbox"></span>
                         </label>
-                </div>
+                </div> */}
                             </div>
               <TableContacts reloadTable={reload} noexecute={ref.isChecked} param={param} refe={ref} />
             </div>

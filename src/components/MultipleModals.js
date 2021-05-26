@@ -42,7 +42,7 @@ function MultipleModals(props) {
     const [dateReminder, setDateReminder] = useState("");
     const [now, setNow] = useState();
     const [nowTime, setNowTime] = useState();
-
+    let userActive = JSON.parse(localStorage.getItem("user"));
     const [program, setProgram] = useState(["Boarding School",
     "School District",
     "Summer Camp",
@@ -190,14 +190,14 @@ function MultipleModals(props) {
         //    x = response.data.auth_token;
         //    consultCountries(x);
         // });
-        axios.get('https://api-sepomex.hckdrk.mx/query/get_estados?token=pruebas', {
-            // headers: {
-            //     Authorization: 'Bearer ' + x,
-            //     Accept: "application/json"
-            // }
-        }).then(function (response) {
-            // setStates(response.data.response.estado);
-        });
+        // axios.get('https://api-sepomex.hckdrk.mx/query/get_estados?token=pruebas', {
+        //     // headers: {
+        //     //     Authorization: 'Bearer ' + x,
+        //     //     Accept: "application/json"
+        //     // }
+        // }).then(function (response) {
+        //     // setStates(response.data.response.estado);
+        // });
     }
     // Register to save data
     const { register: student, handleSubmit, errors, formState,reset: reset } = useForm({
@@ -371,10 +371,12 @@ function MultipleModals(props) {
                 departament: null,
                 urgent:  0,
             };
-            let auxTwo = {...aux,reminder:{...obj}};
-             axios.post(constaApi+'contacts/save',auxTwo)
+            let auxTwo = {...aux,id_advisor:id,name_advisor:name}
+            let auxThree = {...auxTwo,reminder:{...obj}};
+             axios.post(constaApi+'contacts/save',auxThree)
             .then(function (response) {
               setIDContact(response.data.id);
+              props.consult();
             });
           showModal2();
         }
@@ -388,7 +390,7 @@ function MultipleModals(props) {
         }
         reset();
         resetReference()
-         props.consult();
+        props.consult();
     }
 
 
