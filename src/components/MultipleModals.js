@@ -8,6 +8,8 @@ import NotificationAlert from "react-notification-alert";
 import { constaApi } from '../constants/constants';
 import moment from 'moment'
 import swal from 'sweetalert';
+import { states as jsonState } from 'MyJson\'s/statesJson';
+import { municipios } from 'MyJson\'s/municipiosJson';
 
 
 
@@ -163,17 +165,19 @@ function MultipleModals(props) {
     }
     function changeCities(e) {
         let val = e.target.value;
-        axios.get('https://api-sepomex.hckdrk.mx/query/get_municipio_por_estado/' + val, {
-            // headers: {
-            //     Authorization: 'Bearer ' + auth,
-            //     Accept: "application/json"
-            // }
-        }).then(function (response) {
-            setCities(response.data.response.municipios);
-        });
+        console.log('e.t',e.target.value);
+        let other  = municipios[0];
+        let aux = [];
+        Object.keys(other).map((name,i)=>{
+            if(name === e.target.value){
+                aux = other[name];
+            }
+        })
+        setCities(aux);
     }
     // Api to states
     async function consultStates() {
+        setStates(jsonState);
         // //    info : L6HkSxDySdCLf8NsKYB64pLX5rE4XJVQvG0ROvYXBwYXZ7e0kRlU7gwVgo49xcFX6FI
         // let x = null;
         // await axios.get('https://www.universal-tutorial.com/api/getaccesstoken', {
@@ -186,13 +190,13 @@ function MultipleModals(props) {
         //    x = response.data.auth_token;
         //    consultCountries(x);
         // });
-        axios.get('https://api-sepomex.hckdrk.mx/query/get_estados', {
+        axios.get('https://api-sepomex.hckdrk.mx/query/get_estados?token=pruebas', {
             // headers: {
             //     Authorization: 'Bearer ' + x,
             //     Accept: "application/json"
             // }
         }).then(function (response) {
-            setStates(response.data.response.estado);
+            // setStates(response.data.response.estado);
         });
     }
     // Register to save data
@@ -384,7 +388,7 @@ function MultipleModals(props) {
         }
         reset();
         resetReference()
-        // props.consult();
+         props.consult();
     }
 
 
@@ -568,8 +572,8 @@ function MultipleModals(props) {
                                     <Form.Control onChange={e => changeCities(e)} autoComplete="off" name="state" ref={student} as="select" size="sm" custom>
                                         <option disabled value="" selected></option>
                                         {states.map(state => (
-                                            <option key={state} value={state}>
-                                                {state}
+                                            <option key={state.clave} value={state.nombre}>
+                                                {state.nombre}
                                             </option>
                                         ))}
                                     </Form.Control>

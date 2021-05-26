@@ -38,8 +38,12 @@ export const updatedReminderC = (data) =>{
 }
 export const deleteReminderC = (id,idContact = null) =>{
     return async (dispatch) => {
+        let obj = {
+            id:id,
+            id_contact:idContact ?? null
+        };
         dispatch( startLoading() );
-    await axios.post(constaApi+'reminders/delete',{id:id})
+    await axios.post(constaApi+'reminders/delete',obj)
         .then(function (response) {
             dispatch( removeError());
             if(idContact){
@@ -56,6 +60,7 @@ export const deleteReminderC = (id,idContact = null) =>{
 }
 export const starLoadingRemindersC = (id) => {
     return async (dispatch) => {
+        console.log('EJECUTO BY');
         dispatch( startLoading() );
         const reminders = await loadReminders(id);
         await dispatch( setRemindersC(reminders) );
@@ -65,6 +70,7 @@ export const starLoadingRemindersC = (id) => {
 
 export const starLoadingAllRemindersC = (id=null) => {
     return async (dispatch) => {
+        console.log('EJECUTO EL ALL');
         dispatch( startLoading() );
         const reminders = await loadAllReminders(id);
         await dispatch( setRemindersC(reminders) );

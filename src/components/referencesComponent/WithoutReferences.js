@@ -201,7 +201,7 @@ function handlevalidFour(e) {
                     <div className="container">
                         <div className="row">
                             <div className="mx-auto">
-                                <h1 className="montse600B">Referencia Guardada!</h1>
+                                <h6 className="montse">Referencia Guardada!</h6>
                             </div>
                         </div>
                         <div className="row">

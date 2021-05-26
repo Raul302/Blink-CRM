@@ -13,6 +13,7 @@ import { useDispatch, useSelector,shallowEqual } from 'react-redux';
 import { login } from '../actions/auth/auth';
 import Loader from '../components/loaderComponents/Loader';
 import { setColleges, starLoadingColleges,activeCollege } from '../actions/colleges/colleges';
+import CollegesLocalRouter from './CollegesLocalRouter';
 export const AppRouter = (props) => {
     const dispatch = useDispatch();
     const [ checking, setChecking ] = useState(true);
@@ -49,7 +50,6 @@ export const AppRouter = (props) => {
         )
     }
 
-
     return (
         <Router>
             <div>
@@ -66,11 +66,14 @@ export const AppRouter = (props) => {
                     isAuthenticated={ isLoggedIn }
                     />
                      <PrivateRouter
-                    
                     path="/colleges/:id" 
                     component={CollegesRouter}
                     isAuthenticated={ isLoggedIn }
-                    
+                    />
+                     <PrivateRouter
+                    path="/localColleges/:id" 
+                    component={CollegesLocalRouter}
+                    isAuthenticated={ isLoggedIn }
                     />
                     <PrivateRouter
                     path="/" 

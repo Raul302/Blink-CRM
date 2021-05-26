@@ -10,17 +10,7 @@ import swal from 'sweetalert';
 import { AgGridReact, AgGridColumn } from 'ag-grid-react';
 import moment from 'moment';
 import { Link } from "react-router-dom";
-
-
-import {
-    Card,
-    CardHeader,
-    CardBody,
-    Table,
-    Row,
-    Col,
-  } from "reactstrap";
-  import NotificationAlert from "react-notification-alert";
+import NotificationAlert from "react-notification-alert";
 
   // Component SLotName
   export const SlotName = function SlotName(props) {
@@ -32,16 +22,29 @@ import {
 
   }
     const showName = (name="",fname="",mname="") => {
+       let {
+         data : {
+          local:local
+         }
+        } = props;
         let n = name ? name : " ";
         let f = fname ? fname: " ";
         let tag = '';
         n = n ? n.charAt(0) + f.charAt(0) : null;
         tag =  
         <>
+        {local == 1 ?
+          <Link  onClick={(e) => click(props.data)} to={"localColleges/" + (props.data.id) + "/bio"}>
+          <span class="mt-1 mr-2 sc-caSCKo fXbvQO styles__Company-sc-103gogw-0 jdbeFR">{n}</span>
+          <span>{name} {fname} {mname}</span>
+          </Link>
+        :
         <Link  onClick={(e) => click(props.data)} to={"colleges/" + (props.data.id) + "/bio"}>
         <span class="mt-1 mr-2 sc-caSCKo fXbvQO styles__Company-sc-103gogw-0 jdbeFR">{n}</span>
         <span>{name} {fname} {mname}</span>
         </Link>
+        
+        }
         </>;
         return tag;
     }
@@ -210,9 +213,9 @@ function TableColleges(props) {
                         <AgGridColumn
                             cellRenderer="slotName"
                             headerName="Colegio" field="name" width="100" />
-                        <AgGridColumn headerName="Tipo" field="type" width="200"  />
-                        <AgGridColumn headerName="Pais" field="country" width="200"  />
-                        <AgGridColumn headerName="Prospecciones" width="200" cellRenderer="slotProspecciones" />
+                        <AgGridColumn hide={props.collegesLocales ? true : false} headerName="Tipo" field="type" width="200"  />
+                        <AgGridColumn hide={props.collegesLocales ? true : false} headerName="Pais" field="country" width="200"  />
+                        <AgGridColumn headerName="Propuesto" width="200" cellRenderer="slotProspecciones" />
                         <AgGridColumn headerName="Aplicaciones" width="200" cellRenderer="slotApplicaciones" />
                         <AgGridColumn
                             headerName="Acciones"

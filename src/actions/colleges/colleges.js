@@ -1,16 +1,16 @@
 import { types } from "../../types/types";
 import axios from 'axios';
 import { setError,removeError, startLoading, finishLoading } from "../uiNotificactions/ui";
-import { loadColleges, loadCollegesByProspeccion } from '../../helpers/collegesHelpers/loadColleges';       
+import { loadColleges, loadCollegesByProspeccion, loadLocalColleges } from '../../helpers/collegesHelpers/loadColleges';       
 import { constaApi } from "../../constants/constants";
 
-export const newCollege = (data) =>{
+export const newCollege = (data,local = 0) =>{
     return async (dispatch) => {
         dispatch( startLoading() );
     await axios.post( constaApi +'colleges/save',data)
         .then(function (response) {
             dispatch( removeError());
-            dispatch( starLoadingColleges() );
+            local == 0 ? dispatch( starLoadingColleges()) : dispatch(starLoadingLocalColleges());
             dispatch( finishLoading() );
         }).catch(error =>{
             dispatch( starLoadingColleges() );
@@ -40,7 +40,15 @@ export const starLoadingColleges = () => {
         const colleges = await loadColleges();
         dispatch( setColleges(colleges) );
         dispatch( finishLoading() );
+    }
+}
 
+export const starLoadingLocalColleges = () => {
+    return async (dispatch) => {
+        dispatch( startLoading() );
+        const colleges = await loadLocalColleges();
+        dispatch( setColleges(colleges) );
+        dispatch( finishLoading() );
     }
 }
 

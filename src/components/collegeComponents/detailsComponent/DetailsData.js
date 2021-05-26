@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux';   
+import { setColleges } from 'actions/colleges/colleges';
+import {apiCountries} from '../../../constants/constants';
 function DetailsData(props) {
     // vars
     let {active} = useSelector( state => state.colleges);
@@ -15,28 +17,96 @@ function DetailsData(props) {
     const [editInfo,setEditInfo] = useState(false);
     const [editFacts,setEditFacts] = useState(false);
     const [editAddress,setEditAddress] = useState(false);
+    const [college,setCollege] = useState(false);
+    const [countries, setCountries] = useState([]);
+    const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    const types = ['Boarding School', 'School District', 'Summer Camp', 'Language School', 'University/College', 'Work & Travel'];
 
+    useEffect(() => {
+        if(active){
+            setCollege({...active});
+        }
+         axios.get(apiCountries)
+            .then(function (response) {
+                setCountries(response.data);
+            });
+    },[])
     // methods
     function edit() {
         setEditInfo(!editInfo);
     }
-    function changeName(e){}
-    function changeType(e){}
-    function changeCountry(e){}
-    function changeWebSite(e){}
-    function changeDayGrade(e){}
-    function changeBoardingGrade(e){}
-    function changeDayStudents(e){}
-    function changeInternationalGrade(e){}
-    function changeStudentsInSchool(e){}
-    function changeCity(e){}
-    function changeStreet(e){}
-    function changeCP(e){}
-    function changeNumber(e){}
+    function editFact(){
+        setEditFacts(!editFacts);
+    }
+    function editAdd(){
+        setEditAddress(!editAddress);
+    }
+    function changeName(e){
+        setCollege({...college,name:e.target.value});
+    }
+    function changeType(e){
+        setCollege({...college,type:e.target.value});
+        // switch (e.target.value) {
+        //     case 'Boarding School':
+        //         setCountries(countriesBoardingSchools)
+        //         break;
+        //     case 'School District':
+        //         setCountries(countriesSchoolD)
+        //         break;
+        //     case 'Summer Camp':
+        //         setCountries(countriesSummer);
+        //         break;
+        //     default:
+        //         setCountries(countriesBoardingSchools)
+        //         break;
+        // }
+    }
+    function changeCountry(e){
+        setCollege({...college,country:e.target.value});
+
+    }
+    function changeWebSite(e){
+        setCollege({...college,website:e.target.value});
+    }
+    function changeDayGrade(e){
+        setCollege({...college,start_day_grade:e.target.value});
+    }
+    function changeBoardingGrade(e){
+        setCollege({...college,total_boarding_grade:e.target.value});
+
+    }
+    function changeDayStudents(e){
+        setCollege({...college,total_day_students:e.target.value});
+
+    }
+    function changeInternationalGrade(e){
+        setCollege({...college,total_international_grade:e.target.value});
+
+    }
+    function changeStudentsInSchool(e){
+        setCollege({...college,total_students_in_school:e.target.value});
+
+    }
+    function changeCity(e){
+        setCollege({...college,city:e.target.value});
+
+    }
+    function changeStreet(e){
+        setCollege({...college,street:e.target.value});
+
+    }
+    function changeCP(e){
+        setCollege({...college,cp:e.target.value});
+
+    }
+    function changeNumber(e){
+        setCollege({...college,number:e.target.value});
+
+    }
     return (
         <>
         {!editInfo ?
-                <div class="card">
+                <div class="mt-n5 card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-11">
@@ -106,7 +176,7 @@ function DetailsData(props) {
                     </div>
                 </div>
             :
-            <div class="card">
+            <div class="mt-n5 card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-11">
@@ -120,30 +190,30 @@ function DetailsData(props) {
                         </div>
                         <div class="row mt-3 ">
                                 <div class="col-3">
-                                    <Form.Label style={{ fontSize: '16px' }} className="Inter formGray">Nombre</Form.Label>
+                                    <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Nombre</Form.Label>
                                 </div>
                                 <div class="col">
                                     <Form.Control autoComplete="off"
-                                        onChange={(e) => changeName(e)} value={active.name}
+                                        onChange={(e) => changeName(e)} value={college.name}
                                         name="name"
                                         className="formGray" type="text" placeholder="Ingrese su nombre" />
                                 </div>
                             </div>
                         <div class="row mt-2 ">
                             <div class="col-3">
-                                <h6 class="Inter card-subtitle mb-2 text-muted">Tipo</h6>
+                                <h6 class="montse card-subtitle mb-2 text-muted">Tipo</h6>
                             </div>
                             <div class="col">
                                     <Form.Control autoComplete="off"
                                         name="city"
                                         onChange={e => changeType(e)}
-                                        value={active.type} as="select" size="sm" custom>
+                                        value={college.type} as="select" size="sm" custom>
                                         <option disabled value="" selected></option>
-                                        {/* {cities.map(city => (
-                                            <option key={city.city_name} value={city.city_name}>
-                                                {city.city_name}
+                                        {types.map(typ => (
+                                            <option key={typ} value={typ}>
+                                                {typ}
                                             </option>
-                                        ))} */}
+                                        ))}
                                     </Form.Control>
                                 </div>
                         </div>
@@ -154,7 +224,19 @@ function DetailsData(props) {
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
                                     class="Inter card-subtitle mb-2 ">
-                                    {active.country}
+                                    <Form.Control autoComplete="off"
+                                        name="city"
+                                        onChange={e => changeCountry(e)}
+                                        value={college.country} as="select" size="sm" custom>
+                                        <option disabled value="" selected></option>
+                                        {countries &&
+                                        [countries.map(countr => (
+                                            <option key={countr.name} value={countr.name}>
+                                            {countr.name}
+                                        </option>
+                                        ))]
+                                    }
+                                    </Form.Control>
                                 </h6>
                             </div>
                         </div>
@@ -165,25 +247,18 @@ function DetailsData(props) {
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
                                     class="Inter card-subtitle mb-2 ">
-                                    {active.website}
-                                </h6>
-                            </div>
-                        </div>
-                        <div class="row mt-2 ">
-                            <div class="col-3">
-                                <h6 class="Inter card-subtitle mb-2 text-muted">Nombre</h6>
-                            </div>
-                            <div class="col">
-                                <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                    class="Inter card-subtitle mb-2 ">
-                                    {active.name}
+                                       <Form.Control autoComplete="off"
+                                        onChange={(e) => changeWebSite(e)} value={college.website}
+                                        name="name"
+                                        className="formGray" type="text" placeholder="Ingrese su website" />
                                 </h6>
                             </div>
                         </div>
                     </div>
                 </div>    
             }
-                {/* FACTS & FIGURES */}
+                {!editFacts ?
+                // {/* FACTS & FIGURES */}
                 <div class="mt-3 card">
                     <div class="card-body">
                         <div class="row">
@@ -191,9 +266,9 @@ function DetailsData(props) {
                                 <h5 style={{ fontWeight: '600' }} class="Inter card-title">Facts & Figures</h5>
                             </div>
                             <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
-                                {/* <a>
-                                    <FIIcons.FiEdit  size={18} style={{ color: '#386CEF' }} />
-                                </a> */}
+                            <a>
+                            <FIIcons.FiEdit onClick={(e) => editFact()} size={18} style={{ color: '#386CEF' }} />
+                            </a>
                             </div>
                         </div>
                         <div class="row mt-2 ">
@@ -203,7 +278,19 @@ function DetailsData(props) {
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
                                     class="Inter card-subtitle mb-2 ">
-                                    {active.start_day_grade}
+                                   <Form.Control
+                                        name="start_boarding_grade"
+                                        autoComplete="off" className="formGray" type="text" placeholder="Seleccione el grado"
+                                        onChange={(e) => changeDayGrade(e)}
+                                        value={college.start_day_grade}
+                                        as="select" size="sm" custom>
+                                        <option disabled value="" selected></option>
+                                        {numbers.map(numb => (
+                                            <option key={numb} value={numb}>
+                                                {numb}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
                                 </h6>
                             </div>
                         </div>
@@ -214,7 +301,19 @@ function DetailsData(props) {
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
                                     class="Inter card-subtitle mb-2 ">
-                                    {active.total_boarding_grade}
+                                        <Form.Control
+                                        name="start_boarding_grade"
+                                        autoComplete="off" className="formGray" type="text" placeholder="Seleccione el grado"
+                                        onChange={(e) => changeBoardingGrade(e)}
+                                        value={college.total_boarding_grade}
+                                        as="select" size="sm" custom>
+                                        <option disabled value="" selected></option>
+                                        {numbers.map(numb => (
+                                            <option key={numb} value={numb}>
+                                                {numb}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
                                 </h6>
                             </div>
                         </div>
@@ -253,6 +352,80 @@ function DetailsData(props) {
                         </div>
                     </div>
                 </div>
+                :
+
+                //  {/* FACTS & FIGURES EDIT */}
+                 <div class="mt-3 card">
+                 <div class="card-body">
+                     <div class="row">
+                         <div class="col-11">
+                             <h5 style={{ fontWeight: '600' }} class="Inter card-title">Facts & Figures</h5>
+                         </div>
+                         <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
+                         <a>
+                         <FIIcons.FiEdit onClick={(e) => editFact()} size={18} style={{ color: '#386CEF' }} />
+                         </a>
+                         </div>
+                     </div>
+                     <div class="row mt-2 ">
+                         <div class="col-3">
+                             <h6 class="Inter card-subtitle mb-2 text-muted">Inicio day Grade</h6>
+                         </div>
+                         <div class="col">
+                             <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                 class="Inter card-subtitle mb-2 ">
+                                 {active.start_day_grade}
+                             </h6>
+                         </div>
+                     </div>
+                     <div class="row mt-2 ">
+                         <div class="col-3">
+                             <h6 class="Inter card-subtitle mb-2 text-muted">Total boarding grade</h6>
+                         </div>
+                         <div class="col">
+                             <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                 class="Inter card-subtitle mb-2 ">
+                                 {active.total_boarding_grade}
+                             </h6>
+                         </div>
+                     </div>
+                     <div class="row mt-2 ">
+                         <div class="col-3">
+                             <h6 class="Inter card-subtitle mb-2 text-muted">Total day students</h6>
+                         </div>
+                         <div class="col">
+                             <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                 class="Inter card-subtitle mb-2 ">
+                                 {active.total_day_students}
+                             </h6>
+                         </div>
+                     </div>
+                     <div class="row mt-2 ">
+                         <div class="col-3">
+                             <h6 class="Inter card-subtitle mb-2 text-muted">Total international grade</h6>
+                         </div>
+                         <div class="col">
+                             <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                 class="Inter card-subtitle mb-2 ">
+                                 {active.total_international_grade}
+                             </h6>
+                         </div>
+                     </div>
+                     <div class="row mt-2 ">
+                         <div class="col-3">
+                             <h6 class="Inter card-subtitle mb-2 text-muted">total students in school</h6>
+                         </div>
+                         <div class="col">
+                             <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                 class="Inter card-subtitle mb-2 ">
+                                 {active.total_students_in_school}
+                             </h6>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             
+                }
 
 
                 <div class="mt-3 card">

@@ -8,6 +8,8 @@ import "../../styles/RBCheckboxFormStyles.css";
 import NotificationAlert from "react-notification-alert";
 import { constaApi, constzipCodeApi } from '../../constants/constants';
 import *  as FAIcons from "react-icons/fa";
+import { loadColleges } from 'helpers/collegesHelpers/loadColleges';
+import { loadLocalColleges } from 'helpers/collegesHelpers/loadColleges';
 
 
 
@@ -16,6 +18,13 @@ function PersonalData(props) {
         setFilterValues(props.contact);
         consultStates();
         consultCountries();
+        Promise.all([loadLocalColleges()])
+        .then(function (result){
+            if(result){
+                setLocalColleges(result[0]);
+                console.log('result',result[0]);
+            }
+        })
     }, [props]);
     const [flagCountry, setFlagCoutnry] = useState({
         value: 'Pais',
@@ -43,6 +52,7 @@ function PersonalData(props) {
     const [name, setName] = useState();
     const [phone, setPhone] = useState();
     const [schoool, setSchoool] = useState();
+    const [other_School, setotherScho] = useState();
     const [grade, setGrade] = useState();
     const [cicly, setCicly] = useState();
     const [state, setState] = useState();
@@ -50,6 +60,8 @@ function PersonalData(props) {
     const [states, setStates] = useState([]);
     const [countries, setCountries] = useState([]);
     const [country, setCountry] = useState();
+    const [localColleges, setLocalColleges] = useState([]);
+    console.log('local',localColleges)
     // Methods
     const tagMun = (mun) => {
         let tag = '';
@@ -243,6 +255,7 @@ function PersonalData(props) {
         setGrade(props.grade);
         setCicly(props.cicly);
         setCountry(props.country);
+        setotherScho(props.other_School);
         if (directions.length > 0) {
             setInputList(directions);
         }
@@ -263,6 +276,9 @@ function PersonalData(props) {
     }
     function changeSchool(e) {
         setSchoool(e.target.value);
+    }
+    function changeOtherSchool(e) {
+        setotherScho(e.target.value);
     }
     function changeName(e) {
         setName(e.target.value);
@@ -299,7 +315,8 @@ function PersonalData(props) {
             state: state,
             city: city,
             country: country,
-            direction: inputList
+            direction: inputList,
+            other_School : schoool != 'Otro' ? null : other_School
         };
         await axios.post(constaApi + 'contact/update', datax)
             .then(function (response) {
@@ -584,12 +601,21 @@ function PersonalData(props) {
                         <div class="row mt-3 ">
                             <div class="col-3">
                                 <h6 class="montse card-subtitle mb-2 formGrayTwo">Colegio</h6>
+                                {props.contact.schoool == 'Otro' && 
+                                <h6 class="mt-4 montse card-subtitle mb-2 formGrayTwo">Nombre</h6>
+                                }
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
                                     class="montse card-subtitle mb-2 ">
                                     {props.contact.schoool}
                                 </h6>
+                                {props.contact.schoool == 'Otro' && 
+                                <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                class="mt-4 montse card-subtitle mb-2 ">
+                                {props.contact.other_School}
+                                </h6>                    
+                                 }
                             </div>
                         </div>
 
@@ -666,10 +692,33 @@ function PersonalData(props) {
                                     <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Colegio</Form.Label>
                                 </div>
                                 <div class="col">
-                                    <Form.Control autoComplete="off"
-                                        onChange={(e) => changeSchool(e)} value={schoool}
-                                        name="mother_lastname"
-                                        className="formGray" type="text" placeholder="Ingrese su email" />
+                                <Form.Control
+                                                    onChange={(e) => changeSchool(e)} value={schoool}
+                                                    autoComplete="off"
+                                                    name="Colegio"
+                                                    className="formGray"
+                                                    as="select" size="sm" custom>
+                                                        {localColleges &&
+                                                        [localColleges.map(colL => {
+                                                            return(
+                                                                <option key={colL.id} value={colL.name}>
+                                                                {colL.name}
+                                                                  </option>
+                                                             )
+                                                            })]  
+                                                        }
+                                                        <option key="Otro" value="Otro">Otro</option>     
+                                </Form.Control>
+                               <div class="mt-3 row">
+                                   {schoool == 'Otro' &&
+                                  <div class="col">
+                                  <Form.Control autoComplete="off"
+                                      onChange={(e) => changeOtherSchool(e)} value={other_School}
+                                      name="Otro nombre"
+                                      className="formGray" type="text" placeholder="Ingrese el nombre de su colegio" />
+                              </div>
+                              }
+                              </div>
                                 </div>
                             </div>
                         </form>

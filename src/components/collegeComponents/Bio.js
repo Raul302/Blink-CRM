@@ -257,7 +257,7 @@ function Bio(props) {
   const notificationAlert = useRef();
   useEffect(() => {
     consult();
-    // getBioRecords();
+    getBioRecords();
     if (props.flagTwo) {
       showModalLog("Recordatorio");
     }

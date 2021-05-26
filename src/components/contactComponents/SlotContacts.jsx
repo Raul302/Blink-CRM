@@ -9,6 +9,41 @@ import React,{ useState,useEffect } from 'react';
 import axios from 'axios';
 import { constaApi } from "constants/constants";
 
+
+export const SlotRef1 = function SlotRef1(props) {
+    const {value} = props;
+    return (
+        <>
+        {value[0] &&
+        <span>{value[0].name + " " + value[0].father_lastname + " " + value[0].mother_lastname}</span>
+        }
+        </>
+    )
+}
+
+export const SlotRef2 = function SlotRef2(props) {
+    const {value} = props;
+    return (
+        <>
+        {value[1] &&
+        <span>{value[1].name + " " + value[1].father_lastname + " " + value[1].mother_lastname}</span>
+        }
+        </>
+    )
+}
+
+export const SlotRef3 = function SlotRef3(props) {
+    const {value} = props;
+    return (
+        <>
+        {value[2] &&
+        <span>{value[2].name + " " + value[2].father_lastname + " " + value[2].mother_lastname}</span>
+        }
+        </>
+    )
+}
+
+
 export const SlotRating = function SlotRating(props) {
     const [rating,setRating] = useState(props.value ? parseInt(props.value) : 0);
     const changeRating = (e) => {
@@ -87,10 +122,14 @@ export const SlotOrigin = function SlotOrigin(props) {
 }
 
 export const SlotProgram = function SlotProgram(props) {
-    const { id_program: program, year } = props.data;
+    const {value} = props;
+    console.log('props',value);
+    const showModalS = (value) => {
+        props.context.modalProspections(value);
+    }
     return (
         <>
-            <span>{program} {year}</span>
+          <a> <RIcons.RiEyeFill onClick={(e) => showModalS(value)} style={{ color: '#497cff' }} size={18} /></a>
         </>
     )
 }

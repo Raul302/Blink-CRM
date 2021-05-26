@@ -21,6 +21,7 @@ function Contacts() {
     const [rowData, setRowData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [param,setParam] = useState(null);
+    const [reload,setReload] = useState(false);
     const [ref,setRef] = useState({
         name:'ref',
         value:'ref',
@@ -36,8 +37,12 @@ function Contacts() {
     }
     const consultRow = (e) => {
         // console.log()
-        if(e.target.value == ""){
-            setParam('keyWordSeccret302');
+        if(e){
+            if(e.target.value == ""){
+                setParam('keyWordSeccret302');
+            }
+        } else{
+           setReload(!reload);
         }
     }
     return (
@@ -63,7 +68,7 @@ function Contacts() {
                         </label>
                 </div>
                             </div>
-              <TableContacts noexecute={ref.isChecked} param={param} refe={ref} />
+              <TableContacts reloadTable={reload} noexecute={ref.isChecked} param={param} refe={ref} />
             </div>
         </div>
         </div>

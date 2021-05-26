@@ -7,9 +7,7 @@ import { starLoadingRemindersC } from 'actions/contacts/remindersContacts/remind
 
 function Reminders(props) {
     const dispatch = useDispatch();
-   
     let { id } = useParams();
-
     useEffect(() => {
         if(props.prospection){
 

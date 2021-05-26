@@ -13,10 +13,15 @@ import { Checkbox } from '../../collegeComponents/AddOrEditCollege';
 import { starLoadingAllRemindersC } from 'actions/contacts/remindersContacts/remindersContact';
 import { starLoadingProspectRemindersC } from 'actions/contacts/remindersContacts/remindersContact';
 import { starLoadingApplicationRemindersC } from 'actions/contacts/remindersContacts/remindersContact';
+import { BrowserRouter as Router, Switch, 
+    Route, Link, useLocation  } from 'react-router-dom';
+import { useParams,} from "react-router";
 
 
 export default function AddEditReminders(props) {
     // variables
+    const { pathname } = useLocation();
+    let { id:idInUrl } = useParams();
     const dispatch = useDispatch();
     const [contacts,setContacts] = useState();
     const [selectContact,setSelectContact] = useState(null);
@@ -208,8 +213,10 @@ export default function AddEditReminders(props) {
 
             });
         dispatch(activeReminderC(null, null));
-        if(init){
+        if(init && pathname != '/contacts/'+idInUrl+'/reminders'){
         dispatch(starLoadingAllRemindersC(init.id));
+        } else {
+            dispatch(starLoadingRemindersC(contact.id));
         }
         handleClose();
     }

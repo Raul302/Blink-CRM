@@ -22,6 +22,7 @@ import { SlotName, SlotOrigin, SlotProgram } from './SlotContacts';
 import *  as RIcons from "react-icons/ri";
 import { SlotActions } from './SlotContacts';
 import { SlotRating } from './SlotContacts';
+import { SlotRef1,SlotRef2,SlotRef3 } from './SlotContacts';
 
 export const SlotReferences = function SlotReferences(props) {
     const showModalS = (id) => {
@@ -37,13 +38,15 @@ export const SlotReferences = function SlotReferences(props) {
 function TableContacts(props) {
     const [rowData, setRowData] = useState(props.rowData);
     const notificationAlert = useRef();
-    const [frameworkComponents, setFramwrokw] = useState({slotRating:SlotRating,slotActions: SlotActions ,slotName: SlotName, slotOrigin: SlotOrigin, slotProgram: SlotProgram, slotReferences: SlotReferences });
+    const [frameworkComponents, setFramwrokw] = useState({slotRef1:SlotRef1,slotRef2:SlotRef2,slotRef3:SlotRef3,slotRating:SlotRating,slotActions: SlotActions ,slotName: SlotName, slotOrigin: SlotOrigin, slotProgram: SlotProgram, slotReferences: SlotReferences });
     const [gridApi, setGridApi] = useState();
     const [columnApi, setColumnApi] = useState();
     const [dinamicwidth, setDinamicWidth] = useState('0px');
     const [lateralReference, setLateralReference] = useState(null);
     const [modal, setmodal] = useState(false);
+    const [modalPro, setModalPro] = useState(false);
     const [loading,setLoading] = useState(false);
+    const [prospections,setProspespections] = useState([]);
     const { register, handleSubmit, errors, reset, watch } = useForm({ mode: 'onChange' });
     const [theContact, setTheContact] = useState(null);
     const [columnDefs, setColumns] = useState([
@@ -63,7 +66,7 @@ function TableContacts(props) {
             headerName: "Ciudad", field: "city", width: 200,
             cellRenderer: 'slotOrigin'
         },
-        { headerName: "Programa", field: "id_program", width: 200, cellRenderer: 'slotProgram' },
+        { headerName: "Programa", field: "prospections", width: 200, cellRenderer: 'slotProgram' },
         {
             headerName: "Referencia", width: 200,
             cellRenderer: "slotReferences",
@@ -75,6 +78,9 @@ function TableContacts(props) {
         },
         { headerName: "Acciones", width: 220 },
     ]);
+    useEffect(() => {
+        consultRow();
+    }, [props.reload]);
 
     useEffect(() => {
         if(props.refe.isChecked && props.param != 'keyWordSeccret302'){
@@ -106,11 +112,10 @@ function TableContacts(props) {
             })
 
         } else{
-            console.log('ConsultRow');
             consultRow();
         }
         if(props.param === 'keyWordSeccret302'){
-            consultRow();
+            quickSearch(props.param);
         }
         if (!props.refe.isChecked && props.param && props.param != 'keyWordSeccret302') {
             quickSearch(props.param);
@@ -127,7 +132,18 @@ function TableContacts(props) {
                 "Accept": "application/json"
             }
         }).then(function (response) {
-            setRowData(response.data);
+            const {data:dx} = response;
+            let array = [];
+            dx.map(d => {
+                let obj ={
+                    ...d,
+                    ref1:d.contacts_references[0] ? d.contacts_references[0].name + " " +  d.contacts_references[0].father_lastname + " " +  d.contacts_references[0].mother_lastname : null,
+                    ref2:d.contacts_references[1] ? d.contacts_references[1].name + " " +  d.contacts_references[1].father_lastname + " " +  d.contacts_references[1].mother_lastname : null,
+                    ref3:d.contacts_references[2] ? d.contacts_references[2].name + " " +  d.contacts_references[2].father_lastname + " " +  d.contacts_references[2].mother_lastname : null,
+                }
+                array.push(obj);
+            })
+            setRowData(array);
         });
     }
     const onGridReady = (params) => {
@@ -146,6 +162,7 @@ function TableContacts(props) {
     }
     const handleClose = () => {
         setmodal(false);
+        setModalPro(false);
     }
     const onSubmit = () => {
 
@@ -189,6 +206,10 @@ function TableContacts(props) {
             consultRow();
         });
     }
+    function modalProspections(obj){
+        setProspespections(obj);
+        setModalPro(true);
+    }
     return (
         <>
             <div className="content">
@@ -206,6 +227,7 @@ function TableContacts(props) {
                         context={{
                             showModal,
                             dropContact,
+                            modalProspections,
                         }}
                         rowData={rowData}
                         rowHeight={40}
@@ -224,6 +246,18 @@ function TableContacts(props) {
                             cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
                             cellRenderer="slotName"
                             headerName="Nombre" field="fullname" width="300" />
+                             <AgGridColumn
+                            cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
+                            // cellRenderer="slotRef1"
+                            headerName="Referencia 1" field="ref1" width="300" />
+                             <AgGridColumn
+                            cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
+                            // cellRenderer="slotRef2"
+                            headerName="Referencia 2" field="ref2" width="300" />
+                             <AgGridColumn
+                            cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
+                            // cellRenderer="slotRef3"
+                            headerName="Referencia 3 " field="ref3" width="300" />
                             <AgGridColumn
                            cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
                            cellRenderer="slotRating"
@@ -233,7 +267,7 @@ function TableContacts(props) {
                             headerName="Ciudad" field="ciy" width="200" cellRenderer="slotOrigin" />
                         <AgGridColumn 
                              cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
-                             headerName="Programa" field="id_program" width="200" cellRenderer="slotProgram" />
+                             headerName="Programa" field="prospections" width="200" cellRenderer="slotProgram" />
                         <AgGridColumn 
                         headerName="Referencia" cellRenderer="slotReferences" width="200" />
                         <AgGridColumn
@@ -261,6 +295,76 @@ function TableContacts(props) {
                                 <Col>
                                     <References update={updateRoute} noReload={true} contact={theContact} />
                                 </Col>
+                            </Row>
+                        </div>
+                        <Row>
+
+                            <Col>
+                                <Button onClick={handleClose} style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
+                                    Cerrar
+                                    </Button>
+                            </Col>
+                        </Row>
+                    </Modal.Body>
+                </Modal>
+
+                 {/* modal Prospecions */}
+                 <Modal
+                show={modalPro}
+                dialogClassName="modalMax"
+                onHide={handleClose}
+                dialogClassName="modal-90w">
+                    <Modal.Header style={{ height: '60px' }} closeButton>
+                        <Modal.Title style={{ fontFamily:'Montserrat,sans-serif',color:'#000000', marginTop: '5px', fontWeight: '600', fontSize: '18px' }}>Prospecciones </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
+                        <div className="container-fluid">
+                            <NotificationAlert ref={notificationAlert} />
+                            <Row className="mt-1">
+                            <div
+        className="ag-theme-alpine"
+        style={{ height: '100%', width: '100%' }}
+      >
+         <AgGridReact
+           rowData={prospections}
+        //    context={{
+        //      exporta,
+        //      loadProspections
+        //    }}
+           rowHeight={40}
+           cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
+           domLayout="autoHeight"
+           rowClassRules={{
+            'colorGrayAG': function (params) {
+              var backColor = params.data.color;
+              return params.data.color === 0 ;
+            },
+            'colorWhiteAG': 'data.color === -1',
+          }}
+           onGridReady={onGridReady}
+           suppressRowTransform={true}
+           pagination={true}
+           paginationPageSize={10}
+           frameworkComponents={frameworkComponents}
+           paginationNumberFormatter={function (params) {
+               return params.value.toLocaleString();
+           }}
+           rowSelection="multiple"
+        >
+          
+          <AgGridColumn 
+          headerName="Prospeccion"
+          field="name_prospection" width={250}
+          filter="agTextColumnFilter"
+          />
+          
+         
+            <AgGridColumn 
+          headerName="Status"
+          filter="agTextColumnFilter"
+          field="status" width={150} />
+        </AgGridReact>
+      </div>
                             </Row>
                         </div>
                         <Row>

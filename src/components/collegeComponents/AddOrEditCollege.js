@@ -30,7 +30,8 @@ export const Checkbox = function Checkbox(props) {
         </div>
     )
 }
-function AddOrEditCollege() {
+function AddOrEditCollege(props) {
+    console.log('PROPS',props);
     useEffect(() => {
         consultCountries();
         consultStates();
@@ -40,7 +41,7 @@ function AddOrEditCollege() {
     }, [])
     const [state, setState] = useState({});
 
-    const [obj, setObj] = useState({ name: "", tipo: "", pais: "", website: "" });
+    const [obj, setObj] = useState({ name: "", tipo: "", pais: props.type == 'Locale'  ? 'Mexico' : "", website: "" });
     const notificationAlert = useRef();
     const dispatch = useDispatch();
     const [sport, setSports] = useState();
@@ -248,6 +249,9 @@ function AddOrEditCollege() {
         }
         const list = { ...obj };
         list[name] = value;
+        if(props.type == 'Locale'){
+            list['country'] = 'Mexico';
+        }
         setObj(list);
     }
     function close() {
@@ -282,7 +286,8 @@ function AddOrEditCollege() {
             objx.sports = selectSport;
             objx.arts = selectArt;
             objx.special_c = selectSpecial;
-            dispatch(newCollege(objx));
+            objx.local = props.type == 'Locale' ? 1 : 0;
+            dispatch(newCollege(objx,1));
             close();
             setObj({});
             setSelectArt();
@@ -352,12 +357,15 @@ function AddOrEditCollege() {
                                                 onChange={(e) => changeObj(e)}
                                                 value={obj.country}
                                                 as="select" size="sm" custom>
-                                                <option disabled value="" selected></option>
-                                                {countries.map(countr => (
+                                                {props.type == 'Locale' ?
+                                                <option  value="Mexico">Mexico</option>
+                                                :
+                                               [countries.map(countr => (
                                                     <option key={countr.name} value={countr.name}>
                                                         {countr.name}
                                                     </option>
-                                                ))}
+                                                ))]
+                                                }
                                             </Form.Control>
                                         </>
                                         : ''
