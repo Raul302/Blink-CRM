@@ -6,6 +6,15 @@ export const setError = (error) => ({
     payload: error
 });
 
+export const setMessage = (error) => ({
+    type: types.uisetMessage,
+    payload: error
+});
+
+export const removeMessage = (error) => ({
+    type: types.uiremoveMessage,
+});
+
 export const removeError = () => ({
     type: types.uiRemoveError
 });

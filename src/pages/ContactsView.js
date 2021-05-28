@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import React, {useState,useRef,useEffect} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams,} from "react-router";
 import StarRatings from '../../node_modules/react-star-ratings';
 import { BrowserRouter as Router, Switch, 
@@ -6,15 +7,27 @@ import { BrowserRouter as Router, Switch,
     import swal from 'sweetalert';
     import axios from 'axios';
 import { constaApi } from 'constants/constants';
+import NotificationAlert from "react-notification-alert";
+import {removeMessage} from 'actions/uiNotificactions/ui';
 
 
 
 export default function ContactsView(props) {
-    console.log('props',props);
+    const dispatch = useDispatch();
+    const notificationAlert = useRef();
+    const {msgError } = useSelector(state => state.ui);
     let { id } = useParams();
     const { pathname } = useLocation();
     const [fullName,setFullName] = useState(`${props.contact.name} ${props.contact.father_lastname} ${props.contact.mother_lastname ?? " "}`);
     const [rating,setRating] = useState(props.contact.rating ? parseInt(props.contact.rating) : 0);
+
+    useEffect(() => {
+        if(msgError != null){
+            notification('success',msgError);
+            dispatch(removeMessage());
+        }
+
+    },[msgError])
     const loadRating = async () => {
         await axios.get(constaApi+'contacts/'+props.contact.id,{
             headers: {
@@ -50,6 +63,25 @@ export default function ContactsView(props) {
             }
           });
     }
+    const notification =  (type,message) => {
+        let place = "tc";
+        var options = {};
+        options = {
+          place: place,
+          message: (
+            <div>
+              <div>
+                {message}
+              </div>
+            </div>
+          ),
+          type: type,
+          icon: "nc-icon nc-bell-55",
+          autoDismiss: 7,
+          }
+        notificationAlert.current.notificationAlert(options);
+     }
+  
     return (
         <>
          <div style={{minHeight:'0px'}} className="pb-0 content">
@@ -66,7 +98,8 @@ export default function ContactsView(props) {
                     /></span>
                  </p>
                 
-           
+                 <NotificationAlert ref={notificationAlert} />
+
             <div style={{marginTop:'-20px'}} className=" mt-3sc-bdVaJa styles__Nav-sc-19n49a3-0 gOZeoI">
                <Link className={[ '/contacts/'+id +'/bio'].includes(pathname) ? 
                'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active montse' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl montse'} 

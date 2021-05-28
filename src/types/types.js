@@ -13,6 +13,8 @@ export const types = {
 
     uiSetError: '[UI] Set Error',
     uiRemoveError: '[UI] Remove Error',
+    uisetMessage: '[UI] Set Message',
+    uiremoveMessage: '[UI] Remove Message',
 
     uiStartLoading: '[UI] Start Loading',
     uiFinishLoading: '[UI] Finish Loading',

@@ -255,7 +255,6 @@ export const SlotNumber = function SlotNumber(props) {
       let contact = props.data;
       contact.rating = e;
       contact.name = contact.last_contact;
-      console.log('contact',contact);
       swal({
           title: "Estas seguro?",
           text: "Usted modificara la calificacion de este contacto",

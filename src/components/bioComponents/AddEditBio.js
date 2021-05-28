@@ -162,6 +162,7 @@ export default function AddEditBio(props) {
     }
   };
   async function onSubmit(data) {
+    console.log('SelectValue',selectValue);
     let datex = dateBio + " " + timeBio;
     if (editing) {
       let datax = {

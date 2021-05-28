@@ -16,7 +16,6 @@ export default function UploadFiles(props) {
     // Functions
     let { id:id_contact } = useParams();
     function onSubmit(data) {
-        console.log('type_doc',typeDoc);
         let datax = new FormData();
         datax.append('id_contact',id_contact);
         datax.append('type_doc',typeDoc);

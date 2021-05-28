@@ -67,11 +67,15 @@ export const SlotActions = function (props) {
 }
 export const SlotUsers = function (props) {
     function showEmailsTO(obj) {
-        let n = obj.name_user ? obj.name_user : " ";
-        let tag = "";
-        if (n) {
-          n = n.charAt(0) + n.charAt(1);
-        }
+      let n = obj.name_user ? obj.name_user.split(" ") : " ";
+      let tag = '';
+      if (n.length >= 3) {
+          n = n[0].charAt(0).toUpperCase() + n[1].charAt(0).toUpperCase() + n[2].charAt(0).toUpperCase();
+      } else if(n.length >= 2) {
+        n = n[0].charAt(0).toUpperCase() + n[1].charAt(0).toUpperCase() ;
+      } else {
+        n = n[0].charAt(0).toUpperCase();
+      }
         switch (obj.type_user) {
           case "user":
             tag = (

@@ -108,12 +108,17 @@ export const SlotParticipants = function SlotParticipants(props) {
   const showModal = (obj) => {
     props.context.showModal(obj);
 }
-  const showParticipant = (type = 'user',name) => {
-    let n = name ? name : " ";
-    let tag = '';
-    if (n) {
-        n = n.charAt(0) + n.charAt(1);
-    }
+  const showParticipant = (type = 'user',name,obj) => {
+    console.log('name',obj);
+    let n = name ? name.split(" ") : " ";
+      let tag = '';
+      if (n.length >= 3) {
+          n = n[0].charAt(0) + n[1].charAt(0) + n[2].charAt(0);
+      } else if(n.length >= 2) {
+        n = n[0].charAt(0) + n[1].charAt(0) ;
+      } else {
+        n = n[0].charAt(0);
+      }
     switch (type) {
         case 'user':
         tag = <span onClick={(e) => showModal(props.data)} class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{n}</span>;
@@ -135,7 +140,7 @@ export const SlotParticipants = function SlotParticipants(props) {
       <>
       <div>
         {participants.map(part => {
-         return(<span key={part.id}>{showParticipant(part.type,part.name)}</span>)
+         return(<span key={part.id}>{showParticipant(part.type,part.fullname,part)}</span>)
         })}
     </div>
       </>
@@ -151,10 +156,8 @@ export const SlotDate = function SlotDate(props) {
     props.context.showModal(obj);
 }
   const showDate = (dateBD,timeBio) => {
-    console.log(dateBD);
     let datef = moment(dateBD).locale('es-mx').format("ddd D MMMM, YYYY ");
     let timef = moment(dateBD).locale('es-mx').add(5, 'hours').format("h:mm A");
-    console.log('date',timef);
     datef = datef[0].toUpperCase() + datef.slice(1);
     datef = datef.replace(".","");
     let tag = <span class="Inter">{datef} <Ioicons.IoMdTime  /> {timef}</span>
@@ -272,9 +275,15 @@ export default function TableBio(props) {
       autoSizeAll(false);
     };
     const showParticipant = (type = 'use',name,fullname = "") => {
-        let n = name ? name : " ";
-        let tag = '';
-        n = n ? n.charAt(0) + n.charAt(1) : null;
+      let n = fullname ? fullname.split(" ") : " ";
+      let tag = '';
+      if (n.length >= 3) {
+          n = n[0].charAt(0) + n[1].charAt(0) + n[2].charAt(0);
+      } else if(n.length >= 2) {
+        n = n[0].charAt(0) + n[1].charAt(0) ;
+      } else {
+        n = n[0].charAt(0);
+      }
         switch (type) {
             case 'user':
             tag = <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{n}</span>;

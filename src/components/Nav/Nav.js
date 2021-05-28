@@ -101,10 +101,12 @@ class Header extends React.Component {
     }
   }
   showParticipant = (type = 'user',name) => {
-    let n = name ? name : " ";
+    let n = name ? name.split(" ") : " ";
     let tag = '';
-    if (n) {
-        n = n.charAt(0) + n.charAt(1);
+    if (n.length >= 3) {
+        n = n[0].charAt(0).toUpperCase() + n[1].charAt(0).toUpperCase() + n[2].charAt(0).toUpperCase();
+    } else {
+      n = n[0].charAt(0);
     }
     switch (type) {
         case 'user':

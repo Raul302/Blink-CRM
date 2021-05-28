@@ -31,7 +31,6 @@ export const Checkbox = function Checkbox(props) {
     )
 }
 function AddOrEditCollege(props) {
-    console.log('PROPS',props);
     useEffect(() => {
         consultCountries();
         consultStates();
@@ -263,7 +262,6 @@ function AddOrEditCollege(props) {
         reset();
     }
     function onSubmit(data) {
-        console.log('obj',obj);
         if (modal) {
             setJson(obj);
             if (obj.type === "Boarding School") {

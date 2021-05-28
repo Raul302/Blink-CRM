@@ -20,12 +20,15 @@ import { AgGridReact, AgGridColumn } from 'ag-grid-react';
 // Component SLotName
 export const SlotName = function SlotName(props) {
   const showName = (id = null, fullname = "") => {
-  //     const click = () => {
-  //     dispatch( activeContact(props.data) );
-  // }
-      let n = fullname ? fullname.split(" ") : " ";
-      let tag = '';
-      n = n ? n[0].charAt(0) + n[1].charAt(0) : null;
+    let n = fullname ? fullname.split(" ") : " ";
+    let tag = '';
+    if (n.length >= 3) {
+        n = n[0].charAt(0) + n[1].charAt(0) + n[2].charAt(0);
+    } else if(n.length >= 2) {
+      n = n[0].charAt(0) + n[1].charAt(0) ;
+    } else {
+      n = n[0].charAt(0);
+    }
       tag = <>
               <span class="mt-1 mr-2 sc-caSCKo fXbvQO styles__Company-sc-103gogw-0 jdbeFR">{n}</span>
               <span>{fullname} </span>

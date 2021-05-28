@@ -47,7 +47,6 @@ export default function TableFilesContact(props) {
                 "Accept": "application/json"
             }
         }).then(function (response) {
-            console.log('Response',response);
             setRowData(response.data.files);
         });
     }

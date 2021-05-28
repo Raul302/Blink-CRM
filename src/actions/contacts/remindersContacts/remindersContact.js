@@ -1,6 +1,6 @@
 import { types } from "../../../types/types";
 import axios from 'axios';
-import { setError,removeError, startLoading, finishLoading } from "../../uiNotificactions/ui";
+import { setError,removeError,setMessage, startLoading, finishLoading } from "../../uiNotificactions/ui";
 import { constaApi } from "../../../constants/constants";
 import { loadReminders } from "helpers/contactsHelpers/loadReminders";
 import { loadAllRemindersColleges } from "helpers/collegesHelpers/reminderHelper/loadRemindersColleges";
@@ -45,7 +45,11 @@ export const deleteReminderC = (id,idContact = null) =>{
         dispatch( startLoading() );
     await axios.post(constaApi+'reminders/delete',obj)
         .then(function (response) {
-            dispatch( removeError());
+            if(response.data.message){
+                dispatch( setMessage(response.data.message));
+            } else {
+                dispatch( removeError());
+            }
             if(idContact){
                 dispatch( starLoadingRemindersC(idContact) );
             } else {
@@ -60,7 +64,6 @@ export const deleteReminderC = (id,idContact = null) =>{
 }
 export const starLoadingRemindersC = (id) => {
     return async (dispatch) => {
-        console.log('EJECUTO BY');
         dispatch( startLoading() );
         const reminders = await loadReminders(id);
         await dispatch( setRemindersC(reminders) );
@@ -70,7 +73,6 @@ export const starLoadingRemindersC = (id) => {
 
 export const starLoadingAllRemindersC = (id=null) => {
     return async (dispatch) => {
-        console.log('EJECUTO EL ALL');
         dispatch( startLoading() );
         const reminders = await loadAllReminders(id);
         await dispatch( setRemindersC(reminders) );

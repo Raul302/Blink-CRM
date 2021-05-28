@@ -21,6 +21,7 @@ import * as Imicons from "react-icons/im";
 import * as AIcons from "react-icons/ai";
 import { constaApi } from '../../../constants/constants';
 import moment from 'moment';
+import {removeMessage} from 'actions/uiNotificactions/ui';
 import { activeReminderC, deleteReminderC, updatedReminderC } from 'actions/contacts/remindersContacts/remindersContact';
 import swal from 'sweetalert';
 import AddEditBio from 'components/bioComponents/AddEditBio';
@@ -69,11 +70,15 @@ export const SlotActions = function (props) {
 }
 export const SlotUsers = function (props) {
     function showEmailsTO(obj) {
-        let n = obj.name_user ? obj.name_user : " ";
-        let tag = "";
-        if (n) {
-          n = n.charAt(0) + n.charAt(1);
-        }
+      let n = obj.name_user ? obj.name_user.split(" ") : " ";
+      let tag = '';
+      if (n.length >= 3) {
+          n = n[0].charAt(0) + n[1].charAt(0) + n[2].charAt(0);
+      } else if(n.length >= 2) {
+        n = n[0].charAt(0) + n[1].charAt(0) ;
+      } else {
+        n = n[0].charAt(0);
+      }
         switch (obj.type_user) {
           case "user":
             tag = (
@@ -142,7 +147,7 @@ export const SlotDate = function (props) {
   function showDate(dateBD, time) {
     let datef = moment(dateBD).locale("es-mx").format("ddd D MMMM, YYYY ");
     let timef = moment(dateBD).locale("es-mx").format("h:mm A");
-    datef = datef[0].toUpperCase() + datef.slice(1);
+    datef = datef[0] + datef.slice(1);
     datef = datef.replace(".", "");
     let tag = (
       <p class="Inter">
@@ -159,7 +164,7 @@ export const SlotDateCreated = function (props) {
   function showDate(dateBD, time) {
     let datef = moment(dateBD).locale("es-mx").format("ddd D MMMM, YYYY ");
     let timef = moment(dateBD).locale("es-mx").format("h:mm A");
-    datef = datef[0].toUpperCase() + datef.slice(1);
+    datef = datef[0] + datef.slice(1);
     datef = datef.replace(".", "");
     let tag = (
       <p class="Inter">
@@ -222,7 +227,7 @@ export default function TableReminders(props) {
     const dispatch = useDispatch();
     const notificationAlert = useRef();
     const { remindersC: reminders } = useSelector(state => state.remindersC);
-    const { loading } = useSelector(state => state.ui);
+    const { loading,msgError } = useSelector(state => state.ui);
     const { contact } = props;
     const { activeProspect:activeP} = props;
     const [objAux,setAux] = useState(null);
@@ -237,9 +242,30 @@ export default function TableReminders(props) {
       const [gridApi, setGridApi] = useState();
       const [columnApi, setColumnApi] = useState();
     useEffect(() => {
+      // console.log('msgError',msgError);
+      // notification('success',msgError);
 
-    }, []);
+    }, [msgError]);
     // methods
+    const notification =  (type,message) => {
+      let place = "tc";
+      var options = {};
+      options = {
+        place: place,
+        message: (
+          <div>
+            <div>
+              {message}
+            </div>
+          </div>
+        ),
+        type: type,
+        icon: "nc-icon nc-bell-55",
+        autoDismiss: 7,
+        }
+      notificationAlert.current.notificationAlert(options);
+   }
+
     const completeReminder = (obj) => {
         swal({
             title: "¿Desea marcar como completado este recordatorio?",
@@ -291,11 +317,15 @@ export default function TableReminders(props) {
         </Popover>)
     }
     function showEmailsTO(obj) {
-        let n = obj.name_user ? obj.name_user : " ";
-        let tag = '';
-        if (n) {
-            n = n.charAt(0) + n.charAt(1);
-        }
+      let n = obj.name_user ? obj.name_user.split(" ") : " ";
+      let tag = '';
+      if (n.length >= 3) {
+          n = n[0].charAt(0) + n[1].charAt(0) + n[2].charAt(0);
+      } else if(n.length >= 2) {
+        n = n[0].charAt(0) + n[1].charAt(0) ;
+      } else {
+        n = n[0].charAt(0);
+      }
         switch (obj.type_user) {
             case 'user':
                 tag = <span key={obj.id} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{n}</span>;
@@ -339,7 +369,7 @@ export default function TableReminders(props) {
     function showDate(dateBD, time) {
         let datef = moment(dateBD).locale('es-mx').format("ddd D MMMM, YYYY ");
         let timef = moment(dateBD).locale('es-mx').format("h:mm A");
-        datef = datef[0].toUpperCase() + datef.slice(1);
+        datef = datef[0] + datef.slice(1);
         datef = datef.replace(".", "");
         let tag = <span class="Inter">{datef}{timef}</span>
         return dateBD ? tag : '';

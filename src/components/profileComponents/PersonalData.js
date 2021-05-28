@@ -22,7 +22,6 @@ function PersonalData(props) {
         .then(function (result){
             if(result){
                 setLocalColleges(result[0]);
-                console.log('result',result[0]);
             }
         })
     }, [props]);
@@ -61,7 +60,6 @@ function PersonalData(props) {
     const [countries, setCountries] = useState([]);
     const [country, setCountry] = useState();
     const [localColleges, setLocalColleges] = useState([]);
-    console.log('local',localColleges)
     // Methods
     const tagMun = (mun) => {
         let tag = '';

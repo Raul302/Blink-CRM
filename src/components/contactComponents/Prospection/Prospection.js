@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState,useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { constaApi } from "constants/constants";
@@ -23,6 +23,7 @@ import { starLoadingProspectRemindersC } from "actions/contacts/remindersContact
 import { setRemindersC } from "actions/contacts/remindersContacts/remindersContact";
 import Bio from "components/bioComponents/Bio";
 import { starLoadingProspect } from "actions/contacts/bioContact/bioContact";
+import { activeContact } from "actions/contacts/contacts/contacts";
 import Proposals from "components/proposals/Proposals";
 import moment from 'moment';
 import { starLoadingCollegesByProspeccion } from "actions/colleges/colleges";
@@ -40,6 +41,8 @@ import {
   TableSelection,
 } from '@devexpress/dx-react-grid-bootstrap4';
 import { select } from "d3-selection";
+import NotificationAlert from "react-notification-alert";
+
 var _ = require('lodash');
 
 export  function CustomComponent(props){
@@ -72,7 +75,9 @@ export  function CustomComponent(props){
   );
 }
 
-export default function Prospection() {
+export default function Prospection(props) {
+  const notificationAlert = useRef();
+  const [modalAdvisor,setModalAdvisor] = useState(false);
   const dispatch = useDispatch();
   const [aux, setAux] = useState({ id: "", story: "", status: "Evaluacion", name_prospection: "", last_modification: "" });
   const [activeProspect, setActiveProspect] = useState({ id: "", story: "", status: "Evaluacion", name_prospection: "", last_modification: "" });
@@ -80,7 +85,6 @@ export default function Prospection() {
   const [prospections, SetProspections] = useState(null);
   const [selection, SetSelection] = useState(0);
   let { active } = useSelector((state) => state.contacts);
-  console.log('Active',active);
   const [modalProspection, setModalProspection] = useState(false);
   const [modalStatus, setModalStatus] = useState(false);
   const [modalStory, setModalStory] = useState(false);
@@ -90,6 +94,8 @@ export default function Prospection() {
   const {colleges} = useSelector( state => state.colleges);
   const [filterColleges,setFilterColleges] = useState();
   const [auxobj,setAuxObj] = useState();
+  const [users,setUsers] = useState([]);
+  const [theUser,setTheUser] = useState();
   const programs = [
     "Boarding School",
     "School District",
@@ -222,12 +228,43 @@ export default function Prospection() {
     setModalStory(false);
     setModalStatus(false);
     setModalGrouped(false);
+    setModalAdvisor(false);
   };
   const changeStatus = (e) => {
     setActiveProspect({ ...activeProspect, status: e.target.value });
     if (e.target.value == 'Aplicar') {
       setModalGrouped(true);
     }
+  }
+  const changeModalAdvisor = () => {
+    axios.post(constaApi + "allUsers")
+    .then(function (response) {
+      setUsers(response.data);
+      setModalAdvisor(!modalAdvisor);
+    });
+    setTheUser(active.id_advisor);
+  }
+  const changeAdvisor = (e) => {
+    setTheUser(e.target.value);
+  }
+  const updatedContact = () => {
+    let obj = users.filter(us => us.id == theUser);
+    obj = {
+      name_advisor: obj[0].name + " " + obj[0].father_lastname + " " + obj[0].mother_lastname,
+      id_advisor : obj[0].id,
+      id: active.id
+    };
+     axios.post(constaApi + 'contact/update', obj)
+    .then(function (response) {
+        if (response.status === 200) {
+          dispatch(activeContact(response.data));
+          setTheUser(null);
+          closeModal();
+            // notification('info', 'Datos actualizados correctamente');
+        } else {
+            // notification('danger', 'Ocurrio un error,por favor contacta a soporte');
+        }
+    });
   }
   const changeStory = (e) => {
     setActiveProspect({ ...activeProspect, story: e.target.value });
@@ -286,14 +323,44 @@ export default function Prospection() {
       id_last_contact: active.id,
       last_contact: active.name,
     };
-    axios.post(constaApi + "saveProspection", newObj)
-      .then(function (response) {
-        changeButton(response.data.id);
-        consultAllProspections(active.id);
-        closeModal();
-
-      });
+    let flag = false;
+    prospections.map(pro =>{
+      if(pro.name_prospection == (objAux.program + " " + objAux.year)){
+        flag = true;
+      } else {
+        console.log('No repetida');
+      }
+    })
+    if(!flag){
+      axios.post(constaApi + "saveProspection", newObj)
+        .then(function (response) {
+          changeButton(response.data.id);
+          consultAllProspections(active.id);
+          closeModal();
+        });
+    } else {
+      notification('warning', 'Prospeccion Repetida');
+      flag = false;
+    }
   };
+  const notification =  (type,message) => {
+    let place = "tc";
+    var options = {};
+    options = {
+      place: place,
+      message: (
+        <div>
+          <div>
+            {message}
+          </div>
+        </div>
+      ),
+      type: type,
+      icon: "nc-icon nc-bell-55",
+      autoDismiss: 7,
+      }
+    notificationAlert.current.notificationAlert(options);
+ }
   const checkButton = (obj) => {
     let params = "";
     if(obj.id == selection && obj.status != "Aplicar" && obj.status != 'Cancelar'){
@@ -395,7 +462,7 @@ export default function Prospection() {
               />
               <button
                 class=" mt-1 float-right Inter btn-info  btn-sm"
-                onClick={(e) => changeModalStatus()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
+                onClick={(e) => changeModalAdvisor()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
             </div>
           </div>
           <div class="mt-n5 row">
@@ -461,6 +528,7 @@ export default function Prospection() {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="container-fluid">
               <Row>
+              <NotificationAlert ref={notificationAlert} />
                 <Col className="col-4">
                   <Form.Label className="formGray">Programa</Form.Label>
                   <Form.Control
@@ -731,8 +799,77 @@ export default function Prospection() {
           </form>
         </Modal.Body>
       </Modal>
-
       {/* End modal Story */}
+
+
+      {/* Modal Advisor */}
+      <Modal
+        show={modalAdvisor}
+        dialogClassName="modalMax"
+        onHide={closeModal}
+        dialogClassName="modal-90w"
+      >
+        <Modal.Header style={{ height: "60px" }} closeButton>
+          <Modal.Title
+            style={{
+              fontFamily: "Inter",
+              marginTop: "5px",
+              fontWeight: "600",
+              fontSize: "18px",
+            }}
+          >
+            Cambiar Advisor
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ background: "#F4F5F6", border: "0px" }}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="container-fluid">
+              <Row>
+                <Col className="col-6">
+              <Form.Label className="formGray">Usuario</Form.Label>
+                  <Form.Control
+                    onChange={(e) =>changeAdvisor(e)}
+                    autoComplete="off"
+                    name="advisor"
+                    value={theUser}
+                    as="select"
+                    size="sm"
+                    custom
+                  >
+                    <option disabled value="" selected></option>
+                    {users.map((pro) => (
+                      <option key={pro.id} value={pro.id}>
+                        {pro.name} {pro.father_lastname} {pro.mother_lastname}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Col>
+              </Row>
+            </div>
+            <Row>
+              <Col>
+                <Button
+                  className="float-right mb-3 mr-2"
+                  type="button"
+                  onClick={(e) => updatedContact()}
+                  variant="info"
+                >
+                  Guardar
+                </Button>
+                <Button
+                  onClick={closeModal}
+                  style={{ fontFamily: "Inter", fontWeight: "500" }}
+                  className="float-right mb-3 mr-2"
+                  variant="danger"
+                >
+                  Cancelar
+                </Button>
+              </Col>
+            </Row>
+          </form>
+        </Modal.Body>
+      </Modal>
+      {/* End modal Advisor */}
 
     </div>
   );

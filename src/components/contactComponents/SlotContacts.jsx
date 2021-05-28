@@ -79,6 +79,7 @@ export const SlotRating = function SlotRating(props) {
       starDimension={'20px'}
       starEmptyColor={'gray'}
       starRatedColor={'#ffd200'}
+      starHoverColor={'#ffd200'}
       changeRating={(e) => changeRating(e)}
      numberOfStars={5}
       name='rating'
@@ -123,7 +124,6 @@ export const SlotOrigin = function SlotOrigin(props) {
 
 export const SlotProgram = function SlotProgram(props) {
     const {value} = props;
-    console.log('props',value);
     const showModalS = (value) => {
         props.context.modalProspections(value);
     }

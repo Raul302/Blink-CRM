@@ -27,10 +27,15 @@ import NotificationAlert from "react-notification-alert";
           local:local
          }
         } = props;
-        let n = name ? name : " ";
-        let f = fname ? fname: " ";
+        let n = name ? name.split(" ") : " ";
         let tag = '';
-        n = n ? n.charAt(0) + f.charAt(0) : null;
+        if (n.length >= 3) {
+            n = n[0].charAt(0) + n[1].charAt(0) + n[2].charAt(0);
+        } else if(n.length >= 2) {
+          n = n[0].charAt(0) + n[1].charAt(0) ;
+        } else {
+          n = n[0].charAt(0);
+        }
         tag =  
         <>
         {local == 1 ?

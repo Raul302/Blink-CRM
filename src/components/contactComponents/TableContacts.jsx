@@ -249,16 +249,16 @@ function TableContacts(props) {
                         <AgGridColumn
                             cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
                             cellRenderer="slotName"
-                            headerName="Nombre" field="fullname" width="300" />
+                            headerName="Nombre" sortable={true} field="fullname" width="300" />
                              {/* Column Rating */}
                              <AgGridColumn
                            cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
                            cellRenderer="slotRating"
-                           headerName="Rating" field="rating" width="300" />
+                           headerName="Rating" sortable={true} field="rating" width="300" />
                              {/* Column City */}
                              <AgGridColumn
                             cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
-                            headerName="Ciudad" field="ciy" width="200" cellRenderer="slotOrigin" />
+                            headerName="Ciudad" sortable={true} field="ciy" width="200" cellRenderer="slotOrigin" />
 
                             {/* Column Program */}
                             <AgGridColumn 
@@ -270,7 +270,7 @@ function TableContacts(props) {
                              headerName="Referencia" cellRenderer="slotReferences" width="200" />
                               {/* Column Advisor */}
                               <AgGridColumn 
-                             headerName="Advisor" field="name_advisor" width="200" />
+                             headerName="Advisor" sortable={true} field="name_advisor" width="200" />
                              {/* Column Actions  */}
                              <AgGridColumn
                             headerName="Acciones"
@@ -281,15 +281,15 @@ function TableContacts(props) {
                              <AgGridColumn
                             cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
                             // cellRenderer="slotRef1"
-                            headerName="Referencia 1" field="ref1" width="300" />
+                            headerName="Referencia 1" sortable={true} field="ref1" width="300" />
                              <AgGridColumn
                             cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
                             // cellRenderer="slotRef2"
-                            headerName="Referencia 2" field="ref2" width="300" />
+                            headerName="Referencia 2" sortable={true} field="ref2" width="300" />
                              <AgGridColumn
                             cellStyle={{ fontFamily:'Montserrat,sans-serif',fontSize:'13px',fontWeight:'500', color:'#3B3B3B'}}
                             // cellRenderer="slotRef3"
-                            headerName="Referencia 3 " field="ref3" width="300" />
+                            headerName="Referencia 3 " sortable={true} field="ref3" width="300" />
                            
                         
                        

@@ -73,7 +73,6 @@ export default function TableApplication(props) {
         } 
       })
     //   --------------------
-    console.log('newObj',newObj);
     if(newObj){
       setRows(newObj);
     }
