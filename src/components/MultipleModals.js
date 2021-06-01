@@ -10,6 +10,7 @@ import moment from 'moment'
 import swal from 'sweetalert';
 import { states as jsonState } from 'MyJson\'s/statesJson';
 import { municipios } from 'MyJson\'s/municipiosJson';
+import { loadLocalColleges } from 'helpers/collegesHelpers/loadColleges';
 
 
 
@@ -18,6 +19,8 @@ function MultipleModals(props) {
     const notificationAlert = useRef();
     moment.locale("es-mx");
     // states
+    const [flagOther,setFlagOther] = useState(false);
+    const [localColleges, setLocalColleges] = useState([]);
     const [notificationReminder, setNotificationReminder] = useState();
     const [blocked,setBlocked] = useState(false);
     const [modal1, setModal1] = useState(false);
@@ -65,7 +68,14 @@ function MultipleModals(props) {
     ];
     const [country, setCountry] = useState();
     const [countries, setCountries] = useState([]);
-
+    useEffect(() =>{
+        Promise.all([loadLocalColleges()])
+        .then(function (result){
+            if(result){
+                setLocalColleges(result[0]);
+            }
+        })
+    },[props])
     useEffect(() => {
         thisDay();
         present();
@@ -73,6 +83,10 @@ function MultipleModals(props) {
         setExtra(false);
         consultCountries();
     }, []);
+
+    function changeFlag(e){
+        setFlagOther(e.target.value);
+    }
     function confirmClose(){
         swal({
             title: "¿Desea cancelar el registro?",
@@ -165,7 +179,6 @@ function MultipleModals(props) {
     }
     function changeCities(e) {
         let val = e.target.value;
-        console.log('e.t',e.target.value);
         let other  = municipios[0];
         let aux = [];
         Object.keys(other).map((name,i)=>{
@@ -200,7 +213,7 @@ function MultipleModals(props) {
         // });
     }
     // Register to save data
-    const { register: student, handleSubmit, errors, formState,reset: reset } = useForm({
+    const { register: student,getValues, handleSubmit, errors, formState,reset: reset } = useForm({
         // defaultValues:{
         //     email: 'example@email.com'
         // }, 
@@ -442,8 +455,24 @@ function MultipleModals(props) {
                                     </Form.Control>
                                     <p className='errores'>{errors.year && "Año requerido"}</p>
                                 </Col>
+                                <Col>
+                                <div class="card bg-light border-secondary ">
+                                <div class="card-header formGray">Recomendado por :</div>
+                                <div class="card-body text-secondary">
+                                <Form.Label className="formGray">Nombre</Form.Label>
+                               <Form.Control autoComplete="off" name="name_recom" ref={student}
+                                        className="formGray" type="text" placeholder="Ingrese el nombre del Rec." />
+                                <Form.Label className="formGray">Apellido P.</Form.Label>
+                               <Form.Control autoComplete="off" name="father_recom" ref={student}
+                                        className="formGray" type="text" placeholder="Ingrese su apellido p" />
+                                <Form.Label className="formGray">Apellido M.</Form.Label>
+                               <Form.Control autoComplete="off" name="mother_recom" ref={student}
+                                        className="formGray" type="text" placeholder="Ingrese su apellido m" />
+                                </div>
+                                </div>
+                                </Col>
                             </Row>
-                            <Row className="mt-1">
+                            <Row className="mt-n5">
                             <Col className="col-6">
                                     <Form.Label className="formGray">Nombre</Form.Label>
                                     <Form.Control onChange={e => handleValid(e)} name="name" ref={student({
@@ -484,7 +513,6 @@ function MultipleModals(props) {
                                         className="formGray" type="date" placeholder="Ingrese su Fecha" />
                                     <p className='errores'>{errors.date && "Fecha requerida"}</p>
                                 </Col>
-
                             </Row>
                             <Row className="mt-1">
                                 <Col className="col-3">
@@ -530,8 +558,30 @@ function MultipleModals(props) {
                                 <Col className="col-6">
                                     <Form.Label className="formGray">Colegio</Form.Label>
                                     <Form.Control autoComplete="off" name="schoool" ref={student}
-                                        className="formGray" type="text" placeholder="Ingrese su Colegio" />
+                                        onChange={(e) => changeFlag(e)}
+                                        className="formGray" type="text" placeholder="Ingrese su Colegio"  as="select" size="sm" custom>
+                                        {localColleges &&
+                                            [localColleges.map(colL => {
+                                                return(
+                                                    <option key={colL.id} value={colL.name}>
+                                                    {colL.name}
+                                                      </option>
+                                                 )
+                                                })]  
+                                            }
+                                            <option key="Otro" value="Otro">Otro</option>  
+                                        </Form.Control>
                                     <p className='errores'>{errors.school && "Colegio requerido"}</p>
+                                    <div class="mt-3 row">
+                                   {flagOther == 'Otro' &&
+                                  <div class="col">
+                                  <Form.Control autoComplete="off"
+                                      name="other_School"
+                                      ref={student}
+                                      className="formGray" type="text" placeholder="Ingrese el nombre de su colegio" />
+                                    </div>
+                                    }
+                                    </div>
                                 </Col>
                             </Row>
                             <Row className="mt-1">

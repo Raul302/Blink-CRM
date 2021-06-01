@@ -7,6 +7,7 @@ import { loadAllRemindersColleges } from "helpers/collegesHelpers/reminderHelper
 import { loadAllReminders } from "helpers/contactsHelpers/loadReminders";
 import { loadProspectReminders } from "helpers/contactsHelpers/loadReminders";
 import { loadApplicationReminders } from "helpers/contactsHelpers/loadReminders";
+import { loadAllRemindersContact } from "helpers/contactsHelpers/loadReminders";
 
 export const newReminderC = (data) =>{
     return async (dispatch) => {
@@ -75,6 +76,15 @@ export const starLoadingAllRemindersC = (id=null) => {
     return async (dispatch) => {
         dispatch( startLoading() );
         const reminders = await loadAllReminders(id);
+        await dispatch( setRemindersC(reminders) );
+        dispatch( finishLoading() );
+    }
+}
+
+export const starLoadingAllReminders = () => {
+    return async (dispatch) => {
+        dispatch( startLoading() );
+        const reminders = await loadAllRemindersContact();
         await dispatch( setRemindersC(reminders) );
         dispatch( finishLoading() );
     }

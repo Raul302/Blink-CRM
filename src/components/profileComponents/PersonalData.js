@@ -10,6 +10,8 @@ import { constaApi, constzipCodeApi } from '../../constants/constants';
 import *  as FAIcons from "react-icons/fa";
 import { loadColleges } from 'helpers/collegesHelpers/loadColleges';
 import { loadLocalColleges } from 'helpers/collegesHelpers/loadColleges';
+import { states as jsonState } from 'MyJson\'s/statesJson';
+import { municipios } from 'MyJson\'s/municipiosJson';
 
 
 
@@ -60,6 +62,9 @@ function PersonalData(props) {
     const [countries, setCountries] = useState([]);
     const [country, setCountry] = useState();
     const [localColleges, setLocalColleges] = useState([]);
+    const [nameRecom,setnameRecom] = useState();
+    const [fatherRecom,setFatherRecom] = useState();
+    const [motherRecom,setMotherRecom] = useState();
     // Methods
     const tagMun = (mun) => {
         let tag = '';
@@ -198,7 +203,15 @@ function PersonalData(props) {
             val = e.target.value;
         }
         if (e.target) {
-            setState(e.target.value);
+            let val = e.target.value;
+            let other  = municipios[0];
+            let aux = [];
+            Object.keys(other).map((name,i)=>{
+                if(name === e.target.value){
+                    aux = other[name];
+                }
+            })
+            setCities(aux);
             if (e.target.name) {
                 handleInputChange(e, i);
             }
@@ -215,6 +228,7 @@ function PersonalData(props) {
     }
     // Api to states
     async function consultStates() {
+        setStates(jsonState);
         // await axios.get('https://www.universal-tutorial.com/api/states/Mexico', {
         //     headers: {
         //         Authorization: 'Bearer ' + props.token,
@@ -231,14 +245,14 @@ function PersonalData(props) {
         // });
     }
     async function consultCountries() {
-        // await axios.get('https://www.universal-tutorial.com/api/countries/', {
-        //     headers: {
-        //         Authorization: 'Bearer ' + props.token,
-        //         Accept: "application/json"
-        //     }
-        // }).then(function (response) {
-        //     setCountries(response.data);
-        // });
+        await axios.get('https://restcountries.eu/rest/v2/all', {
+            // headers: {
+            //     Authorization: 'Bearer ' + auth,
+            //     Accept: "application/json"
+            // }
+        }).then(function (response) {
+            setCountries(response.data);
+        });
     }
     function setFilterValues(props) {
         setBirthday(props.birthday);
@@ -254,6 +268,9 @@ function PersonalData(props) {
         setCicly(props.cicly);
         setCountry(props.country);
         setotherScho(props.other_School);
+        setnameRecom(props.name_recom);
+        setFatherRecom(props.father_recom);
+        setMotherRecom(props.mother_recom);
         if (directions.length > 0) {
             setInputList(directions);
         }
@@ -314,7 +331,10 @@ function PersonalData(props) {
             city: city,
             country: country,
             direction: inputList,
-            other_School : schoool != 'Otro' ? null : other_School
+            other_School : schoool != 'Otro' ? null : other_School,
+            name_recom : nameRecom,
+            father_recom : fatherRecom,
+            mother_recom : motherRecom
         };
         await axios.post(constaApi + 'contact/update', datax)
             .then(function (response) {
@@ -345,6 +365,15 @@ function PersonalData(props) {
             callCP(0, inputList[0].cp)
         }
         setEditDirection(!editDirection);
+    }
+    function changeNameRecom(e){
+        setnameRecom(e.target.value);
+    }
+    function changeFatherRecom(e){
+        setFatherRecom(e.target.value);
+    }
+    function changeMotherRecom(e){
+        setMotherRecom(e.target.value);
     }
     function editAcademicP() {
         setAcademicProfile(!editAcademicProfile);
@@ -441,6 +470,17 @@ function PersonalData(props) {
                                 </h6>
                             </div>
                         </div>
+                        <div class="row mt-3 ">
+                            <div class="col-3">
+                                <h6 class="montse card-subtitle mb-2 formGrayTwo">Recomendado por :</h6>
+                            </div>
+                            <div class="col">
+                                <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                    class="montse card-subtitle mb-2 ">
+                                    {props.contact.name_recom ?? ""} {props.contact.father_recom ?? ""} {props.contact.mother_recom ?? ""}
+                                </h6>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 :
@@ -513,10 +553,10 @@ function PersonalData(props) {
                                         value={country} as="select" size="sm" custom>
                                         <option disabled value="" selected></option>
                                         {countries.map(countri => (
-                                            <option key={countri.country_name} value={countri.country_name}>
-                                                {countri.country_name}
-                                            </option>
-                                        ))}
+                                                        <option key={countri.name} value={countri.name}>
+                                                            {countri.name}
+                                                        </option>
+                                                    ))}
                                     </Form.Control>
                                 </div>
                             </div>
@@ -531,8 +571,8 @@ function PersonalData(props) {
                                         value={state} as="select" size="sm" custom>
                                         <option disabled value="" selected></option>
                                         {states.map(state => (
-                                            <option key={state.state_name} value={state.state_name}>
-                                                {state.state_name}
+                                            <option key={state.clave} value={state.nombre}>
+                                                {state.nombre}
                                             </option>
                                         ))}
                                     </Form.Control>
@@ -549,11 +589,44 @@ function PersonalData(props) {
                                         value={city} as="select" size="sm" custom>
                                         <option disabled value="" selected></option>
                                         {cities.map(city => (
-                                            <option key={city.city_name} value={city.city_name}>
-                                                {city.city_name}
+                                            <option key={city} value={city}>
+                                                {city}
                                             </option>
                                         ))}
                                     </Form.Control>
+                                </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                <div class="col-3">
+                                    <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Nombre de el Recomendado</Form.Label>
+                                </div>
+                                <div class="col">
+                                    <Form.Control autoComplete="off"
+                                        onChange={(e) => changeNameRecom(e)} value={nameRecom}
+                                        name="name"
+                                        className="formGray" type="text" placeholder="Ingrese su nombre" />
+                                </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                <div class="col-3">
+                                    <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Apellido P. de el Recomendado</Form.Label>
+                                </div>
+                                <div class="col">
+                                    <Form.Control autoComplete="off"
+                                        onChange={(e) => changeFatherRecom(e)} value={fatherRecom}
+                                        name="name"
+                                        className="formGray" type="text" placeholder="Ingrese su nombre" />
+                                </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                <div class="col-3">
+                                    <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Apellido M de el Recomendado</Form.Label>
+                                </div>
+                                <div class="col">
+                                    <Form.Control autoComplete="off"
+                                        onChange={(e) => changeMotherRecom(e)} value={motherRecom}
+                                        name="name"
+                                        className="formGray" type="text" placeholder="Ingrese su nombre" />
                                 </div>
                             </div>
                         </form>

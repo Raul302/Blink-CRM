@@ -242,11 +242,16 @@ export default function TableReminders(props) {
       const [gridApi, setGridApi] = useState();
       const [columnApi, setColumnApi] = useState();
     useEffect(() => {
-      // console.log('msgError',msgError);
-      // notification('success',msgError);
-
-    }, [msgError]);
+      if(props.param){
+        quickSearch(props.param);
+    }
+    }, [props]);
     // methods
+    const quickSearch = (value) =>{
+      let objx = gridApi;
+        value === 'keyWordSeccret302' ? objx.api.setQuickFilter("") : objx.api.setQuickFilter(value);
+        setGridApi(objx);
+    }
     const notification =  (type,message) => {
       let place = "tc";
       var options = {};

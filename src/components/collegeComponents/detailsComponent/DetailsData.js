@@ -5,15 +5,18 @@ import { Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { useAlert } from 'react-alert'
-import { useDispatch, useSelector } from 'react-redux';   
 import { setColleges } from 'actions/colleges/colleges';
-import {apiCountries} from '../../../constants/constants';
+import {apiCountries,constaApi} from '../../../constants/constants';
+import { activeCollege } from 'actions/colleges/colleges';
+import { useDispatch, useSelector } from 'react-redux';
+
 function DetailsData(props) {
     // vars
     let {active} = useSelector( state => state.colleges);
     if(!active){
         active =  JSON.parse(localStorage.getItem('collegeActive'));
     }
+    const dispatch = useDispatch();
     const [editInfo,setEditInfo] = useState(false);
     const [editFacts,setEditFacts] = useState(false);
     const [editAddress,setEditAddress] = useState(false);
@@ -38,7 +41,7 @@ function DetailsData(props) {
     function editFact(){
         setEditFacts(!editFacts);
     }
-    function editAdd(){
+    function editAddr(){
         setEditAddress(!editAddress);
     }
     function changeName(e){
@@ -89,6 +92,9 @@ function DetailsData(props) {
     }
     function changeCity(e){
         setCollege({...college,city:e.target.value});
+    }
+    function changeState(e){
+        setCollege({...college,state:e.target.value});
 
     }
     function changeStreet(e){
@@ -101,6 +107,16 @@ function DetailsData(props) {
     }
     function changeNumber(e){
         setCollege({...college,number:e.target.value});
+    }
+    async function onSubmit() {
+         axios.post(constaApi + 'colleges/update', college)
+        .then(function (response) {
+            const {data} = response;
+            dispatch( activeCollege( data.id,data) );
+            setEditInfo(false);
+            setEditFacts(false);
+            setEditAddress(false);
+        });
 
     }
     return (
@@ -183,9 +199,9 @@ function DetailsData(props) {
                                 <h5 style={{ fontWeight: '600' }} class="Inter card-title">Editar Informacion</h5>
                             </div>
                             <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
-                            <a>
-                            <FIIcons.FiEdit onClick={(e) => edit()} size={18} style={{ color: '#386CEF' }} />
-                            </a>
+                            <button onClick={(e) => edit()} type="button" class="montse btn btn-danger">Cancelar</button>
+                            <button onClick={onSubmit}
+                            type="submit" class="montse ml-1 btn btn-info">Guardar</button>
                             </div>
                         </div>
                         <div class="row mt-3 ">
@@ -196,7 +212,7 @@ function DetailsData(props) {
                                     <Form.Control autoComplete="off"
                                         onChange={(e) => changeName(e)} value={college.name}
                                         name="name"
-                                        className="formGray" type="text" placeholder="Ingrese su nombre" />
+                                        className="formGray" type="text" placeholder="Ingrese el nombre de el colegio" />
                                 </div>
                             </div>
                         <div class="row mt-2 ">
@@ -257,7 +273,7 @@ function DetailsData(props) {
                     </div>
                 </div>    
             }
-                {!editFacts ?
+                {editFacts ?
                 // {/* FACTS & FIGURES */}
                 <div class="mt-3 card">
                     <div class="card-body">
@@ -266,9 +282,9 @@ function DetailsData(props) {
                                 <h5 style={{ fontWeight: '600' }} class="Inter card-title">Facts & Figures</h5>
                             </div>
                             <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
-                            <a>
-                            <FIIcons.FiEdit onClick={(e) => editFact()} size={18} style={{ color: '#386CEF' }} />
-                            </a>
+                            <button onClick={(e) => editFact()} type="button" class="montse btn btn-danger">Cancelar</button>
+                            <button onClick={onSubmit}
+                            type="submit" class="montse ml-1 btn btn-info">Guardar</button>
                             </div>
                         </div>
                         <div class="row mt-2 ">
@@ -324,7 +340,19 @@ function DetailsData(props) {
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
                                     class="Inter card-subtitle mb-2 ">
-                                    {active.total_day_students}
+                                          <Form.Control
+                                        name="start_boarding_grade"
+                                        autoComplete="off" className="formGray" type="text" placeholder="Seleccione el grado"
+                                        onChange={(e) => changeDayStudents(e)}
+                                        value={college.total_day_students}
+                                        as="select" size="sm" custom>
+                                        <option disabled value="" selected></option>
+                                        {numbers.map(numb => (
+                                            <option key={numb} value={numb}>
+                                                {numb}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
                                 </h6>
                             </div>
                         </div>
@@ -335,7 +363,19 @@ function DetailsData(props) {
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
                                     class="Inter card-subtitle mb-2 ">
-                                    {active.total_international_grade}
+                                           <Form.Control
+                                        name="start_boarding_grade"
+                                        autoComplete="off" className="formGray" type="text" placeholder="Seleccione el grado"
+                                        onChange={(e) => changeInternationalGrade(e)}
+                                        value={college.total_international_grade}
+                                        as="select" size="sm" custom>
+                                        <option disabled value="" selected></option>
+                                        {numbers.map(numb => (
+                                            <option key={numb} value={numb}>
+                                                {numb}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
                                 </h6>
                             </div>
                         </div>
@@ -346,7 +386,19 @@ function DetailsData(props) {
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
                                     class="Inter card-subtitle mb-2 ">
-                                    {active.total_students_in_school}
+                                          <Form.Control
+                                        name="start_boarding_grade"
+                                        autoComplete="off" className="formGray" type="text" placeholder="Seleccione el grado"
+                                        onChange={(e) => changeStudentsInSchool(e)}
+                                        value={college.total_students_in_school}
+                                        as="select" size="sm" custom>
+                                        <option disabled value="" selected></option>
+                                        {numbers.map(numb => (
+                                            <option key={numb} value={numb}>
+                                                {numb}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
                                 </h6>
                             </div>
                         </div>
@@ -424,20 +476,21 @@ function DetailsData(props) {
                      </div>
                  </div>
              </div>
-             
-                }
+             }
 
-
-                <div class="mt-3 card">
+             {!editAddress
+             ?
+            //  {/* Addres */}
+             <div class="mt-3 card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-11">
                                 <h5 style={{ fontWeight: '600' }} class="Inter card-title">Direccion</h5>
                             </div>
                             <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
-                                {/* <a>
-                                    <FIIcons.FiEdit  size={18} style={{ color: '#386CEF' }} />
-                                </a> */}
+                                <a>
+                            <FIIcons.FiEdit onClick={(e) => editAddr()} size={18} style={{ color: '#386CEF' }} />
+                                </a>
                             </div>
                         </div>
                         <div class="row mt-2 ">
@@ -497,8 +550,95 @@ function DetailsData(props) {
                         </div>
                     </div>
                 </div>
+            :
+            <div class="mt-3 card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-11">
+                        <h5 style={{ fontWeight: '600' }} class="Inter card-title">Editar Dirección</h5>
+                    </div>
+                    <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
+                            <button onClick={(e) => editAddr()} type="button" class="montse btn btn-danger">Cancelar</button>
+                            <button onClick={onSubmit}
+                            type="submit" class="montse ml-1 btn btn-info">Guardar</button>
+                            </div>
+                </div>
+                <div class="row mt-2 ">
+                    <div class="col-3">
+                        <h6 class="Inter card-subtitle mb-2 text-muted">Ciudad</h6>
+                    </div>
+                    <div class="col">
+                        <h6 style={{ color: '#243243', fontWeight: '600' }}
+                            class="Inter card-subtitle mb-2 ">
+                            <Form.Control autoComplete="off"
+                                        onChange={(e) => changeCity(e)} value={college.city}
+                                        name="name"
+                                        className="formGray" type="text" placeholder="Ingrese su ciudad" />
+                        </h6>
+                    </div>
+                </div>
+                <div class="row mt-2 ">
+                    <div class="col-3">
+                        <h6 class="Inter card-subtitle mb-2 text-muted">Estado</h6>
+                    </div>
+                    <div class="col">
+                        <h6 style={{ color: '#243243', fontWeight: '600' }}
+                            class="Inter card-subtitle mb-2 ">
+                            <Form.Control autoComplete="off"
+                                        onChange={(e) => changeState(e)} value={college.state}
+                                        name="name"
+                                        className="formGray" type="text" placeholder="Ingrese su Estado" />
+                        </h6>
+                    </div>
+                </div>
+                <div class="row mt-2 ">
+                    <div class="col-3">
+                        <h6 class="Inter card-subtitle mb-2 text-muted">Calle</h6>
+                    </div>
+                    <div class="col">
+                        <h6 style={{ color: '#243243', fontWeight: '600' }}
+                            class="Inter card-subtitle mb-2 ">
+                            <Form.Control autoComplete="off"
+                                        onChange={(e) => changeStreet(e)} value={college.street}
+                                        name="name"
+                                        className="formGray" type="text" placeholder="Ingrese su Calle" />
+                        </h6>
+                    </div>
+                </div>
+                <div class="row mt-2 ">
+                    <div class="col-3">
+                        <h6 class="Inter card-subtitle mb-2 text-muted">Codigo postal</h6>
+                    </div>
+                    <div class="col">
+                        <h6 style={{ color: '#243243', fontWeight: '600' }}
+                            class="Inter card-subtitle mb-2 ">
+                             <Form.Control autoComplete="off"
+                                        onChange={(e) => changeCP(e)} value={college.cp}
+                                        name="name"
+                                        className="formGray" type="text" placeholder="Ingrese su Codigo Postal" />
+                        </h6>
+                    </div>
+                </div>
+                <div class="row mt-2 ">
+                    <div class="col-3">
+                        <h6 class="Inter card-subtitle mb-2 text-muted">Numero</h6>
+                    </div>
+                    <div class="col">
+                        <h6 style={{ color: '#243243', fontWeight: '600' }}
+                            class="Inter card-subtitle mb-2 ">
+                            <Form.Control autoComplete="off"
+                                        onChange={(e) => changeNumber(e)} value={college.number}
+                                        name="name"
+                                        className="formGray" type="text" placeholder="Ingrese su #" />
+                        </h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+            }
         </>
-    )
-}
-
-export default DetailsData
+        )
+    }
+    
+    export default DetailsData
+    
