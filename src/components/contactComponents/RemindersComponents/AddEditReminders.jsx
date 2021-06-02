@@ -16,6 +16,8 @@ import { starLoadingApplicationRemindersC } from 'actions/contacts/remindersCont
 import { BrowserRouter as Router, Switch, 
     Route, Link, useLocation  } from 'react-router-dom';
 import { useParams,} from "react-router";
+import { setRemindersC } from 'actions/contacts/remindersContacts/remindersContact';
+import { starLoadingTrackingsRemindersC } from 'actions/contacts/remindersContacts/remindersContact';
 
 
 export default function AddEditReminders(props) {
@@ -195,17 +197,20 @@ export default function AddEditReminders(props) {
             dateReminder: datex ?? null,
             timenotification: notificationReminder ?? null,
             notes: notes ?? null,
-            departament: props.prospection ? 'prospeccion' : props.applications ? 'aplicacion' : departament ?? null,
+            departament: props.prospection ? 'prospeccion' : props.applications ? 'aplicacion' : props.trackings ? 'seguimiento' : departament ?? null,
             urgent: flagImportant ? flagImportant.isChecked : null,
-            type: props.prospection ? 'Prospeccion' : props.activeApplication ? 'Aplicacion' : 'General',
-            id_type: props.activeProspect ? props.activeProspect.id : props.activeApplication ? props.activeApplication.id : 0
+            type: props.prospection ? 'Prospeccion' : props.activeApplication ? 'Aplicacion' : props.trackings ? 'Tracking': 'General',
+            id_type: props.activeProspect ? props.activeProspect.id : props.activeApplication ? props.activeApplication.id : props.activeTracking ? props.activeTracking.id : 0
         };
         await axios.post(constaApi + url, obj)
             .then(function (response) {
+                dispatch(setRemindersC([]));
                 if(props.prospection){
                     dispatch( starLoadingProspectRemindersC(contact.id,props.activeProspect.id,'Prospeccion'));
                 }else if(props.applications){
                     dispatch( starLoadingApplicationRemindersC(contact.id,props.activeApplication.id,'Aplicaciones'));
+                }else if(props.trackings){
+                    dispatch( starLoadingTrackingsRemindersC(contact.id,props.activeTracking.id,'Tracking'));
                 }else {
                     dispatch(starLoadingRemindersC(contact.id));
                 }
@@ -385,7 +390,7 @@ export default function AddEditReminders(props) {
                             <Row>
                             {!props.prospection
                             ?
-                            [!props.applications ?
+                            [(!props.applications & !props.trackings)?
                                 <Col className="col-6">
                                 <Form.Label className="formGray">Departamento</Form.Label>
                                 <Form.Control onChange={(e) => changeDepartament(e)}
@@ -395,6 +400,7 @@ export default function AddEditReminders(props) {
                                     <option value="prospeccion">Prospección</option>
                                     <option value="aplicacion">Aplicación</option>
                                     <option value="general">General</option>
+                                    <option value="seguimiento">Seguimiento</option>
                                 </Form.Control>
                             </Col>
                             :
@@ -418,7 +424,7 @@ export default function AddEditReminders(props) {
 
                             <Col>
                                 <Button
-                                    disabled={!subject ? true : !dateReminder ? true : !timeReminder ? true : !notificationReminder ? true : !departament ? true : false}
+                                    disabled={!subject ? true : !dateReminder ? true : !timeReminder ? true : !notificationReminder ? true : false}
                                     className="float-right mb-3 mr-2 montse" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="info">{flagEdit ? 'Actualizar' : 'Guardar'}</Button>

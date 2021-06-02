@@ -123,7 +123,7 @@ export default function Aplications() {
     "Admision",
     "Tramites",
     "Espera",
-    "Llegada",
+    "Activo",
     "Cancelado",
   ];
   const [results, setResults] = useState();
@@ -172,7 +172,7 @@ export default function Aplications() {
     let col = []
     if (selection) {
       col = selection.map(se => {
-        return colleges[se];
+        return collegesFiltering[se];
       })
     }
     SetAuxSelectionTwo(col);
@@ -306,6 +306,7 @@ export default function Aplications() {
 
   const saveChanges = () => {
     let resp = auxSelection.filter(aux => aux.id === selectionTwo);
+    console.log('activeApplication',activeApplication);
     changeLoad(true);
     moment.locale("es-mx");
     let newObj = {
@@ -316,6 +317,10 @@ export default function Aplications() {
       last_modification: moment().format("YYYY-MM-DD HH:mm"),
       id_last_contact: active.id,
       last_contact: active.name,
+      id_prospection: activeApplication ? activeApplication.id_prospection : 0,
+      name : activeApplication ? activeApplication.name : " ",
+      id_application : activeApplication ? activeApplication.id_application : 0,
+
     };
     axios.post(constaApi + "updateApplication", newObj)
       .then(function (response) {
@@ -535,11 +540,11 @@ export default function Aplications() {
   }
   const checkButton = (obj) => {
     let params = "";
-    if (obj.id == selectionTwo && obj.status != 'Cancelado' && obj.status != 'Llegada') {
+    if (obj.id == selectionTwo && obj.status != 'Cancelado' && obj.status != 'Activo') {
       params = "btn btn-sm btn-yellow"
     } else if (obj.status == "Cancelado") {
       params = "btn btn-sm btn-disabled"
-    } else if (obj.status == "Llegada") {
+    } else if (obj.status == "Activo") {
       params = "btn btn-sm btn-success"
     } else {
       params = "btn btn-sm btn-yellow"

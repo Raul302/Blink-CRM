@@ -8,6 +8,7 @@ import { loadAllReminders } from "helpers/contactsHelpers/loadReminders";
 import { loadProspectReminders } from "helpers/contactsHelpers/loadReminders";
 import { loadApplicationReminders } from "helpers/contactsHelpers/loadReminders";
 import { loadAllRemindersContact } from "helpers/contactsHelpers/loadReminders";
+import { loadTrackingReminders } from "helpers/contactsHelpers/loadReminders";
 
 export const newReminderC = (data) =>{
     return async (dispatch) => {
@@ -37,7 +38,7 @@ export const updatedReminderC = (data) =>{
             });
     }
 }
-export const deleteReminderC = (id,idContact = null) =>{
+export const deleteReminderC = (id,idContact = null,section = 'General') =>{
     return async (dispatch) => {
         let obj = {
             id:id,
@@ -103,6 +104,15 @@ export const starLoadingApplicationRemindersC = (idContact,id_type,type='Prospec
     return async (dispatch) => {
         dispatch( startLoading() );
         const reminders = await loadApplicationReminders(idContact,id_type,type);
+        await dispatch( setRemindersC(reminders) );
+        dispatch( finishLoading() );
+    }
+}
+
+export const starLoadingTrackingsRemindersC = (idContact,id_type,type='Tracking') => {
+    return async (dispatch) => {
+        dispatch( startLoading() );
+        const reminders = await loadTrackingReminders(idContact,id_type,type);
         await dispatch( setRemindersC(reminders) );
         dispatch( finishLoading() );
     }

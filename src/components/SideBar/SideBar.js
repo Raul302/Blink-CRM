@@ -69,7 +69,7 @@ class SideBar extends React.Component {
    }
     PopoverComponent = (text) => {
      return (
-     <Popover className="mt-n3 ml-2" id="popover-basic">
+     <Popover className="ml-2" id="popover-basic">
          <Popover.Content >
              <strong>{text}</strong>
          </Popover.Content>
@@ -88,7 +88,7 @@ class SideBar extends React.Component {
         return(
             <StyledSideBar>
               <Nav>
-                <img class="mb-5" style={{width:"40px",marginLeft:"10%", display:'flex',alignItems:'center',justifyContent:'center'}} src={logo} alt="Logo"></img>
+                <img class="mb-2" style={{width:"40px",marginLeft:"10%", display:'flex',alignItems:'center',justifyContent:'center'}} src={logo} alt="Logo"></img>
             {routes.map((prop,key) => {
               return(
                 <li
@@ -109,10 +109,9 @@ class SideBar extends React.Component {
               <OverlayTrigger  trigger={["hover", "hover"]} placement="right"
               overlay={this.PopoverComponent(prop.name)}>
               <a>
-              <i className='nc-icon'>
+              <i className='nc-icon mt-3'>
                       {prop.icon}
                       </i>
-                      <p>&nbsp;</p>
               </a>
           </OverlayTrigger>
                         

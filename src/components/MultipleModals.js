@@ -19,7 +19,7 @@ function MultipleModals(props) {
     const notificationAlert = useRef();
     moment.locale("es-mx");
     // states
-    const [flagOther,setFlagOther] = useState(false);
+    const [flagOther,setFlagOther] = useState("");
     const [localColleges, setLocalColleges] = useState([]);
     const [notificationReminder, setNotificationReminder] = useState();
     const [blocked,setBlocked] = useState(false);
@@ -314,6 +314,7 @@ function MultipleModals(props) {
         setModal4(false);
         setModal5(false);
         props.consult();
+        setFlagOther("");
 
     }
     const handleExtra = function ekis() {
@@ -456,23 +457,10 @@ function MultipleModals(props) {
                                     <p className='errores'>{errors.year && "Año requerido"}</p>
                                 </Col>
                                 <Col>
-                                <div class="card bg-light border-secondary ">
-                                <div class="card-header formGray">Recomendado por :</div>
-                                <div class="card-body text-secondary">
-                                <Form.Label className="formGray">Nombre</Form.Label>
-                               <Form.Control autoComplete="off" name="name_recom" ref={student}
-                                        className="formGray" type="text" placeholder="Ingrese el nombre del Rec." />
-                                <Form.Label className="formGray">Apellido P.</Form.Label>
-                               <Form.Control autoComplete="off" name="father_recom" ref={student}
-                                        className="formGray" type="text" placeholder="Ingrese su apellido p" />
-                                <Form.Label className="formGray">Apellido M.</Form.Label>
-                               <Form.Control autoComplete="off" name="mother_recom" ref={student}
-                                        className="formGray" type="text" placeholder="Ingrese su apellido m" />
-                                </div>
-                                </div>
+                               
                                 </Col>
                             </Row>
-                            <Row className="mt-n5">
+                            <Row className="mt-1">
                             <Col className="col-6">
                                     <Form.Label className="formGray">Nombre</Form.Label>
                                     <Form.Control onChange={e => handleValid(e)} name="name" ref={student({
@@ -610,7 +598,7 @@ function MultipleModals(props) {
                             <Col className="col-4">
                                     <Form.Label className="formGray">Pais</Form.Label>
                                     <Form.Control  autoComplete="off" name="country" ref={student} as="select" size="sm" custom>
-                                        <option disabled value="" selected></option>
+                                    <option value="Mexico">Mexico</option>
                                         {countries.map(countri => (
                                                         <option key={countri.name} value={countri.name}>
                                                             {countri.name}
@@ -643,7 +631,29 @@ function MultipleModals(props) {
                                     </Form.Control>
                                     <p className='errores'>{errors.state && "Estado requerido"}</p>
                                 </Col>
-
+                            </Row>
+                            <Row>
+                                <hr></hr>
+                            <Col className="col-12">
+                                    <Form.Label className="formGray">Recomendado por :</Form.Label>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                            <Form.Label className="formGray">Nombre</Form.Label>
+                               <Form.Control autoComplete="off" name="name_recom" ref={student}
+                                        className="formGray" type="text" placeholder="Ingrese el nombre del Rec." />
+                                </Col>
+                                <Col>
+                                <Form.Label className="formGray">Apellido P.</Form.Label>
+                               <Form.Control autoComplete="off" name="father_recom" ref={student}
+                                        className="formGray" type="text" placeholder="Ingrese su apellido p" />
+                                </Col>
+                                <Col>
+                                <Form.Label className="formGray">Apellido M.</Form.Label>
+                               <Form.Control autoComplete="off" name="mother_recom" ref={student}
+                                        className="formGray" type="text" placeholder="Ingrese su apellido m" />
+                                </Col>
                             </Row>
 
                         </div>

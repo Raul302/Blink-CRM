@@ -15,6 +15,7 @@ import RemindersSection from 'pages/RemindersSection';
 import ProspectionSection from 'pages/ProspectionSection';
 import ApplicationSection from 'pages/ApplicationSection';
 import CollegesLocales from 'pages/CollegesLocales';
+import TrackingSection from 'pages/Tracking/TrackingSection';
 // import LogoApplication from 'resources/images/application.png';
 // import LogoProspection from 'resources/images/prospection.png';
 var routes = [
@@ -95,12 +96,20 @@ c-28 53 -91 107 -142 122 -57 18 -1591 16 -1646 -2z"/>
     layout: "/admin",
   },
   {
+    path: "/Tracking",
+    name: "Seguimiento",
+    icon: <FAIcons.FaRegEye size={20} />,
+    component: TrackingSection,
+    layout: "/admin",
+  },
+  {
     path: "/SectionReminders",
     name: "Recordatorios",
     icon: <BIicons.BiTime size={20} />,
     component: RemindersSection,
     layout: "/admin",
   },
+
   {
     path: "/colleges",
     name: "Colegios",

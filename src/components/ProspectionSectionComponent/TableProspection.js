@@ -207,6 +207,10 @@ export default function TableProspection(props) {
           headerName="Status"
           filter="agTextColumnFilter"
           field="status" width={150} />
+           <AgGridColumn 
+          headerName="Advisor"
+          filter="agTextColumnFilter"
+          field="name_advisor" width={250} />
         </AgGridReact>
       </div>
     </div>

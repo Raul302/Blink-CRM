@@ -13,6 +13,8 @@ function Reminders(props) {
 
         }else if(props.applications){
 
+        } else if(props.activeTracking){
+            
         }
          else {
             dispatch(starLoadingRemindersC(id))

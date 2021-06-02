@@ -6,16 +6,10 @@ import axios from 'axios';
 import { constaApi } from '../../constants/constants';
 import swal from 'sweetalert';
 import StarRatings from '../../../node_modules/react-star-ratings';
-// import '../../resources/images/icons/favicon.ico';
-// import '../../resources/vendor/bootstrap/css/bootstrap.min.css';
-// import '../../resources/vendor/animate/animate.css';
-// import '../../resources/vendor/select2/select2.min.css';
-// import '../../resources/vendor/perfect-scrollbar/perfect-scrollbar.css';
-// import '../../resources/css/util.css';
 // import '../../resources/css/main.css';
 var _ = require('lodash');
 
-export default function TableApplication(props) {
+export default function TableTracking(props) {
   // Execute when the props change
   useEffect(() => {
     if (props.param) {
@@ -29,7 +23,7 @@ export default function TableApplication(props) {
   }, [])
 
   const loadApplications = () => {
-    axios.post(constaApi + 'applicationSection')
+    axios.post(constaApi + 'trackingSection')
     .then(function (response) {
       checkValues(response.data);
       const result = _.groupBy(response.data,"name")
@@ -125,7 +119,7 @@ export default function TableApplication(props) {
             cellRenderer="slotName"
             wrapText={true}
             filter="agTextColumnFilter"
-            width={200}
+            width={250}
           />
           <AgGridColumn
             field="rating"
@@ -152,7 +146,7 @@ export default function TableApplication(props) {
            <AgGridColumn 
           headerName="Status"
           filter="agTextColumnFilter"
-          field="status" width={250} />
+          field="APStatus" width={250} />
            <AgGridColumn 
           headerName="Advisor"
           filter="agTextColumnFilter"
@@ -198,11 +192,12 @@ export const SlotProspection = function SlotProspection(props) {
      const showName = (obj) => {
        let text = " ";
        const {data} = obj;
-       if(data.prospectionOrigin === true){
-        text = value;
-       } else {
-         text = " ";
-       }
+       text = value;
+      //  if(data.prospectionOrigin === true){
+      //   text = value;
+      //  } else {
+      //    text = " ";
+      //  }
        return text;
      }
      return (

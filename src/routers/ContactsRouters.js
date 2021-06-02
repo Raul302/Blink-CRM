@@ -21,6 +21,7 @@ import NotificationAlert from "react-notification-alert";
 import { starLoadingRemindersC } from 'actions/contacts/remindersContacts/remindersContact';
 import Prospection from 'components/contactComponents/Prospection/Prospection';
 import Aplications from 'components/contactComponents/Aplications/Aplications';
+import TrackingsContact from 'components/contactComponents/Trackings/TrackingsContact';
 
 
 function ContactsRouters(props) {
@@ -156,6 +157,15 @@ function ContactsRouters(props) {
                      <Route exact path="/contacts/:id/applications"
                         render={(props) => (
                                 <Aplications {...props}
+                                updateRoute={update}
+                                contact={contact}
+                                />
+                        )}
+                    />
+
+                    <Route exact path="/contacts/:id/trackings"
+                        render={(props) => (
+                                <TrackingsContact {...props}
                                 updateRoute={update}
                                 contact={contact}
                                 />

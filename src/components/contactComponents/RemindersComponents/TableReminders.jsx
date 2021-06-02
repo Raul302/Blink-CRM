@@ -25,6 +25,7 @@ import {removeMessage} from 'actions/uiNotificactions/ui';
 import { activeReminderC, deleteReminderC, updatedReminderC } from 'actions/contacts/remindersContacts/remindersContact';
 import swal from 'sweetalert';
 import AddEditBio from 'components/bioComponents/AddEditBio';
+import { useParams, } from "react-router";
 
 // Slots
 
@@ -94,7 +95,7 @@ export const SlotUsers = function (props) {
             tag = (
               <span
                 key={obj.id}
-                class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP"
+                class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV"
               >
                 {n}
               </span>
@@ -104,7 +105,7 @@ export const SlotUsers = function (props) {
             tag = (
               <span
                 key={obj.id}
-                class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP"
+                class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV"
               >
                 {n}
               </span>
@@ -114,7 +115,7 @@ export const SlotUsers = function (props) {
             tag = (
               <span
                 key={obj.id}
-                class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ"
+                class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV"
               >
                 {n}
               </span>
@@ -223,6 +224,7 @@ export const SlotDescription = function (props) {
 
 export default function TableReminders(props) {
     // vars
+    let { id:id_Contact } = useParams();
     const [show, setShow] = useState(false);
     const dispatch = useDispatch();
     const notificationAlert = useRef();
@@ -289,7 +291,7 @@ export default function TableReminders(props) {
                     })
                         .then(async (willDelete) => {
                             if (willDelete) {
-                                deleteReminder(obj.id);
+                                deleteReminder(obj.id,id_Contact);
                             } else {
                                 let obx = { ...obj, emailTo: obj.emails_to, status: 'completado' };
                                 setAux(obx);
@@ -336,14 +338,14 @@ export default function TableReminders(props) {
                 tag = <span key={obj.id} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{n}</span>;
                 break;
             case 'contactos':
-                tag = <span key={obj.id} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">{n}</span>;
-                break;
+              tag = <span key={obj.id} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{n}</span>;
+              break;
             case 'referencias':
-                tag = <span key={obj.id} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">{n}</span>;
-                break;
+              tag = <span key={obj.id} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{n}</span>;
+              break;
             default:
-                tag = <span key={obj.id} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ">{n}</span>;
-                break;
+              tag = <span key={obj.id} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{n}</span>;
+              break;
         }
 
         return tag;
@@ -361,8 +363,9 @@ export default function TableReminders(props) {
         })
             .then(async (willDelete) => {
                 if (willDelete) {
-                    contact ? 
-                    await dispatch(deleteReminderC(id, contact.id))
+                  console.log('HOLIS',contact);
+                    id_Contact ? 
+                    await dispatch(deleteReminderC(id,id_Contact))
                     :
                     await dispatch(deleteReminderC(id,null));
                     ;
