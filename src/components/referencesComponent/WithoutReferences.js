@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/GlobalStyles.css';
 import * as GrIcons from 'react-icons/gr';
-import { Row, Col, Button, Modal, Form, FormControl, FormLabel } from 'react-bootstrap';
+import * as FAIcons from 'react-icons/fa';
+import * as TIicons from "react-icons/ti";
+import { Row, Col, Button, Modal, Form, FormControl, FormLabel,InputGroup } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
 import axios from 'axios';
@@ -11,11 +13,14 @@ import { constaApi } from '../../constants/constants';
 function WithoutReferences(props) {
 
     useEffect(() => {
+        consultCountries();
     }, [props])
+    const [countries, setCountries] = useState([]);
     const [validFieldFour, setvalidFieldFour] = useState(true);
     const [extra, setExtra] = useState(false);
     const [modal3, setModal3] = useState(false);
     const [modal4, setModal4] = useState(false);
+    const [showAddress,setShowAddress] = useState(false);
     const [validFieldThree, setvalidFieldThree] = useState(true);
     const { register: reference, handleSubmit: handleSubmitReference, errors: errorsReference, formState: formStateReference, reset:resetReference
     } = useForm({ mode: 'onChange' });
@@ -33,6 +38,18 @@ function WithoutReferences(props) {
    )
    // function showReference (e){
    // }
+   async function consultCountries(auth) {
+    await axios.get('https://restcountries.eu/rest/v2/all', {
+        // headers: {
+        //     Authorization: 'Bearer ' + auth,
+        //     Accept: "application/json"
+        // }
+    }).then(function (response) {
+        console.log('response',response.data);
+        setCountries(response.data);
+    });
+}
+
    const showOtherReference = (e) => {
        if (e.target.value) {
            setvalidFieldFour(false);
@@ -165,9 +182,125 @@ function handlevalidFour(e) {
                                     <Form.Control autoComplete="off" ref={reference({})} name="phone" className="formGray" type="tel" placeholder="Ingrese su telefono" />
                                 </Col>
                             </Row>
+                        <Row>
+                            <Col className="mt-3">
+                                {!showAddress ?
+                                <Row>
+                                <Col>
+                                <a onClick={(e) =>setShowAddress(!showAddress)}>
+                                <FAIcons.FaArrowCircleDown color={'#3ac0d8'}/>
+                                </a>
+                               
+                                </Col>
+                                </Row>
+                                :
+                                <Row>
+                                <Col>
+                                <a onClick={(e) =>setShowAddress(!showAddress)}>
+                                <FAIcons.FaArrowCircleUp color={'#3ac0d8'}/>
+                                </a>
+                                <Row>
+                                    <Col className="col-4">
+                                    <Form.Label className="montse formGray">Tipo</Form.Label>
+                                    <Form.Control autoComplete="off"
+                                    ref={reference({})}
+                                    name="typeAddress"
+                                    className="montse formGrayTwo" type="text" placeholder="Ejemplo : Trabajo,Casa,Negocio" />
+                                    </Col>
+                                    <Col>
+                                    <Form.Label  className="montse formGray">Calle</Form.Label>
+                                                <InputGroup>
+                                                <Form.Control autoComplete="off"
+                                                    ref={reference({})}
+                                                    name="street"
+                                                    style={{letterSpacing:'0.2px'}}
+                                                    className="montse informGray" type="text" placeholder="Ingrese su Calle" />
+                                                <InputGroup.Append>
+                                                <InputGroup.Text className="informGray" ><TIicons.TiHome /></InputGroup.Text>
+                                                </InputGroup.Append>
+                                                </InputGroup>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col className="col-2">
+                                    <Form.Label className="montse formGray">Número exterior</Form.Label>
+                                            <InputGroup>
+                                                <Form.Control autoComplete="off"
+                                                   ref={reference({})}
+                                                    name="extNum"
+                                                    className="informGray" type="text" placeholder="#" />
+                                                     <InputGroup.Append>
+                                                <InputGroup.Text className="informGray" ><TIicons.TiHome /></InputGroup.Text>
+                                                </InputGroup.Append>
+                                                </InputGroup>
+                                    </Col>
+                                    <Col className="col-2">
+                                    <Form.Label className="montse formGray">Número Interior</Form.Label>
+                                            <InputGroup>
+                                                <Form.Control autoComplete="off"
+                                                   ref={reference({})}
+                                                   name="intNum"
+                                                    className="informGray" type="text" placeholder="#" />
+                                                     <InputGroup.Append>
+                                                <InputGroup.Text className="informGray" ><TIicons.TiHome /></InputGroup.Text>
+                                                </InputGroup.Append>
+                                                </InputGroup>
+                                    </Col>
+                                    <Col>
+                                    <Form.Label  className="montse formGray">Codigo postal</Form.Label>
+                                                <InputGroup>
+                                                <Form.Control autoComplete="off"
+                                                    ref={reference({})}
+                                                    title="respeta el formato,solo numeros"
+                                                    pattern="[0-9]{5}"
+                                                    name="cp"
+                                                    className="informGray" type="text" placeholder="Ingrese su codigo postal" />
+                                                    <InputGroup.Append>
+                                                <InputGroup.Text className="informGray"><TIicons.TiHome /></InputGroup.Text>
+                                                </InputGroup.Append>
+                                                </InputGroup>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col className="col-4">
+                                <Form.Label  className="montse formGray">País</Form.Label>
+                                    <Form.Control  autoComplete="off"
+                                                    name="country"
+                                                    ref={reference({})} as="select" size="sm" custom>
+                                                    <option disabled value="" selected></option>
+                                                    {countries.map(countri => (
+                                                        <option key={countri.name} value={countri.name}>
+                                                            {countri.name}
+                                                        </option>
+                                                    ))}
+                                                </Form.Control>
+                                    </Col>
+                                    <Col>
+                                    <Form.Label  className="montse formGrayTwo">Estado</Form.Label>
+                                                        <Form.Control
+                                                        className="informGray"
+                                                            autoComplete="off" name="state"
+                                                            ref={reference({})} size="sm"
+                                                            autoComplete="off"
+                                                        />               
+                                    </Col>
+                                    <Col>
+                                    <Form.Label  className="montse formGray">Ciudad</Form.Label>
+                                                        <Form.Control
+                                                        className="informGray"
+                                                            autoComplete="off" name="city"
+                                                            ref={reference({})} size="sm"
+                                                            autoComplete="off"
+                                                        />
+                                    </Col>
+                                </Row>
+                                </Col>
+                                </Row>
+                                }
+                            </Col>
+                        </Row>
                         </div>
                         <Row className="mt-1">
-
                             <Col>
                                 <Button 
                                 disabled={validFieldThree || validFieldFour}

@@ -94,6 +94,7 @@ export default function ContactsView(props) {
             starDimension={'20px'}
             starEmptyColor={'gray'}
             starRatedColor={'#ffd200'}
+            starHoverColor={'#ffd200'}
             changeRating={(e) => changeRating(e)}
             numberOfStars={5}
             name='rating'

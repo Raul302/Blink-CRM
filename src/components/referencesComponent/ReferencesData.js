@@ -60,14 +60,15 @@ function ReferencesData(props) {
     });
 
     async function consultCountries() {
-        // await axios.get('https://www.universal-tutorial.com/api/countries/', {
-        //     headers: {
-        //         Authorization: 'Bearer ' + props.token,
-        //         Accept: "application/json"
-        //     }
-        // }).then(function (response) {
-        //     setCountries(response.data);
-        // });
+        await axios.get('https://restcountries.eu/rest/v2/all', {
+            // headers: {
+            //     Authorization: 'Bearer ' + auth,
+            //     Accept: "application/json"
+            // }
+        }).then(function (response) {
+            console.log('response',response.data);
+            setCountries(response.data);
+        });
     }
     async function changeCities(e, i = 0) {
         let val = e.target.value;
@@ -909,8 +910,8 @@ function ReferencesData(props) {
                                                     value={x.country} as="select" size="sm" custom>
                                                     <option disabled value="" selected></option>
                                                     {countries.map(countri => (
-                                                        <option key={countri.country_name} value={countri.country_name}>
-                                                            {countri.country_name}
+                                                        <option key={countri.name} value={countri.name}>
+                                                            {countri.name}
                                                         </option>
                                                     ))}
                                                 </Form.Control>

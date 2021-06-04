@@ -26,6 +26,17 @@ function PersonalData(props) {
                 setLocalColleges(result[0]);
             }
         })
+        let other  = municipios[0];
+        let aux = [];
+        if(props.contact.state){
+            Object.keys(other).map((name,i)=>{
+                if(name === props.contact.state){
+                    aux = other[name];
+                }
+            })
+            setCities(aux);
+            setCity(props.contact.city);
+        }
     }, [props]);
     const [flagCountry, setFlagCoutnry] = useState({
         value: 'Pais',
@@ -65,6 +76,7 @@ function PersonalData(props) {
     const [nameRecom,setnameRecom] = useState();
     const [fatherRecom,setFatherRecom] = useState();
     const [motherRecom,setMotherRecom] = useState();
+    const [modalRecomd,setModalRecomd] = useState(false);
     // Methods
     const tagMun = (mun) => {
         let tag = '';
@@ -112,7 +124,9 @@ function PersonalData(props) {
         list[index][name] = value;
         setInputEmail(list);
     }
-
+    const editRecomenBy = () => {
+        setModalRecomd(!modalRecomd);
+    }
     // handle click event of the Remove button
     const handleRemoveClickEmail = index => {
         let list = [...inputEmail];
@@ -212,6 +226,7 @@ function PersonalData(props) {
                 }
             })
             setCities(aux);
+            setState(e.target.value);
             if (e.target.name) {
                 handleInputChange(e, i);
             }
@@ -256,7 +271,6 @@ function PersonalData(props) {
     }
     function setFilterValues(props) {
         setBirthday(props.birthday);
-        setCity(props.city);
         setEmail(props.email);
         setFname(props.father_lastname);
         setMname(props.mother_lastname);
@@ -466,18 +480,7 @@ function PersonalData(props) {
                                     class="montse card-subtitle mb-2">
                                     {props.contact.country ? props.contact.country : ''}
                                     {props.contact.state ? ',' + props.contact.state : ''}
-                                    {props.contact.state ? ',' + props.contact.city : ''}
-                                </h6>
-                            </div>
-                        </div>
-                        <div class="row mt-3 ">
-                            <div class="col-3">
-                                <h6 class="montse card-subtitle mb-2 formGrayTwo">Recomendado por :</h6>
-                            </div>
-                            <div class="col">
-                                <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                    class="montse card-subtitle mb-2 ">
-                                    {props.contact.name_recom ?? ""} {props.contact.father_recom ?? ""} {props.contact.mother_recom ?? ""}
+                                    {props.contact.city ? ',' + props.contact.city : ''}
                                 </h6>
                             </div>
                         </div>
@@ -634,7 +637,85 @@ function PersonalData(props) {
                 </div>
             }
 
-            {!editAcademicProfile ?
+            {!modalRecomd ?
+                <div  style={{boxShadow:'none',borderColor:'#717d95'}}class="border mt-3 card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 style={{ fontWeight: '600',fontSize:'20px' }} class="montse card-title">Recomendado por : </h5>
+                            </div>
+                            <div class="col-1 d-flex justify-content-end">
+                                <a>
+                                    <FIIcons.FiEdit onClick={(e) => editRecomenBy()} size={18} style={{ color: '#386CEF' }} />
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row mt-3 ">
+                            <div class="col-3">
+                                <h6 class="montse card-subtitle mb-2 formGrayTwo">Nombre</h6>
+                            </div>
+                            <div class="col">
+                                <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                    class="montse card-subtitle mb-2 ">
+                                    {props.contact.name_recom ?? ""} {props.contact.father_recom ?? ""} {props.contact.mother_recom ?? ""}
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                :
+                <div  style={{boxShadow:'none',borderColor:'#717d95'}}class="border mt-3 card">
+                <div class="card-body">
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <div class="row">
+                        <div class="col">
+                            <h5 style={{ fontWeight: '600',fontSize:'20px' }} class="montse card-title">Recomendado por : </h5>
+                        </div>
+                        <div  class="col-1 d-flex justify-content-end">
+                                    <button onClick={(e) => editRecomenBy()} type="button" class="montse btn btn-danger">Cancelar</button>
+                                    <button onSubmit={handleSubmit(onSubmit)}
+                                        type="submit" class="montse ml-1 btn btn-info">Guardar</button>
+                                </div>
+                    </div>
+                    <div class="row mt-3 ">
+                                <div class="col-3">
+                                    <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Nombre de el Recomendado</Form.Label>
+                                </div>
+                                <div class="col">
+                                    <Form.Control autoComplete="off"
+                                        onChange={(e) => changeNameRecom(e)} value={nameRecom}
+                                        name="name"
+                                        className="formGray" type="text" placeholder="Ingrese su nombre" />
+                                </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                <div class="col-3">
+                                    <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Apellido P. de el Recomendado</Form.Label>
+                                </div>
+                                <div class="col">
+                                    <Form.Control autoComplete="off"
+                                        onChange={(e) => changeFatherRecom(e)} value={fatherRecom}
+                                        name="name"
+                                        className="formGray" type="text" placeholder="Ingrese su nombre" />
+                                </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                <div class="col-3">
+                                    <Form.Label style={{ fontSize: '16px' }} className="montse formGray">Apellido M de el Recomendado</Form.Label>
+                                </div>
+                                <div class="col">
+                                    <Form.Control autoComplete="off"
+                                        onChange={(e) => changeMotherRecom(e)} value={motherRecom}
+                                        name="name"
+                                        className="formGray" type="text" placeholder="Ingrese su nombre" />
+                                </div>
+                            </div>
+                    </form>
+                </div>
+            </div>
+                }
+
+{!editAcademicProfile ?
                 <div  style={{boxShadow:'none',borderColor:'#717d95'}} class="border card mt-3">
                     <div class="card-body">
                         <div class="row">

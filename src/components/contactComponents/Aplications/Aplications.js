@@ -75,11 +75,6 @@ export default function Aplications() {
   const [objAux, setObjAux] = useState({ program: "", year: "" });
   const [modal, setModal] = useState(false);
   const [id_prospection, set_ID_Prospection] = useState(0);
-  // const generateData = (value, length = 2) =>
-  //     d3.range(length).map((item, index) => ({
-  //       date: index,
-  //       value: value === null || value === undefined ? Math.random() * 10 : value
-  //     }));
 
   const [data, setData] = useState([{ date: 9 + '/' + 9, value: 0 },
   { date: 0 + '/' + 9, value: 100 },

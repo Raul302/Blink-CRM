@@ -355,6 +355,7 @@ function AddOrEditCollege(props) {
                                                 onChange={(e) => changeObj(e)}
                                                 value={obj.country}
                                                 as="select" size="sm" custom>
+                                                <option disabled value="" selected></option>
                                                 {props.type == 'Locale' ?
                                                 <option  value="Mexico">Mexico</option>
                                                 :
@@ -388,7 +389,7 @@ function AddOrEditCollege(props) {
                         <Row className="mt-3">
                             <Col>
                                 <Button
-                                    disabled={!obj.name || !obj.type || !obj.country || !obj.website}
+                                    disabled={!obj.name || !obj.type  || !obj.country || !obj.website}
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="info">Siguiente</Button>
