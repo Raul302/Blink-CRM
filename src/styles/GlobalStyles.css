@@ -333,6 +333,9 @@ constructed stylesheet
 .svgSideBar:hover{
     fill:#497cff;
 }
+.svgSideBarBlue{
+    fill:#497cff;
+}
 .gOZeoI {
     box-sizing: border-box;
     margin: 10px 0px;
@@ -424,12 +427,26 @@ constructed stylesheet
     align-items: center;
     -webkit-box-pack: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 10px;
     line-height: normal;
     font-weight: 500;
     color: rgb(255, 255, 255);
-    background-color: #0154a4;
     box-shadow: 0px 0px 0px 1px;
+}
+.bgBlue{
+    background-color: #497CFF;
+}
+.bgPink{
+    background-color: #FF0398;
+}
+.bgTurquesa{
+    background-color: #00CCCB;
+}
+.bgPurple{
+    background-color: #9B03AE;
+}
+.bgGreen {
+    background-color: #1CB01E;
 }
 .Inside{
 text-align: right;
@@ -450,11 +467,10 @@ text-align: right;
     align-items: center;
     -webkit-box-pack: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 10px;
     line-height: normal;
     font-weight: 500;
     color: rgb(255, 255, 255);
-    background-color: #ffcc00;
     box-shadow: 0px 0px 0px 1px;
 }
 .gBkpnX {
@@ -468,11 +484,10 @@ text-align: right;
     align-items: center;
     -webkit-box-pack: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 10px;
     line-height: normal;
     font-weight: 500;
     color: rgb(255, 255, 255);
-    background-color: rgb(10, 255, 255);
     box-shadow: 0px 0px 0px 1px;
 }
 .gBkpnZ {
@@ -486,11 +501,10 @@ text-align: right;
     align-items: center;
     -webkit-box-pack: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 10px;
     line-height: normal;
     font-weight: 500;
     color: rgb(255, 255, 255);
-    background-color: #497cff;
     box-shadow: 0px 0px 0px 1px;
 }
 .hkWfcR {
@@ -684,4 +698,35 @@ background-color: '#51cbce';
     color: rgb(255, 255, 255);
     background-color: #497cff;
     box-shadow: rgb(255 255 255) 0px 0px 0px 1px;
+}
+
+/* Change Color Sweet Alert */
+.swal-icon--warning {
+    border-color: #FF0000 !important;
+}
+.swal-icon--warning__body{
+    background-color: #FF0000 !important;
+
+}
+.swal-icon--warning__dot{
+    background-color: #FF0000 !important;
+
+}
+.swal-icon--warning__dot{
+    background-color: #FF0000 !important;
+}
+.swal-button--danger {
+    background-color: #497cff !important;
+}
+.swal-button--confirm {
+    background-color: #497cff !important;
+}
+
+
+/* Buttons */
+
+.btnBee{
+    color:#497CFF !important;
+    font-weight: 100 !important;
+    font-size: 14px !important;
 }

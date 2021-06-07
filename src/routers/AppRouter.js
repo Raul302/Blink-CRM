@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import DashboardRoutes from './DashboardRoutes';
 import ContactsRouters from './ContactsRouters';
 import CollegesRouter from './CollegesRouter';
-
+import axios from 'axios';
 import Login from '../pages/Login';
 import React, { useState,useEffect } from 'react';
 import PrivateRouter from './PrivateRouter';
@@ -14,6 +14,8 @@ import { login } from '../actions/auth/auth';
 import Loader from '../components/loaderComponents/Loader';
 import { setColleges, starLoadingColleges,activeCollege } from '../actions/colleges/colleges';
 import CollegesLocalRouter from './CollegesLocalRouter';
+import { constaApi } from 'constants/constants';
+import { setUsers } from 'actions/users/users';
 export const AppRouter = (props) => {
     const dispatch = useDispatch();
     const [ checking, setChecking ] = useState(true);
@@ -23,6 +25,12 @@ export const AppRouter = (props) => {
     // const[flag,setFlag] = useState(false);
     // const [user,setUser] = useState();
     useEffect(() => {
+         axios
+        .post(constaApi + "defaultSelectBio")
+        .then(function (response) {
+            let {users} = response.data;
+            dispatch ( setUsers(users) );
+      });
         if(JSON.parse(localStorage.getItem('user'))){
             const {email,id,name,token,type} = JSON.parse(localStorage.getItem('user'));
             if(!email || !id || !name || !token || !type){

@@ -54,8 +54,8 @@ export const SlotActions = function SlotActions(props) {
   }
   return (
       <>
-       <a ><FAIcons.FaTrashAlt style={{color:'#DC3545'}} size={18}onClick={(e) => dropStaff(props.data.id)} /> </a>
-       <a><FAIcons.FaRegEdit size={18} style={{color:'#34B5B8'}} onClick={e => editStaff(props.data)}/> </a>    
+       <a ><FAIcons.FaTrashAlt style={{color:'#FF0000'}} size={18}onClick={(e) => dropStaff(props.data.id)} /> </a>
+       <a><FAIcons.FaRegEdit size={18} style={{color:'#497CFF'}} onClick={e => editStaff(props.data)}/> </a>    
       </>
   )
 }

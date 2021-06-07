@@ -377,7 +377,7 @@ function MultipleModals(props) {
                 id:  null,
                 id_college: null,
                 college:  null,
-                subject: 'Recordatorio automatico',
+                subject: 'Recordatorio Automático',
                 emailTo: selectValue ?? null,
                 dateReminder: datex ?? null,
                 timenotification: notificationReminder ?? null,
@@ -411,7 +411,7 @@ function MultipleModals(props) {
     return (
         <>
             <Button style={{ color: '#182739', marginRight: '10px', backgroundColor: '#FFFFFF', boxShadow: 'rgb(209, 221, 235) 0px 0px 0px 1px inset' }} className=" Inter600" variant="light">Import</Button>
-            <button type="button" className="btn btn-info  Inter600" onClick={showModal1}>Crear contacto </button>
+            <button type="button" className="btn btn-sm btn-info" onClick={showModal1}>Crear contacto </button>
 
             {/* FirstModal */}
             <Modal

@@ -66,6 +66,15 @@ export const types = {
     ContactCDelete: '[Contact] Delete Contact',
     ContactCleaningn: '[Contact] Contact cleaning',
 
+    // users
+    UserAddNew: '[User] New User',
+    UsersLoad : '[User] load Users'
+    // ContactCActive: '[Contact] Set Active Contact',
+    // ContactCLoad:   '[Contact] Load Contact',
+    // ContactUpdated: '[Contact] Updated Contact',
+    // ContactCDelete: '[Contact] Delete Contact',
+    // ContactCleaningn: '[Contact] Contact cleaning',
+
 
 
 }

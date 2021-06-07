@@ -63,7 +63,7 @@ export const SlotActions = function (props) {
             <FIIcons.FiEdit  title="Editar" onClick={(e) => editReminder(props.data)} size={18} style={{ color: '#386CEF' }} />
             </a>
             <a className="ml-1">
-            <FAIcons.FaTrashAlt title="Eliminar" style={{ color: '#DC3545' }} size={18} onClick={(e) => { deleteReminder(props.data.id) }} />
+            <FAIcons.FaTrashAlt title="Eliminar" style={{ color: '#FE0000' }} size={18} onClick={(e) => { deleteReminder(props.data.id) }} />
              </a>
             </td>
         </>

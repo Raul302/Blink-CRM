@@ -465,7 +465,7 @@ function PersonalData(props) {
                                 <h6 class="montse card-subtitle mb-2 formGrayTwo">Fecha</h6>
                             </div>
                             <div class="col">
-                                <h6 style={{ color: '##243243', fontWeight: '600' }}
+                                <h6 style={{ letterSpacing:'1px', color: '##243243', fontWeight: '600' }}
                                     class="montse card-subtitle mb-2">
                                     {props.contact.birthday}
                                 </h6>
@@ -479,8 +479,8 @@ function PersonalData(props) {
                                 <h6 style={{ color: '##243243', fontWeight: '600' }}
                                     class="montse card-subtitle mb-2">
                                     {props.contact.country ? props.contact.country : ''}
-                                    {props.contact.state ? ',' + props.contact.state : ''}
-                                    {props.contact.city ? ',' + props.contact.city : ''}
+                                    {props.contact.state ? ',' + " " +  props.contact.state : ''}
+                                    {props.contact.city ? ',' + " " + props.contact.city : ''}
                                 </h6>
                             </div>
                         </div>
@@ -753,21 +753,16 @@ function PersonalData(props) {
                         <div class="row mt-3 ">
                             <div class="col-3">
                                 <h6 class="montse card-subtitle mb-2 formGrayTwo">Colegio</h6>
-                                {props.contact.schoool == 'Otro' && 
-                                <h6 class="mt-4 montse card-subtitle mb-2 formGrayTwo">Nombre</h6>
-                                }
                             </div>
                             <div class="col">
                                 <h6 style={{ color: '#243243', fontWeight: '600' }}
                                     class="montse card-subtitle mb-2 ">
-                                    {props.contact.schoool}
+                                        {props.contact.schoool == 'Otro' ? 
+                                         [props.contact.other_School]
+                                        :
+                                        [props.contact.schoool]
+                                        }
                                 </h6>
-                                {props.contact.schoool == 'Otro' && 
-                                <h6 style={{ color: '#243243', fontWeight: '600' }}
-                                class="mt-4 montse card-subtitle mb-2 ">
-                                {props.contact.other_School}
-                                </h6>                    
-                                 }
                             </div>
                         </div>
 

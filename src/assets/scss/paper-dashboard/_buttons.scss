@@ -108,6 +108,7 @@
 .btn-disabledForce  { @include btn-styles(#c1c1c2, #c1c1c2); }
 .btn-yellow  { @include btn-styles(#ffd200, #ffd200); }
 .btn-yellowDisabled  { @include btn-styles(#fbea97, #fbea97); }
+.btnBee  { @include btn-styles(#F4F5F6, #F4F5F6); }
 // .btn-neutral { @include btn-styles($white-color, $white-color); }
 
 .btn-outline-default { @include btn-outline-styles($default-color, $default-states-color); }

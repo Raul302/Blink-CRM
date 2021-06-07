@@ -32,19 +32,22 @@ import { starLoadingApplications } from "actions/contacts/bioContact/bioContact"
 
 export default function AddEditBio(props) {
   let contador = 0;
-  const [values, setValues] = useState();
+  const [values, setValues] = useState([]);
   const { flag } = props;
   const { id: IDX } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [timeBio, setTimeBio] = useState();
   const [editing, setEditing] = useState(false);
+  const { users:allUsers } = useSelector(state => state.users);
   let { id } = useParams();
   // Set moment spanish
   moment.locale("es-mx");
   const notificationAlert = useRef();
   const { username: email } = useSelector((state) => state.auth);
   useEffect(() => {
+    if(values.length < 1){
       consult();
+    }
     if (props.flagTwo) {
       showModalLog("Recordatorio");
     }
@@ -80,6 +83,9 @@ export default function AddEditBio(props) {
       .post(constaApi + "defaultSelectBio", data)
       .then(function (response) {
         let { contact, contacts, references, user, users } = response.data;
+        // if(props.getAllUsers){
+        //   props.getAllUsers(users);
+        // }
         let result = user.map((col) => {
           return {
             value: col.name,
@@ -162,7 +168,6 @@ export default function AddEditBio(props) {
     }
   };
   async function onSubmit(data) {
-    console.log('SelectValue',selectValue);
     let datex = dateBio + " " + timeBio;
     if (editing) {
       let datax = {
@@ -297,42 +302,46 @@ export default function AddEditBio(props) {
     return tag;
   };
   const showParticipant = (type = "use", name, fullname = "") => {
-    let n = name ? name : " ";
-    let tag = "";
-    if (n) {
-      n = n.charAt(0) + n.charAt(1);
-    }
+    let n = fullname ? fullname.split(" ") : " ";
+      let tag = '';
+      if (n.length >= 3) {
+          n = n[0].charAt(0) + n[1].charAt(0) + n[2].charAt(0);
+      } else if(n.length >= 2) {
+        n = n[0].charAt(0) + n[1].charAt(0) ;
+      } else {
+        n = n[0].charAt(0);
+      }
     switch (type) {
-      case "user":
-        tag = (
-          <span class="ml-3 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">
-            {n}
-          </span>
-        );
+        case 'user':
+          allUsers.map(al => {
+            if(fullname == (al.name + " " + al.father_lastname + " " + al.mother_lastname)){
+              switch (al.type) {
+                case 'Administrador':
+                  tag = <span onClick={(e) => showModal(props.data)} class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV bgBlue">{n}</span>;
+                  break;
+                case 'Supervisor':
+                  tag = <span onClick={(e) => showModal(props.data)} class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV bgPurple">{n}</span>;
+                break;
+                case 'Colaborador ':
+                  console.log('Colaborador'); 
+                default:
+                  tag = <span onClick={(e) => showModal(props.data)} class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV bgGreen">{n}</span>;
+
+                  break;
+              }
+            }
+          })
         break;
-      case "contactos":
-        tag = (
-          <span class="ml-3 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">
-            {n}
-          </span>
-        );
-        break;
-      case "referencias":
-        tag = (
-          <span class="ml-3 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">
-            {n}
-          </span>
-        );
-        break;
-      default:
-        tag = (
-          <span class="ml-3 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ">
-            {n}
-          </span>
-        );
+        case 'contactos':
+        tag = <span onClick={(e) => showModal(props.data)} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP bgTurquesa">{n}</span>;
+            break;
+        case 'colegio':
+          tag = <span onClick={(e) => showModal(props.data)} class="sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP bgPink">{n}</span>;
+            break;
+        default:
+            tag = <span onClick={(e) => showModal(props.data)} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP bgPink">{n}</span>;
         break;
     }
-
     return tag;
   };
   const PopoverComponent = (text) => {
@@ -689,9 +698,7 @@ export default function AddEditBio(props) {
                     </Button>
                     <Button
                       onClick={handleClose}
-                      style={{ fontFamily: "Inter", fontWeight: "500" }}
-                      className="float-right mb-3 mr-2"
-                      variant="danger"
+                      className="float-right mb-3 mr-2 btnBee"
                     >
                       Cancelar
                     </Button>

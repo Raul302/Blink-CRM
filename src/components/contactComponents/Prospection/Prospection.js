@@ -107,9 +107,9 @@ export default function Prospection(props) {
   const status = [
     "Contacto Previo",
     "Contacto Formal",
-    "Presentacion",
+    "Presentación",
     "Aclaración de dudas",
-    "Decision",
+    "Decisión",
     "Aplicar",
     "Cancelar",
   ];
@@ -431,7 +431,8 @@ export default function Prospection(props) {
               <Form.Label className="formGray">Status</Form.Label>
               <Form.Control name="status"
                 disabled
-                autoComplete="off" className="formGray" type="text"
+                style={{letterSpacing:'0.2px'}}
+                autoComplete="off" className="montse formGray" type="text"
                 value={activeProspect.status}
               />
               <button
@@ -447,17 +448,21 @@ export default function Prospection(props) {
                 as="textarea"
                 placeholder="Escriba sus notas..."
                 rows={8}
+                cols={20}
+                style={{letterSpacing:'0.2px' , paddingLeft: '10px' }}
               />
+
               <button
                 class=" mt-1 float-right Inter btn-info  btn-sm"
                 onClick={(e) => changeModalStory()}><FIIcons.FiEdit size={16} style={{ color: 'white' }} /> </button>
             </div>
-            <div>
+            <div class="col-3">
               <Form.Label className="formGray">Advisor</Form.Label>
               <Form.Control name="last_modification"
                 disabled
                 autoComplete="off" className="formGray" type="text"
                 placeholder="Ultima fecha"
+                style={{letterSpacing:'0.2px'}}
                 value={active.name_advisor}
               />
               <button
@@ -472,6 +477,7 @@ export default function Prospection(props) {
                 disabled
                 autoComplete="off" className="formGray" type="text"
                 placeholder="Ultima fecha"
+                style={{letterSpacing:'0.2px'}}
                 value={formatDate(activeProspect.last_modification)}
               />
             </div>
@@ -653,7 +659,7 @@ export default function Prospection(props) {
             <Row>
               <Col>
                 <Button
-                  className="float-right mb-3 mr-2"
+                  className="float-right mb-3 mr-2 montse"
                   type="button"
                   onClick={(e) => saveChanges()}
                   variant="info"
@@ -662,8 +668,7 @@ export default function Prospection(props) {
                 </Button>
                 <Button
                   onClick={closeModal}
-                  style={{ fontFamily: "Inter", fontWeight: "500" }}
-                  className="float-right mb-3 mr-2"
+                  className="float-right mb-3 mr-2 montse"
                   variant="danger"
                 >
                   Cancelar
@@ -770,6 +775,7 @@ export default function Prospection(props) {
                     value={activeProspect.story}
                     as="textarea"
                     placeholder="Escriba sus notas..."
+                    style={{letterSpacing:'0.2px' , paddingLeft: '10px' }}
                     rows={12}
                     cols={12}
                   />

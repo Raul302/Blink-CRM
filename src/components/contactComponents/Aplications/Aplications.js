@@ -115,8 +115,8 @@ export default function Aplications() {
   ];
   const array = ['btn-info', 'btn-secondary', 'btn-success', 'btn-danger', 'btn-warning', 'btn-info', 'btn-light', 'btn-dark', 'btn-white'];
   const status = [
-    "Admision",
-    "Tramites",
+    "Admisión",
+    "Trámites",
     "Espera",
     "Activo",
     "Cancelado",
@@ -560,7 +560,9 @@ export default function Aplications() {
             <>
               <button onClick={(e) => changeProspection(oneKey, results[oneKey])} eventKey={oneKey} title={oneKey}
                 class={"ml-1 mt-n5 btn btn-sm btn-yellow"}
-                style={{ marginBottom: '20px', border: [oneKey == prospectionSelected ? '0.1px inset purple' : '0px'], opacity: [oneKey == prospectionSelected ? '2' : '0.5'] }}
+                style={{ marginBottom: '20px',
+                // //  border: [oneKey == prospectionSelected ? '0.1px inset purple' : '0px'],
+                  opacity: [oneKey == prospectionSelected ? '2' : '0.5'] }}
               >
                 {oneKey}
               </button>
@@ -578,7 +580,9 @@ export default function Aplications() {
                 eventKey={oneKey} title={oneKey}
                 class={[i > 0 ? "ml-1" : "ml-0"
                 ]}
-                style={{ opacity: [auxSelection[oneKey].id == selectionTwo ? '2' : '0.5'], border: [auxSelection[oneKey].id == selectionTwo ? '1px inset purple' : '0px'] }}
+                style={{ opacity: [auxSelection[oneKey].id == selectionTwo ? '2' : '0.5'],
+                //  border: [auxSelection[oneKey].id == selectionTwo ? '1px inset purple' : '0px']
+                 }}
                 class={checkButton(auxSelection[oneKey])}
               >
                 {auxSelection[oneKey].name}
@@ -1112,7 +1116,7 @@ export default function Aplications() {
             <Row>
               <Col>
                 <Button
-                  className="float-right mb-3 mr-2"
+                  className="float-right mb-3 mr-2 montse"
                   type="button"
                   onClick={(e) => saveChanges()}
                   variant="info"
@@ -1121,9 +1125,7 @@ export default function Aplications() {
                   </Button>
                 <Button
                   onClick={closeModal}
-                  style={{ fontFamily: "Inter", fontWeight: "500" }}
-                  className="float-right mb-3 mr-2"
-                  variant="danger"
+                  className="float-right mb-3 mr-2 montse btnBee"
                 >
                   Cancelar
                   </Button>

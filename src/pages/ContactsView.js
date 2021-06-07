@@ -87,23 +87,32 @@ export default function ContactsView(props) {
   return (
     <>
       <div style={{ minHeight: '0px' }} className="pb-0 content">
-        <p>
-          <span class="Inter400" style={{}}>{fullName}</span>
-          <span style={{ marginTop: '-50px' }}> <StarRatings
+        <div class="row">
+        <div class="col">
+        <div style={{float:'left',marginRight:'10px'}} >
+        <span class="Inter400" style={{}}>{fullName}</span>
+        </div>
+        <div>
+          <StarRatings
             rating={rating}
             starDimension={'20px'}
             starEmptyColor={'gray'}
             starRatedColor={'#ffd200'}
             starHoverColor={'#ffd200'}
+            starSpacing="2px"
             changeRating={(e) => changeRating(e)}
             numberOfStars={5}
             name='rating'
-          /></span>
-        </p>
+          />
+        </div>
+        </div>
+        </div>
+        
+        
 
         <NotificationAlert ref={notificationAlert} />
 
-        <div style={{ marginTop: '-20px' }} className=" mt-3sc-bdVaJa styles__Nav-sc-19n49a3-0 gOZeoI">
+        <div style={{ marginTop: '10px' }} className=" mt-3sc-bdVaJa styles__Nav-sc-19n49a3-0 gOZeoI">
           <Link className={['/contacts/' + id + '/bio'].includes(pathname) ?
             'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl active montse' : 'mr-4 styles__NavLink-sc-19n49a3-1 iGbtBl montse'}
             to={"/contacts/" + id + "/bio"}>Bitácora</Link>

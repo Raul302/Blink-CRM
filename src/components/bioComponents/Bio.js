@@ -29,6 +29,10 @@ import AddEditBio from './AddEditBio';
 function Bio(props) {
     const [show,setShow] = useState(false);
     const [row,setRow] = useState();
+    const [allUsers,setAllU] = useState([]);
+    useEffect(() => {
+     
+    },[])
     function method(obj){
         setRow(obj);
         setShow(!show);
@@ -36,11 +40,14 @@ function Bio(props) {
     function setFlag(){
         setShow(!show);
     }
+    function getChild(obj){
+        setAllU(obj);
+    }
     return (
         <>
         <div class="mt-n2 content">
-        <AddEditBio {...props} activeApplications={props.applications ?? null} activeProspect={props.activeProspect ?? null} noBar={ props.noBar ? true :false} setFlag={setFlag} row={row} flag={show}/>
-        <TableBio {...props} extern={props.activeProspect ? true : props.activeApplication  ? true : false} bridge={(e) => method(e)}/>
+        <AddEditBio getAllUsers={(e) =>getChild(e)} {...props} activeApplications={props.applications ?? null} activeProspect={props.activeProspect ?? null} noBar={ props.noBar ? true :false} setFlag={setFlag} row={row} flag={show}/>
+        <TableBio allUsers={allUsers} {...props} extern={props.activeProspect ? true : props.activeApplication  ? true : false} bridge={(e) => method(e)}/>
         </div>
         </>
     )

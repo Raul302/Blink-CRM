@@ -109,7 +109,8 @@ class SideBar extends React.Component {
               <OverlayTrigger  trigger={["hover", "hover"]} placement="right"
               overlay={this.PopoverComponent(prop.name)}>
               <a>
-              <i className='nc-icon mt-3'>
+              <i className={
+                this.activeRoute(prop.path) == 0 ?'nc-icon mt-3 svgSideBar' :'nc-icon mt-3 svgSideBarBlue' }>
                       {prop.icon}
                       </i>
               </a>

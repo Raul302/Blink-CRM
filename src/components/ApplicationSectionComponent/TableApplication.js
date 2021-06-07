@@ -245,9 +245,11 @@ export const SlotRating = function SlotRating(props) {
   <>
    <StarRatings
     rating={rating}
-    starDimension={'20px'}
+    starDimension={'16px'}
     starEmptyColor={'gray'}
     starRatedColor={'#ffd200'}
+    starHoverColor={'#ffd200'}
+    starSpacing="2px"
     changeRating={(e) => changeRating(e)}
    numberOfStars={5}
     name='rating'

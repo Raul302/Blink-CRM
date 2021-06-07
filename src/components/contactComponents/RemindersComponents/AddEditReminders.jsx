@@ -322,7 +322,8 @@ export default function AddEditReminders(props) {
                                     <Form.Label className="formGray">Asunto</Form.Label>
                                     <Form.Control name="subject"
                                         onChange={(e) => changeSubject(e)}
-                                        autoComplete="off" className="formGray" type="text" placeholder="Escriba el asunto..."
+                                        style={{letterSpacing:'0.2px'}}
+                                        autoComplete="off" className="formGray montse" type="text" placeholder="Escriba el asunto..."
                                         value={subject}
                                     />
                                 </Col>

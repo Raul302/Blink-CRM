@@ -122,7 +122,7 @@ export default function TableProspection(props) {
       <div>
       <button
       style={{float:'right',textDecoration:'white'}}
-      class="mt-n5 btn btn-sm btn-primary" onClick={(e) => exporta(e)}
+      class="mt-n5 btn btn-sm btn-info" onClick={(e) => exporta(e)}
       >
         <CSVLink {...csvReport}><span>Exportar</span>
         </CSVLink>
@@ -284,14 +284,16 @@ export const SlotNumber = function SlotNumber(props) {
   }
   return (
   <>
-   <StarRatings
-    rating={rating}
-    starDimension={'20px'}
-    starEmptyColor={'gray'}
-    starRatedColor={'#ffd200'}
-    changeRating={(e) => changeRating(e)}
-   numberOfStars={5}
-    name='rating'
+    <StarRatings
+      rating={rating}
+      starDimension={'16px'}
+      starEmptyColor={'gray'}
+      starRatedColor={'#ffd200'}
+      starHoverColor={'#ffd200'}
+      starSpacing="2px"
+      changeRating={(e) => changeRating(e)}
+     numberOfStars={5}
+      name='rating'
                   />
   </>
   )

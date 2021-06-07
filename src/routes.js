@@ -16,8 +16,13 @@ import ProspectionSection from 'pages/ProspectionSection';
 import ApplicationSection from 'pages/ApplicationSection';
 import CollegesLocales from 'pages/CollegesLocales';
 import TrackingSection from 'pages/Tracking/TrackingSection';
-// import LogoApplication from 'resources/images/application.png';
+import {
+  BrowserRouter as Router, Switch,
+  Route, Link, useLocation
+} from 'react-router-dom';// import LogoApplication from 'resources/images/application.png';
 // import LogoProspection from 'resources/images/prospection.png';
+import React from 'react'
+
 var routes = [
   {
     path: "/dashboard",
@@ -34,10 +39,10 @@ var routes = [
     layout: "/admin",
   },
   {
+    
     path: "/SectionProspections",
     name: "Prospecciones",
     icon: <svg version="1.0"
-      className="svgSideBar"
       width="22" height="22" viewBox="0 0 512.000000 512.000000"
       preserveAspectRatio="xMidYMid meet">
 
@@ -77,7 +82,6 @@ var routes = [
     name: "Aplicaciones",
     icon:
       <svg version="1.0"
-        className="ml-1 svgSideBar"
         width="16" height="16" viewBox="0 0 512.000000 512.000000"
         preserveAspectRatio="xMidYMid meet">
         <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"

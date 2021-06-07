@@ -105,11 +105,11 @@ export const slotType = function SlotName(props) {
 // Component SLotActions
 export const SlotParticipants = function SlotParticipants(props) {
   const {participants} = props.data;
+  const {allUsers } = props.context;
   const showModal = (obj) => {
     props.context.showModal(obj);
 }
   const showParticipant = (type = 'user',name,obj) => {
-    console.log('name',obj);
     let n = name ? name.split(" ") : " ";
       let tag = '';
       if (n.length >= 3) {
@@ -121,17 +121,33 @@ export const SlotParticipants = function SlotParticipants(props) {
       }
     switch (type) {
         case 'user':
-        tag = <span onClick={(e) => showModal(props.data)} class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{n}</span>;
+          allUsers.map(al => {
+            if(obj.fullname == (al.name + " " + al.father_lastname + " " + al.mother_lastname)){
+              switch (al.type) {
+                case 'Administrador':
+                  tag = <span onClick={(e) => showModal(props.data)} class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV bgBlue">{n}</span>;
+                  break;
+                case 'Supervisor':
+                  tag = <span onClick={(e) => showModal(props.data)} class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV bgPurple">{n}</span>;
+                break;
+                case 'Colaborador ':
+                  console.log('Colaborador'); 
+                default:
+                  tag = <span onClick={(e) => showModal(props.data)} class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV bgGreen">{n}</span>;
+
+                  break;
+              }
+            }
+          })
         break;
         case 'contactos':
-        tag = <span onClick={(e) => showModal(props.data)} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">{n}</span>;
+        tag = <span onClick={(e) => showModal(props.data)} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP bgTurquesa">{n}</span>;
             break;
         case 'colegio':
-          tag = <span onClick={(e) => showModal(props.data)} class="sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ">{n}</span>;
-
+          tag = <span onClick={(e) => showModal(props.data)} class="sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP bgPink">{n}</span>;
             break;
         default:
-            tag = <span onClick={(e) => showModal(props.data)} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ">{n}</span>;
+            tag = <span onClick={(e) => showModal(props.data)} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP bgPink">{n}</span>;
         break;
     }
     return tag;
@@ -246,6 +262,7 @@ export default function TableBio(props) {
     const dispatch = useDispatch();
     const {biosC:bioRecords} = useSelector( state => state.bioContact);
     const { loading } = useSelector(state => state.ui);
+    const { users } = useSelector(state => state.users);
     let { id } = useParams();
     const notificationAlert = useRef();
     const [frameworkComponents, setFramwrokw] = useState({slotCreated:SlotCreated,slotTypeProspection:slotTypeProspection,stotProspection:SlotProspection, slotType: slotType, slotDate: SlotDate,slotParticipants: SlotParticipants,slotDetalle: SlotDetalle});
@@ -259,7 +276,6 @@ export default function TableBio(props) {
      
     }, [])
     // Methods
-
     const onGridReady = (params) => {
         setGridApi(params);
         setColumnApi(params);
@@ -274,33 +290,33 @@ export default function TableBio(props) {
     const onFirstDataRendered = (event) => {
       autoSizeAll(false);
     };
-    const showParticipant = (type = 'use',name,fullname = "") => {
-      let n = fullname ? fullname.split(" ") : " ";
-      let tag = '';
-      if (n.length >= 3) {
-          n = n[0].charAt(0) + n[1].charAt(0) + n[2].charAt(0);
-      } else if(n.length >= 2) {
-        n = n[0].charAt(0) + n[1].charAt(0) ;
-      } else {
-        n = n[0].charAt(0);
-      }
-        switch (type) {
-            case 'user':
-            tag = <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{n}</span>;
-            break;
-            case 'contactos':
-            tag = <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">{n}</span>;
-            break;
-            case 'referencias':
-            tag = <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">{n}</span>;
-            break;
-            default:
-            tag = <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ">{n}</span>;
-            break;
-        }
+    // const showParticipant = (type = 'use',name,fullname = "") => {
+    //   let n = fullname ? fullname.split(" ") : " ";
+    //   let tag = '';
+    //   if (n.length >= 3) {
+    //       n = n[0].charAt(0) + n[1].charAt(0) + n[2].charAt(0);
+    //   } else if(n.length >= 2) {
+    //     n = n[0].charAt(0) + n[1].charAt(0) ;
+    //   } else {
+    //     n = n[0].charAt(0);
+    //   }
+    //     switch (type) {
+    //         case 'user':
+    //         tag = <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">{n}</span>;
+    //         break;
+    //         case 'contactos':
+    //         tag = <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">{n}</span>;
+    //         break;
+    //         case 'referencias':
+    //         tag = <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">{n}</span>;
+    //         break;
+    //         default:
+    //         tag = <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ">{n}</span>;
+    //         break;
+    //     }
 
-        return tag;
-    }
+    //     return tag;
+    // }
   
     const showModal = (obj) => {
         props.bridge(obj);
@@ -333,7 +349,6 @@ export default function TableBio(props) {
 
         :
         <div className="content" style={{ width: '100%', height: '300px' }}>
-                       
                        <div
               className="ag-theme-alpine"
               style={{ height: "100%", width: "100%" }}
@@ -341,6 +356,7 @@ export default function TableBio(props) {
               <AgGridReact
                 context={{
                   showModal,
+                  allUsers : users
                 }}
                 defaultColDef={{ resizable: true }}
                 rowData={bioRecords}

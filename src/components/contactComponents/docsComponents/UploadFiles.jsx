@@ -67,7 +67,7 @@ export default function UploadFiles(props) {
                             <label>Tipo de Documento</label>
                             <Form.Control onChange={(e) => selectTypeDoc(e)} autoComplete="off" name="type"  as="select" size="sm" custom>
                                        <option disabled value="" selected></option>
-                                       <option value="foto">Fotografia</option>
+                                       <option value="foto">Fotografía</option>
                                        <option value="ppE">Pasaporte Estudiante</option>
                                        <option value="ppP">Pasaporte Papá</option>
                                        <option value="cal1">Calificación Año 1</option>

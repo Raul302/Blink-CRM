@@ -433,7 +433,7 @@ function AddEdit(props) {
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="info">Guardar</Button>
-                                <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
+                                <Button onClick={handleClose}  className="float-right mb-3 mr-2 btnBee" >
                                     Cancelar
                 </Button>
 
