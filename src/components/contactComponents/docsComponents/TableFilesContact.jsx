@@ -4,7 +4,7 @@ import { AgGridReact, AgGridColumn } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import axios from 'axios';
-import { constaApi , domain } from "../../../constants/constants";
+import { constaApi,secret_token , domain } from "../../../constants/constants";
 import { useParams,} from "react-router";
 import moment from 'moment';
 import *  as Ioicons from "react-icons/io";
@@ -147,13 +147,34 @@ export const SlotDate = function SlotDate(props) {
 // Component SlotPreview
 export const SlotPreview = function SlotPreview(props) {
     const {value} = props;
+    let obj = "Sin image.jpg";
+    let url = "";
     const maximImg = () => {
         // document.getElementById("btnSample").click();
         props.context.clickEvent(domain+value);
     }
+    useEffect(()=>{
+        const petition = (value) => {
+            var myImage = document.getElementById('img'+value);
+            const src = constaApi + 'contacts/'+value;
+            const options = {
+                headers: {
+                             "Accept": "application/json",
+                             "Authorization": "Basic " + secret_token
+                         }
+            };
+            fetch(src, options)
+            .then(res => res.blob())
+            .then(blob => {
+                var objectURL = URL.createObjectURL(blob);
+                myImage.src = objectURL;
+            });
+        }
+        petition(value);
+    },[])
     return (
         <>
-        <img onClick={(e) => maximImg()} style={{width:'50px',height:'50px'}} alt={props.data.name_doc}src={domain+value}></img>
+        <img id={'img'+value} onClick={(e) => maximImg()} style={{width:'50px',height:'50px'}} alt={props.data.name_doc} src={obj}></img>
         </>
     )
   }
