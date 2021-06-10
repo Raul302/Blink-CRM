@@ -320,7 +320,7 @@ function TableContacts(props) {
                         <Row>
 
                             <Col>
-                                <Button onClick={handleClose} style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
+                                <Button onClick={handleClose} className="float-right mb-3 mr-2 btn-info">
                                     Cerrar
                                     </Button>
                             </Col>
@@ -373,7 +373,7 @@ function TableContacts(props) {
         >
           
           <AgGridColumn 
-          headerName="Prospeccion"
+          headerName="Prospección"
           field="name_prospection" width={250}
           filter="agTextColumnFilter"
           />
@@ -390,7 +390,7 @@ function TableContacts(props) {
                         <Row>
 
                             <Col>
-                                <Button onClick={handleClose} style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
+                                <Button onClick={handleClose}  className="float-right mb-3 mr-2 btn-info"  >
                                     Cerrar
                                     </Button>
                             </Col>

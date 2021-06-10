@@ -22,6 +22,7 @@ export default function TableFilesContact(props) {
     const [columnApi, setColumnApi] = useState();
     let { id:id_contact } = useParams();
     const [fullImg,setFullImg] = useState("");
+    const [nameImg,setNameImg] = useState("");
 
     // Hook useEffect
     useEffect(() => {
@@ -32,8 +33,9 @@ export default function TableFilesContact(props) {
         setGridApi(params);
         setColumnApi(params);
     }
-    const clickEvent = (direction) => {
+    const clickEvent = (direction,nameImg) => {
         setFullImg(direction);
+        setNameImg(nameImg);
         let a = document.querySelector('.imgs').click();
 
     }
@@ -69,7 +71,7 @@ export default function TableFilesContact(props) {
             small={fullImg}
             medium={fullImg }
             large={fullImg}
-            alt={fullImg}
+            alt={nameImg}
             />
             </div>
                 <NotificationAlert ref={notificationAlert} />
@@ -148,10 +150,9 @@ export const SlotDate = function SlotDate(props) {
 export const SlotPreview = function SlotPreview(props) {
     const {value} = props;
     let obj = "Sin image.jpg";
-    let url = "";
-    const maximImg = () => {
+    const maximImg = (e) => {
         // document.getElementById("btnSample").click();
-        props.context.clickEvent(domain+value);
+        props.context.clickEvent(e.target.currentSrc,e.target.alt);
     }
     useEffect(()=>{
         const petition = (value) => {
@@ -174,7 +175,7 @@ export const SlotPreview = function SlotPreview(props) {
     },[])
     return (
         <>
-        <img id={'img'+value} onClick={(e) => maximImg()} style={{width:'50px',height:'50px'}} alt={props.data.name_doc} src={obj}></img>
+        <img id={'img'+value} onClick={(e) => maximImg(e)} style={{width:'50px',height:'50px'}} alt={props.data.name_doc} src={obj}></img>
         </>
     )
   }

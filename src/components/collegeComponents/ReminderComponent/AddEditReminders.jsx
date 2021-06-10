@@ -245,7 +245,7 @@ export default function AddEditReminders(props) {
     return (
         <div className="mt-n5">
                             <NotificationAlert ref={notificationAlert} />
-            <button onClick={(e) => showModal()} className="btn btn-primary">
+            <button onClick={(e) => showModal()} className="btn btn-info">
                 <span className="Inter"
                     style={{ fontSize: "18px" }}>+</span> Recordatorio</button>
 

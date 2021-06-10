@@ -79,8 +79,8 @@ export default function Prospection(props) {
   const notificationAlert = useRef();
   const [modalAdvisor,setModalAdvisor] = useState(false);
   const dispatch = useDispatch();
-  const [aux, setAux] = useState({ id: "", story: "", status: "Evaluacion", name_prospection: "", last_modification: "" });
-  const [activeProspect, setActiveProspect] = useState({ id: "", story: "", status: "Evaluacion", name_prospection: "", last_modification: "" });
+  const [aux, setAux] = useState({ id: "", story: "", status: "Evaluación", name_prospection: "", last_modification: "" });
+  const [activeProspect, setActiveProspect] = useState({ id: "", story: "", status: "Evaluación", name_prospection: "", last_modification: "" });
   const [load, setLoad] = useState(false);
   const [prospections, SetProspections] = useState(null);
   const [selection, SetSelection] = useState(0);
@@ -317,7 +317,7 @@ export default function Prospection(props) {
     moment.locale("es-mx");
     let newObj = {
       name_prospection: objAux.program + " " + objAux.year,
-      status: 'Evaluacion',
+      status: 'Evaluación',
       story: null,
       last_modification: moment().format("YYYY-MM-DD HH:mm"),
       id_last_contact: active.id,
@@ -595,10 +595,8 @@ export default function Prospection(props) {
                 </Button>
                 <Button
                   onClick={closeModal}
-                  style={{ fontFamily: "Inter", fontWeight: "500" }}
-                  className="float-right mb-3 mr-2"
-                  variant="danger"
-                >
+                  className="float-right mb-3 mr-2 montse btnBee"
+                  >
                   Cancelar
                 </Button>
               </Col>
@@ -668,8 +666,7 @@ export default function Prospection(props) {
                 </Button>
                 <Button
                   onClick={closeModal}
-                  className="float-right mb-3 mr-2 montse"
-                  variant="danger"
+                  className="float-right mb-3 mr-2 montse btnBee"
                 >
                   Cancelar
                 </Button>
@@ -730,9 +727,7 @@ export default function Prospection(props) {
                 </Button>
                 <Button
                   onClick={closeModal}
-                  style={{ fontFamily: "Inter", fontWeight: "500" }}
-                  className="float-right mb-3 mr-2"
-                  variant="danger"
+                  className="float-right mb-3 mr-2 montse btnBee"
                 >
                   Cancelar
                 </Button>
@@ -794,9 +789,7 @@ export default function Prospection(props) {
                 </Button>
                 <Button
                   onClick={closeModal}
-                  style={{ fontFamily: "Inter", fontWeight: "500" }}
-                  className="float-right mb-3 mr-2"
-                  variant="danger"
+                  className="float-right mb-3 mr-2 montse btnBee"
                 >
                   Cancelar
                 </Button>
@@ -864,10 +857,8 @@ export default function Prospection(props) {
                 </Button>
                 <Button
                   onClick={closeModal}
-                  style={{ fontFamily: "Inter", fontWeight: "500" }}
-                  className="float-right mb-3 mr-2"
-                  variant="danger"
-                >
+                  className="float-right mb-3 mr-2 montse btnBee"
+                  >
                   Cancelar
                 </Button>
               </Col>

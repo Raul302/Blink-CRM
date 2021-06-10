@@ -495,7 +495,7 @@ function PersonalData(props) {
                                     <h5 style={{ fontWeight: '600',fontSize:'20px' }} class="montse card-title">Información</h5>
                                 </div>
                                 <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
-                                    <button onClick={(e) => edit()} type="button" class="montse btn btn-danger">Cancelar</button>
+                                    <button onClick={(e) => edit()} type="button" class="montse btn btnBeewhite">Cancelar</button>
                                     <button onSubmit={handleSubmit(onSubmit)}
                                         type="submit" class="montse ml-1 btn btn-info">Guardar</button>
                                 </div>
@@ -508,7 +508,8 @@ function PersonalData(props) {
                                     <Form.Control autoComplete="off"
                                         onChange={(e) => changeName(e)} value={name}
                                         name="name"
-                                        className="formGray" type="text" placeholder="Ingrese su nombre" />
+                                        style={{letterSpacing:'0.1px'}} 
+                                        className="formGray montse" type="text" placeholder="Ingrese su nombre" />
                                 </div>
                             </div>
                             <div class="row mt-3 ">
@@ -519,7 +520,8 @@ function PersonalData(props) {
                                     <Form.Control autoComplete="off"
                                         onChange={(e) => changeFname(e)} value={fName}
                                         name="father_lastname"
-                                        className="formGray" type="text" placeholder="Ingrese su email" />
+                                        style={{letterSpacing:'0.1px'}}
+                                        className="formGray montse" type="text" placeholder="Ingrese su email" />
                                 </div>
                             </div>
                             <div class="row mt-3 ">
@@ -530,7 +532,8 @@ function PersonalData(props) {
                                     <Form.Control autoComplete="off"
                                         onChange={(e) => changeMName(e)} value={mName}
                                         name="mother_lastname"
-                                        className="formGray" type="text" placeholder="Ingrese su email" />
+                                        style={{letterSpacing:'0.1px'}}
+                                        className="formGray montse" type="text" placeholder="Ingrese su email" />
                                 </div>
                             </div>
 
@@ -607,7 +610,8 @@ function PersonalData(props) {
                                     <Form.Control autoComplete="off"
                                         onChange={(e) => changeNameRecom(e)} value={nameRecom}
                                         name="name"
-                                        className="formGray" type="text" placeholder="Ingrese su nombre" />
+                                        style={{letterSpacing:'0.1px'}}
+                                        className="formGray montse" type="text" placeholder="Ingrese su nombre" />
                                 </div>
                             </div>
                             <div class="row mt-3 ">
@@ -618,7 +622,8 @@ function PersonalData(props) {
                                     <Form.Control autoComplete="off"
                                         onChange={(e) => changeFatherRecom(e)} value={fatherRecom}
                                         name="name"
-                                        className="formGray" type="text" placeholder="Ingrese su nombre" />
+                                        style={{letterSpacing:'0.1px'}}
+                                        className="formGray montse" type="text" placeholder="Ingrese su nombre" />
                                 </div>
                             </div>
                             <div class="row mt-3 ">
@@ -629,7 +634,8 @@ function PersonalData(props) {
                                     <Form.Control autoComplete="off"
                                         onChange={(e) => changeMotherRecom(e)} value={motherRecom}
                                         name="name"
-                                        className="formGray" type="text" placeholder="Ingrese su nombre" />
+                                        style={{letterSpacing:'0.1px'}}
+                                        className="formGray montse" type="text" placeholder="Ingrese su nombre" />
                                 </div>
                             </div>
                         </form>
@@ -672,7 +678,7 @@ function PersonalData(props) {
                             <h5 style={{ fontWeight: '600',fontSize:'20px' }} class="montse card-title">Recomendado por : </h5>
                         </div>
                         <div  class="col-1 d-flex justify-content-end">
-                                    <button onClick={(e) => editRecomenBy()} type="button" class="montse btn btn-danger">Cancelar</button>
+                                    <button onClick={(e) => editRecomenBy()} type="button" class="montse btn btnBeewhite">Cancelar</button>
                                     <button onSubmit={handleSubmit(onSubmit)}
                                         type="submit" class="montse ml-1 btn btn-info">Guardar</button>
                                 </div>
@@ -777,7 +783,7 @@ function PersonalData(props) {
                                     <h5 style={{ fontWeight: '600',fontSize:'20px' }} class="montse card-title">Perfil académico</h5>
                                 </div>
                                 <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
-                                    <button onClick={(e) => editAcademicP()} type="button" class="montse btn btn-danger">Cancelar</button>
+                                    <button onClick={(e) => editAcademicP()} type="button" class="montse btn btnBeewhite">Cancelar</button>
                                     <button onSubmit={handleSubmit(onSubmit)}
                                         type="submit" class="montse ml-1 btn btn-info">Guardar</button>
                                 </div>
@@ -927,7 +933,7 @@ function PersonalData(props) {
                                     <h5 style={{ fontWeight: '600',fontSize:'20px' }} class="montse card-title">Detalles de contacto</h5>
                                 </div>
                                 <div class="col-1 d-flex justify-content-end">
-                                    <button onClick={(e) => editCDetails()} type="button" class="montse btn btn-danger">Cancelar</button>
+                                    <button onClick={(e) => editCDetails()} type="button" class="montse btn btnBeewhite">Cancelar</button>
                                     <button onSubmit={handleSubmit(onSubmit)}
                                         type="submit" class="montse ml-1 btn btn-info">Guardar</button>
                                 </div>
@@ -984,12 +990,16 @@ function PersonalData(props) {
                                         <div class="row">
                                             <div class="col-4 ">
                                                 {inputEmail.length !== 0 &&
-                                                 <button type="button" onClick={() => handleRemoveClickEmail(i)} class="montse ml-1 btn btn-danger btn-sm">
-                                                     <FAIcons.FaTrashAlt  style={{ color: 'white' }} size={18} />
+                                                 <button type="button"
+                                                 style={{width:'12%'}}
+                                                 onClick={() => handleRemoveClickEmail(i)} class="montse ml-1 btn btn-danger btn-sm">
+                                                     <FAIcons.FaTrashAlt  style={{color: 'white' }} size={18} />
                                                 </button>
                                                 }
                                                 {inputEmail.length - 1 === i && <button onClick={handleAddClickEmail}
-                                                    type="submit" class="montse ml-1 btn btn-info btn-sm"><span style={{ fontSize: '16px' }} class="montse">+</span></button>
+                                                    type="submit" 
+                                                    style={{width:'12%'}}
+                                                    class="montse ml-1 btn btn-info btn-sm"><span style={{ fontSize: '18px' }} class="montse">+</span></button>
                                                 }
                                             </div>
                                         </div>
@@ -1052,12 +1062,16 @@ function PersonalData(props) {
                                         <div class="row">
                                             <div class="col-4 ">
                                                 {inputPhone.length !== 0 &&
-                                                  <button type="button" onClick={() => handleRemoveClickPhone(i)} class="montse ml-1 btn btn-danger btn-sm">
+                                                  <button type="button" 
+                                                  style={{width:'12%'}}
+                                                  onClick={() => handleRemoveClickPhone(i)} class="montse ml-1 btn btn-danger btn-sm">
                                                   <FAIcons.FaTrashAlt  style={{ color: 'white' }} size={18} />
                                              </button>
                                                 }
                                                 {inputPhone.length - 1 === i && <button onClick={handleAddClickPhone}
-                                                    type="submit" class="montse ml-1 btn btn-info btn-sm"><span style={{ fontSize: '16px' }} class="montse">+</span></button>
+                                                    type="submit" 
+                                                    style={{width:'12%'}}
+                                                    class="montse ml-1 btn btn-info btn-sm"><span style={{ fontSize: '18px' }} class="montse">+</span></button>
                                                 }
                                             </div>
                                         </div>
@@ -1152,7 +1166,7 @@ function PersonalData(props) {
                                     <h5 style={{ fontWeight: '600',fontSize:'20px' }} class="montse card-title">Dirección</h5>
                                 </div>
                                 <div class="col-1 d-flex justify-content-end">
-                                    <button onClick={(e) => editD()} type="button" class="montse btn btn-danger">Cancelar</button>
+                                    <button onClick={(e) => editD()} type="button" class="montse btn btnBeewhite">Cancelar</button>
                                     <button onSubmit={handleSubmit(onSubmit)}
                                         type="submit" class="montse ml-1 btn btn-info">Guardar</button>
                                 </div>
@@ -1374,12 +1388,16 @@ function PersonalData(props) {
                                         <div class="row">
                                             <div class="col-4 ">
                                                 {inputList.length !== 0 &&
-                                                  <button type="button" onClick={() => handleRemoveClick(i)} class="montse ml-1 btn btn-danger btn-sm">
+                                                  <button type="button" 
+                                                  style={{width:'12%'}}
+                                                  onClick={() => handleRemoveClick(i)} class="montse ml-1 btn btn-danger btn-sm">
                                                   <FAIcons.FaTrashAlt  style={{ color: 'white' }} size={18} />
                                              </button>
                                                 }
                                                 {inputList.length - 1 === i && <button onClick={handleAddClick}
-                                                    type="submit" class="montse ml-1 btn btn-info btn-sm"><span style={{ fontSize: '16px' }} class="montse">+</span></button>
+                                                    type="submit" 
+                                                    style={{width:'12%'}}
+                                                    class="montse ml-1 btn btn-info btn-sm"><span style={{ fontSize: '18px' }} class="montse">+</span></button>
                                                 }
                                             </div>
                                         </div>

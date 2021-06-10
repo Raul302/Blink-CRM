@@ -400,7 +400,7 @@ export default function TrackingsContact() {
             <>
               <button onClick={(e) => changeProspection(oneKey, results[oneKey])} eventKey={oneKey} title={oneKey}
                 class={"ml-1 mt-n5 btn btn-sm btn-yellow"}
-                style={{ marginBottom: '20px', border: [oneKey == prospectionSelected ? '0.1px inset purple' : '0px'], opacity: [oneKey == prospectionSelected ? '2' : '0.5'] }}
+                style={{ marginBottom: '20px', opacity: [oneKey == prospectionSelected ? '2' : '0.5'] }}
               >
                 {oneKey}
               </button>
@@ -418,7 +418,7 @@ export default function TrackingsContact() {
                 eventKey={oneKey} title={oneKey}
                 class={[i > 0 ? "ml-1" : "ml-0"
                 ]}
-                style={{ opacity: [auxSelection[oneKey].id == selectionTwo ? '2' : '0.5'], border: [auxSelection[oneKey].id == selectionTwo ? '1px inset purple' : '0px'] }}
+                style={{ opacity: [auxSelection[oneKey].id == selectionTwo ? '2' : '0.5'] }}
                 class={checkButton(auxSelection[oneKey])}
               >
                 {auxSelection[oneKey].name}

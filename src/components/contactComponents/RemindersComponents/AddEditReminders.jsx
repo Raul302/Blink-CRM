@@ -186,6 +186,10 @@ export default function AddEditReminders(props) {
         setModal(!modal);
     }
     async function onSubmit(data) {
+        let currendate = moment(dateReminder + " "+ timeReminder).format("YYYY-MM-DD HH:mm");
+        let nowDatecomparison = moment(now + " "+ nowTime).format("YYYY-MM-DD HH:mm");
+        let nowDate = moment(currendate).subtract(5 ,'minutes').format("YYYY-MM-DD HH:mm");
+        if(!(nowDate < nowDatecomparison)){
         let url = flagEdit ? 'reminders/updated' : 'reminders/save';
         let datex = dateReminder + " " + timeReminder;
         let obj = {
@@ -224,6 +228,9 @@ export default function AddEditReminders(props) {
             dispatch(starLoadingRemindersC(contact.id));
         }
         handleClose();
+    } else {
+        notification('warning','Cuidado,esta se encuentra entre el rango no permitido');
+    }
     }
     function handleClose() {
         resetArrays();
@@ -429,7 +436,7 @@ export default function AddEditReminders(props) {
                                     className="float-right mb-3 mr-2 montse" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="info">{flagEdit ? 'Actualizar' : 'Guardar'}</Button>
-                                <Button onClick={handleClose}  className="float-right mb-3 mr-2 montse" variant="danger" >
+                                <Button onClick={handleClose}  className="float-right mb-3 mr-2 montse btnBee" >
                                     Cancelar
                 </Button>
 

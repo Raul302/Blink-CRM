@@ -38,11 +38,11 @@ export const slotType = function SlotName(props) {
   const showSubject = (type = "", subject) => {
     let tag = "";
     if (!type || type === "" || type === null) {
-      tag = <span class="Inter600B">{subject}</span>;
+      tag = <span class="montse">{subject}</span>;
     } else {
       if (type.includes("Llamada")) {
         tag = (
-          <span onClick={(e) => showModal(props.data)} class="Inter600B">
+          <span onClick={(e) => showModal(props.data)} class="montse">
             <svg width="16" height="16" viewBox="0 0 24 24">
               <path
                 fill="#3B83BD"
@@ -55,14 +55,14 @@ export const slotType = function SlotName(props) {
         );
       } else if (type.includes("Whatssap")) {
         tag = (
-          <span onClick={(e) => showModal(props.data)} class="Inter600B">
+          <span onClick={(e) => showModal(props.data)} class="montse">
             <FAIcons.FaWhatsapp color={"#3B83BD"} />
             &nbsp; &nbsp;{subject}
           </span>
         );
       } else if (type.includes("Cita")) {
         tag = (
-          <span onClick={(e) => showModal(props.data)} class="Inter600B">
+          <span onClick={(e) => showModal(props.data)} class="montse">
             <FIcons.FiCalendar color={"#3B83BD"} />
             &nbsp;&nbsp;
             {subject}
@@ -70,7 +70,7 @@ export const slotType = function SlotName(props) {
         );
       } else if (type.includes("Email")) {
         tag = (
-          <span onClick={(e) => showModal(props.data)} class=" Inter600B">
+          <span onClick={(e) => showModal(props.data)} class=" montse">
             <HIcons.HiOutlineMail color={"#3B83BD"} size={16} />
             &nbsp;&nbsp;
             {subject}
@@ -78,7 +78,7 @@ export const slotType = function SlotName(props) {
         );
       } else {
         tag = (
-          <span class=" Inter600B">
+          <span class=" montse">
             <BIicons.BiMessageDetail color={"#3B83BD"} size={16} />
             &nbsp; &nbsp;
             {subject}
@@ -99,66 +99,60 @@ export const slotType = function SlotName(props) {
 // Component SLotActions
 export const SlotParticipants = function SlotParticipants(props) {
   const { participants } = props.data;
+  const {allUsers } = props.context;
   const showModal = (obj) => {
     props.context.showModal(obj);
   };
-  const showParticipant = (type = "user", name) => {
-    let n = name ? name : " ";
-    let tag = "";
-    if (n) {
-      n = n.charAt(0) + n.charAt(1);
+  const showParticipant = (type = "user", fullname) => {
+    let n = fullname ? fullname.split(" ") : " ";
+    let tag = '';
+    if (n.length >= 3) {
+        n = n[0].charAt(0) + n[1].charAt(0) + n[2].charAt(0);
+    } else if(n.length >= 2) {
+      n = n[0].charAt(0) + n[1].charAt(0) ;
+    } else {
+      n = n[0].charAt(0);
     }
-    switch (type) {
-      case "user":
-        tag = (
-          <span
-            onClick={(e) => showModal(props.data)}
-            class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV"
-          >
-            {n}
-          </span>
-        );
-        break;
-      case "contactos":
-        tag = (
-          <span
-            onClick={(e) => showModal(props.data)}
-            class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP"
-          >
-            {n}
-          </span>
-        );
-        break;
-      case "colegio":
-        tag = (
-          <span
-            onClick={(e) => showModal(props.data)}
-            class="sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ"
-          >
-            {n}
-          </span>
-        );
+  switch (type) {
+      case 'user':
+        allUsers.map(al => {
+          if(fullname == (al.name + " " + al.father_lastname + " " + al.mother_lastname)){
+            switch (al.type) {
+              case 'Administrador':
+                tag = <span onClick={(e) => showModal(props.data)} class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV bgBlue">{n}</span>;
+                break;
+              case 'Supervisor':
+                tag = <span onClick={(e) => showModal(props.data)} class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV bgPurple">{n}</span>;
+              break;
+              case 'Colaborador ':
+                console.log('Colaborador'); 
+              default:
+                tag = <span onClick={(e) => showModal(props.data)} class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV bgGreen">{n}</span>;
 
-        break;
+                break;
+            }
+          }
+        })
+      break;
+      case 'contactos':
+      tag = <span onClick={(e) => showModal(props.data)} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP bgTurquesa">{n}</span>;
+          break;
+      case 'colegio':
+        tag = <span onClick={(e) => showModal(props.data)} class="sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP bgPink">{n}</span>;
+          break;
       default:
-        tag = (
-          <span
-            onClick={(e) => showModal(props.data)}
-            class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ"
-          >
-            {n}
-          </span>
-        );
-        break;
-    }
-    return tag;
+          tag = <span onClick={(e) => showModal(props.data)} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP bgPink">{n}</span>;
+      break;
+  }
+  return tag;
+
   };
   return (
     <>
       <div>
         {participants.map((part) => {
           return (
-            <span key={part.id}>{showParticipant(part.type, part.name)}</span>
+            <span key={part.id}>{showParticipant(part.type, part.fullname)}</span>
           );
         })}
       </div>
@@ -180,7 +174,7 @@ export const SlotDate = function SlotDate(props) {
     datef = datef[0].toUpperCase() + datef.slice(1);
     datef = datef.replace(".", "");
     let tag = (
-      <span class="Inter">
+      <span class="montse">
         {datef} <Ioicons.IoMdTime /> {timef}
       </span>
     );
@@ -246,6 +240,7 @@ export const slotApplicaciones = function slotApplicaciones(props) {
 };
 
 function Bio(props) {
+  const { users:allUsers } = useSelector(state => state.users);
   // Set moment spanish
   moment.locale("es-mx");
   const alert = useAlert();
@@ -479,47 +474,56 @@ function Bio(props) {
     datef = datef[0].toUpperCase() + datef.slice(1);
     datef = datef.replace(".", "");
     let tag = (
-      <span class="Inter">
+      <span class="montse">
         {datef} <Ioicons.IoMdTime /> {timef}
       </span>
     );
     return tag;
   };
 
-  const showParticipant = (type = "use", name) => {
-    let n = name ? name : " ";
-    let tag = "";
-    if (n) {
-      n = n.charAt(0) + n.charAt(1);
+  const showParticipant = (type = "use", fullname =" ") => {
+    let n = fullname ? fullname.split(" ") : " ";
+    let tag = '';
+    if (n.length >= 3) {
+        n = n[0].charAt(0) + n[1].charAt(0) + n[2].charAt(0);
+    } else if(n.length >= 2) {
+      n = n[0].charAt(0) + n[1].charAt(0) ;
+    } else {
+      n = n[0].charAt(0);
     }
-    switch (type) {
-      case "user":
-        tag = (
-          <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV">
-            {n}
-          </span>
-        );
-        break;
-      case "contactos":
-        tag = (
-          <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP">
-            {n}
-          </span>
-        );
-        break;
-      case "colegio":
-        tag = <Ioicons.IoMdSchool size={32} />;
-        break;
-      default:
-        tag = (
-          <span class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnZ">
-            {n}
-          </span>
-        );
-        break;
-    }
+  switch (type) {
+      case 'user':
+        allUsers.map(al => {
+          if(fullname == (al.name + " " + al.father_lastname + " " + al.mother_lastname)){
+            switch (al.type) {
+              case 'Administrador':
+                tag = <span onClick={(e) => showModal(props.data)} class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV bgBlue">{n}</span>;
+                break;
+              case 'Supervisor':
+                tag = <span onClick={(e) => showModal(props.data)} class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV bgPurple">{n}</span>;
+              break;
+              case 'Colaborador ':
+                console.log('Colaborador'); 
+              default:
+                tag = <span onClick={(e) => showModal(props.data)} class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV bgGreen">{n}</span>;
 
-    return tag;
+                break;
+            }
+          }
+        })
+      break;
+      case 'contactos':
+      tag = <span onClick={(e) => showModal(props.data)} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP bgTurquesa">{n}</span>;
+          break;
+      case 'colegio':
+        tag = <span onClick={(e) => showModal(props.data)} class="sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP bgPink">{n}</span>;
+          break;
+      default:
+          tag = <span onClick={(e) => showModal(props.data)} class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP bgPink">{n}</span>;
+      break;
+  }
+  return tag;
+
   };
   const PopoverComponent = (text) => {
     return (
@@ -627,7 +631,7 @@ function Bio(props) {
           <div style={{ borderRadius: "0px" }} class="card">
             <div class="card-body">
               <div class="row">
-                <span onClick={() => showModalLog("Llamada")} class="Inter600B">
+                <span onClick={() => showModalLog("Llamada")} class="montse">
                   <svg width="16" height="16" viewBox="0 0 24 24">
                     <path
                       fill="currentColor"
@@ -639,21 +643,21 @@ function Bio(props) {
                 </span>
                 <span
                   onClick={() => showModalLog("Whatssap")}
-                  class="ml-4 Inter600B"
+                  class="ml-4 montse"
                 >
                   <FAIcons.FaWhatsapp />
                   &nbsp; Whatssap
                 </span>
                 <span
                   onClick={() => showModalLog("Cita")}
-                  class="ml-4 Inter600B"
+                  class="ml-4 montse"
                 >
                   <FIcons.FiCalendar />
                   &nbsp; Cita
                 </span>
                 <span
                   onClick={() => showModalLog("Email")}
-                  class="ml-4 Inter600B"
+                  class="ml-4 montse"
                 >
                   <HIcons.HiOutlineMail size={16} />
                   Email
@@ -671,6 +675,7 @@ function Bio(props) {
               <AgGridReact
                 context={{
                   showModal,
+                  allUsers : allUsers
                 }}
                 defaultColDef={{ resizable: true }}
                 rowData={bioRecords}
@@ -727,7 +732,7 @@ function Bio(props) {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div class="container">
                 <Row>
-                  <div style={{ fontSize: "18px" }} class="col Inter600B">
+                  <div style={{ fontSize: "18px" }} class="col montse">
                     {param.subject}
                   </div>
                   <div class="justify-content-end">
@@ -748,14 +753,14 @@ function Bio(props) {
                   </div>
                 </Row>
                 <Row className="mt-2">
-                  <div style={{ fontSize: "14px" }} class="col Inter">
+                  <div  class="col montse">
                     <svg
                       width="18"
                       height="20"
                       viewBox="0 0 18 20"
                       style={{
                         color: "rgb(66, 82, 110)",
-                        height: "16px",
+                        height: "14px",
                         width: "14px",
                       }}
                     >
@@ -773,12 +778,12 @@ function Bio(props) {
                 </Row>
                 {param.participants && (
                   <Row className="mt-3">
-                    <div style={{ fontSize: "14px" }} class="col Inter600B">
+                    <div style={{ fontSize: "14px" }} class="col montse">
                       Participantes :
                       {param.participants.map((part) => (
                         <Row className="mt-2">
-                          {showParticipant(part.type, part.name)}
-                          <span>{part.name}</span>
+                          {showParticipant(part.type, part.fullname)}
+                          <span class="ml-2 mt-1">{part.fullname}</span>
                         </Row>
                       ))}
                     </div>
@@ -816,7 +821,7 @@ function Bio(props) {
                           <div class="row">
                             <span
                               onClick={() => showModalLog("Llamada")}
-                              class="Inter600B"
+                              class="montse"
                             >
                               <svg width="16" height="16" viewBox="0 0 24 24">
                                 <path
@@ -829,21 +834,21 @@ function Bio(props) {
                             </span>
                             <span
                               onClick={() => showModalLog("Whatssap")}
-                              class="ml-4 Inter600B"
+                              class="ml-4 montse"
                             >
                               <FAIcons.FaWhatsapp />
                               &nbsp; Whatssap
                             </span>
                             <span
                               onClick={() => showModalLog("Cita")}
-                              class="ml-4 Inter600B"
+                              class="ml-4 montse"
                             >
                               <FIcons.FiCalendar />
                               &nbsp; Cita
                             </span>
                             <span
                               onClick={() => showModalLog("Email")}
-                              class="ml-4 Inter600B"
+                              class="ml-4 montse"
                             >
                               <HIcons.HiOutlineMail size={16} />
                               Email
@@ -904,7 +909,7 @@ function Bio(props) {
                   <InputGroup className="">
                     <InputGroup.Prepend>
                       <InputGroup.Text
-                        className="ml-3 Inter600B"
+                        className="ml-3 montse"
                         style={{
                           backgroundColor: "#FFFFFF",
                           borderRight: "0",
@@ -956,9 +961,7 @@ function Bio(props) {
                     </Button>
                     <Button
                       onClick={handleClose}
-                      style={{ fontFamily: "Inter", fontWeight: "500" }}
-                      className="float-right mb-3 mr-2"
-                      variant="danger"
+                      className="float-right mb-3 mr-2 montse btnBee"
                     >
                       Cancelar
                     </Button>

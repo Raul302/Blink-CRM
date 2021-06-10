@@ -126,7 +126,7 @@ function DetailsData(props) {
                     <div class="card-body">
                         <div class="row">
                             <div class="col-11">
-                                <h5 style={{ fontWeight: '600' }} class="Inter card-title">Informacion</h5>
+                                <h5 style={{ fontWeight: '600' }} class="Inter card-title">Información</h5>
                             </div>
                             <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
                             <a>
@@ -196,7 +196,7 @@ function DetailsData(props) {
                     <div class="card-body">
                         <div class="row">
                             <div class="col-11">
-                                <h5 style={{ fontWeight: '600' }} class="Inter card-title">Editar Informacion</h5>
+                                <h5 style={{ fontWeight: '600' }} class="Inter card-title">Editar Información</h5>
                             </div>
                             <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
                             <button onClick={(e) => edit()} type="button" class="montse btn btn-danger">Cancelar</button>

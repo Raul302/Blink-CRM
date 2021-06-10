@@ -70,6 +70,8 @@ export const SlotActions = function (props) {
     )
 }
 export const SlotUsers = function (props) {
+  const {allUsers } = props.context;
+
     function showEmailsTO(obj) {
       let n = obj.name_user ? obj.name_user.split(" ") : " ";
       let tag = '';
@@ -80,50 +82,38 @@ export const SlotUsers = function (props) {
       } else {
         n = n[0].charAt(0);
       }
-        switch (obj.type_user) {
-          case "user":
-            tag = (
-              <span
-                key={obj.id}
-                class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV"
-              >
-                {n}
-              </span>
-            );
+    switch (obj.type_user) {
+        case 'user':
+          allUsers.map(al => {
+            if(obj.name_user == (al.name + " " + al.father_lastname + " " + al.mother_lastname)){
+              switch (al.type) {
+                case 'Administrador':
+                  tag = <span  class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV bgBlue">{n}</span>;
+                  break;
+                case 'Supervisor':
+                  tag = <span  class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV bgPurple">{n}</span>;
+                break;
+                case 'Colaborador ':
+                  console.log('Colaborador'); 
+                default:
+                  tag = <span  class="mr-n1 sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV bgGreen">{n}</span>;
+
+                  break;
+              }
+            }
+          })
+        break;
+        case 'contactos':
+        tag = <span  class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP bgTurquesa">{n}</span>;
             break;
-          case "contactos":
-            tag = (
-              <span
-                key={obj.id}
-                class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV"
-              >
-                {n}
-              </span>
-            );
+        case 'colegio':
+          tag = <span  class="sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP bgPink">{n}</span>;
             break;
-          case "referencias":
-            tag = (
-              <span
-                key={obj.id}
-                class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV"
-              >
-                {n}
-              </span>
-            );
-            break;
-          default:
-            tag = (
-              <span
-                key={obj.id}
-                class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnV"
-              >
-                {n}
-              </span>
-            );
-            break;
-        }
-    
-        return tag;
+        default:
+            tag = <span  class=" sc-caSCKo ZomcK styles__User-sc-103gogw-2 gBkpnP bgPink">{n}</span>;
+        break;
+    }
+    return tag;
       }
     return (
       <>
@@ -224,6 +214,7 @@ export const SlotDescription = function (props) {
 
 export default function TableReminders(props) {
     // vars
+    const { users } = useSelector(state => state.users);
     let { id:id_Contact } = useParams();
     const [show, setShow] = useState(false);
     const dispatch = useDispatch();
@@ -417,6 +408,7 @@ export default function TableReminders(props) {
                     editReminder,
                     deleteReminder,
                     activeP,
+                    allUsers : users
                  }}
                 rowData={reminders}
                 rowHeight={40}
@@ -471,7 +463,7 @@ export default function TableReminders(props) {
                 <AgGridColumn
                   headerName="Usuarios"
                   cellRenderer="slotUsers"
-                  width="200"
+                  width="300"
                 />
                 <AgGridColumn headerName="Departamento" field="departament"width={220} />
                 <AgGridColumn headerName="Acciones" cellRenderer="slotActions" width={220} />

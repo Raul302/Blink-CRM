@@ -69,7 +69,7 @@ export const SlotActions = function SlotActions(props) {
  
   return (
       <>
-       <a ><FAIcons.FaTrashAlt style={{color:'#DC3545'}} size={18}onClick={(e) => dropStaff(props.data.id)} /> </a>
+       <a ><FAIcons.FaTrashAlt style={{color:'#FE0000'}} size={18}onClick={(e) => dropStaff(props.data.id)} /> </a>
       </>
   )
 }

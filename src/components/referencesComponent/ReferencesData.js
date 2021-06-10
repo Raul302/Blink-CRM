@@ -378,7 +378,7 @@ function ReferencesData(props) {
                                 <a class="ml-1">
                                     <FAIcons.FaTrashAlt
                                         onClick={(e) => deleteReference(props.reference.id)}
-                                        size={18} style={{ color: '#FF0101' }} />
+                                        size={18} style={{ color: '#FF0000' }} />
                                 </a>
                             </div>
                         </div>
@@ -465,7 +465,7 @@ function ReferencesData(props) {
                                 <>
                                 <div class="row mt-3 ">
                                     <div class="col-3">
-                                        <h6 class="montse card-subtitle mb-2 formGrayTwo">Direcciòn {x.typeAddress}</h6>
+                                        <h6 class="montse card-subtitle mb-2 formGrayTwo">Dirección {x.typeAddress}</h6>
                                     </div>
                                     <h6 style={{ color: '#243243', fontWeight: '600' }}
                                             class="montse card-subtitle">
