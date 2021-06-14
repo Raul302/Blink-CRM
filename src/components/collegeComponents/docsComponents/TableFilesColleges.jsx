@@ -4,7 +4,7 @@ import { AgGridReact, AgGridColumn } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import axios from 'axios';
-import { constaApi , domain } from "../../../constants/constants";
+import { constaApi , domain, secret_token } from "../../../constants/constants";
 import { useParams,} from "react-router";
 import moment from 'moment';
 import *  as Ioicons from "react-icons/io";
@@ -23,6 +23,8 @@ export default function TableFilesColleges(props) {
      const [columnApi, setColumnApi] = useState();
      let { id:id_contact } = useParams();
      const [fullImg,setFullImg] = useState("");
+     const [nameImg,setNameImg] = useState("");
+
  
      // Hook useEffect
      useEffect(() => {
@@ -34,8 +36,9 @@ export default function TableFilesColleges(props) {
          setColumnApi(params);
      }
      const clickEvent = (direction) => {
-         setFullImg(direction);
-         let a = document.querySelector('.imgs').click();
+        setFullImg(direction);
+        setNameImg(nameImg);
+        let a = document.querySelector('.imgs').click();
  
      }
      const dropFile = (id,path_doc,id_college) => {
@@ -84,7 +87,7 @@ export default function TableFilesColleges(props) {
              small={fullImg}
              medium={fullImg }
              large={fullImg}
-             alt={fullImg}
+             alt={nameImg}
              />
              </div>
                  <NotificationAlert ref={notificationAlert} />
@@ -225,17 +228,37 @@ export default function TableFilesColleges(props) {
  // SLOT Preview
  // Component SlotPreview
  export const SlotPreview = function SlotPreview(props) {
-     const {value} = props;
-     const maximImg = () => {
-         // document.getElementById("btnSample").click();
-         props.context.clickEvent(domain+value);
-     }
-     return (
-         <>
-         <img onClick={(e) => maximImg()} style={{width:'50px',height:'50px'}} alt={props.data.name_doc}src={domain+value}></img>
-         </>
-     )
-   }
+    const {value} = props;
+    let obj = "Sin image.jpg";
+    const maximImg = (e) => {
+        // document.getElementById("btnSample").click();
+        props.context.clickEvent(e.target.currentSrc,e.target.alt);
+    }
+    useEffect(()=>{
+        const petition = (value) => {
+            var myImage = document.getElementById('img'+value);
+            const src = constaApi + 'colleges/'+value;
+            const options = {
+                headers: {
+                             "Accept": "application/json",
+                             "Authorization": "Basic " + secret_token
+                         }
+            };
+            fetch(src, options)
+            .then(res => res.blob())
+            .then(blob => {
+                var objectURL = URL.createObjectURL(blob);
+                myImage.src = objectURL;
+            });
+        }
+        petition(value);
+    },[])
+    return (
+        <>
+        <img id={'img'+value} onClick={(e) => maximImg(e)} style={{width:'50px',height:'50px'}} alt={props.data.name_doc} src={obj}></img>
+        </>
+    )
+  }
  // END SLOT Slot Preveiw
  
  // SLOTPREVIEW

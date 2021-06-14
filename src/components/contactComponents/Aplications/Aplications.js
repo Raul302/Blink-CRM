@@ -646,7 +646,7 @@ export default function Aplications() {
             </div>
           </div>
           <div class="mt-5 row"
-            style={{ padding: '5px', boxShadow: '2px 2px 2px 2px #888888' }}>
+            style={{ padding: '5px', border: '1px solid #BABFC7' }}>
             <div class="col-6">
               <div class="container">
                 <div class="row">
@@ -946,13 +946,14 @@ export default function Aplications() {
             <h6>Recordatorios</h6>
             <div class="mt-5 col-12">
               <Reminders
+              route={'Aplicaciones'}
                 //   blocked={activeApplication.status == "Aplicar" ? true : activeApplication.status == "Cancelar" ? true : false}
                 activeApplication={activeApplication} applications={true} prospection={false} />
             </div>
           </div>
           <div class="mt-5 row">
             <h6>Bitácora</h6>
-            <div class="ml-n4 mt-5 col-12">
+            <div class="ml-n4  col-12">
               {activeApplication &&
                 <Bio
                 extern={true}
@@ -1052,9 +1053,7 @@ export default function Aplications() {
                   </Button>
                 <Button
                   onClick={closeModal}
-                  style={{ fontFamily: "Inter", fontWeight: "500" }}
-                  className="float-right mb-3 mr-2"
-                  variant="danger"
+                  className="float-right mb-3 mr-2 montse btnBee"
                 >
                   Cancelar
                   </Button>
@@ -1186,9 +1185,8 @@ export default function Aplications() {
                   </Button>
                 <Button
                   onClick={closeModal}
-                  style={{ fontFamily: "Inter", fontWeight: "500" }}
-                  className="float-right mb-3 mr-2"
-                  variant="danger"
+                  className="float-right mb-3 mr-2 montse btnBee"
+                
                 >
                   Cancelar
                   </Button>
@@ -1291,8 +1289,7 @@ export default function Aplications() {
                 <Button
                   onClick={closeModal}
                   style={{ fontFamily: "Inter", fontWeight: "500" }}
-                  className="float-right mb-3 mr-2"
-                  variant="danger"
+                  className="float-right mb-3 mr-2 montse btnBee"
                 >
                   Cancelar
                 </Button>

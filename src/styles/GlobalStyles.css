@@ -329,6 +329,7 @@ constructed stylesheet
 }
 .svgSideBar{
     fill:white;
+    /* margin-left: 4; */
 }
 .svgSideBar:hover{
     fill:#497cff;

@@ -493,6 +493,7 @@ export default function TrackingsContact() {
             <h6>Recordatorios</h6>
             <div class="mt-5 col-12">
               <Reminders
+              route={'Trackings'}
                 //   blocked={activeTracking.status == "Aplicar" ? true : activeTracking.status == "Cancelar" ? true : false}
                 activeTracking={activeTracking} trackings={true} prospection={false} />
             </div>
@@ -599,9 +600,7 @@ export default function TrackingsContact() {
                   </Button>
                 <Button
                   onClick={closeModal}
-                  style={{ fontFamily: "Inter", fontWeight: "500" }}
-                  className="float-right mb-3 mr-2"
-                  variant="danger"
+                  className="float-right mb-3 mr-2 montse btnBee"
                 >
                   Cancelar
                   </Button>
@@ -672,9 +671,7 @@ export default function TrackingsContact() {
                   </Button>
                 <Button
                   onClick={closeModal}
-                  style={{ fontFamily: "Inter", fontWeight: "500" }}
-                  className="float-right mb-3 mr-2"
-                  variant="danger"
+                  className="float-right mb-3 mr-2 montse btnBee"
                 >
                   Cancelar
                   </Button>
@@ -735,9 +732,7 @@ export default function TrackingsContact() {
                   </Button>
                 <Button
                   onClick={closeModal}
-                  style={{ fontFamily: "Inter", fontWeight: "500" }}
-                  className="float-right mb-3 mr-2"
-                  variant="danger"
+                  className="float-right mb-3 mr-2 montse btnBee"
                 >
                   Cancelar
                   </Button>
@@ -839,9 +834,7 @@ export default function TrackingsContact() {
                 </Button>
                 <Button
                   onClick={closeModal}
-                  style={{ fontFamily: "Inter", fontWeight: "500" }}
-                  className="float-right mb-3 mr-2"
-                  variant="danger"
+                  className="float-right mb-3 mr-2 montse btnBee"
                 >
                   Cancelar
                 </Button>

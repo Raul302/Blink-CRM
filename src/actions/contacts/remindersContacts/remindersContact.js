@@ -38,7 +38,7 @@ export const updatedReminderC = (data) =>{
             });
     }
 }
-export const deleteReminderC = (id,idContact = null,section = 'General') =>{
+export const deleteReminderC = (id,idContact = null,section = 'General',id_user = 0,id_type,type='Prospeccion') =>{
     return async (dispatch) => {
         let obj = {
             id:id,
@@ -52,10 +52,23 @@ export const deleteReminderC = (id,idContact = null,section = 'General') =>{
             } else {
                 dispatch( removeError());
             }
-            if(idContact){
+            if(section == 'General'){
                 dispatch( starLoadingRemindersC(idContact) );
-            } else {
-                dispatch(starLoadingAllRemindersC());
+            }
+            if(section == 'Dashboard'){
+                dispatch( starLoadingAllRemindersC(id_user));
+            }
+            if(section == 'Section'){
+                dispatch( starLoadingAllReminders() );
+            }
+            if(section == 'Prospeccion'){
+                dispatch( starLoadingProspectRemindersC(idContact,id_type,'Prospeccion'));
+            }
+            if(section == 'Aplicaciones'){
+                dispatch( starLoadingApplicationRemindersC(idContact,id_type,'Aplicaciones'));
+            }
+            if(section == 'Trackings'){
+                dispatch( starLoadingTrackingsRemindersC(idContact,id_type,'Tracking'));
             }
             dispatch( finishLoading() );
         }).catch(error =>{

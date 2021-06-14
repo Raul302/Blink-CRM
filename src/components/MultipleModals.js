@@ -11,6 +11,7 @@ import swal from 'sweetalert';
 import { states as jsonState } from 'MyJson\'s/statesJson';
 import { municipios } from 'MyJson\'s/municipiosJson';
 import { loadLocalColleges } from 'helpers/collegesHelpers/loadColleges';
+import { loadColleges } from 'helpers/collegesHelpers/loadColleges';
 
 
 
@@ -45,7 +46,19 @@ function MultipleModals(props) {
     const [dateReminder, setDateReminder] = useState("");
     const [now, setNow] = useState();
     const [nowTime, setNowTime] = useState();
+    const [typeSourc,setTypeSourc] = useState("");
+    const[optionSourc,setOptioonSourc] = useState("");
     let userActive = JSON.parse(localStorage.getItem("user"));
+    const sources = [
+        'Recomendado por',
+        'Internet',
+        'Instagram',
+        'Facebook',
+        'Otro',
+        'Forma de contacto'
+    ];
+    const[CollegSource,setCollegSource] = useState("");
+    const [foreignCol,setForeignCol] = useState([]);
     const [program, setProgram] = useState(["Boarding School",
     "School District",
     "Summer Camp",
@@ -75,6 +88,12 @@ function MultipleModals(props) {
                 setLocalColleges(result[0]);
             }
         })
+        Promise.all([loadColleges()])
+        .then(function(result){
+            if(result){
+                setForeignCol(result[0]);
+            }
+        })
     },[props])
     useEffect(() => {
         thisDay();
@@ -86,6 +105,9 @@ function MultipleModals(props) {
 
     function changeFlag(e){
         setFlagOther(e.target.value);
+    }
+    function changeColSource(e){
+        setCollegSource(e.target.value);
     }
     function confirmClose(){
         swal({
@@ -315,7 +337,9 @@ function MultipleModals(props) {
         setModal5(false);
         props.consult();
         setFlagOther("");
-
+        setTypeSourc("");
+        setOptioonSourc("");
+        setCollegSource("");
     }
     const handleExtra = function ekis() {
         setExtra(state => !state);
@@ -348,12 +372,18 @@ function MultipleModals(props) {
             setvalidFieldSix(true);
         }
     }
+    function changeTypeSo(e){
+        setTypeSourc(e.target.value);
+    }
     function handlevalidFour(e) {
         if (e.target.value) {
             setvalidFieldFour(false);
         } else {
             setvalidFieldFour(true);
         }
+    }
+    function changeoptionSo(e){
+        setOptioonSourc(e.target.value);
     }
     async function onSubmit(data) {
         setBlocked(true);
@@ -385,7 +415,13 @@ function MultipleModals(props) {
                 departament: null,
                 urgent:  0,
             };
-            let auxTwo = {...aux,id_advisor:id,name_advisor:name}
+            let auxTwo = {...aux,
+                id_advisor:id,
+                name_advisor:name,
+                type_source : typeSourc ?? "",
+                option_source : optionSourc ?? "",
+                college_source : CollegSource ?? ""
+            }
             let auxThree = {...auxTwo,reminder:{...obj}};
              axios.post(constaApi+'contacts/save',auxThree)
             .then(function (response) {
@@ -635,27 +671,85 @@ function MultipleModals(props) {
                             <Row>
                                 <hr></hr>
                             <Col className="col-12">
-                                    <Form.Label className="formGray">Recomendado por :</Form.Label>
+                                    <Form.Label className="formGray">Source</Form.Label>
                                 </Col>
                             </Row>
                             <Row>
-                                <Col>
-                            <Form.Label className="formGray">Nombre</Form.Label>
-                               <Form.Control autoComplete="off" name="name_recom" ref={student}
-                                        className="formGray" type="text" placeholder="Ingrese el nombre del Rec." />
-                                </Col>
-                                <Col>
-                                <Form.Label className="formGray">Apellido P.</Form.Label>
-                               <Form.Control autoComplete="off" name="father_recom" ref={student}
-                                        className="formGray" type="text" placeholder="Ingrese su apellido p" />
-                                </Col>
-                                <Col>
-                                <Form.Label className="formGray">Apellido M.</Form.Label>
-                               <Form.Control autoComplete="off" name="mother_recom" ref={student}
-                                        className="formGray" type="text" placeholder="Ingrese su apellido m" />
+                                <Col className="col-6">
+                                    <Form.Control
+                                    onChange={(e) => changeTypeSo(e)}
+                                     autoComplete="off" name="typeSourc" value={typeSourc} as="select" size="sm" custom>
+                                    <option disabled value="" selected></option>
+                                        {sources.map(so => (
+                                            <option key={so} value={so}>
+                                                {so}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
                                 </Col>
                             </Row>
-
+                            {typeSourc== 'Recomendado por'
+                            &&
+                            <Row className="mt-2">
+                            <Col>
+                        <Form.Label className="formGray">Nombre</Form.Label>
+                           <Form.Control autoComplete="off" name="name_recom" ref={student}
+                                    className="formGray" type="text" placeholder="Ingrese el nombre del Rec." />
+                            </Col>
+                            <Col>
+                            <Form.Label className="formGray">Apellido P.</Form.Label>
+                           <Form.Control autoComplete="off" name="father_recom" ref={student}
+                                    className="formGray" type="text" placeholder="Ingrese su apellido p" />
+                            </Col>
+                            <Col>
+                            <Form.Label className="formGray">Apellido M.</Form.Label>
+                           <Form.Control autoComplete="off" name="mother_recom" ref={student}
+                                    className="formGray" type="text" placeholder="Ingrese su apellido m" />
+                            </Col>
+                        </Row>
+                            }
+                            {typeSourc== 'Otro'
+                            &&
+                            <Row className="mt-2">
+                            <Col className="col-6">
+                        <Form.Label className="formGray">Otro</Form.Label>
+                           <Form.Control autoComplete="off" name="other_source" ref={student}
+                                    className="formGray" type="text" placeholder="Especifique el source" />
+                            </Col>
+                        </Row>
+                            }
+                            {typeSourc== 'Forma de contacto'
+                            &&
+                            <Row className="mt-2">
+                            <Col className="col-6">
+                        <Form.Label className="formGray">Opcion</Form.Label>
+                                    <Form.Control
+                                    onChange={(e) => changeoptionSo(e)}
+                                     autoComplete="off" name="typeSourc" value={optionSourc} as="select" size="sm" custom>
+                                    <option disabled value="" selected></option>
+                                    <option  value="General" >General</option>
+                                    <option  value="Colegio" >Colegio</option>
+                                    </Form.Control>
+                            </Col>
+                        </Row>
+                            }
+                            {optionSourc == 'Colegio'
+                            &&
+                            <Row className="mt-2">
+                            <Col className="col-8">
+                            <Form.Control
+                            onChange={(e) => changeColSource(e)}
+                            autoComplete="off" name="typeSourc" value={CollegSource} as="select" size="sm" custom>
+                            <option disabled value="" selected></option>
+                                {foreignCol.map(fC => (
+                                    <option key={fC.name} value={fC.name}>
+                                        {fC.name}
+                                    </option>
+                                ))}
+                            </Form.Control>
+                            </Col>
+                            </Row>
+                            }
                         </div>
                         <Row>
 
@@ -665,8 +759,9 @@ function MultipleModals(props) {
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="info">Guardar</Button>
-                                <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
-                                    Cancel
+                                <Button onClick={handleClose} 
+                                className="float-right mb-3 mr-2 montse btnBee" >
+                                    Cancelar
                 </Button>
 
                             </Col>
@@ -800,8 +895,9 @@ function MultipleModals(props) {
                                 <Button 
                                 disabled={validFieldThree || validFieldFour}
                                 className="float-right mb-3 mr-2" type="submit" variant="info">Guardar</Button>
-                                <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
-                                    Cancel
+                                <Button onClick={handleClose} 
+                                 className="float-right mb-3 mr-2 montse btnBee" >
+                                    Cancelar
 </Button>
 
                             </Col>

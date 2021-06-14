@@ -493,13 +493,14 @@ export default function Prospection(props) {
             <h6>Recordatorios</h6>
             <div class="mt-5 col-12">
               <Reminders
+                route={'Prospeccion'}
                 blocked={activeProspect.status == "Aplicar" ? true : activeProspect.status == "Cancelar" ? true : false}
                 activeProspect={activeProspect} prospection={true} />
             </div>
           </div>
           <div class="mt-5 row">
             <h6>Bitácora</h6>
-            <div class="ml-n4 mt-5 col-12">
+            <div class="ml-n4  col-12">
               <Bio
                 extern={true}
                 blocked={activeProspect.status == "Aplicar" ? true : activeProspect.status == "Cancelar" ? true : false}

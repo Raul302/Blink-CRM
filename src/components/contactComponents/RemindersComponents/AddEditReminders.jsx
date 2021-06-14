@@ -18,6 +18,7 @@ import { BrowserRouter as Router, Switch,
 import { useParams,} from "react-router";
 import { setRemindersC } from 'actions/contacts/remindersContacts/remindersContact';
 import { starLoadingTrackingsRemindersC } from 'actions/contacts/remindersContacts/remindersContact';
+import { starLoadingAllReminders } from 'actions/contacts/remindersContacts/remindersContact';
 
 
 export default function AddEditReminders(props) {
@@ -57,7 +58,7 @@ export default function AddEditReminders(props) {
         label:'Urgente'
     });
     useEffect(() => {
-        consult();
+            consult();
         present();
         if (activeReminder != null) {
             setActiveReminder();
@@ -136,11 +137,12 @@ export default function AddEditReminders(props) {
         }
     }
     function changeTime(e) {
-        if(e.target.value < nowTime){
-            notification('warning','Cuidado,estas ingresando una Hora menor a la permitida');
-        } else {
-            setTimeReminder(e.target.value);
-        }
+        setTimeReminder(e.target.value);
+        // if(e.target.value < nowTime){
+        //     notification('warning','Cuidado,estas ingresando una Hora menor a la permitida');
+        // } else {
+        //     setTimeReminder(e.target.value);
+        // }
     }
     const handleChange = (e) => {
         setSelectValue(e);
@@ -209,24 +211,41 @@ export default function AddEditReminders(props) {
         await axios.post(constaApi + url, obj)
             .then(function (response) {
                 dispatch(setRemindersC([]));
-                if(props.prospection){
-                    dispatch( starLoadingProspectRemindersC(contact.id,props.activeProspect.id,'Prospeccion'));
-                }else if(props.applications){
-                    dispatch( starLoadingApplicationRemindersC(contact.id,props.activeApplication.id,'Aplicaciones'));
-                }else if(props.trackings){
-                    dispatch( starLoadingTrackingsRemindersC(contact.id,props.activeTracking.id,'Tracking'));
-                }else {
+                if(props.route == 'General'){
                     dispatch(starLoadingRemindersC(contact.id));
                 }
+                if(props.route == 'Dashboard'){
+                    dispatch(starLoadingAllRemindersC(props.userDash.id));
+                }
+                if(props.route == 'Section'){
+                    dispatch( starLoadingAllReminders(props.userDash.id) );
+                }
+                if(props.route == 'Prospeccion'){
+                    dispatch( starLoadingProspectRemindersC(contact.id,props.activeProspect.id,'Prospeccion'));
+                }
+                if(props.route == 'Aplicaciones'){
+                    dispatch( starLoadingApplicationRemindersC(contact.id,props.activeApplication.id,'Aplicaciones'));
+                }
+                if(props.route == 'Trackings'){
+                    dispatch( starLoadingTrackingsRemindersC(contact.id,props.activeTracking.id,'Tracking'));
+                }
+                // if(props.prospection){
+                //     dispatch( starLoadingProspectRemindersC(contact.id,props.activeProspect.id,'Prospeccion'));
+                // }else if(props.applications){
+                //     dispatch( starLoadingApplicationRemindersC(contact.id,props.activeApplication.id,'Aplicaciones'));
+                // }else if(props.trackings){
+                //     dispatch( starLoadingTrackingsRemindersC(contact.id,props.activeTracking.id,'Tracking'));
+                // }else {
+                // }
             }).catch(error => {
 
             });
         dispatch(activeReminderC(null, null));
-        if(init && pathname != '/contacts/'+idInUrl+'/reminders'){
-        dispatch(starLoadingAllRemindersC(init.id));
-        } else {
-            dispatch(starLoadingRemindersC(contact.id));
-        }
+        // if(init && pathname != '/contacts/'+idInUrl+'/reminders'){
+        // dispatch(starLoadingAllReminders(init.id));
+        // } else {
+        //     dispatch(starLoadingRemindersC(contact.id));
+        // }
         handleClose();
     } else {
         notification('warning','Cuidado,esta se encuentra entre el rango no permitido');

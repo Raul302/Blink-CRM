@@ -53,7 +53,7 @@ export default function AddEditReminders(props) {
         label:'Urgente'
     });
     useEffect(() => {
-        consult();
+            consult();
         present();
         if (activeReminder != null) {
             setActiveReminder();

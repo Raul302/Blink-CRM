@@ -110,7 +110,7 @@ class SideBar extends React.Component {
               overlay={this.PopoverComponent(prop.name)}>
               <a>
               <i className={
-                this.activeRoute(prop.path) == 0 ?'nc-icon mt-3 svgSideBar' :'nc-icon mt-3 svgSideBarBlue' }>
+                this.activeRoute(prop.path) == 0 ?'nc-icon mr-1 mt-3 svgSideBar' :'nc-icon mr-1 mt-3 svgSideBarBlue' }>
                       {prop.icon}
                       </i>
               </a>

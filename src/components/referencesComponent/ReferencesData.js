@@ -530,7 +530,7 @@ function ReferencesData(props) {
                                 <div style={{ marginRight: '-200px' }} class="col-1 d-flex justify-content-end">
                                     <button onClick={(e) => editing()}
                                         type="button"
-                                        class="montse btn btn-danger">Cancelar</button>
+                                        class="montse btn btnBeewhite">Cancelar</button>
                                     <button onSubmit={handleSubmit(onSubmit)}
                                         type="submit" class="montse ml-1 btn btn-info">Guardar</button>
                                 </div>

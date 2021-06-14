@@ -527,10 +527,8 @@ export default function Proposals(props) {
                 </Button>
                 <Button
                   onClick={closeModal}
-                  style={{ fontFamily: "Inter", fontWeight: "500" }}
-                  className="float-right mb-3 mr-2"
-                  variant="danger"
-                >
+                  className="float-right mb-3 mr-2 montse btnBee"
+                  >
                   Cancelar
                 </Button>
               </Col>

@@ -285,7 +285,7 @@ function AddOrEditCollege(props) {
             objx.arts = selectArt;
             objx.special_c = selectSpecial;
             objx.local = props.type == 'Locale' ? 1 : 0;
-            dispatch(newCollege(objx,1));
+            dispatch(newCollege(objx,objx.local));
             close();
             setObj({});
             setSelectArt();
@@ -393,7 +393,7 @@ function AddOrEditCollege(props) {
                                     className="float-right mb-3 mr-2" type="submit"
                                     onSubmit={handleSubmit(onSubmit)}
                                     variant="info">Siguiente</Button>
-                                <Button onClick={handleClose} style={{ fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
+                                <Button onClick={handleClose}  className="float-right mb-3 mr-2 montse btnBee" >
                                     Cancelar
                                 </Button>
                             </Col>

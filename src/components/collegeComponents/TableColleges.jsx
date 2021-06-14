@@ -142,7 +142,7 @@ function TableColleges(props) {
       })
       .then((willDelete) => {
         if (willDelete) {
-          dispatch( deleteCollege(id));
+          dispatch( deleteCollege(id,props.type == 'Locale' ? 1 : 0));
           notification('success','Colegio eliminado Correctamente');
         } else {
           swal("Operacion cancelada!");
@@ -198,7 +198,7 @@ function TableColleges(props) {
                     <AgGridReact
                          context={{
                           dropCollege
-                            }}
+                                                    }}
                         defaultColDef={{ resizable: true }}
                         rowData={colleges}
                         rowHeight={40}

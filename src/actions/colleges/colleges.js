@@ -20,13 +20,14 @@ export const newCollege = (data,local = 0) =>{
     }
 }
 
-export const deleteCollege = (id) =>{
+export const deleteCollege = (id,local = 0) =>{
     return async (dispatch) => {
         dispatch( startLoading() );
     await axios.post(constaApi+'colleges/delete',{id:id})
         .then(function (response) {
             dispatch( removeError());
-            dispatch( starLoadingColleges() );
+            console.log('local',local);
+            local == 0 ? dispatch( starLoadingColleges() ) : dispatch( starLoadingLocalColleges() );
             dispatch( finishLoading() );
         }).catch(error =>{
             dispatch(setError('Ocurrio un error'));

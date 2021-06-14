@@ -36,13 +36,18 @@ export default function RemindersSection(props) {
            <div class="row">
            <div class="col-12">
             <div class="mt-5 col d-flex justify-content-end">
-            <AddEditContacts openContacts={true} {...props}/>
+            <AddEditContacts
+            route={'Section'}
+            userDash={init}
+            openContacts={true} {...props}/>
             </div>
             <div>
             <SearchBar consult={(e) => consult(e)}/>
             </div>
             <h6>Contactos</h6>
-            <TableContacts  param={param} fromRemindersSection={true} openModal={open}{...props}/>
+            <TableContacts 
+              route={'Section'}
+             param={param} fromRemindersSection={true} openModal={open}{...props}/>
             </div>
            </div>
            {init.type === 'Administrador' ? 

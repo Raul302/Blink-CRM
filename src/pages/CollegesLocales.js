@@ -24,7 +24,7 @@ export default function CollegesLocales() {
             <AddOrEditCollege type={'Locale'} />
             </div>
             <SearchBar consult={(e) => consult(e)}/>
-            <TableColleges collegesLocales={true} param={param}/>
+            <TableColleges type={'Locale'} collegesLocales={true} param={param}/>
                 </div>
         </div>
         </div>
