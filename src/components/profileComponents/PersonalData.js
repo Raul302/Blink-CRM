@@ -26,9 +26,9 @@ function PersonalData(props) {
                     setLocalColleges(result[0]);
                 }
             })
-            Promise.all([loadColleges()])
-            .then(function(result){
-                if(result){
+        Promise.all([loadColleges()])
+            .then(function (result) {
+                if (result) {
                     setForeignCol(result[0]);
                 }
             })
@@ -49,7 +49,7 @@ function PersonalData(props) {
         isChecked: false,
         label: 'Pais'
     });
-    const [foreignCol,setForeignCol] = useState([]);
+    const [foreignCol, setForeignCol] = useState([]);
     const [optionscols, setCols] = useState([{ colonia: "" }]);
     const [muns, setMuns] = useState([]);
     const notificationAlert = useRef();
@@ -226,7 +226,7 @@ function PersonalData(props) {
         setInputList(list);
     };
 
-    const handleAddClickSource = () =>{
+    const handleAddClickSource = () => {
         setInputSource([...inputSource, { name_recom: "", father_recom: "", mother_recom: "", type_source: "", option_source: "", college_source: "", other_source: "" }]);
     }
     // handle click event of the Add button
@@ -303,6 +303,8 @@ function PersonalData(props) {
             // }
         }).then(function (response) {
             setCountries(response.data);
+            console.log('Response',response.data); 
+
         });
     }
     function setFilterValues(props) {
@@ -385,7 +387,7 @@ function PersonalData(props) {
             country: country,
             direction: inputList,
             other_School: schoool != 'Otro' ? null : other_School,
-            recom : inputSource
+            recom: inputSource
         };
         await axios.post(constaApi + 'contact/update', datax)
             .then(function (response) {
@@ -499,7 +501,7 @@ function PersonalData(props) {
 
                         <div class="row mt-3 ">
                             <div class="col-3">
-                                <h6 class="montse card-subtitle mb-2 formGrayTwo">Fecha</h6>
+                                <h6 class="montse card-subtitle mb-2 formGrayTwo">Fecha de Nacimiento</h6>
                             </div>
                             <div class="col">
                                 <h6 style={{ letterSpacing: '1px', color: '##243243', fontWeight: '600' }}
@@ -517,7 +519,7 @@ function PersonalData(props) {
                                     class="montse card-subtitle mb-2">
                                     {props.contact.city ? " " + props.contact.city : ''}
                                     {props.contact.state ? ',' + " " + props.contact.state + ',' : ''}
-                                    {props.contact.country ? props.contact.country : ''}
+                                    {props.contact.country ? " " + props.contact.country : ''}
                                 </h6>
                             </div>
                         </div>
@@ -707,6 +709,23 @@ function PersonalData(props) {
                                             </h6>
                                         </div>
                                     </div>
+                                    {x.type_source == 'Recomendado por'
+                                        &&
+                                        <Row className="mt-2">
+                                            <Col className="col-3">
+                                              
+                                            </Col>
+                                            <Col>
+                                                <h6 style={{ color: '#243243', fontWeight: '600' }}
+                                                    class="montse card-subtitle mb-2 ">
+                                                    {x.name_recom ? x.name_recom + " " : " "}
+                                                    {x.father_recom ? x.father_recom + " " : " "}
+                                                    {x.mother_recom ? x.mother_recom : " "}
+                                                </h6>
+
+                                            </Col>
+                                        </Row>
+                                    }
                                     {x.option_source &&
                                         <div class="row mt-3">
                                             <div class="col-3">
@@ -742,16 +761,16 @@ function PersonalData(props) {
                 <div style={{ boxShadow: 'none', borderColor: '#717d95' }} class="border mt-3 card">
                     <div class="card-body">
                         <form onSubmit={handleSubmit(onSubmit)}>
-                        <div class="row">
-                            <div class="col">
-                                <h5 style={{ fontWeight: '600', fontSize: '20px' }} class="montse card-title">Source </h5>
+                            <div class="row">
+                                <div class="col">
+                                    <h5 style={{ fontWeight: '600', fontSize: '20px' }} class="montse card-title">Source </h5>
+                                </div>
+                                <div class="col-1 d-flex justify-content-end">
+                                    <button onClick={(e) => editRecomenBy()} type="button" class="montse btn btnBeewhite">Cancelar</button>
+                                    <button onSubmit={handleSubmit(onSubmit)}
+                                        type="submit" class="montse ml-1 btn btn-info">Guardar</button>
+                                </div>
                             </div>
-                            <div class="col-1 d-flex justify-content-end">
-                                <button onClick={(e) => editRecomenBy()} type="button" class="montse btn btnBeewhite">Cancelar</button>
-                                <button onSubmit={handleSubmit(onSubmit)}
-                                    type="submit" class="montse ml-1 btn btn-info">Guardar</button>
-                            </div>
-                        </div>
                             {inputSource.map((x, i) => {
                                 return (
                                     <>
@@ -772,68 +791,68 @@ function PersonalData(props) {
                                                 </Form.Control>
                                                 <div>
                                                 </div>
-                                                        {x.type_source == 'Recomendado por'
-                                                            &&
-                                                            <Row>
-                                                                <Col>
-                                                                    <Form.Label className="formGray">Nombre</Form.Label>
-                                                                    <Form.Control autoComplete="off" onChange={(e) => handleInputChangeSource(e, i)} name="name_recom" value={x.name_recom}
-                                                                        className="formGray" type="text" placeholder="Ingrese el nombre del Rec." />
-                                                                </Col>
-                                                                <Col>
-                                                                    <Form.Label className="formGray">Apellido P.</Form.Label>
-                                                                    <Form.Control autoComplete="off" onChange={(e) => handleInputChangeSource(e, i)} name="father_recom" value={x.father_recom}
-                                                                        className="formGray" type="text" placeholder="Ingrese su apellido p" />
-                                                                </Col>
-                                                                <Col>
-                                                                    <Form.Label className="formGray">Apellido M.</Form.Label>
-                                                                    <Form.Control autoComplete="off" onChange={(e) => handleInputChangeSource(e, i)} name="mother_recom" value={x.mother_recom}
-                                                                        className="formGray" type="text" placeholder="Ingrese su apellido m" />
-                                                                </Col>
-                                                        </Row>
-                                                        }
-                                                           {x.type_source== 'Otro'
-                                                        &&
-                                                        <Row>
-                                                            <Col className="">
-                                                        <Form.Label className="formGray">Otro</Form.Label>
-                                                        <Form.Control autoComplete="off" onChange={(e) => handleInputChangeSource(e, i)} name="other_source" value={x.other_source}
-                                                                    className="formGray" type="text" placeholder="Especifique el source" />
-                                                            </Col>
-                                                            </Row>
-                                                            }
-                                                            {x.type_source== 'Forma de contacto'
-                                                            &&
-                                                            <Row className="mt-2">
-                                                            <Col className="col-6">
-                                                        <Form.Label className="formGray">Opcion</Form.Label>
-                                                                    <Form.Control
-                                                                    onChange={(e) => handleInputChangeSource(e, i)}
-                                                                    autoComplete="off" name="option_source" value={x.option_source} as="select" size="sm" custom>
-                                                                    <option disabled value="" selected></option>
-                                                                    <option  value="General" >General</option>
-                                                                    <option  value="Colegio" >Colegio</option>
-                                                                    </Form.Control>
-                                                            </Col>
-                                                        </Row>
-                                                            }
-                                                             {x.option_source == 'Colegio'
-                                                                &&
-                                                                <Row className="mt-2">
-                                                                <Col className="col-8">
-                                                                <Form.Control
+                                                {x.type_source == 'Recomendado por'
+                                                    &&
+                                                    <Row>
+                                                        <Col>
+                                                            <Form.Label className="formGray">Nombre</Form.Label>
+                                                            <Form.Control autoComplete="off" onChange={(e) => handleInputChangeSource(e, i)} name="name_recom" value={x.name_recom}
+                                                                className="formGray" type="text" placeholder="Ingrese el nombre del Rec." />
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Label className="formGray">Apellido P.</Form.Label>
+                                                            <Form.Control autoComplete="off" onChange={(e) => handleInputChangeSource(e, i)} name="father_recom" value={x.father_recom}
+                                                                className="formGray" type="text" placeholder="Ingrese su apellido p" />
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Label className="formGray">Apellido M.</Form.Label>
+                                                            <Form.Control autoComplete="off" onChange={(e) => handleInputChangeSource(e, i)} name="mother_recom" value={x.mother_recom}
+                                                                className="formGray" type="text" placeholder="Ingrese su apellido m" />
+                                                        </Col>
+                                                    </Row>
+                                                }
+                                                {x.type_source == 'Otro'
+                                                    &&
+                                                    <Row>
+                                                        <Col className="">
+                                                            <Form.Label className="formGray">Otro</Form.Label>
+                                                            <Form.Control autoComplete="off" onChange={(e) => handleInputChangeSource(e, i)} name="other_source" value={x.other_source}
+                                                                className="formGray" type="text" placeholder="Especifique el source" />
+                                                        </Col>
+                                                    </Row>
+                                                }
+                                                {x.type_source == 'Forma de contacto'
+                                                    &&
+                                                    <Row className="mt-2">
+                                                        <Col className="col-6">
+                                                            <Form.Label className="formGray">Opcion</Form.Label>
+                                                            <Form.Control
+                                                                onChange={(e) => handleInputChangeSource(e, i)}
+                                                                autoComplete="off" name="option_source" value={x.option_source} as="select" size="sm" custom>
+                                                                <option disabled value="" selected></option>
+                                                                <option value="General" >General</option>
+                                                                <option value="Colegio" >Colegio</option>
+                                                            </Form.Control>
+                                                        </Col>
+                                                    </Row>
+                                                }
+                                                {x.option_source == 'Colegio'
+                                                    &&
+                                                    <Row className="mt-2">
+                                                        <Col className="col-8">
+                                                            <Form.Control
                                                                 onChange={(e) => handleInputChangeSource(e, i)}
                                                                 autoComplete="off" name="college_source" value={x.college_source} as="select" size="sm" custom>
                                                                 <option disabled value="" selected></option>
-                                                                    {foreignCol.map(fC => (
-                                                                        <option key={fC.name} value={fC.name}>
-                                                                            {fC.name}
-                                                                        </option>
-                                                                    ))}
-                                                                </Form.Control>
-                                                                </Col>
-                                                                </Row>
-                                                                }
+                                                                {foreignCol.map(fC => (
+                                                                    <option key={fC.name} value={fC.name}>
+                                                                        {fC.name}
+                                                                    </option>
+                                                                ))}
+                                                            </Form.Control>
+                                                        </Col>
+                                                    </Row>
+                                                }
 
                                             </div>
                                         </div>
@@ -991,6 +1010,7 @@ function PersonalData(props) {
                                         name="Colegio"
                                         className="formGray"
                                         as="select" size="sm" custom>
+                                            <option value="" selected disabled></option>
                                         {localColleges &&
                                             [localColleges.map(colL => {
                                                 return (
@@ -1276,8 +1296,8 @@ function PersonalData(props) {
                                                 {/* {props.contact.country ? props.contact.country : ''}
                                     {props.contact.state ? ',' + props.contact.state : ''}
                                     {props.contact.state ? ',' + props.contact.city : ''} */}
-                                                {x.city ? x.city : ' '} {x.state ? ', ' + x.state + ', ' : ' '}
-                                                {x.country ? x.country : ' '}
+                                                {x.city ? x.city + ", " : ' '} {x.state ? x.state + ', ' : ' '}
+                                                {x.country ? (x.country && x.state) ? x.country : ' ' : ' '}
                                             </h6>
                                         </div>
                                     </div>
@@ -1517,8 +1537,8 @@ function PersonalData(props) {
                                                         value={x.country} as="select" size="sm" custom>
                                                         <option disabled value="" selected></option>
                                                         {countries.map(countri => (
-                                                            <option key={countri.country_name} value={countri.country_name}>
-                                                                {countri.country_name}
+                                                            <option key={countri.name} value={countri.name}>
+                                                                {countri.name}
                                                             </option>
                                                         ))}
                                                     </Form.Control>

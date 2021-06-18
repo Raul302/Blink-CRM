@@ -353,12 +353,15 @@ export default function Proposals(props) {
     setSecondModal(!secondModal);
   }
   return (
-    <div className="ml-n3 content" style={{ width: "100%", height: "100%" }}>
+    <div className="content" >
+              <div class="mt-n5 ml-n4 row">
+              <div class="col-12">
       <NotificationAlert ref={notificationAlert} />
       {loading ?
                   <Skeleton width="60rem" height={30} count={10} />
       :
-      <>
+      <>             
+
         <div class="col d-flex justify-content-end">
              <button  
              disabled={props.blocked ? true:false}
@@ -540,6 +543,8 @@ export default function Proposals(props) {
       </div>
       </>
       }
+    </div>
+    </div>
     </div>
   );
 }

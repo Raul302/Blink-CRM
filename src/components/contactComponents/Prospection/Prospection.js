@@ -324,13 +324,15 @@ export default function Prospection(props) {
       last_contact: active.name,
     };
     let flag = false;
-    prospections.map(pro =>{
-      if(pro.name_prospection == (objAux.program + " " + objAux.year)){
-        flag = true;
-      } else {
-        console.log('No repetida');
-      }
-    })
+    if(prospections){
+      prospections.map(pro =>{
+        if(pro.name_prospection == (objAux.program + " " + objAux.year)){
+          flag = true;
+        } else {
+          console.log('No repetida');
+        }
+      })
+    }
     if(!flag){
       axios.post(constaApi + "saveProspection", newObj)
         .then(function (response) {
@@ -482,7 +484,8 @@ export default function Prospection(props) {
               />
             </div>
           </div>
-          <div class="row">
+          <div class="mt-5 row">
+          <h6 style={{marginLeft:'5px'}}>Propuestas</h6>
             <div class="mb-4 col-12">
               <Proposals
                 blocked={activeProspect.status == "Aplicar" ? true : activeProspect.status == "Cancelar" ? true : false}
@@ -490,7 +493,7 @@ export default function Prospection(props) {
             </div>
           </div>
           <div class="mt-5 row">
-            <h6>Recordatorios</h6>
+            <h6 >Recordatorios</h6>
             <div class="mt-5 col-12">
               <Reminders
                 route={'Prospeccion'}
@@ -502,6 +505,7 @@ export default function Prospection(props) {
             <h6>Bitácora</h6>
             <div class="ml-n4  col-12">
               <Bio
+              route={'General'}
                 extern={true}
                 blocked={activeProspect.status == "Aplicar" ? true : activeProspect.status == "Cancelar" ? true : false}
                 activeProspect={activeProspect} />

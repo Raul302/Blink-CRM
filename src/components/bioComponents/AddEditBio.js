@@ -168,6 +168,17 @@ export default function AddEditBio(props) {
     }
   };
   async function onSubmit(data) {
+    let tip = "";
+    if(props.activeProspect){
+      tip = 'Prospeccion';
+    } else if (props.activeApplication){
+        tip = 'aplicacion';
+    } else if( props.activeTracking){
+        tip = 'Seguimiento';
+    } else {
+       tip = 'General'
+    }
+    console.log('tip',tip);
     let datex = dateBio + " " + timeBio;
     if (editing) {
       let datax = {
@@ -179,8 +190,8 @@ export default function AddEditBio(props) {
         text: textBio ? textBio : null,
         id_college: null,
         type: prefixSubject,
-        type_prospection: props.activeProspect  ? 'Prospeccion' : props.activeApplications ? 'aplicacion' : 'General',
-        id_type_prospection : props.activeProspect ? props.activeProspect.id : props.activeApplication ? props.activeApplication.id : 0
+        type_prospection: tip,
+        id_type_prospection : props.activeProspect ? props.activeProspect.id : props.activeApplication ? props.activeApplication.id : props.activeTracking ? props.activeTracking.id : 0
       };
       dispatch(updatedBioC(datax));
       if(props.activeProspect){
@@ -198,8 +209,8 @@ export default function AddEditBio(props) {
         date: dateBio ? datex : null,
         text: textBio ? textBio : null,
         type: prefixSubject,
-        type_prospection: props.activeProspect  ? 'Prospeccion' : props.activeApplications ? 'aplicacion' : 'General',
-        id_type_prospection : props.activeProspect ? props.activeProspect.id : props.activeApplication ? props.activeApplication.id : 0
+        type_prospection: tip,
+        id_type_prospection : props.activeProspect ? props.activeProspect.id : props.activeApplication ? props.activeApplication.id : props.activeTracking  ? props.activeTracking.id : 0
       };
       let indicator = props.activeProspect ? 1 : props.activeApplication ? 2 : 0;
       let params = indicator == 1 ? {id:id,id_type_prospection:props.activeProspect.id} : indicator == 2 ? 

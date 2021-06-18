@@ -225,6 +225,11 @@ constructed stylesheet
     font: inherit;
     vertical-align: baseline;
 }
+
+.modal-100w {
+    max-width: 100% !important;
+    max-height: 100% !important;
+}
 .modal-90w {
     max-width: 55% !important;
 }
@@ -738,3 +743,24 @@ background-color: '#51cbce';
     font-size: 14px !important;
     background-color: white !important;
 }
+
+
+/* Modal */
+
+.fullscreen-modal.modal-dialog  {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    right: 40px;
+    bottom: 40px;
+    background-color: papayawhip;
+}
+
+.fullscreen-modal .modal-content {
+    position: fixed;
+    top: 50px;
+    left: 50px;
+    right: 50px;
+    bottom: 50px;
+    background-color: rebeccapurple;
+ }

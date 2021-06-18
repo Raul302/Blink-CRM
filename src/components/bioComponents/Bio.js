@@ -47,7 +47,7 @@ function Bio(props) {
         <>
         <div class="mt-n2 content">
         <AddEditBio getAllUsers={(e) =>getChild(e)} {...props} activeApplications={props.applications ?? null} activeProspect={props.activeProspect ?? null} noBar={ props.noBar ? true :false} setFlag={setFlag} row={row} flag={show}/>
-        <TableBio allUsers={allUsers} {...props} extern={props.activeProspect ? true : props.activeApplication  ? true : false} bridge={(e) => method(e)}/>
+        <TableBio  allUsers={allUsers} {...props} extern={props.activeProspect ? true : props.activeApplication  ? true : false} bridge={(e) => method(e)}/>
         </div>
         </>
     )

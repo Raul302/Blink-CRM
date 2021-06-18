@@ -301,7 +301,6 @@ export default function Aplications() {
 
   const saveChanges = () => {
     let resp = auxSelection.filter(aux => aux.id === selectionTwo);
-    console.log('activeApplication',activeApplication);
     changeLoad(true);
     moment.locale("es-mx");
     let newObj = {
@@ -430,7 +429,7 @@ export default function Aplications() {
       last_modification: moment().format("YYYY-MM-DD HH:mm"),
       id_last_contact: active.id,
       last_contact: active.name,
-      id_prospection: id_prospection
+      id_prospection: id_prospection.id_prospection
     };
 
     axios.post(constaApi + "saveApplication", newObj)
@@ -947,7 +946,7 @@ export default function Aplications() {
             <div class="mt-5 col-12">
               <Reminders
               route={'Aplicaciones'}
-                //   blocked={activeApplication.status == "Aplicar" ? true : activeApplication.status == "Cancelar" ? true : false}
+                 blocked={activeApplication.status == "Activo" ? true : activeApplication.status == "Cancelar" ? true : false}
                 activeApplication={activeApplication} applications={true} prospection={false} />
             </div>
           </div>
@@ -956,7 +955,9 @@ export default function Aplications() {
             <div class="ml-n4  col-12">
               {activeApplication &&
                 <Bio
+                route={'General'}
                 extern={true}
+                blocked={activeApplication.status == "Activo" ? true : activeApplication.status == "Cancelar" ? true : false}
                 applications={true}
                 activeApplication={activeApplication} />
               }

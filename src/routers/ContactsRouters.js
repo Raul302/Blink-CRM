@@ -1,6 +1,6 @@
 import React, { useState,useRef, useEffect} from 'react';
 import {
-    BrowserRouter as Router, Switch, Redirect,
+    Switch, Redirect,
     Route, useLocation
 } from 'react-router-dom';
 import { constaApi } from '../constants/constants';
@@ -9,7 +9,7 @@ import Bio from '../components/bioComponents/Bio';
 import Profile from '../components/profileComponents/Profile';
 import References from '../components/referencesComponent/References';
 import { Spinner } from 'react-bootstrap';
-import { useDispatch, useSelector,shallowEqual } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useParams } from "react-router";
 import Docs from '../components/contactComponents/docsComponents/Docs';
 import axios from 'axios';
@@ -18,7 +18,6 @@ import SideBar from '../components/SideBar/SideBar';
 import routes from "../routes.js";
 import Reminders from 'components/contactComponents/RemindersComponents/Reminders';
 import NotificationAlert from "react-notification-alert";
-import { starLoadingRemindersC } from 'actions/contacts/remindersContacts/remindersContact';
 import Prospection from 'components/contactComponents/Prospection/Prospection';
 import Aplications from 'components/contactComponents/Aplications/Aplications';
 import TrackingsContact from 'components/contactComponents/Trackings/TrackingsContact';
@@ -28,10 +27,8 @@ function ContactsRouters(props) {
     const notificationAlert = useRef();
     let { id } = useParams();
     const dispatch = useDispatch();
-    const { pathname } = useLocation();
     const [loading, setLoading] = useState(true);
     const [contact, setContact] = useState(null);
-    const [references, setReferences] = useState(null);
     const [backgroundColor, setBackGroundColor] = useState(JSON.parse(localStorage.getItem('bgColor')) || 'white');
     const [activeColor, setActiveColor] = useState(JSON.parse(localStorage.getItem('activeColor')) || 'info');
     // const {name} = useSelector(state => state.auth,shallowEqual);
@@ -89,8 +86,8 @@ function ContactsRouters(props) {
             <SideBar
                 {...props}
                 routes={routes}
-                bgColor={backgroundColor}
-                activeColor={activeColor}
+                // bgColor={backgroundColor}
+                // activeColor={activeColor}
             />
             <div  style={{backgroundColor:'#f9fafb'}}className="main-panel" ref={mainPanel}>
                 <Nav {...props} />

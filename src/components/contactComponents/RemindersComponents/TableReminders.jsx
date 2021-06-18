@@ -174,11 +174,21 @@ export const SlotDateCreated = function (props) {
   return <>{showDate(props.data.created_at)}</>;
 };
 export const SlotDescription = function (props) {
-  const PopoverComponent = (text) => {
+  const {data} = props;
+  const PopoverComponent = (obj) => {
+  console.log('obj',obj);
     return (
       <Popover id="popover-basic">
         <Popover.Content>
-          <strong>{text}</strong>
+          {obj.proposal ?
+          [obj.proposal.map(pro => {
+            return (
+              <li>{pro.name}</li>
+            )
+          })]
+        :
+        <strong>{obj.notes}</strong>
+        }
         </Popover.Content>
       </Popover>
     );
@@ -188,7 +198,7 @@ export const SlotDescription = function (props) {
       <OverlayTrigger
         trigger={["hover", "hover"]}
         placement="top"
-        overlay={PopoverComponent(props.data.notes)}
+        overlay={PopoverComponent(data)}
       >
         <a class="ml-4" >
           <svg

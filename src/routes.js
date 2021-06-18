@@ -1,25 +1,18 @@
 
 import Dashboard from '../src/pages/Dashboard';
 import Users from '../src/pages/Users';
-import Report from '../src/pages/Report';
 import Contacts from '../src/pages/Contacts';
 import Colleges from '../src/pages/Colleges';
 import * as TiIcons from "react-icons/ti";
 import * as MDicons from "react-icons/md";
 import * as FAIcons from "react-icons/fa";
 import * as BIicons from "react-icons/bi";
-import * as GIIcons from "react-icons/gi";
-import * as AIIcons from "react-icons/ai";
-import * as IoIcons from "react-icons/io";
 import RemindersSection from 'pages/RemindersSection';
 import ProspectionSection from 'pages/ProspectionSection';
 import ApplicationSection from 'pages/ApplicationSection';
 import CollegesLocales from 'pages/CollegesLocales';
 import TrackingSection from 'pages/Tracking/TrackingSection';
-import {
-  BrowserRouter as Router, Switch,
-  Route, Link, useLocation
-} from 'react-router-dom';// import LogoApplication from 'resources/images/application.png';
+
 // import LogoProspection from 'resources/images/prospection.png';
 import React from 'react'
 

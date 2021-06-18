@@ -110,6 +110,7 @@
 .btn-yellowDisabled  { @include btn-styles(#fbea97, #fbea97); }
 .btnBee  { @include btn-styles(#F4F5F6, #F4F5F6); }
 .btnBeewhite  { @include btn-styles(#F4F5F6, #c1c1c2); }
+.btnPurpleBee  { @include btn-styles(#9B03AE, #9B03AE); }
 // .btn-neutral { @include btn-styles($white-color, $white-color); }
 
 .btn-outline-default { @include btn-outline-styles($default-color, $default-states-color); }

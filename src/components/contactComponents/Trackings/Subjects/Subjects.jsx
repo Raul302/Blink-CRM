@@ -6,14 +6,33 @@ import Skeleton from 'react-loading-skeleton';
 import { Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { constaApi } from 'constants/constants';
+import NotificationAlert from "react-notification-alert";
 
 export default function Subjects(props) {
+    const notificationAlert = useRef();
     const [rowData,setRowData] = useState([]);
     const [gridApi, setGridApi] = useState();
     const [columnApi, setColumnApi] = useState();
     const [frameworkComponents, setFramwrokw] = useState({});
+    const [objSubject,setObjectSubject] = useState([
+        {
+        type:"Science",
+        name:""
+    },   {
+        type:"Science",
+        name:""
+    },   {
+        type:"Science",
+        name:""
+    },   {
+        type:"Science",
+        name:""
+    },   {
+        type:"Science",
+        name:""
+    }
+])
     const [modalS,setModalS] = useState(false);
-    const [subject,setSubject] =useState({type:" ",name:" "});
     const [typesSubject,setTypesSubject] = useState([
         "Science",
         "Math",
@@ -33,8 +52,36 @@ export default function Subjects(props) {
     const openModalSubjects = () =>{
         setModalS(!modalS);
     }
+    const cleanCamps = () =>{
+        setObjectSubject([   {
+            type:"Science",
+            name:""
+        },   {
+            type:"Science",
+            name:""
+        },   {
+            type:"Science",
+            name:""
+        },   {
+            type:"Science",
+            name:""
+        },   {
+            type:"Science",
+            name:""
+        }]);
+    }
     const handleClose = () => {
         setModalS(false);
+        cleanCamps();
+    }
+    const handleAddSubject = () =>{
+        setObjectSubject([...objSubject,{type:"Science",name:""}]);
+    }
+    const handleChangeObj = (e,index) => {
+        const { name, value } = e.target;
+        const list = [...objSubject];
+        list[index][name] = value;
+        setObjectSubject(list);
     }
     const consultAllTrackings = (id,id_contact) =>{
         let newObj ={
@@ -51,23 +98,58 @@ export default function Subjects(props) {
          let newObj ={
             id_tracking: props.activeTracking.id,
             id_contact: props.activeTracking.id_last_contact,
-            type: subject.type,
-            name: subject.name
          };
-        axios.post(constaApi+'saveTrackingSubject',newObj)
-        .then(function (response) {
-            setSubject({});
-            consultAllTrackings(props.activeTracking.id,props.activeTracking.id_last_contact);
-        });
+         let theobj = {
+             objSubject:objSubject,
+             otherData : newObj
+         }
+         let flag = false;
+         objSubject.map(obj => {
+             if(!obj.type){
+                 flag = true;
+             }
+             if(!obj.name){
+                 flag = true;
+             }
+         })
+         if(!flag){
+             axios.post(constaApi+'saveTrackingSubject',theobj)
+             .then(function (response) {
+                 // setSubject({});
+                 cleanCamps();
+                 consultAllTrackings(props.activeTracking.id,props.activeTracking.id_last_contact);
+             });
+         } else {
+            notification('warning','Campos vacios');
+         }
     }
-    const SaveType = (e) => {
-        setSubject({...subject,type:e.target.value});
+    function notification(type, message) {
+        let place = "tc";
+        var options = {};
+        options = {
+            place: place,
+            message: (
+                <div>
+                    <div>
+                        {message}
+                    </div>
+                </div>
+            ),
+            type: type,
+            icon: "nc-icon nc-bell-55",
+            autoDismiss: 7,
+        }
+        notificationAlert.current.notificationAlert(options);
     }
-    const SaveName = (e) => {
-        setSubject({...subject,name:e.target.value})
-    }
+    // const SaveType = (e) => {
+    //     setSubject({...subject,type:e.target.value});
+    // }
+    // const SaveName = (e) => {
+    //     setSubject({...subject,name:e.target.value})
+    // }
     return (
         <div className="content">
+                            <NotificationAlert ref={notificationAlert} />
         <div class="mt-n5 row">
             <div class="col-12">
             <div class="col d-flex justify-content-end">
@@ -122,12 +204,14 @@ export default function Subjects(props) {
 
                     <form onSubmit={e => onSubmit(e)}>
                         <div className="container-fluid">
+                            {objSubject.map((ob,i) =>{
+                                return(
                             <Row className="mt-1">
                                   <Col className="col-4">
                                     <Form.Label className="formGray">Materia:</Form.Label>
                                     <Form.Control  autoComplete="off" 
-                                    onChange={(e) => SaveType(e)}
-                                    name="country" value={subject.type} as="select" size="sm" custom>
+                                    onChange={(e) => handleChangeObj(e,i)}
+                                    name="type" value={ob.type} as="select" size="sm" custom>
                                         {typesSubject.map(ty => (
                                                         <option key={ty} value={ty}>
                                                             {ty}
@@ -137,12 +221,21 @@ export default function Subjects(props) {
                                 </Col>
                                 <Col className="col-4">
                                 <Form.Label className="formGray">Nombre</Form.Label>
-                                    <Form.Control  autoComplete="off" name="text"
-                                    onChange={(e) => SaveName(e)}
-                                    value={subject.name}
+                                    <Form.Control  autoComplete="off" name="name"
+                                    onChange={(e) => handleChangeObj(e,i)}
+                                    value={ob.name}
                                         className="formGray" type="text" placeholder="Nombre de la materia" />
                                 </Col>
                                 </Row>
+                                )
+                            })}
+                            <Row>
+                                <Col>
+                            <button onClick={handleAddSubject}
+                                                    type="button"
+                                                    class="montse ml-1 btn btn-info btn-sm"><span style={{ fontSize: '18px' }} class="montse">+</span></button>
+                                </Col>
+                            </Row>
                         </div>
                         <Row>
 
@@ -151,7 +244,7 @@ export default function Subjects(props) {
                                     className="float-right mb-3 mr-2" type="button"
                                     onClick={e => onSubmit(e)}
                                     variant="info">Guardar</Button>
-                                <Button onClick={e => handleClose(e)} style={{  fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2" variant="danger" >
+                                <Button onClick={e => handleClose(e)} style={{  fontFamily: 'Inter', fontWeight: '500' }} className="float-right mb-3 mr-2 montse btnBee" >
                                     Cancelar
                 </Button>
 

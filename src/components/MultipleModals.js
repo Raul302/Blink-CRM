@@ -584,6 +584,7 @@ function MultipleModals(props) {
                                     <Form.Control autoComplete="off" name="schoool" ref={student}
                                         onChange={(e) => changeFlag(e)}
                                         className="formGray" type="text" placeholder="Ingrese su Colegio"  as="select" size="sm" custom>
+                                            <option value="" selected disabled></option>
                                         {localColleges &&
                                             [localColleges.map(colL => {
                                                 return(

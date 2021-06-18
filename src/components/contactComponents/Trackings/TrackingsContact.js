@@ -206,7 +206,6 @@ export default function TrackingsContact() {
         set_ID_Prospection(response.data.id_prospection ?? 0);
         dispatch(starLoadingTrackingsRemindersC(active.id, response.data.id, 'Tracking'));
         dispatch(starLoadingApplications(active.id, response.data.id));
-        console.log('response',response);
         let newcadena = response.data.name_prospection.replace(/\d/g, "");
         dispatch(starLoadingCollegesByProspeccion(newcadena));
         changeLoad(false);
@@ -375,13 +374,17 @@ export default function TrackingsContact() {
   }
   const checkButton = (obj) => {
     let params = "";
-    if (obj.id == selectionTwo && obj.status != 'Cancelado' && obj.status != 'Llegada') {
-      params = "btn btn-sm btn-yellow"
-    } else if (obj.status == "Cancelado") {
+    if (obj.status == "Cancelado") {
       params = "btn btn-sm btn-disabled"
     } else if (obj.status == "Llegada") {
       params = "btn btn-sm btn-success"
-    } else {
+    } else if(obj.status == 'Activo'){
+      params = "btn btn-sm btn-success"
+    } else if(obj.status == 'Termino'){
+      params = "btn btn-sm btnPurpleBee"
+    } else if(obj.id == selectionTwo && obj.status != 'Cancelado' && obj.status != 'Activo'){
+      params = "btn btn-sm btn-yellow"
+    }else {
       params = "btn btn-sm btn-yellow"
     }
 
@@ -503,6 +506,7 @@ export default function TrackingsContact() {
             <div class="ml-n4 mt-1 col-12">
               {activeTracking &&
                 <Bio
+                route={'General'}
                 extern={true}
                 trackings={true}
                 activeTracking={activeTracking} />

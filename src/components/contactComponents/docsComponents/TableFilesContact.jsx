@@ -4,6 +4,7 @@ import { AgGridReact, AgGridColumn } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import axios from 'axios';
+import { Row, Col, Button, Modal, Form,InputGroup } from 'react-bootstrap';
 import { constaApi,secret_token , domain } from "../../../constants/constants";
 import { useParams,} from "react-router";
 import moment from 'moment';
@@ -12,6 +13,11 @@ import *  as AIIcons from "react-icons/ai";
 import *  as FAIcons from "react-icons/fa";
 import ModalImage from "react-modal-image";
 import swal from 'sweetalert';
+import { Document, Page } from 'react-pdf';
+import GoogleDocsViewer from 'react-google-docs-viewer';
+import Iframe from 'react-iframe-click';
+import *  as GRicons from "react-icons/gr";
+
 
 export default function TableFilesContact(props) {
     // // variables
@@ -23,7 +29,11 @@ export default function TableFilesContact(props) {
     let { id:id_contact } = useParams();
     const [fullImg,setFullImg] = useState("");
     const [nameImg,setNameImg] = useState("");
-
+    const [urlX,setUrlx] = useState("");
+    const [numPages, setNumPages] = useState(null);
+    const [pageNumber, setPageNumber] = useState(1);
+    const [showModal,setSecondModal] = useState(false);
+    console.log('urlX',urlX);
     // Hook useEffect
     useEffect(() => {
         getFiles();
@@ -33,10 +43,29 @@ export default function TableFilesContact(props) {
         setGridApi(params);
         setColumnApi(params);
     }
-    const clickEvent = (direction,nameImg) => {
-        setFullImg(direction);
-        setNameImg(nameImg);
-        let a = document.querySelector('.imgs').click();
+    function handleClose() {
+        setSecondModal(false);
+      }
+    const petitionPdf = (value,file) => {
+        if(file){
+            var fileURL = URL.createObjectURL(file);
+            setUrlx(fileURL);
+            setSecondModal(true);
+        }
+
+            // var win = window.open();
+        //   win.document.write('<iframe src="' + fileURL + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>')
+       }
+    const clickEvent = (direction,nameImg,value,file) => {
+        if(file){
+            if(file.type == 'application/pdf'){
+                petitionPdf(value,file);
+            } else {
+                setFullImg(direction);
+                setNameImg(nameImg);
+                 let a = document.querySelector('.imgs').click();
+            }
+        }
 
     }
     const dropFile = (id,path_doc,id_contact) => {
@@ -63,6 +92,11 @@ export default function TableFilesContact(props) {
     }
     return (
         <div className="content">
+                    <div>
+                
+
+ 
+                </div>
             <div style={{width:'5px',height:'5px'}}>
             <ModalImage
             style={{width:'500px'}}
@@ -116,6 +150,22 @@ export default function TableFilesContact(props) {
                         />
                     </AgGridReact>
                 </div>
+                
+                <Modal
+                style={{marginTop:'-50px'}}
+                show={showModal}
+                dialogClassName="modal-100w"
+                onHide={handleClose}
+            >
+            <Modal.Header style={{height:'10px'}} closeButton>
+                </Modal.Header>
+                <Modal.Body style={{ background: '#F4F5F6', border: '0px' }}>
+                <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src={urlX} allowfullscreen></iframe>
+                </div>
+                </Modal.Body>
+            </Modal>
+
         </div>
     )
 }
@@ -149,10 +199,13 @@ export const SlotDate = function SlotDate(props) {
 // Component SlotPreview
 export const SlotPreview = function SlotPreview(props) {
     const {value} = props;
+    const extension = value ? value.split(".").[1] : "";
+    const [file,setFile] = useState();
+    const [pdf,setPdf] = useState();
     let obj = "Sin image.jpg";
     const maximImg = (e) => {
         // document.getElementById("btnSample").click();
-        props.context.clickEvent(e.target.currentSrc,e.target.alt);
+        props.context.clickEvent(e.target.currentSrc,e.target.alt,value,file);
     }
     useEffect(()=>{
         const petition = (value) => {
@@ -167,15 +220,33 @@ export const SlotPreview = function SlotPreview(props) {
             fetch(src, options)
             .then(res => res.blob())
             .then(blob => {
+                setFile(blob);
+                let fileURL = URL.createObjectURL(blob);
+                setPdf(fileURL);
                 var objectURL = URL.createObjectURL(blob);
-                myImage.src = objectURL;
+                if(myImage){
+                    myImage.src = objectURL;
+                }
             });
         }
         petition(value);
     },[])
+    function convertPdf(){
+        if(file){
+            let fileURL = URL.createObjectURL(file);
+            return fileURL;
+        } else {
+            return "img/src";
+        }
+    }
     return (
         <>
+        {extension == "pdf"
+        ?
+        <a> <GRicons.GrDocumentPdf onClick={(e) => maximImg(e)} style={{ color: '#497cff' }} size={18} /></a>
+        :
         <img id={'img'+value} onClick={(e) => maximImg(e)} style={{width:'50px',height:'50px'}} alt={props.data.name_doc} src={obj}></img>
+        }
         </>
     )
   }
